@@ -1,16 +1,18 @@
 <?php
+//
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
-*/
+use App\Mail\MailUpdatedSpecs;
+use App\Notifications\SpecsUpdate;
+use App\User;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get("/", function() {
+    $user = User::first();
+    $user->notify(new SpecsUpdate);
+//    Mail::to('telford@astigp.com')->send(new MailUpdatedSpecs);
 });
+
+Route::get('/form', "CompanyController@form");
+Route::post('/add', "CompanyController@add");

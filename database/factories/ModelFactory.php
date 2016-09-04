@@ -21,3 +21,29 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+$factory->define(App\CompanySpec::class, function (Faker\Generator $faker) {
+    return [
+        'spec_no' =>  $faker->word ,
+        'name' =>  $faker->name ,
+    ];
+});
+
+$factory->define(App\CompanySpecCategory::class, function (Faker\Generator $faker) {
+    return [
+        'company_spec_id' =>  function () {
+             return factory(App\CompanySpec::class)->create()->id;
+        } ,
+        'category_id' =>  $faker->word ,
+        'category_name' =>  $faker->word ,
+    ];
+});
+
+$factory->define(App\CompanySpecRevision::class, function (Faker\Generator $faker) {
+    return [
+        'revision' =>  $faker->word ,
+        'company_spec_id' =>  $faker->randomNumber() ,
+        'revision_summary' =>  $faker->word ,
+        'revision_date' =>  $faker->date() ,
+    ];
+});
+
