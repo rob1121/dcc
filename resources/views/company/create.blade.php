@@ -18,8 +18,9 @@
     </div>
 @endif
 
-<form action="/add" method="post">
+<form action="/add" method="post" enctype="multipart/form-data">
     {!! csrf_field() !!}
+    <input type="file" name="document">
     <input type="text" name="name" value="name">
     <input type="text" name="spec_no" value="spec_no">
     <input type="text" name="revision" value="rev">

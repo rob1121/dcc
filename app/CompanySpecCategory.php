@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CompanySpecCategory extends Model
 {
     const RULES = [
-        'category_no' => 'required|unique:company_spec_categories,category_no',
+        'category_no' => 'required',
         'category_name' => 'required'
     ];
 

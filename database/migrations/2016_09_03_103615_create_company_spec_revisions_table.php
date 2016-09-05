@@ -19,6 +19,7 @@ class CreateCompanySpecRevisionsTable extends Migration
             $table->integer('company_spec_id')->unsigned();
             $table->string('revision_summary');
             $table->date('revision_date');
+            $table->string('document')->nullable();
             $table->foreign('company_spec_id')->references('id')->on('company_specs')->onDelete('cascade');
             $table->timestamps();
         });

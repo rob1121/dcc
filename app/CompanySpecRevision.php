@@ -9,12 +9,12 @@ class CompanySpecRevision extends Model
     const RULES = [
         'revision' => "required|max:5",
         'revision_summary' => "required",
+        'document' => 'required|mimes:pdf',
         'revision_date' => "required|date"
     ];
 
     protected $fillable = [
         'revision',
-        'company_spec_id',
         'revision_summary',
         'revision_date'
     ];

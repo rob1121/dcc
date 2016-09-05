@@ -13,6 +13,12 @@ class CompanySpec extends Model
 
     protected $fillable = ['name','spec_no'];
 
+    public static function isExist($request)
+    {
+        $spec = collect(new self($request->all()))->toArray();
+        return self::where($spec)->first();
+    }
+
     public function companySpecRevision()
     {
         return $this->hasMany(CompanySpecRevision::class);

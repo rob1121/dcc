@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'asia/manila',
 
     /*
     |--------------------------------------------------------------------------
@@ -229,7 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'JavaScript' => Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         'Carbon' => Carbon\Carbon::class,
-
+        'Str' => Illuminate\Support\Str::class,
     ],
 
 ];
