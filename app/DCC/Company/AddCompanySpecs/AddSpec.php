@@ -48,7 +48,7 @@ class AddSpec
             $this->spec = $this->morph(new AddCompanySpecs);
             $this->morph(new AddSpecCategory);
             $this->morph(new AddSpecRevision);
-            $this->morph(new AddSpecFile());
+            $this->morph(new AddSpecFile);
             $this->setResult($this->spec);
     }
 

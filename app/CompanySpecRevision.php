@@ -18,4 +18,9 @@ class CompanySpecRevision extends Model
         'revision_summary',
         'revision_date'
     ];
+
+    public static function isExist($company_spec_id,$revision)
+    {
+        return self::whereCompanySpecId($company_spec_id)->whereRevision($revision)->first();
+    }
 }

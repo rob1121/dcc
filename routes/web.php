@@ -17,4 +17,4 @@ Route::get("/", function() {
 Route::get('/form', "CompanyController@form");
 Route::post('/add', "CompanyController@add");
 Route::get('/edit/{companySpec}', "CompanyController@edit");
-Route::patch('/edit/{companySpec}', "CompanyController@update");
+Route::post('/update/{companySpec}', "CompanyController@update");

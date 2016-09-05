@@ -3,6 +3,9 @@
 use App\CompanySpec;
 use App\CompanySpecCategory;
 use App\CompanySpecRevision;
+use App\DCC\Company\AddCompanySpecs\AddCompanySpecsInterface;
+use App\DCC\Company\AddCompanySpecs\AddSpecFile;
+use App\DCC\Company\AddCompanySpecs\AddSpecRevision;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 
@@ -41,6 +44,10 @@ class UpdateSpec
         $this->validate($this->request, $this->validationRules());
     }
 
+    /**
+     * validation rules
+     * @return array
+     */
     private function validationRules()
     {
         return collect(CompanySpec::RULES)
@@ -54,11 +61,22 @@ class UpdateSpec
      */
     public function update()
     {
-        $this->spec = $this->morph(new UpdateCompanySpecs);
-        $this->morph(new UpdateSpecCategory);
-        $this->morph(new UpdateSpecRevision);
-        $this->morph(new UpdateSpecFile());
+        $this->spec = $this->updateMorph(new UpdateCompanySpecs);
+        $this->updateMorph(new UpdateSpecCategory);
+        $this->updateSpecRevision();
+        $this->addMorph(new AddSpecFile);
         $this->setResult($this->spec);
+    }
+
+    /**
+     * if new instance already exist update database else insert new instance
+     */
+    protected function updateSpecRevision()
+    {
+        if (CompanySpecRevision::isExist($this->spec->id, $this->request->revision))
+            $this->updateMorph(new UpdateSpecRevision);
+        else
+            $this->addMorph(new AddSpecRevision);
     }
 
     /**
@@ -66,11 +84,24 @@ class UpdateSpec
      * @param UpdateSpecsInterface $rel
      * @return mixed
      */
-    protected function morph(UpdateSpecsInterface $rel)
+    protected function updateMorph(UpdateSpecsInterface $rel)
     {
         $rel->setRequest($this->request);
         $rel->setSpec($this->spec);
         $rel->update();
+        return $rel->getSpec();
+    }
+
+    /**
+     * company spec polymorphism
+     * @param AddCompanySpecsInterface $rel
+     * @return mixed
+     */
+    protected function addMorph(AddCompanySpecsInterface $rel)
+    {
+        $rel->setRequest($this->request);
+        $rel->setSpec($this->spec);
+        $rel->add();
         return $rel->getSpec();
     }
 

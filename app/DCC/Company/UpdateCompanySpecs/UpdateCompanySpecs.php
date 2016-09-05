@@ -5,6 +5,9 @@ class UpdateCompanySpecs extends UpdateSpecAbstract
 {
     protected $companySpecs;
 
+    /**
+     * update companyspecs database
+     */
     public function update()
     {
         $this->makeCompanySpecsInstance();
@@ -12,7 +15,7 @@ class UpdateCompanySpecs extends UpdateSpecAbstract
     }
 
     /**
-     *
+     * make new instance of company specs
      */
     public function makeCompanySpecsInstance()
     {

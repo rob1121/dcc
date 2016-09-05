@@ -2,6 +2,7 @@
 
 use App\CompanySpec;
 use App\DCC\Company\AddCompanySpecs\AddSpec;
+use App\DCC\Company\UpdateCompanySpecs\UpdateSpec;
 use App\DCC\Exceptions\DuplicateEntryException;
 use Illuminate\Http\Request;
 
@@ -27,13 +28,12 @@ class CompanyController extends Controller
 
     public function edit(CompanySpec $companySpec)
     {
-        $companySpec->companySpecCategory->category_no = "rob";
-        $companySpec->companySpecCategory->save();
-        dd($companySpec->companySpecCategory);
+        return view('company.edit', ['spec' => $companySpec->load(['companySpecRevision', 'companySpecCategory'])]);
     }
 
-    public function update(CompanySpec $companySpec, Request $request)
+    public function update(UpdateSpec $spec, CompanySpec $companySpec)
     {
+        $spec->setSpec($companySpec);
         dd($companySpec);
     }
 }
