@@ -8,25 +8,33 @@ class CompanySpec extends Model
 {
 
     const RULES = [
-        'name' => 'required'
+        'name' => 'required',
+        'spec_no' => 'required'
     ];
 
     protected $fillable = ['name','spec_no'];
 
-    public static function isExist($request)
-    {
-        $spec = collect(new self($request->all()))->toArray();
-        return self::where($spec)->first();
-    }
+    protected $with = ['companySpecRevision', 'companySpecCategory'];
 
     public function companySpecRevision()
     {
-        return $this->hasMany(CompanySpecRevision::class);
+        return $this->hasOne(CompanySpecRevision::class);
     }
 
     public function companySpecCategory()
     {
         return $this->hasOne(CompanySpecCategory::class);
+    }
+
+    /**
+     * check if request instance already exist in the database
+     * @param $request
+     * @return mixed
+     */
+    public static function isExist($request)
+    {
+        $spec = collect(new self($request->all()))->toArray();
+        return self::where($spec)->first();
     }
 //
 //    public function setSpecNoAttribute()

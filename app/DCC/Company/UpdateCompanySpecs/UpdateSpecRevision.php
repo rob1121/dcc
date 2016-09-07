@@ -12,7 +12,7 @@ class UpdateSpecRevision extends UpdateSpecAbstract
     public function update()
     {
         $this->makeCompanySpecsInstance();
-        $this->spec->companySpecRevision()->update($this->companySpecsRevision);
+        $this->spec->companySpecRevision->update($this->companySpecsRevision);
     }
 
     /**

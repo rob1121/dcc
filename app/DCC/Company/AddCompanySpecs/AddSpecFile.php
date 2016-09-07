@@ -15,9 +15,8 @@ class AddSpecFile extends SpecAbstract
     {
         $this->makePath();
         $this->makeDocumentName();
-
         $path = $this->request->document->storeAs($this->path, $this->documentName);
-        $this->spec->companySpecRevision()->update(['document' => $path]);
+        $this->getSpecInstance()->update(['document' => $path]);
     }
 
     /**
@@ -47,14 +46,18 @@ class AddSpecFile extends SpecAbstract
         $this->documentName =  "{$implode_name}.{$extension}";
     }
 
+    public function getSpecInstance()
+    {
+        return $this->spec->companySpecRevision()
+            ->whereCompanySpecId($this->spec->id)
+            ->whereRevision($this->request->revision);
+    }
+
     /**
      * get specification revision
      */
     protected function getRevision()
     {
-        return $this->spec->load('companySpecRevision')->companySpecRevision()
-            ->orderBy("id", "desc")
-            ->first()
-            ->revision;
+        return $this->getSpecInstance()->first()->revision;
     }
 }

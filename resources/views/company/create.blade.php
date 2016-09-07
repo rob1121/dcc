@@ -1,35 +1,72 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Add new Internal Specification</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{route('internal.store')}}" method="post" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+
+                    <dcc-input name="category_no"
+                               col="4"
+                               label="category no."
+                               error="{{$errors->has("category_no") ? $errors->first("category_no"):""}}"
+                               value="{{old("category_no")}}"
+                    ></dcc-input>
+
+                    <dcc-input name="category_name"
+                               col="8"
+                               label="category name"
+                               error="{{$errors->has("category_name") ? $errors->first("category_name"):""}}"
+                               value="{{old("category_name")}}"
+                    ></dcc-input>
+
+                    <dcc-input name="spec_no"
+                               col="4"
+                               label="spec no."
+                               error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
+                               value="{{old("spec_no")}}"
+                    ></dcc-input>
+
+                    <dcc-input name="revision"
+                               col="4"
+                               error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
+                               value="{{old("revision")}}"
+                    ></dcc-input>
+
+                    <dcc-datepicker name="revision_date"
+                                    col="4"
+                                    label="date"
+                                    error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
+                                    value="{{old("revision_date")}}"
+                    ></dcc-datepicker>
+
+                    <dcc-input name="name"
+                               col="8"
+                               label="title"
+                               error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                               value="{{old("name")}}"
+                    ></dcc-input>
+
+                    <dcc-input name="document"
+                               col="4"
+                               type="file"
+                               error="{{$errors->has("document") ? $errors->first("document"):""}}"
+                               value="{{old("document")}}"
+                    ></dcc-input>
+
+                    <dcc-textarea name="revision_summary"
+                                  label="revision summary"
+                                  error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
+                                  value="{{old("revision_summary")}}"
+                    ></dcc-textarea>
+                    <dcc-button icon="paper-plane">Submit</dcc-button>
+                </form>
+            </div>
+        </div>
     </div>
-@endif
-
-<form action="/add" method="post" enctype="multipart/form-data">
-    {!! csrf_field() !!}
-    <input type="file" name="document">
-    <input type="text" name="name" value="name">
-    <input type="text" name="spec_no" value="spec_no">
-    <input type="text" name="revision" value="rev">
-    <input type="text" name="revision_summary" value="revision_summary">
-    <input type="text" name="revision_date" value="2016/09/04">
-
-    <input type="text" name="category_no" value="category_no">
-    <input type="text" name="category_name" value="category_name">
-    <input type="submit" value="submit">
-</form>
-</body>
-</html>
+@endsection

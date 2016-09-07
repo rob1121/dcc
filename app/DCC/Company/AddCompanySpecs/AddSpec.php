@@ -1,8 +1,6 @@
 <?php namespace App\DCC\Company\AddCompanySpecs;
 
-use App\CompanySpec;
-use App\CompanySpecCategory;
-use App\CompanySpecRevision;
+use App\DCC\Company\ValidationRules;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 
@@ -25,20 +23,12 @@ class AddSpec
     }
 
     /**
-     * validate specification
+     * validate request instance
      */
     public function validateSpec()
     {
-        $this->validate($this->request, $this->validationRules());
+        (new ValidationRules)->validateSpec($this->request);
     }
-
-        private function validationRules()
-        {
-            return collect(CompanySpec::RULES)
-                ->merge(CompanySpecRevision::RULES)
-                ->merge(CompanySpecCategory::RULES)
-                ->toArray();
-        }
 
     /**
      * add request instance to database using polymorphism
@@ -66,12 +56,12 @@ class AddSpec
     }
 
     /**
-     * set result load companyspec, revision and category
+     * set result load company spec, revision and category
      * @param $spec
      */
     public function setResult($spec)
     {
-        $this->result = $spec->load(['companySpecRevision','companySpecCategory']);
+        $this->result = $spec;
     }
 
     /**

@@ -1,30 +1,19 @@
 <?php namespace App\DCC\Company\UpdateCompanySpecs;
 
 use App\CompanySpec;
-use App\CompanySpecCategory;
 use App\CompanySpecRevision;
 use App\DCC\Company\AddCompanySpecs\AddCompanySpecsInterface;
 use App\DCC\Company\AddCompanySpecs\AddSpecFile;
 use App\DCC\Company\AddCompanySpecs\AddSpecRevision;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use App\DCC\Company\ValidationRules;
 use Illuminate\Http\Request;
 
 class UpdateSpec
 {
-    use ValidatesRequests;
 
     public $request;
     private $result;
     private $spec;
-
-    /**
-     * @param mixed $spec
-     */
-    public function setSpec(CompanySpec $spec)
-    {
-        dd($spec);
-        $this->spec = $spec;
-    }
 
     /**
      * AddSpec constructor.
@@ -37,23 +26,19 @@ class UpdateSpec
     }
 
     /**
-     * validate specification
+     * @param mixed $spec
      */
-    public function validateSpec()
+    public function setSpec(CompanySpec $spec)
     {
-        $this->validate($this->request, $this->validationRules());
+        $this->spec = $spec;
     }
 
     /**
-     * validation rules
-     * @return array
+     * validate request instance
      */
-    private function validationRules()
+    public function validateSpec()
     {
-        return collect(CompanySpec::RULES)
-            ->merge(CompanySpecRevision::RULES)
-            ->merge(CompanySpecCategory::RULES)
-            ->toArray();
+        (new ValidationRules)->validateSpec($this->request);
     }
 
     /**
@@ -61,22 +46,11 @@ class UpdateSpec
      */
     public function update()
     {
-        $this->spec = $this->updateMorph(new UpdateCompanySpecs);
+        $this->updateMorph(new UpdateCompanySpecs);
         $this->updateMorph(new UpdateSpecCategory);
-        $this->updateSpecRevision();
+        $this->updateMorph(new UpdateSpecRevision);
         $this->addMorph(new AddSpecFile);
         $this->setResult($this->spec);
-    }
-
-    /**
-     * if new instance already exist update database else insert new instance
-     */
-    protected function updateSpecRevision()
-    {
-        if (CompanySpecRevision::isExist($this->spec->id, $this->request->revision))
-            $this->updateMorph(new UpdateSpecRevision);
-        else
-            $this->addMorph(new AddSpecRevision);
     }
 
     /**
@@ -89,7 +63,7 @@ class UpdateSpec
         $rel->setRequest($this->request);
         $rel->setSpec($this->spec);
         $rel->update();
-        return $rel->getSpec();
+        $this->spec = $rel->getSpec();
     }
 
     /**
@@ -111,7 +85,7 @@ class UpdateSpec
      */
     public function setResult($spec)
     {
-        $this->result = $spec->load(['companySpecRevision','companySpecCategory']);
+        $this->result = CompanySpec::find($spec->id);
     }
 
     /**

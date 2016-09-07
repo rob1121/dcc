@@ -1,24 +1,9 @@
 <?php namespace App\DCC\Company\AddCompanySpecs;
 
+use App\DCC\Traits\RequestSetter;
+use App\DCC\Traits\SpecSetterGetter;
+
 abstract class SpecAbstract implements AddCompanySpecsInterface
 {
-    protected $spec;
-    protected $request;
-
-    public function setRequest($request)
-    {
-        $this->request = $request;
-    }
-
-    public function setSpec($spec)
-    {
-        $this->spec = $spec;
-    }
-
-    public function getSpec()
-    {
-        return $this->spec;
-    }
-
-
+    use SpecSetterGetter, RequestSetter;
 }

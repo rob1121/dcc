@@ -180,6 +180,7 @@ return [
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -230,6 +231,7 @@ return [
         'JavaScript' => Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         'Carbon' => Carbon\Carbon::class,
         'Str' => Illuminate\Support\Str::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
