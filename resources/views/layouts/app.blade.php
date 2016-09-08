@@ -79,7 +79,7 @@
     @yield('content')
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    {{-- <script src="/js/app.js"></script> --}}
     @stack("script")
 </body>
 </html>

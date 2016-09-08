@@ -21,6 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
 $factory->define(App\CompanySpec::class, function (Faker\Generator $faker) {
     return [
         'spec_no' =>  $faker->word ,
@@ -31,9 +32,12 @@ $factory->define(App\CompanySpec::class, function (Faker\Generator $faker) {
 $factory->define(App\CompanySpecCategory::class, function (Faker\Generator $faker) {
     return [
         'company_spec_id' =>  function () {
-             return factory(App\CompanySpec::class)->create()->id;
+        $id = factory(App\CompanySpec::class)->create()->id;
+
+            factory(App\CompanySpecRevision::class)->create(['company_spec_id' => $id]);
+             return $id;
         } ,
-        'category_id' =>  $faker->word ,
+        'category_no' =>  $faker->word ,
         'category_name' =>  $faker->word ,
     ];
 });
@@ -41,9 +45,12 @@ $factory->define(App\CompanySpecCategory::class, function (Faker\Generator $fake
 $factory->define(App\CompanySpecRevision::class, function (Faker\Generator $faker) {
     return [
         'revision' =>  $faker->word ,
-        'company_spec_id' =>  $faker->randomNumber() ,
+        'company_spec_id' =>  function () {
+             return factory(App\CompanySpec::class)->create()->id;
+        } ,
         'revision_summary' =>  $faker->word ,
         'revision_date' =>  $faker->date() ,
+        'document' =>  $faker->word ,
     ];
 });
 

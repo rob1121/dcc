@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\CompanySpec;
+use App\CompanySpecCategory;
 use App\DCC\Company\AddCompanySpecs\AddSpec;
 use App\DCC\Company\UpdateCompanySpecs\UpdateSpec;
 use App\DCC\Exceptions\DuplicateEntryException;
@@ -9,7 +10,10 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        return view('company.index', ["specs" => CompanySpec::all()]);
+        return view('company.index', [
+            "specs" => CompanySpec::paginate(10),
+            "categories" => CompanySpecCategory::getCategoryList()
+        ]);
     }
     /**
      * display view create

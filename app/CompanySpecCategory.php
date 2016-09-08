@@ -13,6 +13,11 @@ class CompanySpecCategory extends Model
 
     protected $fillable = [ 'category_no', 'category_name' ];
 
+    public static function getCategoryList()
+    {
+        return self::distinct('category_name')->get();
+    }
+
     public function companySpec()
     {
         return $this->belongsTo(CompanySpec::class);

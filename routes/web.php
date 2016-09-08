@@ -1,8 +1,8 @@
 <?php
-//
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+
+Route::get('/', function () {
+   return view('welcome');
+});
 
 use App\Mail\MailUpdatedSpecs;
 use App\Notifications\SpecsUpdate;

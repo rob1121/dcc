@@ -18,6 +18,7 @@ elixir(mix => {
         .sass('app.scss')
         .webpack('app.js')
         .webpack('companyIndex.js')
+        .webpack('welcome.js')
         .browserSync({
             proxy: "dcc_2016.me"
         });

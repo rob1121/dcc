@@ -7973,4 +7973,7 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+th {
+  text-transform: capitalize; }
+
 /*# sourceMappingURL=app.css.map */

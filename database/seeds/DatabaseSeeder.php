@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         DB::table('company_specs')->truncate();
         DB::statement("SET FOREIGN_KEY_CHECKS = 1");
 
-        factory('App\CompanySpec', 10)->create();
+        factory('App\CompanySpecCategory', 100)->create();
 
 //        $this->call(UsersTableSeeder::class);
 
