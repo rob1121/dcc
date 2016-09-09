@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <div class="col-xs-12 col-md-10" id="app">
+    <div class="col-xs-12 col-md-10" id="app" v-cloak>
         <div class="row form-group">
             <div class="col-xs-4">
                 <input type="text" placeholder="filter database" class="form-control">
@@ -52,10 +52,22 @@
                 </table>
             </div>
         </div>
+        <div class="text-center">
+                <ul class="pagination" v-if="pagination.count > 1">
+                    <!-- Previous Page Link -->
+                    @if ($paginator->onFirstPage())
+                        <li class="disabled"><span><i class="fa fa-arrow-left"></i></span></li>
+                    @else
+                        <li><a href="{{ $paginator->previousPageUrl() }}" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
+                    @endif
 
-        <div class="text-right">
-            {{$specs->hasMorePages()}}
-            {{ $specs->links() }}
+                <!-- Next Page Link -->
+                    @if ($paginator->hasMorePages())
+                        <li><a href="{{ $paginator->nextPageUrl() }}" rel="next"><i class="fa fa-arrow-right"></i></a></li>
+                    @else
+                        <li class="disabled"><span><i class="fa fa-arrow-right"></i></span></li>
+                    @endif
+                </ul>
         </div>
     </div>
 @endsection

@@ -7973,6 +7973,9 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+[v-cloak] {
+  display: none; }
+
 th {
   text-transform: capitalize; }
 

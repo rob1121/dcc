@@ -4,8 +4,6 @@ Route::get('/', function () {
    return view('welcome');
 });
 
-use App\Mail\MailUpdatedSpecs;
-use App\Notifications\SpecsUpdate;
 use App\User;
 
 //Route::get("/", function() {
@@ -13,7 +11,9 @@ use App\User;
 //    $user->notify(new SpecsUpdate);
 ////    Mail::to('telford@astigp.com')->send(new MailUpdatedSpecs);
 //});
-
+Route::get('/api/company-spec', function() {
+    return App\CompanySpec::paginate();
+});
 
 Route::get('/api/users', function() {
     $request = request();

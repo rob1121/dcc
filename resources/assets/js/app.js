@@ -18,6 +18,6 @@ Vue.component('dcc-textarea', require('./components/Textarea.vue'));
 Vue.component('dcc-button', require('./components/Button.vue'));
 Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 
-const app = new Vue({
-    el: 'body'
-});
+// const app = new Vue({
+//     el: 'body'
+// });
