@@ -15,7 +15,7 @@ class CompanySpecCategory extends Model
 
     public static function getCategoryList()
     {
-        return self::distinct('category_name')->get();
+        return collect(self::orderBy('category_no')->get())->unique('category_no');
     }
 
     public function companySpec()

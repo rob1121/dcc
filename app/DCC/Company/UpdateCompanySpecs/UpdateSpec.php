@@ -1,10 +1,8 @@
 <?php namespace App\DCC\Company\UpdateCompanySpecs;
 
 use App\CompanySpec;
-use App\CompanySpecRevision;
 use App\DCC\Company\AddCompanySpecs\AddCompanySpecsInterface;
 use App\DCC\Company\AddCompanySpecs\AddSpecFile;
-use App\DCC\Company\AddCompanySpecs\AddSpecRevision;
 use App\DCC\Company\ValidationRules;
 use Illuminate\Http\Request;
 

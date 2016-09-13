@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+    @stack("style")
 
     <!-- Scripts -->
     <script>
@@ -21,7 +21,7 @@
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-default navbar-fixed-top navbar">
         <div class="container">
             <div class="navbar-header">
 
@@ -43,6 +43,12 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     &nbsp;
+                </ul>
+
+                <!-- Left Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-left navbar-form">
+                        <input type="text" style="width: 200px;" class="form-control" placeholder="Search keyword">
+                        <button @click.prevent="displaySearchResult" class="btn btn-default">Search</button>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -76,10 +82,15 @@
             </div>
         </div>
     </nav>
-    @yield('content')
+    <div class="search-result"></div>
+    <div id="app" v-cloak>
+        @yield('content')
+    </div>
 
+    @include('layouts.footer')
     <!-- Scripts -->
     {{-- <script src="/js/app.js"></script> --}}
     @stack("script")
+
 </body>
 </html>

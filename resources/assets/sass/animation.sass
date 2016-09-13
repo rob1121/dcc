@@ -1,0 +1,23 @@
+.fade-enter
+    opacity: 0
+    animation: fade-enter .3s ease-in-out forwards
+
+.fade-leave
+    opacity: 1
+    animation: fade-leave .3s ease-in-out forwards
+
+@keyframes fade-enter
+    0%
+        opacity: 0
+        transform: translateX(-10px)
+    100%
+        opacity: 1
+        transform: translateX(0)
+
+@keyframes fade-leave
+    0%
+        opacity: 1
+        transform: translateX(0)
+    100%
+        opacity: 0
+        transform: translateX(-10px)

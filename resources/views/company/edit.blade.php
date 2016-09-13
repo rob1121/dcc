@@ -1,4 +1,13 @@
 @extends('layouts.app')
+
+@push('style')
+    <link rel="stylesheet" href="/css/company-edit.css">
+@endpush
+
+@push('script')
+    <script src="/js/company-edit.js"></script>
+@endpush
+
 @section('content')
     <div class="container">
         <div class="panel panel-default">

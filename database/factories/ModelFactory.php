@@ -24,33 +24,30 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\CompanySpec::class, function (Faker\Generator $faker) {
     return [
-        'spec_no' =>  $faker->word ,
-        'name' =>  $faker->name ,
+        'spec_no' =>  $faker->word() ,
+        'name' =>  $faker->sentence() ,
     ];
 });
 
 $factory->define(App\CompanySpecCategory::class, function (Faker\Generator $faker) {
     return [
         'company_spec_id' =>  function () {
-        $id = factory(App\CompanySpec::class)->create()->id;
-
-            factory(App\CompanySpecRevision::class)->create(['company_spec_id' => $id]);
-             return $id;
+             return factory(App\CompanySpec::class)->create()->id;
         } ,
-        'category_no' =>  $faker->word ,
-        'category_name' =>  $faker->word ,
+        'category_no' =>  $faker->randomElement(["TFP01",'TFP02','TFP03','TFP04','TFP05','TFP06','TFP07','TFP08','TFP09','TFP10','TFP11','TFP12']) ,
+        'category_name' =>  $faker->sentence(rand(3,5)) ,
     ];
 });
 
 $factory->define(App\CompanySpecRevision::class, function (Faker\Generator $faker) {
     return [
-        'revision' =>  $faker->word ,
+        'revision' =>  $faker->text(5) ,
         'company_spec_id' =>  function () {
              return factory(App\CompanySpec::class)->create()->id;
         } ,
-        'revision_summary' =>  $faker->word ,
+        'revision_summary' =>  $faker->sentence() ,
         'revision_date' =>  $faker->date() ,
-        'document' =>  $faker->word ,
+        'document' =>  $faker->word() ,
     ];
 });
 

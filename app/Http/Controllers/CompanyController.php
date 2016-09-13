@@ -5,14 +5,18 @@ use App\CompanySpecCategory;
 use App\DCC\Company\AddCompanySpecs\AddSpec;
 use App\DCC\Company\UpdateCompanySpecs\UpdateSpec;
 use App\DCC\Exceptions\DuplicateEntryException;
+use App\DCC\File\Document;
+use JavaScript;
 
 class CompanyController extends Controller
 {
     public function index()
     {
+        $categories = CompanySpecCategory::getCategoryList();
+        JavaScript::put(['category' => $categories->first()->category_no]);
+
         return view('company.index', [
-            "specs" => CompanySpec::simplePaginate(),
-            "categories" => CompanySpecCategory::getCategoryList()
+            "categories" => $categories
         ]);
     }
     /**
@@ -45,9 +49,20 @@ class CompanyController extends Controller
     }
 
     /**
-     * display view edit
-     * @param CompanySpec $companySpec
+     * @param CompanySpec $internal
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show(CompanySpec $internal)
+    {
+        $document = new Document($internal);
+        return $document->showPDF();
+    }
+
+    /**
+     * display view edit
+     * @param CompanySpec $internal
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @internal param CompanySpec $companySpec
      */
     public function edit(CompanySpec $internal)
     {
@@ -58,28 +73,26 @@ class CompanyController extends Controller
      * update database
      * @method patch
      * @param UpdateSpec $spec
-     * @param CompanySpec $companySpec
+     * @param CompanySpec $internal
      * @return mixed
+     * @internal param CompanySpec $companySpec
      */
     public function update(UpdateSpec $spec, CompanySpec $internal)
     {
         $spec->setSpec($internal);
         $spec->validateSpec();
         $spec->update();
-        return $spec->getResult();
+        return redirect(route("internal.index"));
     }
 
     /**
      * delete database instance
-     * @param UpdateSpec $spec
-     * @param CompanySpec $companySpec
+     * @param CompanySpec $internal
      * @return mixed
+     * @internal param CompanySpec $companySpec
      */
-    public function destroy(UpdateSpec $spec, CompanySpec $internal)
+    public function destroy(CompanySpec $internal)
     {
-        $spec->setSpec($internal);
-        $spec->validateSpec();
-        $spec->update();
-        return $spec->getResult();
+        $internal->delete();
     }
 }

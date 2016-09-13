@@ -7992,4 +7992,7 @@ button.close {
 th {
   text-transform: capitalize; }
 
-/*# sourceMappingURL=app.css.map */
+#app {
+  padding-top: 64px; }
+
+/*# sourceMappingURL=company-edit.css.map */

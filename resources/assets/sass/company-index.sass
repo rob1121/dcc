@@ -1,0 +1,56 @@
+@import "./app"
+
+
+@import "./sidebar"
+
+@import "./animation"
+
+.deck
+  margin-bottom: 5px
+  width: 100%
+  background: #fff
+  padding: 10px 5px
+  border: 1px solid $laravel-border-color
+  transition: border .1s ease-in-out
+  display: inline-block
+
+
+  &:hover
+    border-left: 3px solid $brand-success
+
+  .spec-no
+    text-transform: uppercase
+    font-weight: bold
+
+  .revision
+    text-transform: uppercase
+
+.deck-collection
+  overflow: hidden
+
+.pagination-link
+    position: fixed
+    bottom: 20px
+    right: 20px
+
+    .pagination
+        margin: 0
+
+    .pagination-text
+        width: 150px
+        text-align: right
+        margin: 0
+
+        span
+            background: rgba(255,255,255,0.5)
+            margin: 0
+
+.loader
+    position: fixed
+    display: none
+    background: rgba(255,255,255, 0.5)
+    top: 0
+    bottom: 0
+    width: 100%
+    z-index: 1
+

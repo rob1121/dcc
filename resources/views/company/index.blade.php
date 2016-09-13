@@ -1,75 +1,70 @@
 @extends("layouts.app")
 
+@push('style')
+<link rel="stylesheet" href="/css/company-index.css">
+@endpush
+
 @section("content")
-    <div class="col-xs-12 col-md-2">
-        <div class="list-group">
-            @foreach($categories as $category)
-            	<a href="#" class="list-group-item">{{$category->category_name}}</a>
-            @endforeach
-        </div>
+    <div id="sidebar">
+        <a v-for="(index, category) in {{$categories}}" href="#" :class="['link', {'active': currentIndex == index }]" @click="getSpecByCategory(category.category_no, index)">
+            @{{category.category_no}} - @{{category.category_name}}
+        </a>
     </div>
 
-    <div class="col-xs-12 col-md-10" id="app" v-cloak>
-        <div class="row form-group">
-            <div class="col-xs-4">
-                <input type="text" placeholder="filter database" class="form-control">
-            </div>
-
-            <button class="btn btn-default">Search</button>
-            <button class="btn btn-primary">Clear Filter</button>
-        </div>
-        <div class="panel panel-default">
-        	<div class="panel-heading">Internal specification</div>
-
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>spec no</th>
-                        <th>title</th>
-                        <th>revision</th>
-                        <th>revision summary</th>
-                        <th>revision date</th>
-                        <th>actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($specs as $spec)
-                        <tr>
-                            <td class="col-xs-1">{{Str::upper($spec->spec_no)}}</td>
-                            <td class="col-xs-3">{{$spec->name}}</td>
-                            <td>{{Str::upper($spec->companySpecRevision->revision)}}</td>
-                            <td class="col-xs-4">{{$spec->companySpecRevision->revision_summary}}</td>
-                            <td class="col-xs-2">{{$spec->companySpecRevision->revision_date}}</td>
-                            <td class="col-xs-4">
-                                <button class="btn btn-xs btn-primary"><i class="fa fa-file-pdf-o"></i></button>
-                                <button class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+    <div class="main-content">
+        <div class="loader"></div>
+        <button class="btn btn-default toggler-btn" @click="showSideBar">
+        <i class="fa fa-bars"></i>
+        <span>Toggle sidebar</span>
+        </button>
+        <br>
+        <div class="deck-collection">
+            <div class="deck" v-for="spec in pagination.data">
+                <div class="spec-no col-xs-3"><h6>@{{spec.spec_no}} - @{{spec.name}}</h6></div>
+                <div class="col-xs-4"><h6>@{{spec.company_spec_revision.revision_summary | trim}}</h6></div>
+                <div class="col-xs-2">
+                    <h6>@{{spec.company_spec_revision.revision_date}}</h6>
+                    <h6>@{{spec.company_spec_revision.revision | uppercase}}</h6>
+                </div>
+                <div class="col-xs-3">
+                    <a class="btn btn-xs btn-primary" target="_blank" href="/internal/@{{spec.id}}"> View <i class="fa fa-file-pdf-o"></i></a>
+                    <a class="btn btn-xs btn-warning" href="/internal/@{{spec.id}}/edit">Edit <i class="fa fa-pencil"></i></a>
+                    <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="setModalSpec(spec)">Remove <i
+                            class="fa fa-remove"></i></button>
+                </div>
             </div>
         </div>
-        <div class="text-center">
-                <ul class="pagination" v-if="pagination.count > 1">
+
+        <div class="pagination-link">
+            <div class="pagination-nav">
+                <ul class="pagination pull-right" v-if="pagination.total > 1">
                     <!-- Previous Page Link -->
-                    @if ($paginator->onFirstPage())
-                        <li class="disabled"><span><i class="fa fa-arrow-left"></i></span></li>
-                    @else
-                        <li><a href="{{ $paginator->previousPageUrl() }}" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
-                    @endif
+                    <li class="disabled" v-if="pagination.current_page === 1"><span><i
+                                    class="fa fa-arrow-left"></i></span></li>
+                    <li v-else><a href="#" @click.prevent="prev" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
 
-                <!-- Next Page Link -->
-                    @if ($paginator->hasMorePages())
-                        <li><a href="{{ $paginator->nextPageUrl() }}" rel="next"><i class="fa fa-arrow-right"></i></a></li>
-                    @else
-                        <li class="disabled"><span><i class="fa fa-arrow-right"></i></span></li>
-                    @endif
+                    <!-- Next Page Link -->
+                    <li v-if="pagination.current_page !== pagination.last_page">
+                        <a href="#" @click.prevent="next" rel="next"><i class="fa fa-arrow-right"></i></a>
+                    </li>
+                    <li class="disabled" v-else><span><i class="fa fa-arrow-right"></i></span></li>
                 </ul>
+            </div>
+            <div class="pagination-text pull-right">
+                <h6><span>Displaying @{{ pagination.from }} to @{{ pagination.to }} of @{{ pagination.total }}</span>
+                </h6>
+            </div>
         </div>
     </div>
+
+    {{--=======================================MODALS=================================--}}
+    <dcc-modal title="Modal confirmation" id="spec-delete">
+        <h1>Are you sure you want to delete?</h1>
+        <div class="text-center">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" @click="removeSpec">Yes</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        </div>
+    </dcc-modal>
 @endsection
 
 @push("script")
