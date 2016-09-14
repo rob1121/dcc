@@ -1,8 +1,25 @@
 
 @extends('layouts.app')
 
+@push("style")
+    <link rel="stylesheet" href="{{url("/css/company-create.css")}}">
+@endpush
+
+@push("script")
+    <script src="{{url("/js/company-create.js")}}"></script>
+@endpush
+
 @section('content')
     <div class="container">
+
+        <ol class="breadcrumb">
+            <li>
+                <a href="{{route("home")}}">Home</a>
+            </li>
+            <li><a href="{{route("internal.index")}}">Internal Specification</a></li>
+            <li class="active"> New Internal Specification</li>
+        </ol>
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Add new Internal Specification</h3>

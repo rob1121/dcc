@@ -4,16 +4,15 @@ const app = new Vue({
     el: "#app",
 
     data: {
-        spec: {
-            category
+        category: {
+            category_no,
+            category_name
         },
+
         currentIndex: 0,
 
         pagination: {},
         searchText: "",
-        modal: {
-            spec: {}
-        }
     },
 
     ready() {
@@ -33,14 +32,14 @@ const app = new Vue({
     },
 
     methods: {
-        getSpecByCategory(category_no, index) {
-            this.setSpecCategory(category_no);
+        getSpecByCategory(category, index) {
+            this.setSpecCategory(category);
             this.getPagination();
             this.setActiveMenu(index);
         },
 
-        setSpecCategory(category_no) {
-            this.spec.category = category_no;
+        setSpecCategory(category) {
+            this.category = category;
         },
 
         setActiveMenu(index) {
@@ -50,7 +49,7 @@ const app = new Vue({
         getPagination(num = "") {
             var loader = $(".loader");
             loader.show();
-            this.$http.get(`/api/company-spec?page=${num}&category=${this.spec.category}`)
+            this.$http.get(`${env_server}/api/company-spec?page=${num}&category=${this.category.category_no}`)
                 .then( response => {
                     this.pagination = response.json();
                     loader.hide();
@@ -80,7 +79,7 @@ const app = new Vue({
         },
 
         setModalSpec(spec, index) {
-            this.modal.spec = spec;
+            this.modal.category = spec;
             this.modal.index = index;
         },
 
@@ -89,8 +88,8 @@ const app = new Vue({
         },
 
         removeSpec() {
-            this.$http.delete(`/internal/${this.modal.spec.id}`).then( () => {
-                this.pagination.data.$remove(this.modal.spec);
+            this.$http.delete(`/internal/${this.modal.category.id}`).then( () => {
+                this.pagination.data.$remove(this.modal.category);
                 this.resetModalData();
             } ).bind(this);
         },

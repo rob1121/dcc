@@ -181,7 +181,8 @@ return [
         Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-
+        App\Providers\ComposerServiceProvider::class,
+        TomLingham\Searchy\SearchyServiceProvider::class
     ],
 
     /*
@@ -232,6 +233,7 @@ return [
         'Carbon' => Carbon\Carbon::class,
         'Str' => Illuminate\Support\Str::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Searchy' => TomLingham\Searchy\Facades\Searchy::class
     ],
 
 ];

@@ -43,7 +43,7 @@ class AddSpec
     }
 
     /**
-     * company spec polymorphism
+     * company category polymorphism
      * @param AddCompanySpecsInterface $rel
      * @return mixed
      */
@@ -56,7 +56,7 @@ class AddSpec
     }
 
     /**
-     * set result load company spec, revision and category
+     * set result load company category, revision and category
      * @param $spec
      */
     public function setResult($spec)

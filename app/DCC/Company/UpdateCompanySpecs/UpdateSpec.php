@@ -52,7 +52,7 @@ class UpdateSpec
     }
 
     /**
-     * company spec polymorphism
+     * company category polymorphism
      * @param UpdateSpecsInterface $rel
      * @return mixed
      */
@@ -65,7 +65,7 @@ class UpdateSpec
     }
 
     /**
-     * company spec polymorphism
+     * company category polymorphism
      * @param AddCompanySpecsInterface $rel
      * @return mixed
      */

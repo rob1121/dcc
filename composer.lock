@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "62bbd47a77d5a94bcc8a0098757bbd54",
-    "content-hash": "afda4e937d49b567fd8f5293287551f0",
+    "hash": "2cd98f04b6a25a2e967ffa0ee1159e72",
+    "content-hash": "5c000bedf0452051d8f36407c4a76655",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -2577,6 +2577,53 @@
                 "dump"
             ],
             "time": "2016-07-26 08:04:17"
+        },
+        {
+            "name": "tom-lingham/searchy",
+            "version": "2.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TomLingham/Laravel-Searchy.git",
+                "reference": "d67b2d665ca857b707900c6c0c79c629cc70fe65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TomLingham/Laravel-Searchy/zipball/d67b2d665ca857b707900c6c0c79c629cc70fe65",
+                "reference": "d67b2d665ca857b707900c6c0c79c629cc70fe65",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.1.* || 5.2.* || 5.3.*",
+                "php": "^5.5.9 || ^7.0"
+            },
+            "require-dev": {
+                "graham-campbell/testbench": "^3.1",
+                "mockery/mockery": "^0.9.4",
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TomLingham\\Searchy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tom Lingham",
+                    "email": "tjlingham@gmail.com"
+                }
+            ],
+            "description": "Laravel Searchy makes user driven searching easy with fuzzy search, basic string matching, Levenshtein Distance and more.",
+            "keywords": [
+                "fuzzy",
+                "laravel",
+                "search"
+            ],
+            "time": "2016-08-29 12:58:58"
         },
         {
             "name": "vlucas/phpdotenv",

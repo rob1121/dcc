@@ -17,9 +17,11 @@ elixir(mix => {
     mix.copy("node_modules/font-awesome/fonts", "public/fonts")
         .sass('company-index.sass')
         .sass('company-edit.sass')
+        .sass('company-create.sass')
         // .webpack('app.js')
         .webpack('companyIndex.js')
         .webpack('company-edit.js')
+        .webpack('company-create.js')
         .browserSync({
             proxy: "dcc_2016.me"
         });

@@ -1,15 +1,25 @@
 @extends('layouts.app')
 
 @push('style')
-    <link rel="stylesheet" href="/css/company-edit.css">
+    <link rel="stylesheet" href="{{url("/css/company-edit.css")}}">
 @endpush
 
 @push('script')
-    <script src="/js/company-edit.js"></script>
+    <script src="{{url("/js/company-edit.js")}}"></script>
 @endpush
 
 @section('content')
     <div class="container">
+
+        <ol class="breadcrumb">
+            <li>
+                <a href="{{route("home")}}">Home</a>
+            </li>
+            <li><a href="{{route("internal.index")}}">Internal Specification</a></li>
+            <li class="active">{{$spec->companySpecCategory->category_no}} - {{$spec->companySpecCategory->category_name}}</li>
+            <li class="active">{{$spec->spec_no}} - {{$spec->name}}</li>
+        </ol>
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Update Internal Specification</h3>

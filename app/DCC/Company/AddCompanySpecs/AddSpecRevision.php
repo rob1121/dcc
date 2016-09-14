@@ -17,7 +17,7 @@ class AddSpecRevision extends SpecAbstract
     }
 
     /**
-     * set company spec revision
+     * set company category revision
      */
     public function setCompanySpecRevision()
     {
@@ -26,7 +26,7 @@ class AddSpecRevision extends SpecAbstract
     }
 
     /**
-     * get company spec revision
+     * get company category revision
      */
     public function getCompanySpecRevision()
     {

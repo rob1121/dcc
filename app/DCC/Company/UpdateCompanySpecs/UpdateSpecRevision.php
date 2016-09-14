@@ -7,7 +7,7 @@ class UpdateSpecRevision extends UpdateSpecAbstract
     protected $companySpecsRevision;
 
     /**
-     * update spec revision
+     * update category revision
      */
     public function update()
     {

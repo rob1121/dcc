@@ -1,12 +1,21 @@
 @extends("layouts.app")
 
 @push('style')
-<link rel="stylesheet" href="/css/company-index.css">
+    <link rel="stylesheet" href="{{url("/css/company-index.css")}}">
+@endpush
+
+
+@push("script")
+    <script src="{{url("/js/companyIndex.js")}}"></script>
 @endpush
 
 @section("content")
     <div id="sidebar">
-        <a v-for="(index, category) in {{$categories}}" href="#" :class="['link', {'active': currentIndex == index }]" @click="getSpecByCategory(category.category_no, index)">
+        <a v-for="(index, category) in {{$categories}}"
+           href="#"
+           :class="['link', {'active': currentIndex == index }]"
+           @click="getSpecByCategory(category, index)"
+        >
             @{{category.category_no}} - @{{category.category_name}}
         </a>
     </div>
@@ -19,6 +28,18 @@
         </button>
         <br>
         <div class="deck-collection">
+
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{route("home")}}">Home</a>
+                </li>
+                <li class="active">Internal Specification</li>
+                <li class="active">@{{ category.category_no | uppercase }} - @{{ category.category_name | uppercase }}</li>
+            </ol>
+
+
+            <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add new Specs <i class="fa fa-plus"></i></a>
+
             <div class="deck" v-for="spec in pagination.data">
                 <div class="spec-no col-xs-3"><h6>@{{spec.spec_no}} - @{{spec.name}}</h6></div>
                 <div class="col-xs-4"><h6>@{{spec.company_spec_revision.revision_summary | trim}}</h6></div>
@@ -66,7 +87,3 @@
         </div>
     </dcc-modal>
 @endsection
-
-@push("script")
-<script src="/js/companyIndex.js"></script>
-@endpush

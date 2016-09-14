@@ -47,8 +47,8 @@
 
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-left navbar-form">
-                        <input type="text" style="width: 200px;" class="form-control" placeholder="Search keyword">
-                        <button @click.prevent="displaySearchResult" class="btn btn-default">Search</button>
+                        <input type="text" style="width: 200px;" class="form-control" placeholder="Search for Specification">
+                        <button @click.prevent="displaySearchResult" class="btn btn-default"><i class="fa fa-search"></i></button>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
