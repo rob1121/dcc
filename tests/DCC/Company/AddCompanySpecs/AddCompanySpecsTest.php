@@ -12,6 +12,7 @@ class AddCompanySpecsTest extends TestCase
 
     private $request;
     private $addCompanySpecs;
+    private $expected;
 
     protected function setUp()
     {
@@ -22,19 +23,29 @@ class AddCompanySpecsTest extends TestCase
             "name" => "name",
             "not_included" => "not_included"
         ]);
+
+        $this->expected = [
+            "spec_no" => "spec_no",
+            "name" => "name"
+        ];
     }
 
-    public function testItReturnCompanySpecsInstance()
+    /** @test */
+    public function it_make_new_instance_of_company_specs()
     {
         $this->addCompanySpecs->setRequest($this->request);
         $this->addCompanySpecs->setCompanySpecs();
         $actual = $this->addCompanySpecs->getCompanySpecs();
 
-        $expected = [
-            "spec_no" => "spec_no",
-            "name" => "name"
-        ];
+        $this->assertEquals($this->expected, $actual);
+    }
 
-        $this->assertEquals($expected, $actual);
+    /** @test */
+    public function it_can_add_request_instance_into_company_specs_database()
+    {
+        $this->addCompanySpecs->setRequest($this->request);
+        $this->addCompanySpecs->add();
+
+        $this->seeInDatabase("company_specs", $this->expected);
     }
 }
