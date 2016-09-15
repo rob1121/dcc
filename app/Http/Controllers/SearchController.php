@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use TomLingham\Searchy\Facades\Searchy;
+use App\CompanySpec;
 
 class SearchController extends Controller
 {
@@ -14,7 +16,8 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-        return "search controller";
-
+        return collect(Searchy::company_specs("spec_no","name")->query($request->q)->get())->map(function($item) {
+        	return CompanySpec::find($item->id);
+        });
     }
 }

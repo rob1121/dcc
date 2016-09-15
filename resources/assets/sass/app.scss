@@ -1,16 +1,18 @@
 
 // Fonts
-@import "./fonts";
+@import "./partials/fonts";
 
 //icons
 @import "node_modules/font-awesome/scss/font-awesome";
 
 // Variables
-@import "variables";
+@import "./partials/variables";
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
-@import "./main";
+@import "./partials/main";
 
-@import "./table";
+@import "./partials/nav";
+
+@import "./partials/table";

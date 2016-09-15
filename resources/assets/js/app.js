@@ -4,7 +4,6 @@
  * include Vue and Vue Resource. This gives a great starting point for
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 require('./bootstrap');
 
 /**
@@ -18,13 +17,48 @@ Vue.component('dcc-textarea', require('./components/Textarea.vue'));
 Vue.component('dcc-button', require('./components/Button.vue'));
 Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 Vue.component('dcc-modal', require('./components/Modal.vue'));
+Vue.component('dcc-pulse', require('vue-spinner/src/PulseLoader.vue'));
 
 const nav = new Vue({
     el: 'nav',
 
+    data: {
+        showResultDialog: false,
+        searchKeyword: "",
+        searchResults: []
+    },
+
+    computed: {
+        isSearchResultNotEmpty() {
+            return this.searchResults.length > 0;
+        },
+    },
+
+    filters: {
+        trim(string) {
+                if(string.length <= 64)     return string;
+                else if(64 <= 3)            return string.slice(0, 64) + "...";
+                else                        return string.slice(0, 64 - 3) + "...";
+        },
+    },
+
     methods: {
         displaySearchResult() {
-            $(".search-result").toggleClass("search-animation");
+            this.$http.get(`${env_server}/search?q=${this.searchKeyword}`)
+                .then(response => {
+                    this.searchResults = response.json();
+                    this.toggleSearchResult();
+                });
         },
+
+        toggleSearchResult() {
+            this.showResultDialog = true;
+        },
+
+        closeResultDialog() {
+            this.showResultDialog =false;
+            this.searchResults = [];
+            this.searchKeyword = "";
+        }
     }
 });

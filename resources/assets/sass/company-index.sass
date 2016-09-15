@@ -1,9 +1,13 @@
 @import "./app"
 
 
-@import "./sidebar"
+@import "./partials/sidebar"
 
-@import "./animation"
+@import "./partials/animation"
+
+
+.deck-collection
+  overflow: hidden
 
 .deck
   margin-bottom: 5px
@@ -21,12 +25,6 @@
   .spec-no
     text-transform: uppercase
     font-weight: bold
-
-  .revision
-    text-transform: uppercase
-
-.deck-collection
-  overflow: hidden
 
 .pagination-link
     position: fixed
@@ -53,4 +51,9 @@
     bottom: 0
     width: 100%
     z-index: 1
+
+    .v-spinner
+        position: fixed
+        top: 50%
+        left: 50%
 

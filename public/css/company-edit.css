@@ -7976,18 +7976,47 @@ button.close {
 [v-cloak] {
   display: none; }
 
+.close {
+  font-size: 5em;
+  margin-right: 25px; }
+
 .search-result {
-  display: none;
   position: absolute;
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  background: #fff; }
-
-.search-animation {
-  display: block;
+  background: #fff;
   -webkit-animation: fade-enter .3s ease-in-out forwards;
-  animation: fade-enter .3s ease-in-out forwards; }
+  animation: fade-enter .3s ease-in-out forwards;
+  border-top: 1px solid #2ab27b;
+  overflow: scroll; }
+  .search-result .search-result--list {
+    margin: 32px 32px 64px 32px; }
+
+.search--deck-collection {
+  overflow: hidden; }
+
+.search--deck {
+  margin-bottom: 5px;
+  width: 100%;
+  background: #fff;
+  padding: 10px 5px;
+  border: 1px solid #d3e0e9;
+  -webkit-transition: .1s ease-in-out;
+  transition: .1s ease-in-out;
+  display: inline-block; }
+  .search--deck:hover {
+    border-left: 3px solid #2ab27b;
+    background: #f2f2f2; }
+
+.search--spec-no {
+  text-transform: uppercase;
+  font-weight: bolder;
+  color: #1b1d1e; }
+
+.search--revision-summary,
+.search--revision {
+  color: #636b6f; }
 
 th {
   text-transform: capitalize; }

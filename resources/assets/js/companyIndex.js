@@ -24,10 +24,6 @@ const app = new Vue({
                 if(string.length <= 64)     return string;
                 else if(64 <= 3)            return string.slice(0, 64) + "...";
                 else                        return string.slice(0, 64 - 3) + "...";
-        },
-
-        isCurrentIndex(index) {
-            return index === this.currentIndex;
         }
     },
 

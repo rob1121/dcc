@@ -47,8 +47,14 @@
 
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-left navbar-form">
-                        <input type="text" style="width: 200px;" class="form-control" placeholder="Search for Specification">
-                        <button @click.prevent="displaySearchResult" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        <input type="text" style="width: 200px;"
+                            class="form-control"
+                            placeholder="Search for Specification"
+                            v-model="searchKeyword"
+                            @keyup.enter="displaySearchResult"
+                        >
+                            <button @click="displaySearchResult" class="btn btn-default">
+                            <i class="fa fa-search"></i></button>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -81,8 +87,25 @@
                 </ul>
             </div>
         </div>
+    <div class="search-result" v-show="showResultDialog" v-cloak>
+        <button class="close" @click="closeResultDialog"><i class="fa fa-remove"></i></button>
+        <div class="search--deck-collection search-result--list" v-show="isSearchResultNotEmpty">
+            <h1>Result found for <strong>"@{{ searchKeyword }}"</strong></h1>
+            <a class="search--deck" v-for="result in searchResults" target="_blank" href="/internal/@{{result.id}}" placholder="view file">
+                <div class="search--spec-no col-xs-5"><h4>@{{result.spec_no}} - @{{result.name}}</h4></div>
+                <div class="col-xs-5 search--revision-summary"><h5>@{{result.company_spec_revision.revision_summary | trim}}</h5></div>
+                <div class="col-xs-2 search--revision">
+                    <h6>@{{result.company_spec_revision.revision_date}}</h6>
+                    <h6>@{{result.company_spec_revision.revision | uppercase}}</h6>
+                </div>
+            </a>
+        </div>
+
+        <div v-else>
+            <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}"</strong></h1>
+        </div>
+    </div>
     </nav>
-    <div class="search-result"></div>
     <div id="app" v-cloak>
         @yield('content')
     </div>

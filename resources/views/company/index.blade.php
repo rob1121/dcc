@@ -21,7 +21,9 @@
     </div>
 
     <div class="main-content">
-        <div class="loader"></div>
+        <div class="loader">
+            <dcc-pulse color="#2ab27b" size="50px"></dcc-pulse>
+        </div>
         <button class="btn btn-default toggler-btn" @click="showSideBar">
         <i class="fa fa-bars"></i>
         <span>Toggle sidebar</span>

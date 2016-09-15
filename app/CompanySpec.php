@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CompanySpec extends Model
 {
-
     const RULES = [
         'name' => 'required',
         'spec_no' => 'required'

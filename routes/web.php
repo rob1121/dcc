@@ -1,12 +1,10 @@
 <?php
 
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
    return view('welcome');
 });
-
-use App\User;
-use Illuminate\Http\Request;
-
 //Route::get("/", function() {
 //    $user = User::first();
 //    $user->notify(new SpecsUpdate);
