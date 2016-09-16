@@ -7988,7 +7988,7 @@ button.close {
   background: #fff;
   -webkit-animation: fade-enter .3s ease-in-out forwards;
   animation: fade-enter .3s ease-in-out forwards;
-  border-top: 1px solid #2ab27b;
+  border-top: 1px solid #d3e0e9;
   overflow: scroll; }
   .search-result .search-result--list {
     margin: 32px 32px 64px 32px; }

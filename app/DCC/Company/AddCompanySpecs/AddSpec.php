@@ -59,7 +59,7 @@ class AddSpec
      * set result load company category, revision and category
      * @param $spec
      */
-    public function setResult($spec)
+    protected function setResult($spec)
     {
         $this->result = $spec;
     }

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AddCompanySpecsTest extends TestCase
 {
-    use DatabaseTransactions, WithoutMiddleware;
+    use DatabaseTransactions, WithoutMiddleware, DatabaseMigrations;
 
     private $request;
     private $addCompanySpecs;
@@ -24,10 +24,7 @@ class AddCompanySpecsTest extends TestCase
             "not_included" => "not_included"
         ]);
 
-        $this->expected = [
-            "spec_no" => "spec_no",
-            "name" => "name"
-        ];
+        $this->expected = [ "spec_no" => "spec_no", "name" => "name" ];
     }
 
     /** @test */
@@ -35,9 +32,8 @@ class AddCompanySpecsTest extends TestCase
     {
         $this->addCompanySpecs->setRequest($this->request);
         $this->addCompanySpecs->setCompanySpecs();
-        $actual = $this->addCompanySpecs->getCompanySpecs();
 
-        $this->assertEquals($this->expected, $actual);
+        $this->assertEquals($this->expected, $this->addCompanySpecs->getCompanySpecs());
     }
 
     /** @test */

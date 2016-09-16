@@ -1,12 +1,12 @@
 @extends("layouts.app")
 
 @push('style')
-    <link rel="stylesheet" href="{{url("/css/company-index.css")}}">
+<link rel="stylesheet" href="{{url("/css/company-index.css")}}">
 @endpush
 
 
 @push("script")
-    <script src="{{url("/js/companyIndex.js")}}"></script>
+<script src="{{url("/js/companyIndex.js")}}"></script>
 @endpush
 
 @section("content")
@@ -14,9 +14,9 @@
         <a v-for="(index, category) in {{$categories}}"
            href="#"
            :class="['link', {'active': currentIndex == index }]"
-           @click="getSpecByCategory(category, index)"
+        @click="getSpecByCategory(category, index)"
         >
-            @{{category.category_no}} - @{{category.category_name}}
+        @{{category.category_no}} - @{{category.category_name}}
         </a>
     </div>
 
@@ -36,25 +36,33 @@
                     <a href="{{route("home")}}">Home</a>
                 </li>
                 <li class="active">Internal Specification</li>
-                <li class="active">@{{ category.category_no | uppercase }} - @{{ category.category_name | uppercase }}</li>
+                <li class="active">@{{ category.category_no | uppercase }}
+                    - @{{ category.category_name | uppercase }}</li>
             </ol>
 
 
-            <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add new Specs <i class="fa fa-plus"></i></a>
-
-            <div class="deck" v-for="spec in pagination.data">
+            <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add
+                new Specs <i class="fa fa-plus"></i></a>
+            <div class="clearfix"></div>
+            <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-xs-3"><h6>@{{spec.spec_no}} - @{{spec.name}}</h6></div>
                 <div class="col-xs-4"><h6>@{{spec.company_spec_revision.revision_summary | trim}}</h6></div>
                 <div class="col-xs-2">
-                    <h6>@{{spec.company_spec_revision.revision_date}}</h6>
+                    <h6>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}</h6>
                     <h6>@{{spec.company_spec_revision.revision | uppercase}}</h6>
                 </div>
                 <div class="col-xs-3">
-                    <a class="btn btn-xs btn-primary" target="_blank" href="/internal/@{{spec.id}}"> View <i class="fa fa-file-pdf-o"></i></a>
-                    <a class="btn btn-xs btn-warning" href="/internal/@{{spec.id}}/edit">Edit <i class="fa fa-pencil"></i></a>
-                    <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="setModalSpec(spec)">Remove <i
+                    <a class="btn btn-xs btn-primary" target="_blank" href="/internal/@{{spec.id}}"> View <i
+                                class="fa fa-file-pdf-o"></i></a>
+                    <a class="btn btn-xs btn-warning" href="/internal/@{{spec.id}}/edit">Edit <i
+                                class="fa fa-pencil"></i></a>
+                    <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
+                    setModalSpec(spec)">Remove <i
                             class="fa fa-remove"></i></button>
                 </div>
+            </div>
+            <div v-if="pagination.data.length === 0" class="container">
+                <h1 class="text-danger">No document specification found.</h1>
             </div>
         </div>
 

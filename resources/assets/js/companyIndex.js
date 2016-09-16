@@ -1,4 +1,5 @@
 require('./app');
+import moment from "moment";
 
 const app = new Vue({
     el: "#app",
@@ -7,6 +8,11 @@ const app = new Vue({
         category: {
             category_no,
             category_name
+        },
+
+        modalDeleteConfimation: {
+            category: {},
+            index: -1
         },
 
         currentIndex: 0,
@@ -24,6 +30,10 @@ const app = new Vue({
                 if(string.length <= 64)     return string;
                 else if(64 <= 3)            return string.slice(0, 64) + "...";
                 else                        return string.slice(0, 64 - 3) + "...";
+        },
+        
+        telfordStandardDate(dt) {
+            return moment(dt).format("MM/DD/Y");
         }
     },
 
@@ -74,18 +84,18 @@ const app = new Vue({
             btn.children('i').toggleClass("fa-remove");
         },
 
-        setModalSpec(spec, index) {
-            this.modal.category = spec;
-            this.modal.index = index;
+        setModalSpec(spec, index = -1) {
+            this.modalDeleteConfimation.category = spec;
+            this.modalDeleteConfimation.index = index;
         },
 
         resetModalData() {
-            this.setModalSpec({}, null);
+            this.setModalSpec({});
         },
 
         removeSpec() {
-            this.$http.delete(`/internal/${this.modal.category.id}`).then( () => {
-                this.pagination.data.$remove(this.modal.category);
+            this.$http.delete(`/internal/${this.modalDeleteConfimation.category.id}`).then( () => {
+                this.pagination.data.$remove(this.modalDeleteConfimation.category);
                 this.resetModalData();
             } ).bind(this);
         },
