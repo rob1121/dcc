@@ -1,28 +1,32 @@
 <?php
 
-use App\DCC\Company\AddCompanySpecs\AddSpecCategory;
+use App\DCC\Company\AddCompanySpecs\AddSpecRevision;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 
-class AddSpecCategoryTest extends TestCase
+class AddSpecRevisionTest extends TestCase
 {
     use DatabaseTransactions, WithoutMiddleware, DatabaseMigrations;
 
     private $request;
-    private $category;
+    private $revision;
     private $expected;
     private $company_spec;
+    private $file;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->category = new AddSpecCategory;
+        $this->revision = new AddSpecRevision;
+        $this->file = new Illuminate\Http\UploadedFile(base_path('tests/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE);
         $this->request = new Request([
-            "category_no" => "category_no",
-            "category_name" => "category_name",
-            "not_included" => "not_included"
+            "revision" => "**",
+            "revision_summary" => "demo",
+            "revision_date" => "2016-09-16",
+            "not_included" => "not_included",
+            "document" => $this->file
         ]);
         $this->company_spec = factory(App\CompanySpec::class)->create();
     }
@@ -32,10 +36,10 @@ class AddSpecCategoryTest extends TestCase
     {
         $this->expected = $this->generateCompanySpecInstanceFromRequest();
 
-        $this->category->setRequest($this->request);
-        $this->category->setCompanySpecCategory();
+        $this->revision->setRequest($this->request);
+        $this->revision->setCompanySpecRevision();
 
-        $this->assertEquals($this->expected, $this->category->getCompanySpecCategory());
+        $this->assertEquals($this->expected, $this->revision->getCompanySpecRevision());
     }
 
     /** @test */
@@ -43,17 +47,18 @@ class AddSpecCategoryTest extends TestCase
     {
         $this->expected = $this->generateCompanySpecInstanceFromRequest();
 
-        $this->category->setRequest($this->request);
-        $this->category->setSpec($this->company_spec);
-        $this->category->add();
+        $this->revision->setRequest($this->request);
+        $this->revision->setSpec($this->company_spec);
+        $this->revision->add();
 
-        $this->seeInDatabase("company_spec_categories", $this->expected);
+        $this->seeInDatabase("company_spec_revisions", $this->expected);
     }
 
     public function generateCompanySpecInstanceFromRequest()
     {
         $this->request = collect($this->request);
         $this->request->pull("not_included");
+        $this->request->pull("document");
         return $this->request->toArray();
     }
 }

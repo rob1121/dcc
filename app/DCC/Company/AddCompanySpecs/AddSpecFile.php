@@ -17,12 +17,13 @@ class AddSpecFile extends SpecAbstract
         $this->makeDocumentName();
         $path = $this->request->document->storeAs($this->path, $this->documentName);
         $this->getSpecInstance()->update(['document' => $path]);
+        return $path;
     }
 
     /**
      * generate path name
      */
-    public function makePath()
+    private function makePath()
     {
         $year = Carbon::now()->year;
         $spec_name = $this->spec->spec_no;
@@ -33,7 +34,7 @@ class AddSpecFile extends SpecAbstract
     /**
      * generate document name
      */
-    public function makeDocumentName()
+    private function makeDocumentName()
     {
         $name =  [
             'spec_no' => $this->spec->spec_no,
@@ -46,7 +47,7 @@ class AddSpecFile extends SpecAbstract
         $this->documentName =  "{$implode_name}.{$extension}";
     }
 
-    public function getSpecInstance()
+    private function getSpecInstance()
     {
         return $this->spec->companySpecRevision()
             ->whereCompanySpecId($this->spec->id)
@@ -56,7 +57,7 @@ class AddSpecFile extends SpecAbstract
     /**
      * get specification revision
      */
-    protected function getRevision()
+    private function getRevision()
     {
         return $this->getSpecInstance()->first()->revision;
     }

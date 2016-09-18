@@ -8,13 +8,13 @@ class UpdateSpecCategory extends UpdateSpecAbstract
     public function update()
     {
         $this->makeCompanySpecsInstance();
-        $this->spec->companySpecCategory()->update($this->companySpecsCategory);
+        $this->spec->companySpecCategory->update($this->companySpecsCategory);
     }
 
     /**
      *
      */
-    public function makeCompanySpecsInstance()
+    private function makeCompanySpecsInstance()
     {
         $newCompanySpecInstance = collect(new CompanySpecCategory($this->request->all()));
         $this->companySpecsCategory = $newCompanySpecInstance->toArray();

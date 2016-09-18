@@ -18,7 +18,7 @@ class UpdateSpecRevision extends UpdateSpecAbstract
     /**
      * make new instance of revision
      */
-    public function makeCompanySpecsInstance()
+    private function makeCompanySpecsInstance()
     {
         $newCompanySpecInstance = collect(new CompanySpecRevision($this->request->all()));
         $this->companySpecsRevision = $newCompanySpecInstance->toArray();

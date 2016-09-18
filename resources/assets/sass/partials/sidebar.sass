@@ -1,11 +1,16 @@
 #sidebar
     float: left
     height: 100vh
-    width: 25%
+    width: 20%
+    border-right: 1px solid $laravel-border-color
     padding-top: 64px
-    overflow-y: scroll
+    overflow: hidden
     transition: .3s ease-in-out
-    background: #415F77
+    background: #fff
+
+    &:hover
+        overflow-y: auto
+
 
     &.show-sidebar
         transform: translateX(0)
@@ -16,17 +21,15 @@
         text-transform: uppercase
         width: 100%
         display: inline-block
-        transition: background .1s linear
-        color: #D1E9EA
+        color: $text-color
+        border-left: 3px solid #fff
 
         &:hover
-            background: rgba(0,0,0,0.3)
-            color: #fff
+            background: darken(#fff, 3%)
             border-left: 3px solid $brand-success
 
         &.active
-            background: rgba(0,0,0,0.3)
-            color: #fff
+            background: darken(#fff, 3%)
             font-weight: bold
             border-left: 3px solid $brand-success
 
@@ -35,9 +38,9 @@
     top: 0
     right: 0
     height: 100vh
-    width: 75%
-    padding: 64px 10px 10px 10px
-    overflow-y: scroll
+    width: 80%
+    padding: 64px 20px 10px 20px
+    overflow-y: auto
     transition: .3s ease-in-out
 
     &.compress-main-content
