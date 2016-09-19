@@ -61,16 +61,15 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 34);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 34:
+/******/ ([
+/* 0 */
 /***/ function(module, exports) {
 
-eval("throw new Error(\"Module build failed: Error: ENOENT: no such file or directory, open 'C:\\\\laragon\\\\www\\\\dcc_2016\\\\resources\\\\assets\\\\js\\\\company-create.js'\\n    at Error (native)\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzQuanMiLCJzb3VyY2VzIjpbXSwibWFwcGluZ3MiOiIiLCJzb3VyY2VSb290IjoiIn0=");
+"use strict";
+eval("\"use strict\";\n\napp(\"./app\");\n\nvar app = new Vue({\n    el: \"#app\"\n});//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9yZXNvdXJjZXMvYXNzZXRzL2pzL2ludGVybmFsLWNyZWF0ZS5qcz9jZTVhIl0sInNvdXJjZXNDb250ZW50IjpbIlwidXNlIHN0cmljdFwiO1xuXG5hcHAoXCIuL2FwcFwiKTtcblxudmFyIGFwcCA9IG5ldyBWdWUoe1xuICAgIGVsOiBcIiNhcHBcIlxufSk7XG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIHJlc291cmNlcy9hc3NldHMvanMvaW50ZXJuYWwtY3JlYXRlLmpzIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }
-
-/******/ });
+/******/ ]);

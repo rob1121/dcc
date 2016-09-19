@@ -1,10 +1,17 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+
+
+foreach(File::allFiles(app_path().'/DCC/Routes') as $route) {
+    require $route->getPathname();
+}
 
 Route::get('/', function () {
-   return view('welcome');
+    return view('welcome');
 });
+
 //Route::get("/", function() {
 //    $user = User::first();
 //    $user->notify(new SpecsUpdate);
@@ -26,7 +33,6 @@ Route::get('/api/company-spec', function(Request $request) {
         ->header('Access-Control-Allow-Methods', 'GET');
 });
 
-
 Auth::routes();
 
 Route::get('/home', [
@@ -38,5 +44,3 @@ Route::get('/search', [
     "as" => "search",
     "uses" => 'SearchController@search'
 ]);
-
-Route::resource('internal', "CompanyController");

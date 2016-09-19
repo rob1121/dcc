@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
+@push('style')
+    <link rel="stylesheet" href="{{url("css/app.css")}}">
+@endpush
+
+@push('script')
+    <script src="{{url("js/app.js")}}"></script>
+@endpush
+
 @section('content')
-<div class="container">
+<div class="container" id="app" style="margin-top:64px">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">

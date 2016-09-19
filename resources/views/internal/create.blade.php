@@ -2,11 +2,11 @@
 @extends('layouts.app')
 
 @push("style")
-    <link rel="stylesheet" href="{{url("/css/company-create.css")}}">
+    <link rel="stylesheet" href="{{url("/css/internal-create.css")}}">
 @endpush
 
 @push("script")
-    <script src="{{url("/js/company-create.js")}}"></script>
+    <script src="{{url("/js/internal-create.js")}}"></script>
 @endpush
 
 @section('content')

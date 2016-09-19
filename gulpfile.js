@@ -15,13 +15,15 @@ require('laravel-elixir-vue');
 
 elixir(mix => {
     mix.copy("node_modules/font-awesome/fonts", "public/fonts")
-        .sass('company-index.sass')
-        .sass('company-edit.sass')
-        .sass('company-create.sass')
-        // .webpack('app.js')
-        .webpack('companyIndex.js')
-        .webpack('company-edit.js')
-        .webpack('company-create.js')
+        .sass('internal-index.sass')
+        .sass('internal-edit.sass')
+        .sass('internal-create.sass')
+        .webpack('internal-index.js')
+        .webpack('internal-edit.js')
+        .webpack('internal-create.js')
+
+        .sass('external-index.sass')
+        .webpack('external-create.js')
         .browserSync({
             proxy: "dcc_2016.me"
         });

@@ -1,12 +1,12 @@
 @extends("layouts.app")
 
 @push('style')
-<link rel="stylesheet" href="{{url("/css/company-index.css")}}">
+<link rel="stylesheet" href="{{url("/css/internal-index.css")}}">
 @endpush
 
 
 @push("script")
-<script src="{{url("/js/companyIndex.js")}}"></script>
+<script src="{{url("/js/internal-index.js")}}"></script>
 @endpush
 
 @section("content")
@@ -16,7 +16,7 @@
            :class="['link', {'active': currentIndex == index }]"
         @click="getSpecByCategory(category, index)"
         >
-        @{{category.category_no}} - @{{category.category_name}}
+        <h6>@{{category.category_no}} - @{{category.category_name}}</h6>
         </a>
     </div>
 

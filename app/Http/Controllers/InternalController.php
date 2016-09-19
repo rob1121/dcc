@@ -8,7 +8,7 @@ use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\File\Document;
 use JavaScript;
 
-class CompanyController extends Controller
+class InternalController extends Controller
 {
     public function index()
     {
@@ -18,7 +18,7 @@ class CompanyController extends Controller
             'category_name' => $categories->first()->category_name
         ]);
 
-        return view('company.index', [
+        return view('internal.index', [
             "categories" => $categories
         ]);
     }
@@ -28,7 +28,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        return view('internal.create');
     }
 
     /**
@@ -69,7 +69,7 @@ class CompanyController extends Controller
      */
     public function edit(CompanySpec $internal)
     {
-        return view('company.edit', ['spec' => $internal]);
+        return view('internal.edit', ['spec' => $internal]);
     }
 
     /**

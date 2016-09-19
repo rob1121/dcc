@@ -17,7 +17,7 @@
 
     .link
         text-decoration: none !important
-        padding: 10px 5px
+        padding: 5px 10px
         text-transform: uppercase
         width: 100%
         display: inline-block
@@ -25,11 +25,11 @@
         border-left: 3px solid #fff
 
         &:hover
-            background: darken(#fff, 3%)
+            background: darken(#fff, 10%)
             border-left: 3px solid $brand-success
 
         &.active
-            background: darken(#fff, 3%)
+            background: darken(#fff, 10%)
             font-weight: bold
             border-left: 3px solid $brand-success
 
@@ -42,6 +42,7 @@
     padding: 64px 20px 10px 20px
     overflow-y: auto
     transition: .3s ease-in-out
+    background: darken($body-bg, 5%)
 
     &.compress-main-content
         width: 75%

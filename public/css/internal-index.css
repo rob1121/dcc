@@ -8038,7 +8038,7 @@ th {
     transform: translateX(0); }
   #sidebar .link {
     text-decoration: none !important;
-    padding: 10px 5px;
+    padding: 5px 10px;
     text-transform: uppercase;
     width: 100%;
     display: inline-block;
@@ -8176,4 +8176,4 @@ th {
     top: 50%;
     left: 50%; }
 
-/*# sourceMappingURL=company-index.css.map */
+/*# sourceMappingURL=internal-index.css.map */

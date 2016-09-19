@@ -61,15 +61,15 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 34);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 34:
+/***/ 2:
 /***/ function(module, exports) {
 
-eval("throw new Error(\"Module build failed: Error: ENOENT: no such file or directory, open 'C:\\\\laragon\\\\www\\\\dcc_2016\\\\resources\\\\assets\\\\js\\\\company-create.js'\\n    at Error (native)\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzQuanMiLCJzb3VyY2VzIjpbXSwibWFwcGluZ3MiOiIiLCJzb3VyY2VSb290IjoiIn0=");
+eval("throw new Error(\"Module build failed: Error: ENOENT: no such file or directory, open 'C:\\\\laragon\\\\www\\\\dcc_2016\\\\resources\\\\assets\\\\js\\\\company-index.js'\\n    at Error (native)\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMi5qcyIsInNvdXJjZXMiOltdLCJtYXBwaW5ncyI6IiIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }
 

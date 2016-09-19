@@ -46,23 +46,33 @@
                 </ul>
 
                 <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-left navbar-form">
-                        <input type="text" style="width: 200px;"
-                            class="form-control"
-                            placeholder="Search for Specification"
-                            v-model="searchKeyword"
-                            @keyup.enter="displaySearchResult"
-                        >
-                            <button @click="displaySearchResult" class="btn btn-default">
-                            <i class="fa fa-search"></i></button>
+                <ul class="nav navbar-nav navbar-left">
+                    <li @if(route("internal.index") === Request::url()) class="active" @endif>
+                        <a href="{{ route("internal.index") }}">Internal Specification</a>
+                    </li>
+                    
+                    <li @if(route("external.index") === Request::url()) class="active" @endif>
+                        <a href="{{ route("external.index") }}">External Specification</a>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="navbar-form">
+                        <input type="text" style="width: 200px;"
+                               class="form-control"
+                               placeholder="Search for Specification"
+                               v-model="searchKeyword"
+                               @keyup.enter="displaySearchResult"
+                        >
+                        <button @click="displaySearchResult" class="btn btn-default">
+                        <i class="fa fa-search"></i></button>
+                    </li>
+
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                        {{--<li><a href="{{ url('/register') }}">Register</a></li>--}}
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
