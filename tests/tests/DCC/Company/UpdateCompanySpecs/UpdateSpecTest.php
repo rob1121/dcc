@@ -1,10 +1,10 @@
 <?php
 
 use App\DCC\Company\UpdateCompanySpecs\UpdateSpec;
+use App\Http\Requests\CompanySpecRequest;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\Request;
 
 class UpdateSpecTest extends TestCase
 {
@@ -31,29 +31,23 @@ class UpdateSpecTest extends TestCase
         $this->category = factory(App\CompanySpecCategory::class)->make();
     }
 
-    /**
-     * @expectedException         Illuminate\Validation\ValidationException
-     * @expectedExceptionMessage  The given data failed to pass validation.
-     * @test
-     **/
+    /** @test */
     public function it_throws_exceptions_upon_validation_validation()
     {
-        $request = new Request($this->spec->toArray());
-        (new UpdateSpec($request))->validateSpec();
+        $request = new CompanySpecRequest($this->spec->toArray());
+        new UpdateSpec($request);
     }
 
     /** @test */
     public function it_should_pass_request_validation()
     {
-        $spec = $this->companySpecInstance();
-        $spec->validateSpec();
+        $this->companySpecInstance();
     }
 
     /** @test */
     public function it_should_create_new_specs()
     {
         $spec = $this->companySpecInstance();
-        $spec->validateSpec();
         $spec->update();
 
         $this->revision = collect($this->revision);
@@ -72,7 +66,7 @@ class UpdateSpecTest extends TestCase
     {
         $new_spec_instance = collect($this->spec)->merge($this->revision)->merge($this->category)->toArray();
 
-        $request = new Request($new_spec_instance);
+        $request = new CompanySpecRequest($new_spec_instance);
         $spec = new UpdateSpec($request);
         $spec->setSpec($this->initData);
         return $spec;

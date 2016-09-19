@@ -21,7 +21,7 @@ class Document
     }
 
     protected function displayPageInPdfType() {
-        return \Response::make(file_get_contents($this->path)200, [
+        return \Response::make(file_get_contents($this->path), 200, [
             "Content-Type" => "application/pdf; name=\"filename.pdf\"",
             "Content-Disposition" => "inline; filename=\"filename.pdf\""
         ]);

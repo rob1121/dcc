@@ -6,10 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CompanySpecCategory extends Model
 {
-    const RULES = [
-        'category_no' => 'required',
-        'category_name' => 'required'
-    ];
 
     protected $fillable = [ 'category_no', 'category_name' ];
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\DCC\Company\AddCompanySpecs\AddSpec;
+use App\Http\Requests\CompanySpecRequest;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -26,29 +27,23 @@ class AddSpecTest extends TestCase
         $this->category = factory(App\CompanySpecCategory::class)->make();
     }
 
-    /**
-     * @expectedException         Illuminate\Validation\ValidationException
-     * @expectedExceptionMessage  The given data failed to pass validation.
-     * @test
-     **/
+    /** @test */
     public function it_throws_exceptions_upon_validation_validation()
     {
-        $request = new Request($this->spec->toArray());
-        (new AddSpec($request))->validateSpec();
+        $request = new CompanySpecRequest($this->spec->toArray());
+        new AddSpec($request);
     }
 
     /** @test */
     public function it_should_pass_request_validation()
     {
-        $spec = $this->companySpecInstance();
-        $spec->validateSpec();
+        $this->companySpecInstance();
     }
 
     /** @test */
     public function it_should_create_new_specs()
     {
         $spec = $this->companySpecInstance();
-        $spec->validateSpec();
         $spec->add();
 
         $this->revision = collect($this->revision);
@@ -66,8 +61,7 @@ class AddSpecTest extends TestCase
     private function companySpecInstance()
     {
         $new_spec_instance = collect($this->spec)->merge($this->revision)->merge($this->category)->toArray();
-
-        $request = new Request($new_spec_instance);
+        $request = new CompanySpecRequest($new_spec_instance);
         return new AddSpec($request);
     }
 

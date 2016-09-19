@@ -1,28 +1,41 @@
-<?php namespace App\DCC\Company\AddCompanySpecs;
+<?php namespace App\DCC\Internal;
 
+use App\CompanySpec;
+use App\DCC\SpecificationGateway;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
-class AddSpecFile extends SpecAbstract
-{
+class InternalSpecFile implements SpecificationGateway {
+
+    private $spec;
     private $path;
     private $documentName;
+    private $request;
 
-    /**
-     * upload file to given storage
-     */
-    public function add()
+    public function __construct(CompanySpec $spec=null)
     {
-        $this->makePath();
-        $this->makeDocumentName();
-        $path = $this->request->document->storeAs($this->path, $this->documentName);
-        $this->getSpecInstance()->update(['document' => $path]);
-        return $path;
+        $this->spec = $spec;
     }
 
-    /**
-     * generate path name
-     */
+    function persist($request)
+    {
+        $this->setRequest($request);
+        $this->makePath();
+        $this->makeDocumentName();
+        $path = $request->document->storeAs($this->path, $this->documentName);
+        $this->getSpecInstance()->update(['document' => $path]);
+    }
+
+    function update($request)
+    {
+        $this->persist($request);
+    }
+
+    protected function setRequest($request)
+    {
+        $this->request = $request;
+    }
+
     private function makePath()
     {
         $year = Carbon::now()->year;
@@ -31,11 +44,7 @@ class AddSpecFile extends SpecAbstract
         $this->path =  "{$year}/{$spec_name}";
     }
 
-    /**
-     * generate document name
-     */
-    private function makeDocumentName()
-    {
+    private function makeDocumentName() {
         $name =  [
             'spec_no' => $this->spec->spec_no,
             'spec_revision' => preg_replace("/[^a-z|^0-9|^A-Z]/", "-", $this->getRevision())
@@ -47,18 +56,13 @@ class AddSpecFile extends SpecAbstract
         $this->documentName =  "{$implode_name}.{$extension}";
     }
 
-    private function getSpecInstance()
-    {
+    private function getSpecInstance() {
         return $this->spec->companySpecRevision()
             ->whereCompanySpecId($this->spec->id)
             ->whereRevision($this->request->revision);
     }
 
-    /**
-     * get specification revision
-     */
-    private function getRevision()
-    {
+    private function getRevision() {
         return $this->getSpecInstance()->first()->revision;
     }
 }

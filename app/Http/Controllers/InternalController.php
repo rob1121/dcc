@@ -1,11 +1,15 @@
 <?php namespace App\Http\Controllers;
 
+use App\DCC\Internal\InternalSpecCategory;
 use App\CompanySpec;
 use App\CompanySpecCategory;
-use App\DCC\Company\AddCompanySpecs\AddSpec;
-use App\DCC\Company\UpdateCompanySpecs\UpdateSpec;
 use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\File\Document;
+use App\DCC\Internal\InternalSpecFile;
+use App\DCC\Internal\InternalSpecification;
+use App\DCC\Internal\InternalSpecRevision;
+use App\DCC\SpecificationFactory;
+use App\Http\Requests\CompanySpecRequest;
 use JavaScript;
 
 class InternalController extends Controller
@@ -34,18 +38,20 @@ class InternalController extends Controller
     /**
      * store instance to database
      * @method post
-     * @param AddSpec $specs
+     * @param CompanySpecRequest $request
      * @return mixed|string
      */
-    public function store(AddSpec $specs)
+    public function store(CompanySpecRequest $request)
     {
         try {
-            if (CompanySpec::isExist($specs->request))
-                throw new DuplicateEntryException("Company Specification already exist!");
+            if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
-            $specs->validateSpec();
-            $specs->add();
-            return $specs->getResult();
+            $factory = new SpecificationFactory;
+            $spec = $factory->store(new InternalSpecification, $request);
+            $factory->store(new InternalSpecCategory($spec), $request);
+            $factory->store(new InternalSpecRevision($spec), $request);
+            $factory->store(new InternalSpecFile($spec), $request);
+            return redirect(route("internal.index"));
         } catch(DuplicateEntryException $e) {
             return $e->getMessage();
         }
@@ -75,16 +81,18 @@ class InternalController extends Controller
     /**
      * update database
      * @method patch
-     * @param UpdateSpec $spec
+     * @param CompanySpecRequest $request
      * @param CompanySpec $internal
      * @return mixed
      * @internal param CompanySpec $companySpec
      */
-    public function update(UpdateSpec $spec, CompanySpec $internal)
+    public function update(CompanySpecRequest $request, CompanySpec $internal)
     {
-        $spec->setSpec($internal);
-        $spec->validateSpec();
-        $spec->update();
+        $factory = new SpecificationFactory;
+        $factory->update(new InternalSpecification($internal), $request);
+        $factory->update(new InternalSpecRevision($internal), $request);
+        $factory->update(new InternalSpecCategory($internal), $request);
+        $factory->update(new InternalSpecFile($internal), $request);
         return redirect(route("internal.index"));
     }
 
