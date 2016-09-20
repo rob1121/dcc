@@ -13,6 +13,12 @@ use App\Http\Requests\CompanySpecRequest;
 use JavaScript;
 
 class InternalController extends Controller {
+    private $factory;
+
+    public function __construct(){
+        $this->factory = new SpecificationFactory;
+    }
+
     public function index() {
         $categories = CompanySpecCategory::getCategoryList();
         JavaScript::put([
@@ -42,11 +48,7 @@ class InternalController extends Controller {
         try {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
-            $factory = new SpecificationFactory;
-            $spec = $factory->store(new InternalSpecification, $request);
-            $factory->store(new InternalSpecCategory($spec), $request);
-            $factory->store(new InternalSpecRevision($spec), $request);
-            $factory->store(new InternalSpecFile($spec), $request);
+            $this->factory->store(new InternalSpecification, $request);
             return redirect(route("internal.index"));
         } catch(DuplicateEntryException $e) {
             return $e->getMessage();
@@ -81,11 +83,7 @@ class InternalController extends Controller {
      * @internal param CompanySpec $companySpec
      */
     public function update(CompanySpecRequest $request, CompanySpec $internal) {
-        $factory = new SpecificationFactory;
-        $factory->update(new InternalSpecification($internal), $request);
-        $factory->update(new InternalSpecRevision($internal), $request);
-        $factory->update(new InternalSpecCategory($internal), $request);
-        $factory->update(new InternalSpecFile($internal), $request);
+        $this->factory->update(new InternalSpecification($internal), $request);
         return redirect(route("internal.index"));
     }
 
