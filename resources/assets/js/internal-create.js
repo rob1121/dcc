@@ -1,5 +1,11 @@
 require("./app");
 
 const app = new Vue({
-    el: "#app"
+    el: "#app",
+
+    methods: {
+        submitForm() {
+            $("#form-submit").submit();
+        }
+    }
 });

@@ -20,12 +20,12 @@
             <li class="active"> New Internal Specification</li>
         </ol>
 
-        <div class="panel panel-default">
+        <div class="panel panel-{{$errors->any() ? "danger" : "default"}}">
             <div class="panel-heading">
                 <h3 class="panel-title">Add new Internal Specification</h3>
             </div>
             <div class="panel-body">
-                <form action="{{route('internal.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('internal.store')}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
 
                     <dcc-input name="category_no"
@@ -81,9 +81,26 @@
                                   error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
                                   value="{{old("revision_summary")}}"
                     ></dcc-textarea>
-                    <dcc-button icon="paper-plane">Submit</dcc-button>
+                    <div class="col-md-12">
+                        <button type="button"
+                                class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
+                                data-toggle="modal"
+                                href="#spec-submit"
+                        >
+                            Submit <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+
+    {{--=======================================MODALS=================================--}}
+    <dcc-modal title="Modal confirmation" id="spec-submit">
+        <h1>Are you sure you want to submit?</h1>
+        <div class="text-center">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="submitForm">Yes</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        </div>
+    </dcc-modal>
 @endsection

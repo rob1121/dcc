@@ -1,8 +1,10 @@
 <?php namespace App\DCC;
 
+use Illuminate\Http\Request;
+
 Interface SpecificationGateway
 {
-    function persist($request);
+    function persist(Request $request);
 
-    function update($request);
+    function update(Request $request);
 }

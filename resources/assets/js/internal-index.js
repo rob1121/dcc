@@ -4,13 +4,15 @@ import moment from "moment";
 const app = new Vue({
     el: "#app",
 
+    mixins: [filters],
+
     data: {
         category: {
             category_no,
             category_name
         },
 
-        modalDeleteConfimation: {
+        modalDeleteConfirmation: {
             category: {},
             index: -1
         },
@@ -18,23 +20,10 @@ const app = new Vue({
         currentIndex: 0,
 
         pagination: {},
-        searchText: "",
     },
 
     ready() {
         this.getPagination();
-    },
-
-    filters: {
-        trim(string) {
-                if(string.length <= 64)     return string;
-                else if(64 <= 3)            return string.slice(0, 64) + "...";
-                else                        return string.slice(0, 64 - 3) + "...";
-        },
-        
-        telfordStandardDate(dt) {
-            return moment(dt).format("MM/DD/Y");
-        }
     },
 
     methods: {
@@ -55,7 +44,7 @@ const app = new Vue({
         getPagination(num = "") {
             var loader = $(".loader");
             loader.show();
-            this.$http.get(`${env_server}/api/company-spec?page=${num}&category=${this.category.category_no}`)
+            this.$http.get(`${env_server}/api/search?page=${num}&category=${this.category.category_no}`)
                 .then( response => {
                     this.pagination = response.json();
                     loader.hide();
@@ -85,8 +74,8 @@ const app = new Vue({
         },
 
         setModalSpec(spec, index = -1) {
-            this.modalDeleteConfimation.category = spec;
-            this.modalDeleteConfimation.index = index;
+            this.modalDeleteConfirmation.category = spec;
+            this.modalDeleteConfirmation.index = index;
         },
 
         resetModalData() {
@@ -94,8 +83,8 @@ const app = new Vue({
         },
 
         removeSpec() {
-            this.$http.delete(`/internal/${this.modalDeleteConfimation.category.id}`).then( () => {
-                this.pagination.data.$remove(this.modalDeleteConfimation.category);
+            this.$http.delete(`/internal/${this.modalDeleteConfirmation.category.id}`).then( () => {
+                this.pagination.data.$remove(this.modalDeleteConfirmation.category);
                 this.resetModalData();
             } ).bind(this);
         },

@@ -12,10 +12,8 @@ use App\DCC\SpecificationFactory;
 use App\Http\Requests\CompanySpecRequest;
 use JavaScript;
 
-class InternalController extends Controller
-{
-    public function index()
-    {
+class InternalController extends Controller {
+    public function index() {
         $categories = CompanySpecCategory::getCategoryList();
         JavaScript::put([
             'category_no' => $categories->first()->category_no,
@@ -30,8 +28,7 @@ class InternalController extends Controller
      * display view create
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
-    {
+    public function create() {
         return view('internal.create');
     }
 
@@ -41,8 +38,7 @@ class InternalController extends Controller
      * @param CompanySpecRequest $request
      * @return mixed|string
      */
-    public function store(CompanySpecRequest $request)
-    {
+    public function store(CompanySpecRequest $request) {
         try {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
@@ -61,8 +57,7 @@ class InternalController extends Controller
      * @param CompanySpec $internal
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(CompanySpec $internal)
-    {
+    public function show(CompanySpec $internal) {
         $document = new Document($internal);
         return $document->showPDF();
     }
@@ -73,8 +68,7 @@ class InternalController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @internal param CompanySpec $companySpec
      */
-    public function edit(CompanySpec $internal)
-    {
+    public function edit(CompanySpec $internal) {
         return view('internal.edit', ['spec' => $internal]);
     }
 
@@ -86,8 +80,7 @@ class InternalController extends Controller
      * @return mixed
      * @internal param CompanySpec $companySpec
      */
-    public function update(CompanySpecRequest $request, CompanySpec $internal)
-    {
+    public function update(CompanySpecRequest $request, CompanySpec $internal) {
         $factory = new SpecificationFactory;
         $factory->update(new InternalSpecification($internal), $request);
         $factory->update(new InternalSpecRevision($internal), $request);
@@ -102,8 +95,7 @@ class InternalController extends Controller
      * @return mixed
      * @internal param CompanySpec $companySpec
      */
-    public function destroy(CompanySpec $internal)
-    {
+    public function destroy(CompanySpec $internal) {
         $internal->delete();
     }
 }

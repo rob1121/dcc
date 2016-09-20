@@ -1,21 +1,20 @@
-<?php
+<?php namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
+use App\CustomerSpecCategory;
 use Illuminate\Http\Request;
+use JavaScript;
 
-use App\Http\Requests;
+class ExternalController extends Controller {
 
-class ExternalController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view("external.index");
+    public function index() {
+        $categories = CustomerSpecCategory::getCategoryList();
+        JavaScript::put([
+            'customer_name' => $categories->first()->customer_name,
+        ]);
+
+        return view('external.index', [
+            "categories" => $categories
+        ]);
     }
 
     /**
@@ -25,7 +24,7 @@ class ExternalController extends Controller
      */
     public function create()
     {
-        //
+        return view('external.create');
     }
 
     /**

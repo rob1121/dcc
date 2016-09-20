@@ -2,6 +2,7 @@
 
 use App\CompanySpec;
 use App\DCC\SpecificationGateway;
+use Illuminate\Http\Request;
 
 class InternalSpecification implements SpecificationGateway {
     /**
@@ -14,17 +15,17 @@ class InternalSpecification implements SpecificationGateway {
         $this->spec = $spec;
     }
 
-    function persist($request) {
+    function persist(Request $request) {
         return CompanySpec::create($this->modelInstance($request));
 
     }
 
-    function update($request) {
+    function update(Request $request) {
         $this->spec->update($this->modelInstance($request));
     }
 
     protected function modelInstance($request) {
-        $newCompanySpecInstance = collect(new CompanySpec($request->all()));
+        $newCompanySpecInstance = new CompanySpec($request->all());
         return $newCompanySpecInstance->toArray();
     }
 }

@@ -1,25 +1,23 @@
-<?php namespace App\DCC\Internal;
+<?php namespace App\DCC\External;
 
-use App\CompanySpec;
+use App\CustomerSpec;
 use App\DCC\SpecificationGateway;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class InternalSpecFile implements SpecificationGateway {
+class ExternalSpecFile implements SpecificationGateway {
 
     private $spec;
     private $path;
     private $documentName;
     private $request;
 
-    public function __construct(CompanySpec $spec=null)
-    {
+    public function __construct(CustomerSpec $spec=null) {
         $this->spec = $spec;
     }
 
-    function persist(Request $request)
-    {
+    function persist(Request $request) {
         $this->setRequest($request);
         $this->makePath();
         $this->makeDocumentName();
@@ -32,13 +30,11 @@ class InternalSpecFile implements SpecificationGateway {
         $this->persist($request);
     }
 
-    protected function setRequest($request)
-    {
+    protected function setRequest($request) {
         $this->request = $request;
     }
 
-    private function makePath()
-    {
+    private function makePath() {
         $year = Carbon::now()->year;
         $spec_name = $this->spec->spec_no;
 
@@ -58,8 +54,8 @@ class InternalSpecFile implements SpecificationGateway {
     }
 
     private function getSpecInstance() {
-        return $this->spec->companySpecRevision()
-            ->whereCompanySpecId($this->spec->id)
+        return $this->spec->customerSpecRevision()
+            ->whereCustomerSpecId($this->spec->id)
             ->whereRevision($this->request->revision);
     }
 

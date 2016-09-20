@@ -3,6 +3,7 @@
 use App\CompanySpec;
 use App\CompanySpecCategory;
 use App\DCC\SpecificationGateway;
+use Illuminate\Http\Request;
 
 class InternalSpecCategory implements SpecificationGateway {
     private $spec;
@@ -11,16 +12,16 @@ class InternalSpecCategory implements SpecificationGateway {
         $this->spec = $spec;
     }
 
-    function persist($request) {
-        return $this->spec->companySpecCategory()->firstOrCreate($this->modelInstance($request));
+    function persist(Request $request) {
+        return $this->spec->companySpecCategory()->firstOrCreate($request->all());
     }
 
-    function update($request) {
+    function update(Request $request) {
         $this->spec->companySpecCategory->update($this->modelInstance($request));
     }
 
-    private function modelInstance($request) {
-        $newCompanySpecInstance = collect(new CompanySpecCategory($request->all()));
+    private function modelInstance(Request $request) {
+        $newCompanySpecInstance = new CompanySpecCategory($request->all());
         return $newCompanySpecInstance->toArray();
     }
 }

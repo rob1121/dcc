@@ -5,6 +5,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 require('./bootstrap');
+import filters from "./mixins/filters";
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -22,6 +23,8 @@ Vue.component('dcc-pulse', require('vue-spinner/src/PulseLoader.vue'));
 const nav = new Vue({
     el: 'nav',
 
+    mixins: [filters],
+
     data: {
         showResultDialog: false,
         searchKeyword: "",
@@ -31,14 +34,6 @@ const nav = new Vue({
     computed: {
         isSearchResultNotEmpty() {
             return this.searchResults.length > 0;
-        },
-    },
-
-    filters: {
-        trim(string) {
-                if(string.length <= 64)     return string;
-                else if(64 <= 3)            return string.slice(0, 64) + "...";
-                else                        return string.slice(0, 64 - 3) + "...";
         },
     },
 
