@@ -45762,6 +45762,225 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+(function () {
+
+    var laroute = function () {
+
+        var routes = {
+
+            absolute: false,
+            rootUrl: 'http://localhost',
+            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "api\/internal\/search", "name": "api.search.internal", "action": "App\Http\Controllers\ApiController@internalSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/external\/search", "name": "api.search.external", "action": "App\Http\Controllers\ApiController@externalSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external", "name": "external.index", "action": "App\Http\Controllers\ExternalController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/create", "name": "external.create", "action": "App\Http\Controllers\ExternalController@create" }, { "host": null, "methods": ["POST"], "uri": "external", "name": "external.store", "action": "App\Http\Controllers\ExternalController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/{external}", "name": "external.show", "action": "App\Http\Controllers\ExternalController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/{external}\/edit", "name": "external.edit", "action": "App\Http\Controllers\ExternalController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "external\/{external}", "name": "external.update", "action": "App\Http\Controllers\ExternalController@update" }, { "host": null, "methods": ["DELETE"], "uri": "external\/{external}", "name": "external.destroy", "action": "App\Http\Controllers\ExternalController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal", "name": "internal.index", "action": "App\Http\Controllers\InternalController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/create", "name": "internal.create", "action": "App\Http\Controllers\InternalController@create" }, { "host": null, "methods": ["POST"], "uri": "internal", "name": "internal.store", "action": "App\Http\Controllers\InternalController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/{internal}", "name": "internal.show", "action": "App\Http\Controllers\InternalController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/{internal}\/edit", "name": "internal.edit", "action": "App\Http\Controllers\InternalController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "internal\/{internal}", "name": "internal.update", "action": "App\Http\Controllers\InternalController@update" }, { "host": null, "methods": ["DELETE"], "uri": "internal\/{internal}", "name": "internal.destroy", "action": "App\Http\Controllers\InternalController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": null, "action": "Closure" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "login", "name": "login", "action": "App\Http\Controllers\Auth\LoginController@showLoginForm" }, { "host": null, "methods": ["POST"], "uri": "login", "name": null, "action": "App\Http\Controllers\Auth\LoginController@login" }, { "host": null, "methods": ["POST"], "uri": "logout", "name": null, "action": "App\Http\Controllers\Auth\LoginController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "register", "name": null, "action": "App\Http\Controllers\Auth\RegisterController@showRegistrationForm" }, { "host": null, "methods": ["POST"], "uri": "register", "name": null, "action": "App\Http\Controllers\Auth\RegisterController@register" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "password\/reset", "name": null, "action": "App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm" }, { "host": null, "methods": ["POST"], "uri": "password\/email", "name": null, "action": "App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "password\/reset\/{token}", "name": null, "action": "App\Http\Controllers\Auth\ResetPasswordController@showResetForm" }, { "host": null, "methods": ["POST"], "uri": "password\/reset", "name": null, "action": "App\Http\Controllers\Auth\ResetPasswordController@reset" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "home", "name": "home", "action": "App\Http\Controllers\HomeController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "search", "action": "App\Http\Controllers\SearchController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/user", "name": null, "action": "Closure" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }],
+            prefix: '',
+
+            route: function route(name, parameters, _route) {
+                _route = _route || this.getByName(name);
+
+                if (!_route) {
+                    return undefined;
+                }
+
+                return this.toRoute(_route, parameters);
+            },
+
+            url: function url(_url, parameters) {
+                parameters = parameters || [];
+
+                var uri = _url + '/' + parameters.join('/');
+
+                return this.getCorrectUrl(uri);
+            },
+
+            toRoute: function toRoute(route, parameters) {
+                var uri = this.replaceNamedParameters(route.uri, parameters);
+                var qs = this.getRouteQueryString(parameters);
+
+                return this.getCorrectUrl(uri + qs);
+            },
+
+            replaceNamedParameters: function replaceNamedParameters(uri, parameters) {
+                uri = uri.replace(/\{(.*?)\??\}/g, function (match, key) {
+                    if (parameters.hasOwnProperty(key)) {
+                        var value = parameters[key];
+                        delete parameters[key];
+                        return value;
+                    } else {
+                        return match;
+                    }
+                });
+
+                // Strip out any optional parameters that were not given
+                uri = uri.replace(/\/\{.*?\?\}/g, '');
+
+                return uri;
+            },
+
+            getRouteQueryString: function getRouteQueryString(parameters) {
+                var qs = [];
+                for (var key in parameters) {
+                    if (parameters.hasOwnProperty(key)) {
+                        qs.push(key + '=' + parameters[key]);
+                    }
+                }
+
+                if (qs.length < 1) {
+                    return '';
+                }
+
+                return '?' + qs.join('&');
+            },
+
+            getByName: function getByName(name) {
+                for (var key in this.routes) {
+                    if (this.routes.hasOwnProperty(key) && this.routes[key].name === name) {
+                        return this.routes[key];
+                    }
+                }
+            },
+
+            getByAction: function getByAction(action) {
+                for (var key in this.routes) {
+                    if (this.routes.hasOwnProperty(key) && this.routes[key].action === action) {
+                        return this.routes[key];
+                    }
+                }
+            },
+
+            getCorrectUrl: function getCorrectUrl(uri) {
+                var url = this.prefix + '/' + uri.replace(/^\/?/, '');
+
+                if (!this.absolute) return url;
+
+                return this.rootUrl.replace('/\/?$/', '') + url;
+            }
+        };
+
+        var getLinkAttributes = function getLinkAttributes(attributes) {
+            if (!attributes) {
+                return '';
+            }
+
+            var attrs = [];
+            for (var key in attributes) {
+                if (attributes.hasOwnProperty(key)) {
+                    attrs.push(key + '="' + attributes[key] + '"');
+                }
+            }
+
+            return attrs.join(' ');
+        };
+
+        var getHtmlLink = function getHtmlLink(url, title, attributes) {
+            title = title || url;
+            attributes = getLinkAttributes(attributes);
+
+            return '<a href="' + url + '" ' + attributes + '>' + title + '</a>';
+        };
+
+        return {
+            // Generate a url for a given controller action.
+            // laroute.action('HomeController@getIndex', [params = {}])
+            action: function action(name, parameters) {
+                parameters = parameters || {};
+
+                return routes.route(name, parameters, routes.getByAction(name));
+            },
+
+            // Generate a url for a given named route.
+            // laroute.route('routeName', [params = {}])
+            route: function route(_route2, parameters) {
+                parameters = parameters || {};
+
+                return routes.route(_route2, parameters);
+            },
+
+            // Generate a fully qualified URL to the given path.
+            // laroute.route('url', [params = {}])
+            url: function url(route, parameters) {
+                parameters = parameters || {};
+
+                return routes.url(route, parameters);
+            },
+
+            // Generate a html link to the given url.
+            // laroute.link_to('foo/bar', [title = url], [attributes = {}])
+            link_to: function link_to(url, title, attributes) {
+                url = this.url(url);
+
+                return getHtmlLink(url, title, attributes);
+            },
+
+            // Generate a html link to the given route.
+            // laroute.link_to_route('route.name', [title=url], [parameters = {}], [attributes = {}])
+            link_to_route: function link_to_route(route, title, parameters, attributes) {
+                var url = this.route(route, parameters);
+
+                return getHtmlLink(url, title, attributes);
+            },
+
+            // Generate a html link to the given controller action.
+            // laroute.link_to_action('HomeController@getIndex', [title=url], [parameters = {}], [attributes = {}])
+            link_to_action: function link_to_action(action, title, parameters, attributes) {
+                var url = this.action(action, parameters);
+
+                return getHtmlLink(url, title, attributes);
+            }
+
+        };
+    }.call(this);
+
+    /**
+     * Expose the class either via AMD, CommonJS or the global object
+     */
+    if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return laroute;
+        });
+    } else if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object' && module.exports) {
+        module.exports = laroute;
+    } else {
+        window.laroute = laroute;
+    }
+}).call(undefined);
+
+},{}],19:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _moment = require("moment");
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    filters: {
+        trim: function trim(string) {
+            if (string.length <= 64) return string;else if (64 <= 3) return string.slice(0, 64) + "...";else return string.slice(0, 64 - 3) + "...";
+        },
+        telfordStandardDate: function telfordStandardDate(dt) {
+            return (0, _moment2.default)(dt).format("MM/DD/Y");
+        },
+        lastestRevision: function lastestRevision(revArray, column) {
+            return _typeof(revArray[revArray.length - 1][column]) !== undefined ? revArray[revArray.length - 1][column] : "N/A";
+        }
+    }
+};
+
+},{"moment":4}],20:[function(require,module,exports){
+"use strict";
+
+var _laroute = require("./laroute");
+
+var _laroute2 = _interopRequireDefault(_laroute);
+
 var _filters = require("./mixins/filters");
 
 var _filters2 = _interopRequireDefault(_filters);
@@ -45816,7 +46035,12 @@ var app = new Vue({
 
             var loader = $(".loader");
             loader.show();
-            this.$http.get(env_server + "/api/internal/search?page=" + num + "&category=" + this.category.category_no).then(function (response) {
+            this.$http.get(_laroute2.default.route('api.search.internal'), {
+                params: {
+                    page: num,
+                    category: this.category.category_no
+                }
+            }).then(function (response) {
                 _this.pagination = response.json();
                 loader.hide();
             });
@@ -45859,35 +46083,6 @@ var app = new Vue({
     }
 });
 
-},{"./app":10,"./mixins/filters":19}],19:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var _moment = require("moment");
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    filters: {
-        trim: function trim(string) {
-            if (string.length <= 64) return string;else if (64 <= 3) return string.slice(0, 64) + "...";else return string.slice(0, 64 - 3) + "...";
-        },
-        telfordStandardDate: function telfordStandardDate(dt) {
-            return (0, _moment2.default)(dt).format("MM/DD/Y");
-        },
-        lastestRevision: function lastestRevision(revArray, column) {
-            return _typeof(revArray[revArray.length - 1][column]) !== undefined ? revArray[revArray.length - 1][column] : "N/A";
-        }
-    }
-};
-
-},{"moment":4}]},{},[18]);
+},{"./app":10,"./laroute":18,"./mixins/filters":19}]},{},[20]);
 
 //# sourceMappingURL=internal-index.js.map

@@ -1,4 +1,5 @@
 require("./app");
+import laroute from "./laroute";
 import vFilter from "./mixins/filters";
 
 const app = new Vue({
@@ -43,11 +44,17 @@ const app = new Vue({
         getPagination(num = "") {
             var loader = $(".loader");
             loader.show();
-            this.$http.get(`${env_server}/api/external/search?page=${num}&category=${this.category.customer_name}`)
-                .then( response => {
+
+            this.$http.get(
+                laroute.route('api.search.external'), {
+                    params: {
+                        page:num,
+                        category:this.category.customer_name
+                    }
+                }).then( response => {
                     this.pagination = response.json();
                     loader.hide();
-                } );
+                });
         },
 
         prev() {

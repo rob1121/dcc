@@ -53,7 +53,8 @@
                 </div>
                 <div class="col-xs-3">
                     <a class="btn btn-xs btn-primary" target="_blank" href="{{$server}}/internal/@{{spec.id}}"> View <i
-                                class="fa fa-file-pdf-o"></i></a>
+                                class="fa fa-file-pdf-o"></i>
+                    </a>
                     <a class="btn btn-xs btn-warning" href="{{$server}}/internal/@{{spec.id}}/edit">Edit <i
                                 class="fa fa-pencil"></i></a>
                     <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="

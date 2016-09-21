@@ -182,7 +182,8 @@ return [
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
-        TomLingham\Searchy\SearchyServiceProvider::class
+        TomLingham\Searchy\SearchyServiceProvider::class,
+        Lord\Laroute\LarouteServiceProvider::class
     ],
 
     /*
