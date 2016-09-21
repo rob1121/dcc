@@ -8,6 +8,7 @@ use App\DCC\SpecificationFactory;
 
 class InternalSpecRevision implements SpecificationGateway {
     private $spec;
+    private $factory;
 
     public function __construct(CompanySpec $spec=null) {
         $this->spec = $spec;

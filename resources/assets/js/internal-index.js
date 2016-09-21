@@ -1,10 +1,8 @@
 require('./app');
-import moment from "moment";
+import vFilter from "./mixins/filters";
 
 const app = new Vue({
     el: "#app",
-
-    mixins: [filters],
 
     data: {
         category: {
@@ -21,6 +19,8 @@ const app = new Vue({
 
         pagination: {},
     },
+
+    mixins: [vFilter],
 
     ready() {
         this.getPagination();
@@ -44,7 +44,7 @@ const app = new Vue({
         getPagination(num = "") {
             var loader = $(".loader");
             loader.show();
-            this.$http.get(`${env_server}/api/search?page=${num}&category=${this.category.category_no}`)
+            this.$http.get(`${env_server}/api/internal/search?page=${num}&category=${this.category.category_no}`)
                 .then( response => {
                     this.pagination = response.json();
                     loader.hide();

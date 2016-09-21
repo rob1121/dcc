@@ -41527,7 +41527,8 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":7,"vue-hot-reload-api":5}],17:[function(require,module,exports){
 "use strict";
 
-require('./app');
+require("./app");
+
 var app = new Vue({
     el: "#app",
 
@@ -41540,4 +41541,4 @@ var app = new Vue({
 
 },{"./app":9}]},{},[17]);
 
-//# sourceMappingURL=internal-edit.js.map
+//# sourceMappingURL=external-create.js.map

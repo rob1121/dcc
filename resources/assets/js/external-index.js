@@ -1,9 +1,10 @@
 require("./app");
+import vFilter from "./mixins/filters";
 
-const app =new Vue({
+const app = new Vue({
 	el: "#app",
 
-    mixins: [filters],
+    mixins: [vFilter],
 
 	data: {
 		category: {
@@ -42,7 +43,7 @@ const app =new Vue({
         getPagination(num = "") {
             var loader = $(".loader");
             loader.show();
-            this.$http.get(`${env_server}/api/customer-spec?page=${num}&category=${this.category.category_no}`)
+            this.$http.get(`${env_server}/api/external/search?page=${num}&category=${this.category.customer_name}`)
                 .then( response => {
                     this.pagination = response.json();
                     loader.hide();

@@ -17,6 +17,7 @@ class InternalSpecRevisionTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $this->file = new Illuminate\Http\UploadedFile(base_path('tests/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE);
         $this->factory = factory(App\CompanySpecRevision::class);
         $this->spec = factory(App\CompanySpec::class)->create();
     }
@@ -24,7 +25,7 @@ class InternalSpecRevisionTest extends TestCase
     /** @test */
     public function it_can_add_new_spec_revision()
     {
-        $actual = new Request($this->factory->make()->toArray());
+        $actual = new Request($this->factory->make(["document" => $this->file])->toArray());
         $expected = $actual->all();
         array_pull($expected,"document");
         array_pull($expected,"company_spec_id");
@@ -36,7 +37,7 @@ class InternalSpecRevisionTest extends TestCase
     /** @test */
     public function it_should_update_spec_revision()
     {
-        $actual = new Request($this->factory->make([ "revision" => "**" ])->toArray());
+        $actual = new Request($this->factory->make([ "revision" => "**", "document" => $this->file ])->toArray());
         $this->persistDummyDatabaseDataForRevision($actual);
         $actual["revision_summary"] = "summary";
         $expect = [

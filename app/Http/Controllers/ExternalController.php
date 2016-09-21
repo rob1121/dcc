@@ -1,6 +1,9 @@
 <?php namespace App\Http\Controllers;
 
+use App\CustomerSpec;
 use App\CustomerSpecCategory;
+use App\DCC\File\Document;
+use App\Http\Requests\ExternalSpecRequest;
 use Illuminate\Http\Request;
 use JavaScript;
 
@@ -22,31 +25,30 @@ class ExternalController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return view('external.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ExternalSpecRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(ExternalSpecRequest $request) {
+        return $request;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param CustomerSpec $external
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function show($id)
-    {
-        //
+    public function show(CustomerSpec $external) {
+        $document = new Document($external->customerSpecRevision()->orderBy('revision','desc')->first()->document);
+        return $document->showPDF();
     }
 
     /**
@@ -55,9 +57,8 @@ class ExternalController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(CustomerSpec $external) {
+        return view("external.edit", ['spec' => $external]);
     }
 
     /**
@@ -67,9 +68,9 @@ class ExternalController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ExternalSpecRequest $request, CustomerSpec $external)
     {
-        //
+
     }
 
     /**

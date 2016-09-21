@@ -5,7 +5,6 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 require('./bootstrap');
-import filters from "./mixins/filters";
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -18,12 +17,10 @@ Vue.component('dcc-textarea', require('./components/Textarea.vue'));
 Vue.component('dcc-button', require('./components/Button.vue'));
 Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 Vue.component('dcc-modal', require('./components/Modal.vue'));
-Vue.component('dcc-pulse', require('vue-spinner/src/PulseLoader.vue'));
+Vue.component('dcc-pulse', require('./components/PulseLoader.vue'));
 
 const nav = new Vue({
     el: 'nav',
-
-    mixins: [filters],
 
     data: {
         showResultDialog: false,

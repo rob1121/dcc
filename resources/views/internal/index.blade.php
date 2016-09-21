@@ -42,7 +42,7 @@
 
 
             <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add
-                new Specs <i class="fa fa-plus"></i></a>
+                new internal specification <i class="fa fa-plus"></i></a>
             <div class="clearfix"></div>
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-xs-3"><h6>@{{spec.spec_no}} - @{{spec.name}}</h6></div>
@@ -52,9 +52,9 @@
                     <h6>@{{spec.company_spec_revision.revision | uppercase}}</h6>
                 </div>
                 <div class="col-xs-3">
-                    <a class="btn btn-xs btn-primary" target="_blank" href="/internal/@{{spec.id}}"> View <i
+                    <a class="btn btn-xs btn-primary" target="_blank" href="{{$server}}/internal/@{{spec.id}}"> View <i
                                 class="fa fa-file-pdf-o"></i></a>
-                    <a class="btn btn-xs btn-warning" href="/internal/@{{spec.id}}/edit">Edit <i
+                    <a class="btn btn-xs btn-warning" href="{{$server}}/internal/@{{spec.id}}/edit">Edit <i
                                 class="fa fa-pencil"></i></a>
                     <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
                     setModalSpec(spec)">Remove <i

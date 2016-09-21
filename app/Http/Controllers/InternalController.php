@@ -1,15 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-use App\DCC\Internal\InternalSpecCategory;
 use App\CompanySpec;
 use App\CompanySpecCategory;
 use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\File\Document;
-use App\DCC\Internal\InternalSpecFile;
 use App\DCC\Internal\InternalSpecification;
-use App\DCC\Internal\InternalSpecRevision;
 use App\DCC\SpecificationFactory;
-use App\Http\Requests\CompanySpecRequest;
+use App\Http\Requests\InternalSpecRequest;
 use JavaScript;
 
 class InternalController extends Controller {
@@ -41,10 +38,10 @@ class InternalController extends Controller {
     /**
      * store instance to database
      * @method post
-     * @param CompanySpecRequest $request
+     * @param InternalSpecRequest $request
      * @return mixed|string
      */
-    public function store(CompanySpecRequest $request) {
+    public function store(InternalSpecRequest $request) {
         try {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
@@ -60,7 +57,7 @@ class InternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(CompanySpec $internal) {
-        $document = new Document($internal);
+        $document = new Document($internal->companySpecRevision->document);
         return $document->showPDF();
     }
 
@@ -77,12 +74,12 @@ class InternalController extends Controller {
     /**
      * update database
      * @method patch
-     * @param CompanySpecRequest $request
+     * @param InternalSpecRequest $request
      * @param CompanySpec $internal
      * @return mixed
      * @internal param CompanySpec $companySpec
      */
-    public function update(CompanySpecRequest $request, CompanySpec $internal) {
+    public function update(InternalSpecRequest $request, CompanySpec $internal) {
         $this->factory->update(new InternalSpecification($internal), $request);
         return redirect(route("internal.index"));
     }

@@ -6,6 +6,7 @@
                v-model="value"
                name="{{name}}"
                id="{{name}}"
+               :readonly="readOnly"
         >
         <h6 class="help-block" v-show="error">{{error}}</h6>
     </div>
@@ -18,7 +19,8 @@
             type:{default:"text"},
             error:{default:""},
             label:{default:""},
-            col:{default:"12"}
+            col:{default:"12"},
+            readOnly:{default:false}
         }
     }
 </script>

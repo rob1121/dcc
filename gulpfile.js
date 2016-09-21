@@ -1,6 +1,6 @@
 const elixir = require('laravel-elixir');
 
-require('laravel-elixir-vue');
+require('laravel-elixir-vueify');
 
 /*
  |--------------------------------------------------------------------------
@@ -18,12 +18,16 @@ elixir(mix => {
         .sass('internal-index.sass')
         .sass('internal-edit.sass')
         .sass('internal-create.sass')
-        .webpack('internal-index.js')
-        .webpack('internal-edit.js')
-        .webpack('internal-create.js')
+        .browserify('internal-index.js')
+        .browserify('internal-edit.js')
+        .browserify('internal-create.js')
 
         .sass('external-index.sass')
-        .webpack('external-create.js')
+        .sass('external-create.sass')
+        .sass('external-edit.sass')
+        .browserify('external-index.js')
+        .browserify('external-edit.js')
+        .browserify('external-create.js')
         .browserSync({
             proxy: "dcc_2016.me"
         });

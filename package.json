@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "font-awesome": "^4.6.3",
+    "laravel-elixir-vueify": "^2.0.0",
     "moment": "^2.15.0",
     "vue-date-picker": "^1.0.2",
     "vue-spinner": "^1.0.2"
