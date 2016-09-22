@@ -26,7 +26,7 @@ class InternalSpecRequest extends FormRequest
         return [
             'name' => 'required',
             'spec_no' => 'required',
-            'revision' => "required|max:5",
+            'revision' => "required|min:2|max:5",
             'revision_summary' => "required",
             'document' => 'required|mimes:pdf',
             'revision_date' => "required|date",

@@ -3259,7 +3259,7 @@ html {
   -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family: "Raleway", sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: #636b6f;
@@ -7349,7 +7349,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "Raleway", sans-serif;
+  font-family: "Arial", sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -7462,7 +7462,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Raleway", sans-serif;
+  font-family: "Arial", sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -7973,8 +7973,23 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.navbar-header {
+  font-family: "Raleway", sans-serif; }
+
 [v-cloak] {
   display: none; }
+
+body {
+  background: #e4ecf2; }
+
+.navbar li a {
+  border-bottom: 3px solid #fff;
+  -webkit-transition: .1s ease-in;
+  transition: .1s ease-in; }
+
+.navbar .active a,
+.navbar li:hover a {
+  border-bottom: 3px solid #d3e0e9; }
 
 .close {
   font-size: 5em;
@@ -8022,15 +8037,16 @@ th {
   text-transform: capitalize; }
 
 #sidebar {
+  position: relative;
+  z-index: 2;
   float: left;
   height: 100vh;
   width: 20%;
-  border-right: 1px solid #d3e0e9;
   padding-top: 64px;
   overflow: hidden;
   -webkit-transition: .3s ease-in-out;
   transition: .3s ease-in-out;
-  background: #fff; }
+  background: #f5f8fa; }
   #sidebar:hover {
     overflow-y: auto; }
   #sidebar.show-sidebar {
@@ -8039,10 +8055,12 @@ th {
   #sidebar .link {
     text-decoration: none !important;
     padding: 5px 10px;
+    margin: 0 15px;
     text-transform: uppercase;
     width: 100%;
     display: inline-block;
     color: #636b6f;
+    background: #fff;
     border-left: 3px solid #fff; }
     #sidebar .link:hover {
       background: #e6e6e6;
@@ -8058,7 +8076,7 @@ th {
   right: 0;
   height: 100vh;
   width: 80%;
-  padding: 64px 20px 10px 20px;
+  padding: 64px 120px 10px 30px;
   overflow-y: auto;
   -webkit-transition: .3s ease-in-out;
   transition: .3s ease-in-out;
@@ -8069,6 +8087,19 @@ th {
 .toggler-btn {
   display: none;
   margin-bottom: 10px; }
+
+.loader {
+  position: fixed;
+  display: none;
+  background: rgba(255, 255, 255, 0.5);
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 1; }
+  .loader .v-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%; }
 
 @media (max-width: 1000px) {
   #sidebar {
@@ -8162,18 +8193,5 @@ th {
     .pagination-link .pagination-text span {
       background: rgba(255, 255, 255, 0.5);
       margin: 0; }
-
-.loader {
-  position: fixed;
-  display: none;
-  background: rgba(255, 255, 255, 0.5);
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  z-index: 1; }
-  .loader .v-spinner {
-    position: fixed;
-    top: 50%;
-    left: 50%; }
 
 /*# sourceMappingURL=external-index.css.map */

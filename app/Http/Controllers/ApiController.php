@@ -26,7 +26,7 @@ class ApiController extends Controller
             ->map(function($data) { return $data->customer_spec_id; })->toArray();
 
         $customer_spec = CustomerSpec::with(["customerSpecRevision" => function($query) {
-            $query->orderBy("revision_date","asc");
+            $query->orderBy("revision_date","asc")->orderBy("revision","asc");
         }])->whereIn('id', $ids)->paginate();
 
         return response()->json($customer_spec)

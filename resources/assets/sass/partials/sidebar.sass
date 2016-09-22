@@ -1,16 +1,16 @@
 #sidebar
+    position: relative
+    z-index: 2
     float: left
     height: 100vh
     width: 20%
-    border-right: 1px solid $laravel-border-color
     padding-top: 64px
     overflow: hidden
     transition: .3s ease-in-out
-    background: #fff
+    background: $body-bg
 
     &:hover
         overflow-y: auto
-
 
     &.show-sidebar
         transform: translateX(0)
@@ -18,10 +18,12 @@
     .link
         text-decoration: none !important
         padding: 5px 10px
+        margin: 0 15px
         text-transform: uppercase
         width: 100%
         display: inline-block
         color: $text-color
+        background: #fff
         border-left: 3px solid #fff
 
         &:hover
@@ -39,7 +41,7 @@
     right: 0
     height: 100vh
     width: 80%
-    padding: 64px 20px 10px 20px
+    padding: 64px 120px 10px 30px
     overflow-y: auto
     transition: .3s ease-in-out
     background: darken($body-bg, 5%)
@@ -47,10 +49,23 @@
     &.compress-main-content
         width: 75%
 
-
 .toggler-btn
     display: none
     margin-bottom: 10px
+
+.loader
+    position: fixed
+    display: none
+    background: rgba(255,255,255, 0.5)
+    top: 0
+    bottom: 0
+    width: 100%
+    z-index: 1
+
+    .v-spinner
+        position: fixed
+        top: 50%
+        left: 50%
 
 
 @media (max-width: 1000px)
@@ -62,4 +77,6 @@
 
     .toggler-btn
         display: block
+
+
 

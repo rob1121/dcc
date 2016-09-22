@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @push('style')
-    <link rel="stylesheet" href="{{url("/css/external-edit.css")}}">
+<link rel="stylesheet" href="{{url("/css/external-edit.css")}}">
 @endpush
 
 @push('script')
-    <script src="{{url("/js/external-edit.js")}}"></script>
+<script src="{{url("/js/external-edit.js")}}"></script>
 @endpush
 
 @section('content')
@@ -25,12 +25,38 @@
                 <h3 class="panel-title">Update External Specification</h3>
             </div>
             <div class="panel-body">
-                <form action="{{route("external.update",['internal' => $spec->id])}}" method="post" enctype="multipart/form-data" id="form-submit">
+                <form action="{{route("external.update",['internal' => $spec->id])}}" method="post"
+                      enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     {{ method_field('PATCH') }}
+                    <div class="container-fluid">
+                        <dcc-input name="customer_name"
+                                   col="4"
+                                   label="customer name"
+                                   error="{{$errors->has("customer_name") ? $errors->first("customer_name"):""}}"
+                                   value="{{$errors->has("customer_name") || old("customer_name")
+                                    ? old("customer_name") :  $spec->customerSpecCategory->customer_name}}"
+                        ></dcc-input>
+
+                        <dcc-input name="revision"
+                                   col="4"
+                                   error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
+                                   value="{{$errors->has("revision") || old("revision")
+                                       ? old("revision")
+                                       :  collect($spec->customerSpecRevision)->sortBy("revision")->last()->revision}}"
+                        ></dcc-input>
+
+                        <dcc-datepicker name="revision_date"
+                                        col="4"
+                                        label="date"
+                                        error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
+                                        value="{{$errors->has("revision_date") || old("revision_date")
+                                            ? old("revision_date")
+                                            : collect($spec->customerSpecRevision)->sortBy("revision")->last()->revision_date}}"
+                        ></dcc-datepicker>
+                    </div>
 
                     <dcc-input name="spec_no"
-                               read-only=true
                                col="4"
                                label="spec no."
                                error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
@@ -38,35 +64,11 @@
                     ></dcc-input>
 
                     <dcc-input name="name"
-                               read-only=true
                                col="8"
                                label="title"
                                error="{{$errors->has("name") ? $errors->first("name"):""}}"
                                value="{{$errors->has("name") || old("name") ? old("name") :  $spec->name}}"
                     ></dcc-input>
-
-                    <dcc-input name="customer_name"
-                               read-only=true
-                               col="4"
-                               label="customer name"
-                               error="{{$errors->has("customer_name") ? $errors->first("customer_name"):""}}"
-                               value="{{$errors->has("customer_name") || old("customer_name")
-                                    ? old("customer_name") :  $spec->customerSpecCategory->customer_name}}"
-                    ></dcc-input>
-
-                    <dcc-input name="revision"
-                               col="4"
-                               error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
-                               value="{{$errors->has("revision") || old("revision") ? old("revision") :  collect($spec->customerSpecRevision)->sortByDesc("revision")->first()->revision}}"
-                    ></dcc-input>
-
-                    <dcc-datepicker name="revision_date"
-                                    col="4"
-                                    label="date"
-                                    error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                    value="{{$errors->has("revision_date") || old("revision_date")
-                                        ? old("revision_date") :  collect($spec->customerSpecRevision)->sortByDesc("revision")->first()->revision_date}}"
-                    ></dcc-datepicker>
 
                     <dcc-input name="document"
                                col="4"
@@ -81,7 +83,7 @@
                                 data-toggle="modal"
                                 href="#spec-update"
                         >
-                            Save <i class="fa fa-fa-floppy-o"></i>
+                            Save <i class="fa fa-floppy-o"></i>
                         </button>
                     </div>
 

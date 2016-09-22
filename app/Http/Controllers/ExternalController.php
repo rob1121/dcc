@@ -2,12 +2,18 @@
 
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
+use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
+use App\DCC\SpecificationFactory;
 use App\Http\Requests\ExternalSpecRequest;
-use Illuminate\Http\Request;
 use JavaScript;
 
 class ExternalController extends Controller {
+    private $factory;
+
+    public function __construct() {
+        $this->factory = new SpecificationFactory;
+    }
 
     public function index() {
         $categories = CustomerSpecCategory::getCategoryList();
@@ -36,7 +42,8 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(ExternalSpecRequest $request) {
-        return $request;
+        $this->factory->store(new ExternalSpecification, $request);
+        return redirect(route("external.index"));
     }
 
     /**
@@ -54,7 +61,7 @@ class ExternalController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param CustomerSpec $external
      * @return \Illuminate\Http\Response
      */
     public function edit(CustomerSpec $external) {
@@ -64,13 +71,13 @@ class ExternalController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param ExternalSpecRequest $request
+     * @param CustomerSpec $external
      * @return \Illuminate\Http\Response
      */
-    public function update(ExternalSpecRequest $request, CustomerSpec $external)
-    {
-
+    public function update(ExternalSpecRequest $request, CustomerSpec $external) {
+        $this->factory->update(new ExternalSpecification($external), $request);
+        return redirect(route("external.index"));
     }
 
     /**

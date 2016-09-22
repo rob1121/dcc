@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @push('style')
-<link rel="stylesheet" href="{{url("/css/internal-index.css")}}">
+    <link rel="stylesheet" href="{{url("/css/internal-index.css")}}">
 @endpush
 
 
@@ -20,17 +20,17 @@
         </a>
     </div>
 
+    <div class="loader">
+        <dcc-pulse color="#2ab27b" size="50px"></dcc-pulse>
+    </div>
+
     <div class="main-content">
-        <div class="loader">
-            <dcc-pulse color="#2ab27b" size="50px"></dcc-pulse>
-        </div>
         <button class="btn btn-default toggler-btn" @click="showSideBar">
-        <i class="fa fa-bars"></i>
-        <span>Toggle sidebar</span>
+            <i class="fa fa-bars"></i>
+            <span>Toggle sidebar</span>
         </button>
         <br>
         <div class="deck-collection">
-
             <ol class="breadcrumb">
                 <li>
                     <a href="{{route("home")}}">Home</a>
@@ -39,7 +39,6 @@
                 <li class="active">@{{ category.category_no | uppercase }}
                     - @{{ category.category_name | uppercase }}</li>
             </ol>
-
 
             <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add
                 new internal specification <i class="fa fa-plus"></i></a>

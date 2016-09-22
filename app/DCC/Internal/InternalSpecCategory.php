@@ -17,7 +17,7 @@ class InternalSpecCategory implements SpecificationGateway {
     }
 
     function update(Request $request) {
-        $this->spec->companySpecCategory->update($this->modelInstance($request));
+        $this->spec->companySpecCategory()->update($this->modelInstance($request));
     }
 
     private function modelInstance(Request $request) {

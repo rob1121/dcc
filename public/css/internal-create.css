@@ -3259,7 +3259,7 @@ html {
   -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family: "Raleway", sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: #636b6f;
@@ -7349,7 +7349,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "Raleway", sans-serif;
+  font-family: "Arial", sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -7462,7 +7462,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Raleway", sans-serif;
+  font-family: "Arial", sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -7973,8 +7973,23 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.navbar-header {
+  font-family: "Raleway", sans-serif; }
+
 [v-cloak] {
   display: none; }
+
+body {
+  background: #e4ecf2; }
+
+.navbar li a {
+  border-bottom: 3px solid #fff;
+  -webkit-transition: .1s ease-in;
+  transition: .1s ease-in; }
+
+.navbar .active a,
+.navbar li:hover a {
+  border-bottom: 3px solid #d3e0e9; }
 
 .close {
   font-size: 5em;

@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @push('style')
-    <link rel="stylesheet" href="{{url("/css/internal-index.css")}}">
+    <link rel="stylesheet" href="{{url("/css/external-index.css")}}">
 @endpush
 
 
@@ -20,13 +20,14 @@
         </a>
     </div>
 
+    <div class="loader">
+        <dcc-pulse color="#2ab27b" size="50px"></dcc-pulse>
+    </div>
+
     <div class="main-content">
-        <div class="loader">
-            <dcc-pulse color="#2ab27b" size="50px"></dcc-pulse>
-        </div>
         <button class="btn btn-default toggler-btn" @click="showSideBar">
-        <i class="fa fa-bars"></i>
-        <span>Toggle sidebar</span>
+            <i class="fa fa-bars"></i>
+            <span>Toggle sidebar</span>
         </button>
         <br>
         <div class="deck-collection">

@@ -22,7 +22,7 @@
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar">
-        <div class="container">
+        <div class="row-fluid" style="padding: 0 20px">
             <div class="navbar-header">
 
                 <!-- Collapsed Hamburger -->
@@ -34,19 +34,15 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ url('/') }}" style="margin-left: 20px">
+                    <strong>{{ config('app.name', 'Laravel') }}</strong>
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    &nbsp;
-                </ul>
 
                 <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-left">
+                <ul class="nav navbar-nav navbar-left" style="margin-left: 8%">
                     <li @if(route("internal.index") === Request::url()) class="active" @endif>
                         <a href="{{ route("internal.index") }}">Internal Specification</a>
                     </li>
