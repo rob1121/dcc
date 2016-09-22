@@ -41379,11 +41379,12 @@ exports.default = {
         error: { default: "" },
         label: { default: "" },
         col: { default: "12" },
-        readOnly: { default: false }
+        readOnly: { default: false },
+        list: { default: "" }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\">\n    <label class=\"control-label\">{{label ? label : name |capitalize}}</label>\n    <input type=\"{{type}}\" class=\"form-control input-sm\" v-model=\"value\" name=\"{{name}}\" id=\"{{name}}\" :readonly=\"readOnly\">\n    <h6 class=\"help-block\" v-show=\"error\">{{error}}</h6>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\">\n    <label class=\"control-label\">{{label ? label : name |capitalize}}</label>\n    <input type=\"{{type}}\" class=\"form-control input-sm\" v-model=\"value\" name=\"{{name}}\" id=\"{{name}}\" :list=\"list\" readonly=\"{{readOnly}}\">\n    <h6 class=\"help-block\" v-show=\"error\">{{error}}</h6>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

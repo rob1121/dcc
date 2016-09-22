@@ -2,6 +2,7 @@
 
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
+use App\CustomerSpecRevision;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
@@ -32,7 +33,9 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('external.create');
+        return view('external.create', [
+            "categories" => CustomerSpecCategory::get(["customer_name"])->unique("customer_name")->flatten()
+        ]);
     }
 
     /**

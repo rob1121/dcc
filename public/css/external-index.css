@@ -8046,7 +8046,7 @@ th {
   overflow: hidden;
   -webkit-transition: .3s ease-in-out;
   transition: .3s ease-in-out;
-  background: #f5f8fa; }
+  background: #fff; }
   #sidebar:hover {
     overflow-y: auto; }
   #sidebar.show-sidebar {

@@ -25,7 +25,7 @@ class ExternalSpecRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'spec_no' => 'required',
+            'spec_no' => 'required|unique:customer_specs,spec_no',
             'revision' => "required|min:2|max:5",
             'document' => 'required|mimes:pdf',
             'revision_date' => "required|date",

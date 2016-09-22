@@ -22,13 +22,9 @@ class ExternalSpecRevision implements SpecificationGateway {
     }
 
     function update(Request $request) {
-        $ids = collect($this->spec->customerSpecRevision)->filter(function($item) use($request) {
-            return strcasecmp($item->revision, $request->revision);
-        })->map(function($item) {
-            return $item->id;
-        })->flatten();
+        $ids = $this->getIdsOfAllLastestRevision($request);
+        $this->spec->customerSpecRevision()->whereIn("id",$ids)->delete();
 
-        dd($this->spec->customerSpecRevision()->whereIn("id",$ids)->get());
         $this->isRevisionExist($request)
             ? $this->spec->customerSpecRevision()->whereRevision($request->revision)->update($this->modelInstance($request))
             : $this->spec->customerSpecRevision()->create($this->modelInstance($request));
@@ -44,8 +40,21 @@ class ExternalSpecRevision implements SpecificationGateway {
      * @param Request $request
      * @return mixed
      */
-    protected function isRevisionExist(Request $request)
-    {
+    protected function isRevisionExist(Request $request) {
         return $this->spec->customerSpecRevision()->whereRevision($request->revision)->count() > 0;
+    }
+
+    /**
+     * @param Request $request
+     * @return static
+     */
+    protected function getIdsOfAllLastestRevision(Request $request)
+    {
+        $ids = collect($this->spec->customerSpecRevision)->filter(function ($item) use ($request) {
+            return strcasecmp($item->revision, $request->revision);
+        })->map(function ($item) {
+            return $item->id;
+        })->flatten();
+        return $ids;
     }
 }

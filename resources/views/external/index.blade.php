@@ -2,6 +2,7 @@
 
 @push('style')
     <link rel="stylesheet" href="{{url("/css/external-index.css")}}">
+
 @endpush
 
 
