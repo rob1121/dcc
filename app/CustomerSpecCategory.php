@@ -8,6 +8,10 @@ class CustomerSpecCategory extends Model
 {
     protected $fillable = ["customer_name"];
 
+    public static function customerList() {
+        return self::get(["customer_name"])->unique("customer_name")->flatten();
+    }
+
     public function customerSpec() {
         return $this->belongsTo(CustomerSpec::class);
     }

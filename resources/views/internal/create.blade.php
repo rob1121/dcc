@@ -1,11 +1,32 @@
 @extends('layouts.app')
 
 @push("style")
-<link rel="stylesheet" href="{{url("/css/internal-create.css")}}">
+    <link rel="stylesheet" href="{{url("/css/internal-create.css")}}">
 @endpush
 
 @push("script")
 <script src="{{url("/js/internal-create.js")}}"></script>
+<script>
+    function toggleCategory(selected) {
+        if( "add_category" === selected.val() ) {
+            $("#category_no").val("");
+            $("#category_name").val("");
+            $(".category-group").removeClass("hidden");
+        } else {
+            $("#category_no").val(selected.val());
+            $("#category_name").val(selected.data("name"));
+            $(".category-group").addClass("hidden");
+        }
+
+    }
+
+    if($("option:selected").val() === "add_category")
+        $(".category-group").removeClass("hidden");
+
+    $('#category').on("change", function() {
+        toggleCategory($('option:selected'));
+    });
+</script>
 @endpush
 
 @section('content')
@@ -26,50 +47,73 @@
             <div class="panel-body">
                 <form action="{{route('internal.store')}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
+                    <div class="form-group col-sm-12">
+                        <label class="control-label">Specification Category</label>
+                        <select name="category" id="category" class="form-control input-sm">
+                            <option value="" selected disabled> -- Select One -- </option>
 
-                    <dcc-input name="category_no"
-                               col="4"
-                               label="category no."
-                               error="{{$errors->has("category_no") ? $errors->first("category_no"):""}}"
-                               value="{{old("category_no")}}"
-                    ></dcc-input>
+                            <option v-for="category in {{$categories}}"
+                                    :value="category.category_no"
+                                    :data-name="category.category_name"
+                                    :selected="'{{old("category")}}' == category.category_no"
+                            >
+                                @{{ category.category_no }} - @{{ category.category_name }}
+                            </option>
 
-                    <dcc-input name="category_name"
-                               col="8"
-                               label="category name"
-                               error="{{$errors->has("category_name") ? $errors->first("category_name"):""}}"
-                               value="{{old("category_name")}}"
-                    ></dcc-input>
+                            <option value="add_category" :selected="'{{old("category")}}' === 'add_category'">
+                                -- Input new category --
+                            </option>
+                        </select>
+                        <h6 class="help-block"></h6>
+                    </div>
+
+                    <div class="category-group hidden">
+                            <dcc-input name="category_no"
+                                       col="4"
+                                       label="category no."
+                                       list="category_list"
+                                       error="{{$errors->has("category_no") ? $errors->first("category_no"):""}}"
+                                       value="{{old("category_no")}}"
+                            ></dcc-input>
+
+                            <dcc-input name="category_name"
+                                       col="8"
+                                       label="category name"
+                                       list="category_list_name"
+                                       error="{{$errors->has("category_name") ? $errors->first("category_name"):""}}"
+                                       value="{{old("category_name")}}"
+                            ></dcc-input>
+                    </div>
 
                     <dcc-input name="spec_no"
-                               col="4"
+                               col="3"
                                label="spec no."
                                error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
                                value="{{old("spec_no")}}"
                     ></dcc-input>
 
-                    <dcc-input name="revision"
-                               col="4"
-                               error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
-                               value="{{old("revision")}}"
-                    ></dcc-input>
-
-                    <dcc-datepicker name="revision_date"
-                                    col="4"
-                                    label="date"
-                                    error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                    value="{{old("revision_date")}}"
-                    ></dcc-datepicker>
-
                     <dcc-input name="name"
-                               col="8"
+                               col="9"
                                label="title"
                                error="{{$errors->has("name") ? $errors->first("name"):""}}"
                                value="{{old("name")}}"
                     ></dcc-input>
 
+                    <dcc-input name="revision"
+                               col="2"
+                               error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
+                               value="{{old("revision")}}"
+                    ></dcc-input>
+
+                    <dcc-datepicker name="revision_date"
+                                    col="2"
+                                    label="date"
+                                    error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
+                                    value="{{old("revision_date")}}"
+                    ></dcc-datepicker>
+
                     <dcc-input name="document"
-                               col="4"
+                               col="3"
                                type="file"
                                error="{{$errors->has("document") ? $errors->first("document"):""}}"
                                value="{{old("document")}}"

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\CompanySpec;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class InternalSpecRequest extends FormRequest
 {
@@ -23,9 +25,12 @@ class InternalSpecRequest extends FormRequest
      */
     public function rules()
     {
+        $spec = CompanySpec::find(Request::input("id"));
+        $id = $spec ? $spec->id : null;
+
         return [
-            'name' => 'required',
-            'spec_no' => 'required',
+            'name' => "required|unique:company_specs,name,{$id}",
+            'spec_no' => "required|unique:company_specs,spec_no,{$id}",
             'revision' => "required|min:2|max:5",
             'revision_summary' => "required",
             'document' => 'required|mimes:pdf',

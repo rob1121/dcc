@@ -2,7 +2,6 @@
 
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
-use App\CustomerSpecRevision;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
@@ -11,20 +10,18 @@ use JavaScript;
 
 class ExternalController extends Controller {
     private $factory;
+    private $categories;
 
     public function __construct() {
         $this->factory = new SpecificationFactory;
+        $this->categories = CustomerSpecCategory::customerList();
     }
 
     public function index() {
         $categories = CustomerSpecCategory::getCategoryList();
-        JavaScript::put([
-            'customer_name' => $categories->first()->customer_name,
-        ]);
+        JavaScript::put([ 'customer_name' => $categories->first()->customer_name ]);
 
-        return view('external.index', [
-            "categories" => $categories
-        ]);
+        return view('external.index', [ "categories" => $categories ]);
     }
 
     /**
@@ -33,9 +30,7 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('external.create', [
-            "categories" => CustomerSpecCategory::get(["customer_name"])->unique("customer_name")->flatten()
-        ]);
+        return view('external.create', [ "categories" => $this->categories ]);
     }
 
     /**
@@ -68,7 +63,7 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(CustomerSpec $external) {
-        return view("external.edit", ['spec' => $external]);
+        return view("external.edit", [ "spec" => $external, "categories" => $this->categories ]);
     }
 
     /**

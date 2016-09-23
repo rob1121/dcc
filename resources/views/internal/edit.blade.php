@@ -34,7 +34,7 @@
                                label="category no."
                                error="{{$errors->has("category_no") ? $errors->first("category_no"):""}}"
                                value="{{$errors->has("category_no") || old("category_no")
-                                    ? old("category_no") :  $spec->companySpecCategory->category_no}}"
+                                ? old("category_no") :  $spec->companySpecCategory->category_no}}"
                     ></dcc-input>
 
                     <dcc-input name="category_name"
@@ -42,7 +42,7 @@
                                label="category name"
                                error="{{$errors->has("category_name") ? $errors->first("category_name"):""}}"
                                value="{{$errors->has("category_name") || old("category_name")
-                                    ? old("category_name") :  $spec->companySpecCategory->category_name}}"
+                                ? old("category_name") :  $spec->companySpecCategory->category_name}}"
                     ></dcc-input>
 
                     <dcc-input name="spec_no"

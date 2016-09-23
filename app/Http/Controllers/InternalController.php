@@ -11,9 +11,11 @@ use JavaScript;
 
 class InternalController extends Controller {
     private $factory;
+    private $categories;
 
     public function __construct(){
         $this->factory = new SpecificationFactory;
+        $this->categories = CompanySpecCategory::getCategoryList();
     }
 
     public function index() {
@@ -32,7 +34,7 @@ class InternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
-        return view('internal.create');
+        return view('internal.create', [ "categories" => $this->categories ]);
     }
 
     /**
@@ -68,7 +70,7 @@ class InternalController extends Controller {
      * @internal param CompanySpec $companySpec
      */
     public function edit(CompanySpec $internal) {
-        return view('internal.edit', ['spec' => $internal]);
+        return view('internal.edit', ['spec' => $internal, "categories" => $this->categories ]);
     }
 
     /**

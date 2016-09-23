@@ -29,14 +29,21 @@
                       enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     {{ method_field('PATCH') }}
+                    <input type="hidden" value="{{$spec->id}}" name="id">
                     <div class="container-fluid">
+
                         <dcc-input name="customer_name"
                                    col="4"
                                    label="customer name"
+                                   list="external_customer"
                                    error="{{$errors->has("customer_name") ? $errors->first("customer_name"):""}}"
                                    value="{{$errors->has("customer_name") || old("customer_name")
-                                    ? old("customer_name") :  $spec->customerSpecCategory->customer_name}}"
+                                   ? old("customer_name") :  $spec->customerSpecCategory->customer_name}}"
                         ></dcc-input>
+
+                        <datalist id="external_customer">
+                            <option v-for="category in {{$categories}}" value="@{{ category.customer_name }}">
+                        </datalist>
 
                         <dcc-input name="revision"
                                    col="4"

@@ -2,6 +2,7 @@
 
 @push("style")
     <link rel="stylesheet" href="{{url("/css/external-create.css")}}">
+
 @endpush
 
 @push("script")
@@ -24,18 +25,19 @@
               <h3 class="panel-title">Add new External Specification</h3>
             </div>
             <div class="panel-body">
+
                 <form action="{{route('external.store')}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     <div class="container-fluid">
                         <dcc-input name="customer_name"
                                    col="4"
                                    label="customer name"
-                                   list="browsers"
+                                   list="external_customer"
                                    error="{{$errors->has("customer_name") ? $errors->first("customer_name"):""}}"
                                    value="{{old("customer_name")}}"
                         ></dcc-input>
 
-                        <datalist id="browsers">
+                        <datalist id="external_customer">
                             <option v-for="category in {{$categories}}" value="@{{ category.customer_name }}">
                         </datalist>
 
