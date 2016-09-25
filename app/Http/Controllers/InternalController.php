@@ -19,14 +19,13 @@ class InternalController extends Controller {
     }
 
     public function index() {
-        $categories = CompanySpecCategory::getCategoryList();
         JavaScript::put([
-            'category_no' => $categories->first()->category_no,
-            'category_name' => $categories->first()->category_name
+            'category_no' => $this->categories->first()->category_no,
+            'category_name' => $this->categories->first()->category_name
         ]);
 
         return view('internal.index', [
-            "categories" => $categories
+            "categories" => $this->categories
         ]);
     }
     /**

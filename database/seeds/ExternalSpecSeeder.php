@@ -52,6 +52,7 @@ class ExternalSpecSeeder extends Seeder
 
             factory('App\CustomerSpecCategory')->create([
                 'customer_spec_id' => $id,
+                'customer_name' => $faker->randomElement(["ADGT","CML","MICROCHIP","AMS"])
             ]);
         }
         $this->command->info("External spec table seeded");

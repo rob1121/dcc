@@ -47,7 +47,7 @@
             <div class="panel-body">
                 <form action="{{route('internal.store')}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
-                    <div class="form-group col-sm-12">
+                    <div class="form-group col-sm-12 @if($errors->has("category_no") || $errors->has("category_name")) has-error @endif">
                         <label class="control-label">Specification Category</label>
                         <select name="category" id="category" class="form-control input-sm">
                             <option value="" selected disabled> -- Select One -- </option>
@@ -64,7 +64,6 @@
                                 -- Input new category --
                             </option>
                         </select>
-                        <h6 class="help-block"></h6>
                     </div>
 
                     <div class="category-group hidden">

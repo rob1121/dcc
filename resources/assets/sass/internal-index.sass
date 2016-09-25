@@ -3,9 +3,8 @@
 @import "./partials/sidebar"
 
 @import "./partials/animation"
-
 .deck-collection
-  overflow: hidden
+  padding-bottom: 64px
 
 .deck
   margin-bottom: 5px
@@ -19,10 +18,11 @@
 
 
   &:hover
-    border-left: 3px solid $brand-success
-    background: darken(#fff, 10%)
+    border-left: 3px solid darkred
+    background: $dcc-hover-color
+    box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.3)
 
-  .spec-no
+.spec-no
     text-transform: uppercase
     font-weight: bold
 

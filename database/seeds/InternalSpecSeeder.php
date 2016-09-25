@@ -48,7 +48,7 @@ class InternalSpecSeeder extends Seeder
                 "name" => $faker->sentence(rand(3,8))
             ])->id;
 
-            factory('App\CompanySpecRevision', $rand_id)->create([
+            factory('App\CompanySpecRevision')->create([
                 'company_spec_id' => $id,
             ]);
 

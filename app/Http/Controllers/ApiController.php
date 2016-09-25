@@ -13,7 +13,7 @@ class ApiController extends Controller
             ->get(['company_spec_id'])
             ->map(function($data) { return $data->company_spec_id; })->toArray();
 
-        $company_spec = CompanySpec::whereIn('id', $ids)->paginate();
+        $company_spec = CompanySpec::whereIn('id', $ids)->orderBy("spec_no")->paginate();
 
         return response()->json($company_spec)
             ->header('Access-Control-Allow-Origin', '*')
@@ -26,8 +26,8 @@ class ApiController extends Controller
             ->map(function($data) { return $data->customer_spec_id; })->toArray();
 
         $customer_spec = CustomerSpec::with(["customerSpecRevision" => function($query) {
-            $query->orderBy("revision_date","asc")->orderBy("revision","asc");
-        }])->whereIn('id', $ids)->paginate();
+            $query->orderBy("revision","asc");
+        }])->whereIn('id', $ids)->orderBy("spec_no")->paginate();
 
         return response()->json($customer_spec)
             ->header('Access-Control-Allow-Origin', '*')

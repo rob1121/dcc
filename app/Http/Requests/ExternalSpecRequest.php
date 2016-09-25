@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\CustomerSpec;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class ExternalSpecRequest extends FormRequest
 {
@@ -25,16 +23,13 @@ class ExternalSpecRequest extends FormRequest
      */
     public function rules()
     {
-        $spec = CustomerSpec::find(Request::input("id"));
-        $id = $spec ? $spec->id : null;
-
         return [
-            'name' => "required|unique:customer_specs,name,{$id}",
-            'spec_no' => "required|unique:customer_specs,spec_no,{$id}",
+            'name' => "required",
+            'spec_no' => "required",
             'revision' => "required|min:2|max:5",
             'document' => 'required|mimes:pdf',
             'revision_date' => "required|date",
-            'customer_name' => 'required',
+            'customer_name' => 'required|unique',
         ];
     }
 }

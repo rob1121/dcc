@@ -41533,13 +41533,6 @@ require("./app");
 var app = new Vue({
     el: "#app",
 
-    filters: {
-        demo: function demo(data) {
-            console.log($("#" + data).val());
-            return data;
-        }
-    },
-
     methods: {
         submitForm: function submitForm() {
             $("#form-submit").submit();

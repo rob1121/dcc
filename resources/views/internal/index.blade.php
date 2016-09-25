@@ -1,12 +1,12 @@
 @extends("layouts.app")
 
 @push('style')
-    <link rel="stylesheet" href="{{url("/css/internal-index.css")}}">
+    <link rel="stylesheet" href="{{URL::to("/css/internal-index.css")}}">
 @endpush
 
 
 @push("script")
-<script src="{{url("/js/internal-index.js")}}"></script>
+<script src="{{URL::to("/js/internal-index.js")}}"></script>
 @endpush
 
 @section("content")

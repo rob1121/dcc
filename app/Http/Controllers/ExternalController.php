@@ -18,10 +18,9 @@ class ExternalController extends Controller {
     }
 
     public function index() {
-        $categories = CustomerSpecCategory::getCategoryList();
-        JavaScript::put([ 'customer_name' => $categories->first()->customer_name ]);
+        JavaScript::put([ 'customer_name' => $this->categories->first()->customer_name ]);
 
-        return view('external.index', [ "categories" => $categories ]);
+        return view('external.index', [ "categories" => $this->categories ]);
     }
 
     /**

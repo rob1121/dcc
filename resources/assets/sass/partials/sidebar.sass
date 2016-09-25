@@ -18,22 +18,23 @@
     .link
         text-decoration: none !important
         padding: 5px 10px
-        margin: 0 15px
+        margin: 0 0 0 5px
         text-transform: uppercase
-        width: 100%
+        width: 105%
         display: inline-block
         color: $text-color
         background: #fff
         border-left: 3px solid #fff
 
         &:hover
-            background: darken(#fff, 10%)
-            border-left: 3px solid $brand-success
+            background: $dcc-hover-color
+            border-left: 3px solid darkred
+            width: 120%
 
         &.active
-            background: darken(#fff, 10%)
+            background: $dcc-hover-color
             font-weight: bold
-            border-left: 3px solid $brand-success
+            border-left: 3px solid darkred
 
 .main-content
     position: absolute

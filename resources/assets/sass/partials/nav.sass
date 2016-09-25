@@ -1,11 +1,18 @@
 .navbar
-    li a
+    border-color: $dcc-border-color
+
+    .navbar-brand
+      color: $dcc-text-header
+
+    li
+      a
         border-bottom: 3px solid #fff
         transition: .1s ease-in
 
-    .active a,
-    li:hover a
-        border-bottom: 3px solid $laravel-border-color
+      &.active a,
+      &:hover a
+          border-bottom: 3px solid $dcc-border-color
+          background: $dcc-hover-color !important
 
 
 .close
@@ -19,13 +26,11 @@
   z-index: 1
   background: #fff
   animation: fade-enter .3s ease-in-out forwards
-  border-top: 1px solid $navbar-default-border
+  border-top: 1px solid $dcc-border-color
   overflow: scroll
 
   .search-result--list
   	margin: 32px 32px 64px 32px
-
-
 
 .search--deck-collection
   overflow: hidden
@@ -36,12 +41,13 @@
   background: #fff
   padding: 10px 5px
   border: 1px solid $laravel-border-color
+  border-left: 3px solid $laravel-border-color
   transition: .1s ease-in-out
   display: inline-block
 
   &:hover
-    border-left: 3px solid $brand-success
-    background: darken(#fff, 5%)
+    border-left: 3px solid $dcc-border-color
+    background: $dcc-hover-color
 
 .search--spec-no
 	text-transform: uppercase
