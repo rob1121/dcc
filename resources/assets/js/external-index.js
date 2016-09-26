@@ -22,14 +22,6 @@ const app = new Vue({
 		this.getPagination();
 	},
 
-    filters: {
-        forReview(collection) {
-            collection.filter(function(item) {
-                return item.customer_spec_review.is_reviewed;
-            });
-        }
-    },
-
     methods: {
         getSpecByCategory(category, index) {
             this.setSpecCategory(category);

@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @push('style')
-<link rel="stylesheet" href="{{URL::to("/css/internal-index.css")}}">
+    <link rel="stylesheet" href="{{URL::to("/css/internal-index.css")}}">
 @endpush
 
 

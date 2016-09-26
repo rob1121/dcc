@@ -87,10 +87,8 @@ class ExternalController extends Controller {
     }
 
     public function forReview() {
-        $customer_spec_revisions = CustomerSpecRevision::whereIsReviewed(0)->with(["customerSpec" => function ($query) {
-            $query->with("customerSpecCategory");
-        }])->get();
+        JavaScript::put([ 'customer_name' => $this->categories->first()->customer_name ]);
 
-        return view("external.for_review", ["for_reviews" => $customer_spec_revisions]);
+        return view('external.for_review', [ "categories" => $this->categories ]);
     }
 }
