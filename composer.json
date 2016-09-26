@@ -22,6 +22,8 @@
         "symfony/dom-crawler": "3.1.*"
     },
     "autoload": {
+        "files": ["app/DCC/helper.php"],
+
         "classmap": [
             "database"
         ],

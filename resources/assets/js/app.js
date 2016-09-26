@@ -5,7 +5,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 require('./bootstrap');
-
+window.laroute = require('./laroute');
+import * as vFilter from "./mixins/filters";
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the body of the page. From here, you may begin adding components to
@@ -19,6 +20,12 @@ Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 Vue.component('dcc-modal', require('./components/Modal.vue'));
 Vue.component('dcc-pulse', require('./components/PulseLoader.vue'));
 
+Vue.filter('trim', vFilter.trim);
+Vue.filter('latestRevision', vFilter.latestRevision);
+Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
+Vue.filter('internalRoute', vFilter.internalRoute);
+Vue.filter('externalRoute', vFilter.externalRoute);
+
 const nav = new Vue({
     el: 'nav',
 
@@ -30,13 +37,13 @@ const nav = new Vue({
 
     computed: {
         isSearchResultNotEmpty() {
-            return this.searchResults.length > 0;
+            return this.searchResults.internal > 0 && this.searchResults.external > 0;
         },
     },
 
     methods: {
         displaySearchResult() {
-            this.$http.get(`${env_server}/search?q=${this.searchKeyword}`)
+            this.$http.get(laroute.route("search", {q:this.searchKeyword}))
                 .then(response => {
                     this.searchResults = response.json();
                     this.toggleSearchResult();

@@ -45778,104 +45778,8 @@ if (module.hot) {(function () {  module.hot.accept()
 
 require("./app");
 
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: {
-            customer_name: customer_name
-        },
-
-        modalDeleteConfirmation: {
-            category: {},
-            index: -1
-        },
-
-        currentIndex: 0,
-
-        pagination: {}
-    },
-
-    ready: function ready() {
-        this.getPagination();
-    },
-
-
-    filters: {
-        forReview: function forReview(collection) {
-            collection.filter(function (item) {
-                return item.customer_spec_review.is_reviewed;
-            });
-        }
-    },
-
-    methods: {
-        getSpecByCategory: function getSpecByCategory(category, index) {
-            this.setSpecCategory(category);
-            this.getPagination();
-            this.setActiveMenu(index);
-        },
-        setSpecCategory: function setSpecCategory(category) {
-            this.category = category;
-        },
-        setActiveMenu: function setActiveMenu(index) {
-            this.currentIndex = index;
-        },
-        getPagination: function getPagination() {
-            var _this = this;
-
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var loader = $(".loader");
-            loader.show();
-
-            this.$http.get(laroute.route('api.search.external'), {
-                params: {
-                    page: num,
-                    category: this.category.customer_name
-                }
-            }).then(function (response) {
-                _this.pagination = response.json();
-                loader.hide();
-            });
-        },
-        prev: function prev() {
-            this.getPagination(this.pagination.current_page - 1);
-        },
-        next: function next() {
-            this.getPagination(this.pagination.current_page + 1);
-        },
-        showSideBar: function showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-        toggleButton: function toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-        setModalSpec: function setModalSpec(spec) {
-            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
-
-            this.modalDeleteConfirmation.category = spec;
-            this.modalDeleteConfirmation.index = index;
-        },
-        resetModalData: function resetModalData() {
-            this.setModalSpec({});
-        },
-        removeSpec: function removeSpec() {
-            var _this2 = this;
-
-            var route_delete = laroute.route("external.destroy", { external: this.modalDeleteConfirmation.category.id });
-            this.$http.delete(route_delete).then(function () {
-                _this2.pagination.data.$remove(_this2.modalDeleteConfirmation.category);
-                _this2.resetModalData();
-            }).bind(this);
-        }
-    }
+var app = Vue({
+    el: "#app"
 });
 
 },{"./app":10}],19:[function(require,module,exports){
@@ -46107,4 +46011,4 @@ function externalRoute(id) {
 
 },{"moment":4}]},{},[18]);
 
-//# sourceMappingURL=external-index.js.map
+//# sourceMappingURL=external-for_review.js.map

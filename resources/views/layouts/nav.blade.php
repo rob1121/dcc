@@ -13,7 +13,8 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}" style="margin-left: 20px">
-                <strong><img src="{{URL::to("/favicon.ico")}}" alt="dcc" width="20px" style="position:relative;top:-2px">{{ config('app.name', 'Laravel') }}</strong>
+                <strong><img src="{{URL::to("/favicon.ico")}}" alt="dcc" width="20px"
+                             style="position:relative;top:-2px">{{ config('app.name', 'Laravel') }}</strong>
             </a>
         </div>
 
@@ -22,11 +23,25 @@
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav navbar-left" style="margin-left: 8%">
                 <li @if(route("internal.index") === Request::url()) class="active" @endif>
-                    <a href="{{ route("internal.index") }}">Internal Specification</a>
+                    <a href="{{ route("internal.index") }}">Internal Specification
+                        @if(newCompanySpecCount())
+                            <span class="label label-danger">{{newCompanySpecCount()}}</span>
+                        @endif
+                    </a>
                 </li>
 
                 <li @if(route("external.index") === Request::url()) class="active" @endif>
-                    <a href="{{ route("external.index") }}">External Specification</a>
+                    <a href="{{ route("external.index") }}">External Specification
+                        @if(newCustomerSpecCount())
+                            <span class="label label-danger">{{newCustomerSpecCount()}}</span>
+                        @endif
+                    </a>
+                </li>
+
+                <li @if(route("external.for_review") === Request::url()) class="active" @endif>
+                    <a href="{{ route("external.for_review") }}">For Specification Review
+                        <span class="label label-danger">{{customerForSpecReviewCount()}}</span>
+                    </a>
                 </li>
             </ul>
 
@@ -74,16 +89,33 @@
     </div>
     <div class="search-result" v-show="showResultDialog" v-cloak>
         <button class="close" @click="closeResultDialog"><i class="fa fa-remove"></i></button>
-        <div class="search--deck-collection search-result--list" v-show="isSearchResultNotEmpty">
-            <h1>Result found for <strong>"@{{ searchKeyword }}"</strong></h1>
-            <a class="search--deck" v-for="result in searchResults" target="_blank" href="/internal/@{{result.id}}"
+        <div class="search--deck-collection search-result--list" v-show="searchResults.internal">
+            <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under Internal Specification</h1>
+            <a class="search--deck" v-for="result in searchResults.internal" target="_blank"
+               href="@{{result.id | internalRoute}}"
                placholder="view file">
                 <div class="search--spec-no col-xs-5"><h4>@{{result.spec_no}} - @{{result.name}}</h4></div>
                 <div class="col-xs-5 search--revision-summary">
                     <h5>@{{result.company_spec_revision.revision_summary | trim}}</h5></div>
                 <div class="col-xs-2 search--revision">
-                    <h6>@{{result.company_spec_revision.revision_date}}</h6>
+                    <h6>@{{result.company_spec_revision | telfordStandardDate}}</h6>
                     <h6>@{{result.company_spec_revision.revision | uppercase}}</h6>
+                </div>
+            </a>
+        </div>
+
+        <div v-else>
+            <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}"</strong></h1>
+        </div>
+        <div class="search--deck-collection search-result--list" v-show="searchResults.external">
+            <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under External Specification</h1>
+            <a class="search--deck" v-for="result in searchResults.external" target="_blank"
+               href="@{{result.id | externalRoute}}"
+               placeholder="view file">
+                <div class="search--spec-no col-xs-10"><h4>@{{result.spec_no}} - @{{result.name}}</h4></div>
+                <div class="col-xs-2 search--revision">
+                    <h6>@{{result.customer_spec_revision | latestRevision "revision_date" | telfordStandardDate}}</h6>
+                    <h6>@{{result.customer_spec_revision | latestRevision "revision" | uppercase}}</h6>
                 </div>
             </a>
         </div>

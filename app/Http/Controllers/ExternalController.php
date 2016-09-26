@@ -2,6 +2,7 @@
 
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
+use App\CustomerSpecRevision;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
@@ -79,12 +80,17 @@ class ExternalController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param CustomerSpec $external
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(CustomerSpec $external) {
+        $external->delete();
+    }
+
+    public function forReview() {
+        $customer_spec_revisions = CustomerSpecRevision::whereIsReviewed(0)->with(["customerSpec" => function ($query) {
+            $query->with("customerSpecCategory");
+        }])->get();
+
+        return view("external.for_review", ["for_reviews" => $customer_spec_revisions]);
     }
 }

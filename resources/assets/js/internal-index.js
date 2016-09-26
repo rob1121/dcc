@@ -1,6 +1,4 @@
 require('./app');
-import laroute  from "./laroute";
-import vFilter from "./mixins/filters";
 
 const app = new Vue({
     el: "#app",
@@ -20,8 +18,6 @@ const app = new Vue({
 
         pagination: {},
     },
-
-    mixins: [vFilter],
 
     ready() {
         this.getPagination();
@@ -45,7 +41,8 @@ const app = new Vue({
         getPagination(num = "") {
             var loader = $(".loader");
             loader.show();
-            this.$http.get(laroute.route('api.search.internal'), {
+            var route = laroute.route('api.search.internal');
+            this.$http.get(route, {
                 params: {
                     page: num,
                     category: this.category.category_no
@@ -88,7 +85,9 @@ const app = new Vue({
         },
 
         removeSpec() {
-            this.$http.delete(`/internal/${this.modalDeleteConfirmation.category.id}`).then( () => {
+            var delete_route = laroute.route("internal.destroy", {internal: this.modalDeleteConfirmation.category.id});
+
+            this.$http.delete(delete_route).then( () => {
                 this.pagination.data.$remove(this.modalDeleteConfirmation.category);
                 this.resetModalData();
             } ).bind(this);

@@ -2,22 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerSpec;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use TomLingham\Searchy\Facades\Searchy;
 use App\CompanySpec;
 
 class SearchController extends Controller
 {
     /**
-     * it search for given keyword
      * @param Request $request
+     * @return array
      */
     public function search(Request $request)
     {
-        return collect(Searchy::company_specs("spec_no","name")->query($request->q)->get())->map(function($item) {
-        	return CompanySpec::find($item->id);
-        });
+        return [
+            "internal" => self::searchFor("company_specs", new CompanySpec, $request->q),
+            "external" =>  self::searchFor("customer_specs", new CustomerSpec, $request->q),
+        ];
+    }
+
+    public static function searchFor($db_name, $collection, $query)
+    {
+        return Searchy::search($db_name)->fields("spec_no", "name")->query($query)->getQuery()->limit(10)->get()
+            ->flatMap(function($item) use($collection) {
+                return $collection->whereId($item->id)->get();
+            });
     }
 }

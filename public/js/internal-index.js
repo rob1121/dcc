@@ -45321,12 +45321,19 @@ exports.insert = function (css) {
 },{}],10:[function(require,module,exports){
 'use strict';
 
+var _filters = require('./mixins/filters');
+
+var vFilter = _interopRequireWildcard(_filters);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * include Vue and Vue Resource. This gives a great starting point for
  * building robust, powerful web applications using Vue and Laravel.
  */
 require('./bootstrap');
+window.laroute = require('./laroute');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -45341,6 +45348,12 @@ Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 Vue.component('dcc-modal', require('./components/Modal.vue'));
 Vue.component('dcc-pulse', require('./components/PulseLoader.vue'));
 
+Vue.filter('trim', vFilter.trim);
+Vue.filter('latestRevision', vFilter.latestRevision);
+Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
+Vue.filter('internalRoute', vFilter.internalRoute);
+Vue.filter('externalRoute', vFilter.externalRoute);
+
 var nav = new Vue({
     el: 'nav',
 
@@ -45352,7 +45365,7 @@ var nav = new Vue({
 
     computed: {
         isSearchResultNotEmpty: function isSearchResultNotEmpty() {
-            return this.searchResults.length > 0;
+            return this.searchResults.internal > 0 && this.searchResults.external > 0;
         }
     },
 
@@ -45360,7 +45373,7 @@ var nav = new Vue({
         displaySearchResult: function displaySearchResult() {
             var _this = this;
 
-            this.$http.get(env_server + '/search?q=' + this.searchKeyword).then(function (response) {
+            this.$http.get(laroute.route("search", { q: this.searchKeyword })).then(function (response) {
                 _this.searchResults = response.json();
                 _this.toggleSearchResult();
             });
@@ -45376,7 +45389,7 @@ var nav = new Vue({
     }
 });
 
-},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17}],11:[function(require,module,exports){
+},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":19,"./mixins/filters":20}],11:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -45763,6 +45776,105 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+require('./app');
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        category: {
+            category_no: category_no,
+            category_name: category_name
+        },
+
+        modalDeleteConfirmation: {
+            category: {},
+            index: -1
+        },
+
+        currentIndex: 0,
+
+        pagination: {}
+    },
+
+    ready: function ready() {
+        this.getPagination();
+    },
+
+
+    methods: {
+        getSpecByCategory: function getSpecByCategory(category, index) {
+            this.setSpecCategory(category);
+            this.getPagination();
+            this.setActiveMenu(index);
+        },
+        setSpecCategory: function setSpecCategory(category) {
+            this.category = category;
+        },
+        setActiveMenu: function setActiveMenu(index) {
+            this.currentIndex = index;
+        },
+        getPagination: function getPagination() {
+            var _this = this;
+
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var loader = $(".loader");
+            loader.show();
+            var route = laroute.route('api.search.internal');
+            this.$http.get(route, {
+                params: {
+                    page: num,
+                    category: this.category.category_no
+                }
+            }).then(function (response) {
+                _this.pagination = response.json();
+                loader.hide();
+            });
+        },
+        prev: function prev() {
+            this.getPagination(this.pagination.current_page - 1);
+        },
+        next: function next() {
+            this.getPagination(this.pagination.current_page + 1);
+        },
+        showSideBar: function showSideBar() {
+            $('#sidebar').toggleClass("show-sidebar");
+            $('.main-content').toggleClass("compress-main-content");
+
+            this.toggleButton();
+        },
+        toggleButton: function toggleButton() {
+            var btn = $('.toggler-btn');
+
+            btn.children('i').toggleClass("fa-bars");
+            btn.children('i').toggleClass("fa-remove");
+        },
+        setModalSpec: function setModalSpec(spec) {
+            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
+
+            this.modalDeleteConfirmation.category = spec;
+            this.modalDeleteConfirmation.index = index;
+        },
+        resetModalData: function resetModalData() {
+            this.setModalSpec({});
+        },
+        removeSpec: function removeSpec() {
+            var _this2 = this;
+
+            var delete_route = laroute.route("internal.destroy", { internal: this.modalDeleteConfirmation.category.id });
+
+            this.$http.delete(delete_route).then(function () {
+                _this2.pagination.data.$remove(_this2.modalDeleteConfirmation.category);
+                _this2.resetModalData();
+            }).bind(this);
+        }
+    }
+});
+
+},{"./app":10}],19:[function(require,module,exports){
+"use strict";
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -45946,7 +46058,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45955,135 +46067,38 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+exports.trim = trim;
+exports.telfordStandardDate = telfordStandardDate;
+exports.latestRevision = latestRevision;
+exports.internalRoute = internalRoute;
+exports.externalRoute = externalRoute;
+
 var _moment = require("moment");
 
 var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = {
-    filters: {
-        trim: function trim(string) {
-            if (string.length <= 64) return string;else if (64 <= 3) return string.slice(0, 64) + "...";else return string.slice(0, 64 - 3) + "...";
-        },
-        telfordStandardDate: function telfordStandardDate(dt) {
-            return (0, _moment2.default)(dt).format("MM/DD/Y");
-        },
-        lastestRevision: function lastestRevision(revArray, column) {
-            return _typeof(revArray[revArray.length - 1][column]) !== undefined ? revArray[revArray.length - 1][column] : "N/A";
-        }
-    }
-};
+function trim(string) {
+    if (string.length <= 64) return string;else if (64 <= 3) return string.slice(0, 64) + "...";else return string.slice(0, 64 - 3) + "...";
+}
 
-},{"moment":4}],20:[function(require,module,exports){
-"use strict";
+function telfordStandardDate(dt) {
+    return (0, _moment2.default)(dt).format("MM/DD/Y");
+}
 
-var _laroute = require("./laroute");
+function latestRevision(revArray, column) {
+    return _typeof(revArray[revArray.length - 1][column]) !== undefined ? revArray[revArray.length - 1][column] : "N/A";
+}
 
-var _laroute2 = _interopRequireDefault(_laroute);
+function internalRoute(id) {
+    return laroute.route('internal.show', { internal: id });
+}
 
-var _filters = require("./mixins/filters");
+function externalRoute(id) {
+    return laroute.route('external.show', { external: id });
+}
 
-var _filters2 = _interopRequireDefault(_filters);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require('./app');
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: {
-            category_no: category_no,
-            category_name: category_name
-        },
-
-        modalDeleteConfirmation: {
-            category: {},
-            index: -1
-        },
-
-        currentIndex: 0,
-
-        pagination: {}
-    },
-
-    mixins: [_filters2.default],
-
-    ready: function ready() {
-        this.getPagination();
-    },
-
-
-    methods: {
-        getSpecByCategory: function getSpecByCategory(category, index) {
-            this.setSpecCategory(category);
-            this.getPagination();
-            this.setActiveMenu(index);
-        },
-        setSpecCategory: function setSpecCategory(category) {
-            this.category = category;
-        },
-        setActiveMenu: function setActiveMenu(index) {
-            this.currentIndex = index;
-        },
-        getPagination: function getPagination() {
-            var _this = this;
-
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var loader = $(".loader");
-            loader.show();
-            this.$http.get(_laroute2.default.route('api.search.internal'), {
-                params: {
-                    page: num,
-                    category: this.category.category_no
-                }
-            }).then(function (response) {
-                _this.pagination = response.json();
-                loader.hide();
-            });
-        },
-        prev: function prev() {
-            this.getPagination(this.pagination.current_page - 1);
-        },
-        next: function next() {
-            this.getPagination(this.pagination.current_page + 1);
-        },
-        showSideBar: function showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-        toggleButton: function toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-        setModalSpec: function setModalSpec(spec) {
-            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
-
-            this.modalDeleteConfirmation.category = spec;
-            this.modalDeleteConfirmation.index = index;
-        },
-        resetModalData: function resetModalData() {
-            this.setModalSpec({});
-        },
-        removeSpec: function removeSpec() {
-            var _this2 = this;
-
-            this.$http.delete("/internal/" + this.modalDeleteConfirmation.category.id).then(function () {
-                _this2.pagination.data.$remove(_this2.modalDeleteConfirmation.category);
-                _this2.resetModalData();
-            }).bind(this);
-        }
-    }
-});
-
-},{"./app":10,"./laroute":18,"./mixins/filters":19}]},{},[20]);
+},{"moment":4}]},{},[18]);
 
 //# sourceMappingURL=internal-index.js.map

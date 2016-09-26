@@ -22,7 +22,7 @@
 
         <div class="panel panel-{{$errors->any() ? "danger" : "default"}}">
             <div class="panel-heading">
-                <h3 class="panel-title">Update Internal Specification</h3>
+                <h3 class="panel-title">Update Internal Specification</h3>1
             </div>
             <div class="panel-body">
                 <form action="{{route("internal.update",['internal' => $spec->id])}}" method="post" enctype="multipart/form-data" id="form-submit">

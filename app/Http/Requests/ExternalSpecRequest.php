@@ -29,7 +29,7 @@ class ExternalSpecRequest extends FormRequest
             'revision' => "required|min:2|max:5",
             'document' => 'required|mimes:pdf',
             'revision_date' => "required|date",
-            'customer_name' => 'required|unique',
+            'customer_name' => 'required',
         ];
     }
 }

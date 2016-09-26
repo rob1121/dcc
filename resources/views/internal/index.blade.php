@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @push('style')
-    <link rel="stylesheet" href="{{URL::to("/css/internal-index.css")}}">
+<link rel="stylesheet" href="{{URL::to("/css/internal-index.css")}}">
 @endpush
 
 
@@ -26,8 +26,8 @@
 
     <div class="main-content">
         <button class="btn btn-default toggler-btn" @click="showSideBar">
-            <i class="fa fa-bars"></i>
-            <span>Toggle sidebar</span>
+        <i class="fa fa-bars"></i>
+        <span>Toggle sidebar</span>
         </button>
         <br>
         <div class="deck-collection">
@@ -44,17 +44,26 @@
                 new internal specification <i class="fa fa-plus"></i></a>
             <div class="clearfix"></div>
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
-                <div class="spec-no col-xs-3"><h6>@{{spec.spec_no}} - @{{spec.name}}</h6></div>
-                <div class="col-xs-4"><h6>@{{spec.company_spec_revision.revision_summary | trim}}</h6></div>
-                <div class="col-xs-2">
-                    <h6>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}</h6>
-                    <h6>@{{spec.company_spec_revision.revision | uppercase}}</h6>
-                </div>
-                <div class="col-xs-3">
-                    <a class="btn btn-xs btn-primary" target="_blank" href="{{$server}}/internal/@{{spec.id}}"> View <i
-                                class="fa fa-file-pdf-o"></i>
+                <div class="spec-no col-xs-4">
+                    <a target="_blank" href="@{{spec.id | internalRoute}}">
+                        <h6>@{{spec.spec_no}} - @{{spec.name}}</h6>
                     </a>
-                    <a class="btn btn-xs btn-warning" href="{{$server}}/internal/@{{spec.id}}/edit">Edit <i
+                </div>
+
+                <div class="col-xs-4">
+                    <a target="_blank" href="@{{spec.id | internalRoute}}">
+                        <h6>@{{spec.company_spec_revision.revision_summary | trim}}</h6>
+                    </a>
+                </div>
+
+                <div class="col-xs-2">
+                    <a target="_blank" href="@{{spec.id | internalRoute}}">
+                        <h6>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}</h6>
+                        <h6>@{{spec.company_spec_revision.revision | uppercase}}</h6>
+                    </a>
+                </div>
+                <div class="col-xs-2">
+                    <a class="btn btn-xs btn-warning" href="@{{spec.id | internalRoute}}/edit">Edit <i
                                 class="fa fa-pencil"></i></a>
                     <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
                     setModalSpec(spec)">Remove <i

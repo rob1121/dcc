@@ -53,6 +53,6 @@ return [
      * Appends a prefix to URLs. By default the prefix is an empty string.
     *
     */
-    'prefix' => '',
+    'prefix' => config('dcc.server',''),
 
 ];

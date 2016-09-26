@@ -1,13 +1,13 @@
 @extends("layouts.app")
 
 @push('style')
-    <link rel="stylesheet" href="{{URL::to("/css/external-index.css")}}">
+<link rel="stylesheet" href="{{URL::to("/css/external-index.css")}}">
 
 @endpush
 
 
 @push("script")
-    <script src="{{URL::to("/js/external-index.js")}}"></script>
+<script src="{{URL::to("/js/external-index.js")}}"></script>
 @endpush
 
 @section("content")
@@ -27,32 +27,36 @@
 
     <div class="main-content">
         <button class="btn btn-default toggler-btn" @click="showSideBar">
-            <i class="fa fa-bars"></i>
-            <span>Toggle sidebar</span>
+        <i class="fa fa-bars"></i>
+        <span>Toggle sidebar</span>
         </button>
         <br>
         <div class="deck-collection">
 
             <ol class="breadcrumb">
-                <li> <a href="{{route("home")}}">Home</a> </li>
+                <li><a href="{{route("home")}}">Home</a></li>
                 <li class="active">Internal Specification</li>
                 <li class="active">@{{ category.customer_name | uppercase }}</li>
             </ol>
-
-
             <a href="{{route("external.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add
-                new external specification <i class="fa fa-plus"></i></a>
+                new external specification <i class="fa fa-plus"></i>
+            </a>
             <div class="clearfix"></div>
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
-                <div class="spec-no col-xs-7"><h6>@{{spec.spec_no}} - @{{spec.name}}</h6></div>
-                <div class="col-xs-2">
-                    <h6>@{{spec.customer_spec_revision | lastestRevision 'revision_date' | telfordStandardDate}}</h6>
-                    <h6>@{{spec.customer_spec_revision | lastestRevision 'revision' | uppercase}}</h6>
+                <div class="spec-no col-xs-8">
+                    <a href="@{{spec.id | externalRoute}}" class="btn link" target="_blank">
+                        <h6>@{{spec.spec_no}} - @{{spec.name}}</h6>
+                    </a>
                 </div>
-                <div class="col-xs-3">
-                    <a class="btn btn-xs btn-primary" target="_blank" href="{{$server}}/external/@{{spec.id}}"> View <i
-                                class="fa fa-file-pdf-o"></i></a>
-                    <a class="btn btn-xs btn-warning" href="{{$server}}/external/@{{spec.id}}/edit">Edit <i
+
+                <div class="col-xs-2">
+                    <a href="@{{spec.id | externalRoute}}" class="btn link" target="_blank">
+                        <h6>@{{spec.customer_spec_revision | latestRevision 'revision_date' | telfordStandardDate}}</h6>
+                        <h6>@{{spec.customer_spec_revision | latestRevision 'revision' | uppercase}}</h6>
+                    </a>
+                </div>
+                <div class="col-xs-2">
+                    <a class="btn btn-xs btn-warning" href="@{{spec.id | externalRoute}}/edit">Edit <i
                                 class="fa fa-pencil"></i></a>
                     <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
                     setModalSpec(spec)">Remove <i

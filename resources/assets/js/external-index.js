@@ -1,11 +1,7 @@
 require("./app");
-import laroute from "./laroute";
-import vFilter from "./mixins/filters";
 
 const app = new Vue({
 	el: "#app",
-
-    mixins: [vFilter],
 
 	data: {
 		category: {
@@ -25,6 +21,14 @@ const app = new Vue({
 	ready() {
 		this.getPagination();
 	},
+
+    filters: {
+        forReview(collection) {
+            collection.filter(function(item) {
+                return item.customer_spec_review.is_reviewed;
+            });
+        }
+    },
 
     methods: {
         getSpecByCategory(category, index) {
@@ -89,7 +93,8 @@ const app = new Vue({
         },
 
         removeSpec() {
-            this.$http.delete(`/internal/${this.modalDeleteConfirmation.category.id}`).then( () => {
+            var route_delete = laroute.route("external.destroy", {external:this.modalDeleteConfirmation.category.id});
+            this.$http.delete(route_delete).then( () => {
                 this.pagination.data.$remove(this.modalDeleteConfirmation.category);
                 this.resetModalData();
             } ).bind(this);
