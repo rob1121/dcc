@@ -9,18 +9,30 @@ const app = new Vue({
 		},
 
 		modalDeleteConfirmation: {
-			category: {},
+			category: [],
 			index: -1
 		},
 
+        specForReviewModal: [],
+
 		currentIndex: 0,
 
-		pagination: {},
+		pagination: [],
 	},
 
 	ready() {
 		this.getPagination();
 	},
+
+    filters: {
+        documentLink(specRevision) {
+            return laroute.route('external.show', {external:specRevision.customer_spec_id,revision:specRevision.revision});
+        },
+
+        count(collection) {
+            return collection.length;
+        }
+    },
 
     methods: {
         getSpecByCategory(category, index) {
@@ -41,16 +53,14 @@ const app = new Vue({
             var loader = $(".loader");
             loader.show();
 
-            this.$http.get(
-                laroute.route('api.search.external'), {
-                    params: {
-                        page:num,
-                        category:this.category.customer_name
-                    }
-                }).then( response => {
+            var pagination_url = laroute.route('api.search.external');
+            this.$http.get(pagination_url, {
+                params: { page:num, category:this.category.customer_name }
+            })
+                .then( response => {
                     this.pagination = response.json();
                     loader.hide();
-                });
+                }, () => this.getPagination(num));
         },
 
         prev() {
@@ -80,16 +90,21 @@ const app = new Vue({
             this.modalDeleteConfirmation.index = index;
         },
 
+        setSpecForReviewModal(spec) {
+            this.specForReviewModal = spec;
+        },
+
         resetModalData() {
             this.setModalSpec({});
         },
 
         removeSpec() {
             var route_delete = laroute.route("external.destroy", {external:this.modalDeleteConfirmation.category.id});
-            this.$http.delete(route_delete).then( () => {
-                this.pagination.data.$remove(this.modalDeleteConfirmation.category);
-                this.resetModalData();
-            } ).bind(this);
+            this.$http.delete(route_delete)
+                .then( () => {
+                    this.pagination.data.$remove(this.modalDeleteConfirmation.category);
+                    this.resetModalData();
+                }, () => this.removeSpec());
         },
     }
 });

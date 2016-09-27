@@ -6,11 +6,6 @@ Route::group(["prefix" => "external"], function() {
         "uses" => "ExternalController@index"
     ]);
 
-    Route::get("/for-review",[
-        "as" => "external.for_review",
-        "uses" => "ExternalController@forReview"
-    ]);
-
     Route::get("/create",[
         "as" => "external.create",
         "uses" => "ExternalController@create"
@@ -21,7 +16,7 @@ Route::group(["prefix" => "external"], function() {
         "uses" => "ExternalController@store"
     ]);
 
-    Route::get("/{external}",[
+    Route::get("/{external}/{revision?}",[
         "as" => "external.show",
         "uses" => "ExternalController@show"
     ]);

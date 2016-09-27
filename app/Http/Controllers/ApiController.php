@@ -9,10 +9,13 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function internalSearch(Request $request) {
+    public function internalSearch(Request $request)
+    {
         $ids = CompanySpecCategory::whereCategoryNo($request->category)
             ->get(['company_spec_id'])
-            ->map(function($data) { return $data->company_spec_id; })->toArray();
+            ->map(function ($data) {
+                return $data->company_spec_id;
+            })->toArray();
 
         $company_spec = CompanySpec::whereIn('id', $ids)->orderBy("spec_no")->paginate();
 
@@ -21,27 +24,16 @@ class ApiController extends Controller
             ->header('Access-Control-Allow-Methods', 'GET');
     }
 
-    public function externalSearch(Request $request) {
+    public function externalSearch(Request $request)
+    {
         $ids = CustomerSpecCategory::whereCustomerName($request->category)
             ->get(['customer_spec_id'])
-            ->map(function($data) { return $data->customer_spec_id; })->toArray();
+            ->map(function ($data) {
+                return $data->customer_spec_id;
+            })->toArray();
 
-        $customer_spec = CustomerSpec::with(["customerSpecRevision" => function($query) {
-            $query->orderBy("revision","asc");
-        }])->whereIn('id', $ids)->orderBy("spec_no")->paginate();
-
-        return response()->json($customer_spec)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET');
-    }
-
-    public function forReviewSearch(Request $request) {
-        $ids = CustomerSpecCategory::whereCustomerName($request->category)
-            ->get(['customer_spec_id'])
-            ->map(function($data) { return $data->customer_spec_id; })->toArray();
-
-        $customer_spec = CustomerSpec::with(["customerSpecRevision" => function($query) {
-            $query->whereIsReviewed(0)->orderBy("revision","asc");
+        $customer_spec = CustomerSpec::with(["customerSpecRevision" => function ($query) {
+            $query->orderBy("revision", "asc");
         }])->whereIn('id', $ids)->orderBy("spec_no")->paginate();
 
         return response()->json($customer_spec)

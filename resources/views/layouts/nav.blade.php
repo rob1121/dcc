@@ -1,5 +1,5 @@
 <nav class="navbar navbar-default navbar-fixed-top navbar">
-    <div class="row-fluid" style="padding: 0 20px">
+    <div class="container">
         <div class="navbar-header">
 
             <!-- Collapsed Hamburger -->
@@ -12,16 +12,18 @@
             </button>
 
             <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ url('/') }}" style="margin-left: 20px">
-                <strong><img src="{{URL::to("/favicon.ico")}}" alt="dcc" width="20px"
-                             style="position:relative;top:-2px">{{ config('app.name', 'Laravel') }}</strong>
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <strong>
+                    <img src="{{URL::to("/favicon.ico")}}" alt="dcc" width="20px" style="position:relative;top:-2px">
+                    {{ config('app.name', 'Laravel') }}
+                </strong>
             </a>
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
 
             <!-- Left Side Of Navbar -->
-            <ul class="nav navbar-nav navbar-left" style="margin-left: 8%">
+            <ul class="nav navbar-nav navbar-left">
                 <li @if(route("internal.index") === Request::url()) class="active" @endif>
                     <a href="{{ route("internal.index") }}">Internal Specification
                         @if(newCompanySpecCount())
@@ -32,15 +34,9 @@
 
                 <li @if(route("external.index") === Request::url()) class="active" @endif>
                     <a href="{{ route("external.index") }}">External Specification
-                        @if(newCustomerSpecCount())
-                            <span class="label label-danger">{{newCustomerSpecCount()}}</span>
+                        @if(customerForSpecReviewCount())
+                            <span class="label label-danger">{{customerForSpecReviewCount()}}</span>
                         @endif
-                    </a>
-                </li>
-
-                <li @if(route("external.for_review") === Request::url()) class="active" @endif>
-                    <a href="{{ route("external.for_review") }}">For Specification Review
-                        <span class="label label-danger">{{customerForSpecReviewCount()}}</span>
                     </a>
                 </li>
             </ul>
@@ -54,8 +50,7 @@
                            v-model="searchKeyword"
                            @keyup.enter="displaySearchResult"
                     >
-                    <button @click="displaySearchResult" class="btn btn-default">
-                    <i class="fa fa-search"></i></button>
+                    <button @click="displaySearchResult" class="btn btn-default"><i class="fa fa-search"></i></button>
                 </li>
 
                 <!-- Authentication Links -->
@@ -89,39 +84,63 @@
     </div>
     <div class="search-result" v-show="showResultDialog" v-cloak>
         <button class="close" @click="closeResultDialog"><i class="fa fa-remove"></i></button>
-        <div class="search--deck-collection search-result--list" v-show="searchResults.internal">
-            <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under Internal Specification</h1>
-            <a class="search--deck" v-for="result in searchResults.internal" target="_blank"
-               href="@{{result.id | internalRoute}}"
-               placholder="view file">
-                <div class="search--spec-no col-xs-5"><h4>@{{result.spec_no}} - @{{result.name}}</h4></div>
-                <div class="col-xs-5 search--revision-summary">
-                    <h5>@{{result.company_spec_revision.revision_summary | trim}}</h5></div>
-                <div class="col-xs-2 search--revision">
-                    <h6>@{{result.company_spec_revision | telfordStandardDate}}</h6>
-                    <h6>@{{result.company_spec_revision.revision | uppercase}}</h6>
-                </div>
-            </a>
-        </div>
+        <br>
+        <br>
+        <div class="container">
+            <!-- TAB NAVIGATION -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#tab1" role="tab" data-toggle="tab">Internal Specification Result:</a></li>
+                <li><a href="#tab2" role="tab" data-toggle="tab">External Specification Result:</a></li>
+            </ul>
+            <!-- TAB CONTENT -->
+            <div class="tab-content">
+                <div class="active tab-pane fade in" id="tab1">
+                    <div class="search--deck-collection search-result--list" v-show="searchResults.internal">
+                        <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under Internal Specification
+                        </h1>
+                        <a class="search--deck" v-for="result in searchResults.internal" target="_blank"
+                           href="@{{result.id | internalRoute}}"
+                           placholder="view file">
+                            <div class="search--spec-no col-xs-offset-1 col-xs-10">
+                                <h4>@{{result.spec_no | uppercase}} - @{{result.name | uppercase}}</h4>
+                                <h5>@{{result.company_spec_revision.revision_summary | capitalize}}</h5>
+                                <h6 class="help-block">
+                                    <strong>Date: </strong>@{{result.company_spec_revision | telfordStandardDate}}
+                                    <strong>Revision: </strong>@{{result.company_spec_revision.revision | uppercase}}
+                                </h6>
+                            </div>
+                        </a>
+                    </div>
 
-        <div v-else>
-            <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}"</strong></h1>
-        </div>
-        <div class="search--deck-collection search-result--list" v-show="searchResults.external">
-            <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under External Specification</h1>
-            <a class="search--deck" v-for="result in searchResults.external" target="_blank"
-               href="@{{result.id | externalRoute}}"
-               placeholder="view file">
-                <div class="search--spec-no col-xs-10"><h4>@{{result.spec_no}} - @{{result.name}}</h4></div>
-                <div class="col-xs-2 search--revision">
-                    <h6>@{{result.customer_spec_revision | latestRevision "revision_date" | telfordStandardDate}}</h6>
-                    <h6>@{{result.customer_spec_revision | latestRevision "revision" | uppercase}}</h6>
+                    <div v-else>
+                        <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}
+                                "</strong></h1>
+                    </div>
                 </div>
-            </a>
-        </div>
+                <div class="tab-pane fade" id="tab2">
 
-        <div v-else>
-            <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}"</strong></h1>
+                    <div class="search--deck-collection search-result--list" v-show="searchResults.external">
+                        <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under External Specification
+                        </h1>
+                        <a class="search--deck" v-for="result in searchResults.external" target="_blank"
+                           href="@{{result.id | externalRoute}}"
+                           placeholder="view file">
+                            <div class="search--spec-no cpl-xs-offset-1 col-xs-10">
+                                <h4>@{{result.spec_no | uppercase}} - @{{result.name | uppercase}}</h4>
+                                <h6 class="help-block justify">
+                                    <strong>Date: </strong>@{{result.customer_spec_revision | latestRevision "revision_date" | telfordStandardDate}}
+                                    <strong>Revision: </strong>@{{result.customer_spec_revision | latestRevision "revision" | uppercase}}
+                                </h6>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div v-else>
+                        <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}
+                                "</strong></h1>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

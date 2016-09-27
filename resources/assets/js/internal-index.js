@@ -47,10 +47,11 @@ const app = new Vue({
                     page: num,
                     category: this.category.category_no
                 }
-            }).then( response => {
-                this.pagination = response.json();
-                loader.hide();
-            });
+            })
+                .then( response => {
+                    this.pagination = response.json();
+                    loader.hide();
+                }, () => this.getPagination(num));
         },
 
         prev() {
@@ -87,10 +88,11 @@ const app = new Vue({
         removeSpec() {
             var delete_route = laroute.route("internal.destroy", {internal: this.modalDeleteConfirmation.category.id});
 
-            this.$http.delete(delete_route).then( () => {
-                this.pagination.data.$remove(this.modalDeleteConfirmation.category);
-                this.resetModalData();
-            } ).bind(this);
+            this.$http.delete(delete_route)
+                .then( () => {
+                    this.pagination.data.$remove(this.modalDeleteConfirmation.category);
+                    this.resetModalData();
+                }, this.removeSpec());
         },
     }
 });

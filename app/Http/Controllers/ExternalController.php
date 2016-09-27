@@ -19,9 +19,25 @@ class ExternalController extends Controller {
     }
 
     public function index() {
+        $categories = $this->categories->map(function($category) {
+            return [
+                "count" => $this->getCustomerSpecForReviewCountPerCategory($category->customer_name),
+                "customer_name" => $category->customer_name
+            ];
+        });
         JavaScript::put([ 'customer_name' => $this->categories->first()->customer_name ]);
 
-        return view('external.index', [ "categories" => $this->categories ]);
+        return view('external.index', [ "categories" => $categories ]);
+    }
+
+    public function getCustomerSpecForReviewCountPerCategory($customer_name)
+    {
+        return CustomerSpecCategory::whereCustomerName($customer_name)->get()
+            ->map(function ($item) {
+                return CustomerSpecRevision::whereCustomerSpecId($item->customer_spec_id)
+                    ->whereIsReviewed(0)
+                    ->count();
+            })->sum();
     }
 
     /**
@@ -51,8 +67,12 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
-    public function show(CustomerSpec $external) {
-        $document = new Document($external->customerSpecRevision()->orderBy('revision','desc')->first()->document);
+    public function show(CustomerSpec $external, $revision=null) {
+        $document = $revision
+            ? $external->customerSpecRevision()->whereRevision($revision)->first()->document
+            : $external->customerSpecRevision()->orderBy('revision','desc')->first()->document;
+
+        $document = new Document($document);
         return $document->showPDF();
     }
 
@@ -84,11 +104,5 @@ class ExternalController extends Controller {
      */
     public function destroy(CustomerSpec $external) {
         $external->delete();
-    }
-
-    public function forReview() {
-        JavaScript::put([ 'customer_name' => $this->categories->first()->customer_name ]);
-
-        return view('external.for_review', [ "categories" => $this->categories ]);
     }
 }

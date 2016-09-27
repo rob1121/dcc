@@ -36,7 +36,7 @@ class ExternalSpecSeeder extends Seeder
         DB::statement("SET FOREIGN_KEY_CHECKS = 1");
 
         for ($i = 0; $i < 25; $i++) {
-            $rand_id = rand(1, 20);
+            $rand_id = rand(1, 50);
             $rev = sprintf("%03d", $rand_id);
 
             $category_no = $faker->randomElement($specs_category);

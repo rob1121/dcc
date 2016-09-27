@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @push("style")
-    <link rel="stylesheet" href="{{url("/css/external-create.css")}}">
-
+    <style>
+        #app {
+            padding-top: 64px;
+            overflow-y: scroll;
+        }
+    </style>
 @endpush
 
 @push("script")

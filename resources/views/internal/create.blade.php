@@ -1,11 +1,16 @@
 @extends('layouts.app')
 
 @push("style")
-    <link rel="stylesheet" href="{{url("/css/internal-create.css")}}">
+<style>
+    #app {
+        padding-top: 64px;
+        overflow-y: scroll;
+    }
+</style>
 @endpush
 
 @push("script")
-<script src="{{url("/js/internal-create.js")}}"></script>
+<script src="{{URL::to("/js/internal-create.js")}}"></script>
 <script>
     function toggleCategory(selected) {
         if( "add_category" === selected.val() ) {

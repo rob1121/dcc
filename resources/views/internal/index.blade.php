@@ -1,10 +1,5 @@
 @extends("layouts.app")
 
-@push('style')
-    <link rel="stylesheet" href="{{URL::to("/css/internal-index.css")}}">
-@endpush
-
-
 @push("script")
 <script src="{{URL::to("/js/internal-index.js")}}"></script>
 @endpush
@@ -13,7 +8,7 @@
     <div id="sidebar">
         <a v-for="(index, category) in {{$categories}}"
            href="#"
-           :class="['link', {'active': currentIndex == index }]"
+           :class="['btn-link', {'active': currentIndex == index }]"
         @click="getSpecByCategory(category, index)"
         >
         <h6>@{{category.category_no}} - @{{category.category_name}}</h6>
@@ -44,30 +39,22 @@
                 new internal specification <i class="fa fa-plus"></i></a>
             <div class="clearfix"></div>
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
-                <div class="spec-no col-xs-4">
+                <div class="spec-no col-xs-12 col-md-9">
                     <a target="_blank" href="@{{spec.id | internalRoute}}">
-                        <h6>@{{spec.spec_no}} - @{{spec.name}}</h6>
+                        <h4>@{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}}</h4>
                     </a>
+                    <h5 class="help-block">@{{spec.company_spec_revision.revision_summary  | capitalize}}</h5>
                 </div>
-
-                <div class="col-xs-4">
-                    <a target="_blank" href="@{{spec.id | internalRoute}}">
-                        <h6>@{{spec.company_spec_revision.revision_summary | trim}}</h6>
-                    </a>
-                </div>
-
-                <div class="col-xs-2">
-                    <a target="_blank" href="@{{spec.id | internalRoute}}">
-                        <h6>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}</h6>
-                        <h6>@{{spec.company_spec_revision.revision | uppercase}}</h6>
-                    </a>
-                </div>
-                <div class="col-xs-2">
-                    <a class="btn btn-xs btn-warning" href="@{{spec.id | internalRoute}}/edit">Edit <i
+                <div class="col-xs-12 col-md-3">
+                    <h6>
+                        <strong>Revision: </strong>@{{spec.company_spec_revision.revision | uppercase}}
+                        <strong>Date: </strong>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}
+                    </h6>
+                    <a class="btn btn-xs btn-warning" href="@{{spec.id | internalRoute}}/edit">Update <i
                                 class="fa fa-pencil"></i></a>
                     <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
-                    setModalSpec(spec)">Remove <i
-                            class="fa fa-remove"></i></button>
+                    setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
+                    </button>
                 </div>
             </div>
             <div v-if="pagination.data.length === 0" class="container">

@@ -15,24 +15,27 @@
     &.show-sidebar
         transform: translateX(0)
 
-    .link
+    .btn-link
+        float: left
         text-decoration: none !important
         padding: 5px 10px
         margin: 0 0 0 5px
         text-transform: uppercase
-        width: 105%
+        width: 220px
         display: inline-block
         color: $text-color
         background: #fff
+        border: 1px solid transparent
         border-left: 3px solid #fff
 
         &:hover
             background: $dcc-hover-color
+            border: 1px solid #ddd
             border-left: 3px solid darkred
-            width: 120%
 
         &.active
             background: $dcc-hover-color
+            border: 1px solid #ddd
             font-weight: bold
             border-left: 3px solid darkred
 
@@ -42,7 +45,7 @@
     right: 0
     height: 100vh
     width: 80%
-    padding: 64px 120px 10px 30px
+    padding: 64px 30px 10px 30px
     overflow-y: auto
     transition: .3s ease-in-out
     background: darken($body-bg, 5%)

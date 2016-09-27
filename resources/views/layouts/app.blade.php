@@ -10,6 +10,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Styles -->
+    <link rel="stylesheet" href="{{URL::to("/css/app.css")}}">
     @stack("style")
 
     <!-- Scripts -->

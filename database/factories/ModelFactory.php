@@ -82,7 +82,7 @@ $factory->define(App\CustomerSpecCategory::class, function (Faker\Generator $fak
 
 $factory->define(App\CustomerSpecRevision::class, function (Faker\Generator $faker) {
     return [
-        'revision' =>  $faker->text(5) ,
+        'revision' =>  $faker->text(2) ,
         'revision_date' =>  $faker->date() ,
         'customer_spec_id' =>  function() {
             return factory(App\CustomerSpec::class)->create()->id;

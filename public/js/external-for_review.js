@@ -45389,7 +45389,7 @@ var nav = new Vue({
     }
 });
 
-},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":18,"./mixins/filters":19}],11:[function(require,module,exports){
+},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":19,"./mixins/filters":20}],11:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -45644,6 +45644,8 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":8,"vue-hot-reload-api":6}],15:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.close {\n    font-size: 3em;\n}\n")
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45653,22 +45655,28 @@ exports.default = {
     props: {
         id: { default: "modal-id" },
         title: { default: "modal-title" },
-        hasFooter: { default: false }
+        hasFooter: { default: false },
+        size: { default: "lg" },
+        classType: { default: "default" }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal fade\" id=\"{{id}}\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\n                <h4 class=\"modal-title\">{{title}}</h4>\n            </div>\n            <div class=\"modal-body\">\n                <slot></slot>\n            </div>\n            <div class=\"modal-footer\" v-if=\"hasFooter\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n                <button type=\"button\" class=\"btn btn-primary\">Save changes</button>\n            </div>\n        </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n</div><!-- /.modal -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal fade\" tabindex=\"-1\" id=\"{{id}}\">\n    <div class=\"modal-dialog modal-{{size}}\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header bg-{{classType}}\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\n                <h4 class=\"modal-title\">{{title}}</h4>\n            </div>\n            <div class=\"modal-body\">\n                <slot></slot>\n            </div>\n            <div class=\"modal-footer\" v-if=\"hasFooter\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n                <button type=\"button\" class=\"btn btn-primary\">Save changes</button>\n            </div>\n        </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n</div><!-- /.modal -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.close {\n    font-size: 3em;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
   if (!module.hot.data) {
     hotAPI.createRecord("_v-40fa8340", module.exports)
   } else {
     hotAPI.update("_v-40fa8340", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],16:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],16:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n/*.v-spinner\n{\n    margin: 100px auto;\n    text-align: center;\n}\n*/\n\n@-webkit-keyframes v-pulseStretchDelay\n{\n    0%,\n    80%\n    {\n        -webkit-transform: scale(1);\n        transform: scale(1);\n        -webkit-opacity: 1;\n        opacity: 1;\n    }\n    45%\n    {\n        -webkit-transform: scale(0.1);\n        transform: scale(0.1);\n        -webkit-opacity: 0.7;\n        opacity: 0.7;\n    }\n}\n\n@keyframes v-pulseStretchDelay\n{\n    0%,\n    80%\n    {\n        -webkit-transform: scale(1);\n        transform: scale(1);\n        -webkit-opacity: 1;\n        opacity: 1;\n    }\n    45%\n    {\n        -webkit-transform: scale(0.1);\n        transform: scale(0.1);\n        -webkit-opacity: 0.7;\n        opacity: 0.7;\n    }\n}\n")
 'use strict';
@@ -45774,6 +45782,103 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
+"use strict";
+
+require("./app");
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        category: {
+            customer_name: customer_name
+        },
+
+        modalDeleteConfirmation: {
+            category: {},
+            index: -1
+        },
+
+        currentIndex: 0,
+
+        pagination: {}
+    },
+
+    ready: function ready() {
+        this.getPagination();
+    },
+
+
+    methods: {
+        getSpecByCategory: function getSpecByCategory(category, index) {
+            this.setSpecCategory(category);
+            this.getPagination();
+            this.setActiveMenu(index);
+        },
+        setSpecCategory: function setSpecCategory(category) {
+            this.category = category;
+        },
+        setActiveMenu: function setActiveMenu(index) {
+            this.currentIndex = index;
+        },
+        getPagination: function getPagination() {
+            var _this = this;
+
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var loader = $(".loader");
+            loader.show();
+
+            this.$http.get(laroute.route('api.search.external.for_review'), {
+                params: {
+                    page: num,
+                    category: this.category.customer_name
+                }
+            }).then(function (response) {
+                _this.pagination = response.json();
+                loader.hide();
+            });
+        },
+        prev: function prev() {
+            this.getPagination(this.pagination.current_page - 1);
+        },
+        next: function next() {
+            this.getPagination(this.pagination.current_page + 1);
+        },
+        showSideBar: function showSideBar() {
+            $('#sidebar').toggleClass("show-sidebar");
+            $('.main-content').toggleClass("compress-main-content");
+
+            this.toggleButton();
+        },
+        toggleButton: function toggleButton() {
+            var btn = $('.toggler-btn');
+
+            btn.children('i').toggleClass("fa-bars");
+            btn.children('i').toggleClass("fa-remove");
+        },
+        setModalSpec: function setModalSpec(spec) {
+            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
+
+            this.modalDeleteConfirmation.category = spec;
+            this.modalDeleteConfirmation.index = index;
+        },
+        resetModalData: function resetModalData() {
+            this.setModalSpec({});
+        },
+        removeSpec: function removeSpec() {
+            var _this2 = this;
+
+            var route_delete = laroute.route("external.destroy", { external: this.modalDeleteConfirmation.category.id });
+            this.$http.delete(route_delete).then(function () {
+                _this2.pagination.data.$remove(_this2.modalDeleteConfirmation.category);
+                _this2.resetModalData();
+            }).bind(this);
+        }
+    }
+});
+
+},{"./app":10}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -45959,7 +46064,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46000,103 +46105,6 @@ function externalRoute(id) {
     return laroute.route('external.show', { external: id });
 }
 
-},{"moment":4}],20:[function(require,module,exports){
-"use strict";
-
-require("./app");
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: {
-            customer_name: customer_name
-        },
-
-        modalDeleteConfirmation: {
-            category: {},
-            index: -1
-        },
-
-        currentIndex: 0,
-
-        pagination: {}
-    },
-
-    ready: function ready() {
-        this.getPagination();
-    },
-
-
-    methods: {
-        getSpecByCategory: function getSpecByCategory(category, index) {
-            this.setSpecCategory(category);
-            this.getPagination();
-            this.setActiveMenu(index);
-        },
-        setSpecCategory: function setSpecCategory(category) {
-            this.category = category;
-        },
-        setActiveMenu: function setActiveMenu(index) {
-            this.currentIndex = index;
-        },
-        getPagination: function getPagination() {
-            var _this = this;
-
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var loader = $(".loader");
-            loader.show();
-
-            this.$http.get(laroute.route('api.search.external.for_review'), {
-                params: {
-                    page: num,
-                    category: this.category.customer_name
-                }
-            }).then(function (response) {
-                _this.pagination = response.json();
-                loader.hide();
-            });
-        },
-        prev: function prev() {
-            this.getPagination(this.pagination.current_page - 1);
-        },
-        next: function next() {
-            this.getPagination(this.pagination.current_page + 1);
-        },
-        showSideBar: function showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-        toggleButton: function toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-        setModalSpec: function setModalSpec(spec) {
-            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
-
-            this.modalDeleteConfirmation.category = spec;
-            this.modalDeleteConfirmation.index = index;
-        },
-        resetModalData: function resetModalData() {
-            this.setModalSpec({});
-        },
-        removeSpec: function removeSpec() {
-            var _this2 = this;
-
-            var route_delete = laroute.route("external.destroy", { external: this.modalDeleteConfirmation.category.id });
-            this.$http.delete(route_delete).then(function () {
-                _this2.pagination.data.$remove(_this2.modalDeleteConfirmation.category);
-                _this2.resetModalData();
-            }).bind(this);
-        }
-    }
-});
-
-},{"./app":10}]},{},[20]);
+},{"moment":4}]},{},[18]);
 
 //# sourceMappingURL=external-for_review.js.map

@@ -15,21 +15,13 @@ require('laravel-elixir-vueify');
 
 elixir(mix => {
     mix.copy("node_modules/font-awesome/fonts", "public/fonts")
-        .sass('internal-index.sass')
-        // .sass('internal-edit.sass')
-        // .sass('internal-create.sass')
+        .sass('app.scss')
         .browserify('internal-index.js')
         // .browserify('internal-edit.js')
         // .browserify('internal-create.js')
-
-        .sass('external-index.sass')
-        // .sass('external-create.sass')
-        // .sass('external-edit.sass')
-        .sass('external-for_review.sass')
         .browserify('external-index.js')
         // .browserify('external-edit.js')
         // .browserify('external-create.js')
-        .browserify('external-for_review.js')
         .browserSync({
             proxy: "dcc_2016.me"
         });
