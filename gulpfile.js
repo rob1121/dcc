@@ -17,6 +17,8 @@ elixir(mix => {
     mix.copy("node_modules/font-awesome/fonts", "public/fonts")
         .sass('app.scss')
         .browserify('internal-index.js')
+        .browserify('login.js')
+        .browserify('register.js')
         // .browserify('internal-edit.js')
         // .browserify('internal-create.js')
         .browserify('external-index.js')

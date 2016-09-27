@@ -11,7 +11,7 @@
            :class="['btn-link', {'active': currentIndex == index }]"
         @click="getSpecByCategory(category, index)"
         >
-        <h6>@{{category.category_no}} - @{{category.category_name}}</h6>
+        <h6><strong>@{{category.category_no}} - @{{category.category_name}}</strong></h6>
         </a>
     </div>
 
@@ -34,9 +34,11 @@
                 <li class="active">@{{ category.category_no | uppercase }}
                     - @{{ category.category_name | uppercase }}</li>
             </ol>
-
-            <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add
-                new internal specification <i class="fa fa-plus"></i></a>
+            @if(Auth::user() && Auth::user()->is_admin)
+                <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
+                    Add new internal specification <i class="fa fa-plus"></i>
+                </a>
+            @endif
             <div class="clearfix"></div>
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-xs-12 col-md-9">
@@ -50,11 +52,14 @@
                         <strong>Revision: </strong>@{{spec.company_spec_revision.revision | uppercase}}
                         <strong>Date: </strong>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}
                     </h6>
-                    <a class="btn btn-xs btn-warning" href="@{{spec.id | internalRoute}}/edit">Update <i
-                                class="fa fa-pencil"></i></a>
-                    <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
-                    setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
-                    </button>
+                    @if(Auth::user() && Auth::user()->is_admin)
+                        <a class="btn btn-xs btn-default" href="@{{spec.id | internalRoute}}/edit">
+                            Update <i class="fa fa-edit"></i>
+                        </a>
+                        <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
+                        setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
+                        </button>
+                    @endif
                 </div>
             </div>
             <div v-if="pagination.data.length === 0" class="container">

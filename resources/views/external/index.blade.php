@@ -50,15 +50,16 @@
                         <strong>Date: </strong>@{{spec.customer_spec_revision | latestRevision 'revision_date' | telfordStandardDate}}
                     </h6>
                 </div>
-                <div class="col-sm-12 col-md-4">
-                    <a class="btn btn-xs btn-default" href="@{{spec.id | externalRoute}}/edit">
-                        Update <i class="fa fa-pencil"></i>
+                <div class="col-sm-12 col-md-4" v-if="{{Auth::user()}}">
+                    <a class="btn btn-xs btn-default" href="@{{spec.id | externalRoute}}/edit" v-if="{{Auth::user()->is_admin}}">
+                        Update <i class="fa fa-edit"></i>
                     </a>
 
-                    <button class="btn btn-xs btn-warning"
+                    <button class="btn btn-xs btn-danger"
                             data-toggle="modal"
                             href="#spec-delete"
                             @click=" setModalSpec(spec)"
+                            v-if="{{Auth::user()->is_admin}}"
                     >
                     Remove <i class="fa fa-remove"></i>
                     </button>
@@ -70,7 +71,7 @@
                             @click="setSpecForReviewModal(spec)"
                             v-if="spec.customer_spec_revision | filterBy 0 in 'is_reviewed' | count"
                     >
-                    @{{ spec.customer_spec_revision | filterBy 0 in 'is_reviewed' | count }} pending for review <i class="fa fa-file-o"></i>
+                    <span class="badge">@{{ spec.customer_spec_revision | filterBy 0 in 'is_reviewed' | count }}</span> pending for review <i class="fa fa-file-o"></i>
                     </button>
                 </div>
             </div>

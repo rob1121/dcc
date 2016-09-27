@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
-@push('style')
-<link rel="stylesheet" href="{{url("css/app.css")}}">
-@endpush
-
 @push('script')
-<script src="{{url("js/app.js")}}"></script>
+<script src="{{URL::to("js/register.js")}}"></script>
 @endpush
 
 @section('content')
@@ -18,6 +14,20 @@
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
 
+                        <div class="form-group{{ $errors->has('employee_id') ? ' has-error' : '' }}">
+                            <label for="employee_id" class="col-md-4 control-label">Employee ID</label>
+
+                            <div class="col-md-6">
+                                <input id="employee_id" type="text" class="form-control" name="employee_id" value="{{ old('employee_id') }}" required>
+
+                                @if ($errors->has('employee_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('employee_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
 
@@ -27,6 +37,24 @@
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
+                            <label for="department" class="col-md-4 control-label">Department</label>
+
+                            <div class="col-md-6">
+                                <select name="department" id="department" class="form-control">
+                                	<option value="" disabled selected> -- Select One -- </option>
+                                    <option value="QA"  @if(old("department") === "QA") selected @endif>QA</option>
+                                    <option value="PE"  @if(old("department") === "PE") selected @endif>PE</option>
+                                </select>
+
+                                @if ($errors->has('department'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('department') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -45,6 +73,21 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group{{ $errors->has('is_admin') ? ' has-error' : '' }}">
+
+                            <label for="is_admin" class="control-label col-md-4">Is admin</label>
+                            <div class="col-md-6">
+                                <label><input id="is_admin" type="radio" name="is_admin" value="1" @if(old("is_admin") == 1) checked @endif> Yes</label>
+                                <label><input id="is_admin" type="radio" name="is_admin" value="0" @if(old("is_admin") == 0) checked @endif> No</label>
+                                @if ($errors->has('is_admin'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('is_admin') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>

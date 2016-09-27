@@ -9,7 +9,7 @@ foreach(File::allFiles(app_path().'/DCC/Routes') as $route) {
 }
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route("internal.index"));
 });
 
 //Route::get("/", function() {

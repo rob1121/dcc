@@ -21,6 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->safeEmail,
+        'department' => $faker->randomElement(["QA","PE"]),
         'employee_id' => $faker->numberBetween(),
         'is_admin' => $faker->randomElement([1,0]),
         'password' => $password ?: $password = bcrypt('secret'),
@@ -47,7 +48,7 @@ $factory->define(App\CompanySpecCategory::class, function (Faker\Generator $fake
 
 $factory->define(App\CompanySpecRevision::class, function (Faker\Generator $faker) {
     return [
-        'revision' =>  $faker->text(5) ,
+        'revision' =>  $faker->randomElement(['AA','BB','**','*A','*C','ZZ','AB']) ,
         'company_spec_id' =>  function () {
             return factory(App\CompanySpec::class)->create()->id;
         } ,
@@ -82,7 +83,7 @@ $factory->define(App\CustomerSpecCategory::class, function (Faker\Generator $fak
 
 $factory->define(App\CustomerSpecRevision::class, function (Faker\Generator $faker) {
     return [
-        'revision' =>  $faker->text(2) ,
+        'revision' =>  $faker->randomElement(['AA','BB','**','*A','*C','ZZ','AB']) ,
         'revision_date' =>  $faker->date() ,
         'customer_spec_id' =>  function() {
             return factory(App\CustomerSpec::class)->create()->id;
