@@ -21,7 +21,7 @@ Route::group(["prefix" => "external"], function() {
         "uses" => "ExternalController@show"
     ]);
 
-    Route::get("/{external}/edit",[
+    Route::get("/spec/{external}/edit",[
         "as" => "external.edit",
         "uses" => "ExternalController@edit"
     ]);
@@ -29,6 +29,11 @@ Route::group(["prefix" => "external"], function() {
     Route::patch("/{external}",[
         "as" => "external.update",
         "uses" => "ExternalController@update"
+    ]);
+
+    Route::patch("/{external}/update-status",[
+        "as" => "external.revision.update",
+        "uses" => "ExternalController@updateRevision"
     ]);
 
     Route::delete("/{external}",[

@@ -7986,12 +7986,12 @@ body {
   border-color: darkred; }
   .navbar .navbar-brand {
     color: darkred; }
-  .navbar li a {
+  .navbar .nav-link > a {
     border-bottom: 3px solid #fff;
     -webkit-transition: .1s ease-in;
     transition: .1s ease-in; }
-  .navbar li.active a,
-  .navbar li:hover a {
+  .navbar .nav-link.active > a,
+  .navbar .nav-link:hover > a {
     border-bottom: 3px solid darkred;
     background: #f2f2f2 !important; }
 
@@ -8063,7 +8063,8 @@ th {
     padding: 5px 10px;
     margin: 0 0 0 5px;
     text-transform: uppercase;
-    width: 220px;
+    width: 100%;
+    word-wrap: break-word;
     display: inline-block;
     color: #636b6f;
     background: #fff;

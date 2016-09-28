@@ -2,11 +2,12 @@
 
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
-use App\CustomerSpecRevision;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
 use App\Http\Requests\ExternalSpecRequest;
+use ErrorException;
+use Illuminate\Http\Request;
 use JavaScript;
 
 class ExternalController extends Controller {
@@ -32,12 +33,13 @@ class ExternalController extends Controller {
 
     public function getCustomerSpecForReviewCountPerCategory($customer_name)
     {
-        return CustomerSpecCategory::whereCustomerName($customer_name)->get()
+        $a = CustomerSpecCategory::whereCustomerName($customer_name)->with(["customerSpec" => function($query) {
+            $query->with("customerSpecRevision");
+        }])->get()
             ->map(function ($item) {
-                return CustomerSpecRevision::whereCustomerSpecId($item->customer_spec_id)
-                    ->whereIsReviewed(0)
-                    ->count();
+                return $item->customerSpec->customerSpecRevision->where("is_reviewed",0)->count();
             })->sum();
+        return $a;
     }
 
     /**
@@ -68,12 +70,12 @@ class ExternalController extends Controller {
      * @internal param int $id
      */
     public function show(CustomerSpec $external, $revision=null) {
-        $document = $revision
-            ? $external->customerSpecRevision()->whereRevision($revision)->first()->document
-            : $external->customerSpecRevision()->orderBy('revision','desc')->first()->document;
-
-        $document = new Document($document);
-        return $document->showPDF();
+        try {
+            $document = $this->getSpec($external, $revision);
+            return (new Document($document))->showPDF();
+        } catch (ErrorException $e) {
+            return "External Specification not found in the database";
+        }
     }
 
     /**
@@ -99,10 +101,33 @@ class ExternalController extends Controller {
     }
 
     /**
+     * update customer specs revision through ajax request
+     *
+     * @param ExternalSpecRequest $request
+     * @param CustomerSpec $external
+     */
+    public function updateRevision(ExternalSpecRequest $request, CustomerSpec $external) {
+        $external->customerSpecRevision()->whereRevision($request->revision)->update(["is_reviewed" => $request->is_reviewed]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      * @param CustomerSpec $external
      */
     public function destroy(CustomerSpec $external) {
         $external->delete();
+    }
+
+    /**
+     * @param CustomerSpec $external
+     * @param $revision
+     * @return mixed
+     */
+    protected function getSpec(CustomerSpec $external, $revision)
+    {
+        $document = $revision
+            ? $external->customerSpecRevision()->whereRevision($revision)->first()->document
+            : $external->customerSpecRevision()->orderBy('revision', 'desc')->first()->document;
+        return $document;
     }
 }

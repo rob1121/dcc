@@ -1,5 +1,7 @@
 require("./app");
 
+Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+
 const app = new Vue({
 	el: "#app",
 
@@ -8,12 +10,11 @@ const app = new Vue({
 			customer_name
 		},
 
-		modalDeleteConfirmation: {
+		modalConfirmation: {
+		    action: "update",
 			category: [],
-			index: -1
+            indexOfSpecForUpdate: null
 		},
-
-        specForReviewModal: [],
 
 		currentIndex: 0,
 
@@ -56,11 +57,10 @@ const app = new Vue({
             var pagination_url = laroute.route('api.search.external');
             this.$http.get(pagination_url, {
                 params: { page:num, category:this.category.customer_name }
-            })
-                .then( response => {
-                    this.pagination = response.json();
-                    loader.hide();
-                }, () => this.getPagination(num));
+            }).then(
+                response => { this.pagination = response.json(); loader.hide(); },
+                () => this.errorDialogMessage()
+            );
         },
 
         prev() {
@@ -85,26 +85,43 @@ const app = new Vue({
             btn.children('i').toggleClass("fa-remove");
         },
 
-        setModalSpec(spec, index = -1) {
-            this.modalDeleteConfirmation.category = spec;
-            this.modalDeleteConfirmation.index = index;
+        setModalSpec(spec,action) {
+            this.modalConfirmation.category = spec;
+            this.modalConfirmation.action = action;
         },
 
-        setSpecForReviewModal(spec) {
-            this.specForReviewModal = spec;
+        modalAction() {
+            this.modalConfirmation.action === "update"
+                ? this.updateSpecStatus()
+                : this.removeSpec();
         },
 
-        resetModalData() {
-            this.setModalSpec({});
+        setUpdateSpec(specRevision) {
+            this.indexOfSpecForUpdate = specRevision;
+        },
+
+        errorDialogMessage: function () {
+            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+        },
+
+        updateSpecStatus() {
+            var update_status = laroute.route("external.revision.update", {external:this.modalConfirmation.category.id});
+
+            this.$http.patch(update_status, {is_reviewed: 1,revision:this.indexOfSpecForUpdate.revision})
+                .then(
+                    () => this.modalConfirmation.category.customer_spec_revision.$remove(this.indexOfSpecForUpdate),
+                    () => this.errorDialogMessage()
+                );
         },
 
         removeSpec() {
-            var route_delete = laroute.route("external.destroy", {external:this.modalDeleteConfirmation.category.id});
+            var route_delete = laroute.route("external.destroy", {external:this.modalConfirmation.category.id});
+
             this.$http.delete(route_delete)
-                .then( () => {
-                    this.pagination.data.$remove(this.modalDeleteConfirmation.category);
-                    this.resetModalData();
-                }, () => this.removeSpec());
+                .then(
+                    () => this.pagination.data.$remove(this.modalConfirmation.category),
+                    () => this.errorDialogMessage()
+                );
         },
     }
 });

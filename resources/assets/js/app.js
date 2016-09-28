@@ -44,10 +44,14 @@ const nav = new Vue({
     methods: {
         displaySearchResult() {
             this.$http.get(laroute.route("search", {q:this.searchKeyword}))
-                .then(response => {
-                    this.searchResults = response.json();
-                    this.toggleSearchResult();
-                });
+                .then(
+                    response => { this.searchResults = response.json(); this.toggleSearchResult(); },
+                    () => this.errorDialogMessage()
+                );
+        },
+
+        errorDialogMessage: function () {
+            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
         },
 
         toggleSearchResult() {

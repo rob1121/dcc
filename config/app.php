@@ -182,7 +182,8 @@ return [
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         TomLingham\Searchy\SearchyServiceProvider::class,
-        Lord\Laroute\LarouteServiceProvider::class
+        Lord\Laroute\LarouteServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class
     ],
 
     /*

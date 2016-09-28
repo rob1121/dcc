@@ -24,15 +24,15 @@
 
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav navbar-left">
-                <li @if(route("internal.index") === Request::url()) class="active" @endif>
+                <li class="{{route("internal.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("internal.index") }}">Internal Specification
                         @if(newCompanySpecCount())
                             <span class="label label-danger">{{newCompanySpecCount()}}</span>
                         @endif
                     </a>
                 </li>
-                @if(Auth::user() && Auth::user()->is_admin)
-                    <li @if(route("external.index") === Request::url()) class="active" @endif>
+                @if(Auth::user())
+                    <li class="{{route("external.index") === Request::url() ? "active" : ""}} nav-link">
                         <a href="{{ route("external.index") }}">External Specification
                             @if(customerForSpecReviewCount())
                                 <span class="label label-danger">{{customerForSpecReviewCount()}}</span>
@@ -58,13 +58,17 @@
                 @if (Auth::guest())
                     <li><a href="{{ url('/login') }}">Login</a></li>
                 @else
-                    @if(Auth::user()->is_admin)<li><a href="{{ url('/register') }}">Register new user</a></li>@endif
-                    <li class="dropdown">
+                    <li class="dropdown nav-link">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
+                            @if(Auth::user()->is_admin)
+                                <li><a href="{{ url('/register') }}">Register new user</a></li>
+                                <li><a href="{{ url('/user-list') }}">User list</a></li>
+                                <li role="separator" class="divider"></li>
+                            @endif
                             <li>
                                 <a href="{{ url('/logout') }}"
                                    onclick="event.preventDefault();

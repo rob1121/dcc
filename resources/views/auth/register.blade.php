@@ -7,8 +7,9 @@
 @section('content')
     <div class="container" id="app" style="margin-top:64px">
     <div class="row">
+        @include('errors.flash')
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
+            <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}}">
                 <div class="panel-heading">Register</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">

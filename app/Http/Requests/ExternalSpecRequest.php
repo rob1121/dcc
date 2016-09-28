@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ExternalSpecRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class ExternalSpecRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules_for_spec_revision_update = [
             'name' => "required",
             'spec_no' => "required",
             'revision' => "required|min:2|max:5",
@@ -31,5 +32,10 @@ class ExternalSpecRequest extends FormRequest
             'revision_date' => "required|date",
             'customer_name' => 'required',
         ];
+        $rules_for_spec_status_update = [
+            "is_reviewed" => "required|boolean",
+            'revision' => "required|min:2|max:5",
+        ];
+        return Request::input("is_reviewed") ? $rules_for_spec_status_update : $rules_for_spec_revision_update;
     }
 }

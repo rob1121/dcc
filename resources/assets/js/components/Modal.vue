@@ -9,10 +9,6 @@
                 <div class="modal-body">
                     <slot></slot>
                 </div>
-                <div class="modal-footer" v-if="hasFooter">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -24,12 +20,13 @@
 </style>
 <script>
     export default{
+
         props: {
             id:{default:"modal-id"},
             title:{default:"modal-title"},
-            hasFooter:{default:false},
             size:{default:"lg"},
-            classType:{default:"default"}
+            classType:{default:"default"},
+            zIndex:{default:"10"}
         }
     }
 </script>
