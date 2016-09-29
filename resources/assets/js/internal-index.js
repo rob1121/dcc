@@ -4,10 +4,7 @@ const app = new Vue({
     el: "#app",
 
     data: {
-        category: {
-            category_no,
-            category_name
-        },
+        category,
 
         modalDeleteConfirmation: {
             category: {},

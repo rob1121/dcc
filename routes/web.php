@@ -1,10 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-
-
-foreach(File::allFiles(app_path().'/DCC/Routes') as $route) {
+foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $route) {
     require $route->getPathname();
 }
 

@@ -1,3 +1,4 @@
+
 @extends("layouts.app")
 
 @push("script")
@@ -53,10 +54,10 @@
                         <strong>Date: </strong>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}
                     </h6>
                     @if(Auth::user() && Auth::user()->is_admin)
-                        <a class="btn btn-xs btn-default" href="@{{spec.id | internalRoute}}/edit">
+                        <a id="update-btn" class="btn btn-xs btn-default" href="@{{spec.id | internalRoute}}/edit">
                             Update <i class="fa fa-edit"></i>
                         </a>
-                        <button class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
+                        <button id="delete-btn" class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
                         setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
                         </button>
                     @endif
@@ -90,8 +91,18 @@
     </div>
 
     {{--=======================================MODALS=================================--}}
-    <dcc-modal title="Modal confirmation" id="spec-delete">
-        <h1>Are you sure you want to delete?</h1>
+    <dcc-modal title="Modal confirmation"
+               id="spec-delete"
+               class-type="danger"
+    >
+        <h3 class="text-center">
+            Are you sure you want to permanently <strong class="text-danger">delete</strong>
+            <br>
+            "<strong class="text-danger">
+                @{{ modalDeleteConfirmation.category.spec_no | uppercase}} - @{{ modalDeleteConfirmation.category.name | uppercase}}
+            </strong>"?
+        </h3>
+
         <div class="text-center">
             <button type="button" class="btn btn-danger" data-dismiss="modal" @click="removeSpec">Yes</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>

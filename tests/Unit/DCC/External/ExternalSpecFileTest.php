@@ -18,7 +18,7 @@ class ExternalSpecFileTest extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->factory = factory(App\CustomerSpecRevision::class);
-        $this->file = new Illuminate\Http\UploadedFile(base_path('tests/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE);
+        $this->file = new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE);
         $this->spec = factory(App\CustomerSpec::class)->create();
 
         $this->actual = new Request($this->factory->make([

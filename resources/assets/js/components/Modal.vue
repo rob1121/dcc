@@ -6,7 +6,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">{{title}}</h4>
                 </div>
-                <div class="modal-body">
+                <div :class="['modal-body' ,{'modal-scroll' : scroll === 'on'}]">
                     <slot></slot>
                 </div>
             </div><!-- /.modal-content -->
@@ -17,16 +17,25 @@
     .close {
         font-size: 3em;
     }
+
+    .modal {
+        overflow-y: auto;
+    }
+
+    .modal-scroll {
+        height: 80vh;
+        overflow-y: auto;
+    }
 </style>
 <script>
-    export default{
+    export default {
 
         props: {
             id:{default:"modal-id"},
             title:{default:"modal-title"},
             size:{default:"lg"},
             classType:{default:"default"},
-            zIndex:{default:"10"}
+            scroll:{dafault:"off"}
         }
     }
 </script>

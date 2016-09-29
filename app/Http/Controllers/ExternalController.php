@@ -26,7 +26,7 @@ class ExternalController extends Controller {
                 "customer_name" => $category->customer_name
             ];
         });
-        JavaScript::put([ 'customer_name' => $this->categories->first()->customer_name ]);
+        JavaScript::put('category', $first_category = $this->categories->first());
 
         return view('external.index', [ "categories" => $categories ]);
     }

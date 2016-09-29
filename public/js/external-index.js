@@ -45652,7 +45652,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":8,"vue-hot-reload-api":6}],15:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.close {\n    font-size: 3em;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.close {\n    font-size: 3em;\n}\n\n.modal {\n    overflow-y: auto;\n}\n\n.modal-scroll {\n    height: 80vh;\n    overflow-y: auto;\n}\n")
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45665,17 +45665,17 @@ exports.default = {
         title: { default: "modal-title" },
         size: { default: "lg" },
         classType: { default: "default" },
-        zIndex: { default: "10" }
+        scroll: { dafault: "off" }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal fade\" tabindex=\"-1\" id=\"{{id}}\">\n    <div class=\"modal-dialog modal-{{size}}\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header bg-{{classType}}\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\n                <h4 class=\"modal-title\">{{title}}</h4>\n            </div>\n            <div class=\"modal-body\">\n                <slot></slot>\n            </div>\n        </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n</div><!-- /.modal -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"modal fade\" tabindex=\"-1\" id=\"{{id}}\">\n    <div class=\"modal-dialog modal-{{size}}\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header bg-{{classType}}\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\n                <h4 class=\"modal-title\">{{title}}</h4>\n            </div>\n            <div :class=\"['modal-body' ,{'modal-scroll' : scroll === 'on'}]\">\n                <slot></slot>\n            </div>\n        </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n</div><!-- /.modal -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.close {\n    font-size: 3em;\n}\n"] = false
+    __vueify_insert__.cache["\n.close {\n    font-size: 3em;\n}\n\n.modal {\n    overflow-y: auto;\n}\n\n.modal-scroll {\n    height: 80vh;\n    overflow-y: auto;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -45801,7 +45801,7 @@ var app = new Vue({
 
     data: {
         category: {
-            customer_name: customer_name
+            customer_name: category.customer_name
         },
 
         modalConfirmation: {
@@ -45826,6 +45826,15 @@ var app = new Vue({
         },
         count: function count(collection) {
             return collection.length;
+        },
+        routeEditLink: function routeEditLink(id) {
+            return laroute.route("external.edit", { external: id });
+        },
+        isHasForReview: function isHasForReview(collection) {
+
+            for (var x in collection) {
+                if (collection[x].is_reviewed === 0) return false;
+            }return true;
         }
     },
 

@@ -47,7 +47,7 @@ class InternalSpecificationTest extends TestCase {
             "revision_date" => "2016-01-01",
             "category_no" => "company",
             "category_name" => "company",
-            "document" => new Illuminate\Http\UploadedFile(base_path('tests/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE),
+            "document" => new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE),
         ]);
     }
 

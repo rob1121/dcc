@@ -45,13 +45,17 @@
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="navbar-form">
-                    <input type="text" style="width: 200px;"
-                           class="form-control"
-                           placeholder="Search for Specification"
-                           v-model="searchKeyword"
-                           @keyup.enter="displaySearchResult"
-                    >
-                    <button @click="displaySearchResult" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    <form>
+                        <input type="text" style="width: 200px;"
+                               class="form-control"
+                               placeholder="&#128270; Search for Specification"
+                               v-model="searchKeyword"
+                               name="search-field"
+                               id="search-field"
+                               @keyup.enter="displaySearchResult"
+                        >
+                        <button @click="displaySearchResult" class="btn btn-default" name="search-field-submit">Search</button>
+                    </form>
                 </li>
 
                 <!-- Authentication Links -->

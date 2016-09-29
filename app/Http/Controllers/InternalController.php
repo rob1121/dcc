@@ -19,10 +19,7 @@ class InternalController extends Controller {
     }
 
     public function index() {
-        JavaScript::put([
-            'category_no' => $this->categories->first()->category_no,
-            'category_name' => $this->categories->first()->category_name
-        ]);
+        JavaScript::put('category', $this->categories->first());
 
         return view('internal.index', [
             "categories" => $this->categories

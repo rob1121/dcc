@@ -17,7 +17,7 @@ class InternalSpecRevisionTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->file = new Illuminate\Http\UploadedFile(base_path('tests/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE);
+        $this->file = new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE);
         $this->factory = factory(App\CompanySpecRevision::class);
         $this->spec = factory(App\CompanySpec::class)->create();
     }

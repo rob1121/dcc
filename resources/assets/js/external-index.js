@@ -7,7 +7,7 @@ const app = new Vue({
 
 	data: {
 		category: {
-			customer_name
+			customer_name: category.customer_name
 		},
 
 		modalConfirmation: {
@@ -32,6 +32,18 @@ const app = new Vue({
 
         count(collection) {
             return collection.length;
+        },
+
+        routeEditLink(id) {
+            return laroute.route("external.edit", {external:id});
+        },
+
+        isHasForReview(collection) {
+
+            for(var x in collection)
+                if(collection[x].is_reviewed === 0) return false;
+
+            return true;
         }
     },
 
@@ -122,6 +134,6 @@ const app = new Vue({
                     () => this.pagination.data.$remove(this.modalConfirmation.category),
                     () => this.errorDialogMessage()
                 );
-        },
+        }
     }
 });

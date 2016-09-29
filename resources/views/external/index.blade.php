@@ -36,6 +36,7 @@
                 <li class="active">Internal Specification</li>
                 <li class="active">@{{ category.customer_name | uppercase }}</li>
             </ol>
+
             <a href="{{route("external.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add
                 new external specification <i class="fa fa-plus"></i>
             </a>
@@ -63,19 +64,19 @@
                         @endif
                     ">
                         @if(Auth::user()->is_admin)
-                            <a class="btn btn-xs btn-default" href="@{{spec.id | externalRoute}}/edit">
+                            <a id="update-btn" class="btn btn-xs btn-default" href="@{{spec.id | routeEditLink }}">
                                 Update <i class="fa fa-edit"></i>
                             </a>
 
-                            <button class="btn btn-xs btn-danger"
+                            <a id="delete-btn" class="btn btn-xs btn-danger"
                                     data-toggle="modal"
                                     href="#spec-confirm"
                                     @click=" setModalSpec(spec,'delete')"
                             >
                             Remove <i class="fa fa-remove"></i>
-                            </button>
+                            </a>
                         @endif
-                        <button class="btn btn-xs btn-success"
+                        <a id="for-review-btn" class="btn btn-xs btn-success"
                                 data-toggle="modal"
                                 href="#spec-for-review"
                                 title="Click here to view specification for review"
@@ -84,7 +85,7 @@
                         >
                             <span class="badge">@{{ spec.customer_spec_revision | filterBy 0 in 'is_reviewed' | count }}</span>
                             pending for review <i class="fa fa-file-o"></i>
-                        </button>
+                        </a>
                     </div>
                 @endif
             </div>
@@ -119,14 +120,21 @@
     <dcc-modal title="Modal confirmation"
                id="spec-confirm"
                :class-type="modalConfirmation.action === 'update' ? 'success' : 'danger'"
-               :size="modalConfirmation.action === 'update' ? 'lg' : 'sm'"
+               scroll="off"
     >
         <div class="text-center">
             <div v-if="modalConfirmation.action === 'update'">
                 <h3>Mark <strong>@{{ modalConfirmation.category.name }}</strong> as <strong class="text-success">complete</strong></h3>
                 <h4>Click <strong>Yes</strong> to confirm action.</h4>
             </div>
-            <div v-else><h4>Are you sure you want to permanently delete the selected document?</h4></div>
+            <div v-else>
+                <h4>
+                    Are you sure you want to permanently <strong class="text-danger">delete</strong>
+                    "<strong class="text-danger">
+                        @{{ modalConfirmation.category.spec_no | uppercase }} - @{{ modalConfirmation.category.name | uppercase }}
+                    </strong>"?
+            </h4>
+            </div>
             <div v-if="modalConfirmation.action === 'delete'">
                 <button type="button"
                         :class="modalConfirmation.action === 'update' ? 'btn btn-success' : 'btn btn-danger'"
@@ -143,39 +151,49 @@
                 @click="modalAction"
                 >Yes
                 </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" href="#spec-for-review" v-else>No</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" href="#spec-for-review">No</button>
             </div>
         </div>
     </dcc-modal>
 
-    <dcc-modal title="External specification for review" id="spec-for-review" class-type="info" size="lg">
-        <div v-for="specRevision in modalConfirmation.category.customer_spec_revision | filterBy 0 in 'is_reviewed'">
-            <div class="col-xs-{{Auth::user()->is_admin ? 7 : 8 }} col-xs-offset-2">
+    <dcc-modal title="External specification for review"
+               id="spec-for-review"
+               class-type="info"
+               size="lg"
+               scroll="on"
+    >
+            <div v-for="specRevision in modalConfirmation.category.customer_spec_revision | filterBy 0 in 'is_reviewed'">
+                <div class="col-xs-{{Auth::user()->is_admin ? 8 : 9 }} col-xs-offset-1">
 
-                <a v-if="modalConfirmation.category" href="@{{ specRevision | documentLink }}" target="_blank">
-                    <h4>@{{ modalConfirmation.category.spec_no | uppercase}} @{{ modalConfirmation.category.name | uppercase}}</h4>
-                </a>
+                    <a v-if="modalConfirmation.category" href="@{{ specRevision | documentLink }}" target="_blank">
+                        <h4>@{{ modalConfirmation.category.spec_no | uppercase}} @{{ modalConfirmation.category.name | uppercase}}</h4>
+                    </a>
 
-                <span class="help-block">
-                    <strong>Revision: </strong>@{{ specRevision.revision | uppercase}}
-                    <strong>Date: </strong>@{{ specRevision.revision_date | telfordStandardDate}}
-                </span>
-            </div>
-
-            @if(Auth::user()->is_admin)
-                <div class="col-xs-1">
-                    <button type="button"
-                            class="btn btn-xs btn-default"
-                            data-dismiss="modal"
-                            data-toggle="modal"
-                            href="#spec-confirm"
-                            @click="setUpdateSpec(specRevision)"
-                    >
-                        Done Review <i class="fa fa-check"></i>
-                    </button>
+                    <span class="help-block">
+                        <strong>Revision: </strong>@{{ specRevision.revision | uppercase}}
+                        <strong>Date: </strong>@{{ specRevision.revision_date | telfordStandardDate}}
+                    </span>
                 </div>
-            @endif
-        </div>
+
+                @if(Auth::user()->is_admin)
+                    <div class="col-xs-1">
+                        <button type="button"
+                                class="btn btn-xs btn-default"
+                                data-dismiss="modal"
+                                data-toggle="modal"
+                                href="#spec-confirm"
+                                @click="setUpdateSpec(specRevision)"
+                        >
+                            Done Review <i class="fa fa-check"></i>
+                        </button>
+                    </div>
+                @endif
+            </div>
+        <div class="clearfix"></div>
+            <h1 class="text-center text-success"
+                v-if="modalConfirmation.category.customer_spec_revision | isHasForReview">
+                No pending external specification for review.
+            </h1>
         <div class="clearfix"></div>
     </dcc-modal>
 @endsection
