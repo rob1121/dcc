@@ -94,3 +94,13 @@ $factory->define(App\CustomerSpecRevision::class, function (Faker\Generator $fak
 });
 
 
+$factory->define(App\Iso::class, function (Faker\Generator $faker) {
+    return [
+        'spec_no' =>  $faker->word ,
+        'name' =>  $faker->name ,
+        'document' =>  $faker->word ,
+        'revision' => $faker->word,
+        'revision_date' => $faker->date()
+    ];
+});
+

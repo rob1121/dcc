@@ -37,9 +37,11 @@
                 <li class="active">@{{ category.customer_name | uppercase }}</li>
             </ol>
 
-            <a href="{{route("external.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">Add
-                new external specification <i class="fa fa-plus"></i>
-            </a>
+            @if(Auth::user() && Auth::user()->is_admin)
+                <a href="{{route("external.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
+                    Add new external specification <i class="fa fa-plus"></i>
+                </a>
+            @endif
             <div class="clearfix"></div>
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-sm-12

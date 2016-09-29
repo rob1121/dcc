@@ -40,6 +40,9 @@
                         </a>
                     </li>
                 @endif
+                <li class="{{route("iso.index") === Request::url() ? "active" : ""}} nav-link">
+                    <a href="{{ route("iso.index") }}">ISO</a>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->
