@@ -10,4 +10,9 @@ Route::group(["prefix" => "iso"], function() {
         "uses" => "IsoController@create",
         "as" => "iso.create"
     ]);
+
+    Route::post("/", [
+        "uses" => "IsoController@store",
+        "as" => "iso.store"
+    ]);
 });

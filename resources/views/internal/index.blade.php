@@ -12,7 +12,10 @@
            :class="['btn-link', {'active': currentIndex == index }]"
         @click="getSpecByCategory(category, index)"
         >
-        <h6><strong>@{{category.category_no}} - @{{category.category_name}}</strong></h6>
+        <h6>
+            <strong>@{{category.category_no}} - @{{category.category_name}}</strong>
+            <span class="label label-danger" v-if="category.count">@{{ category.count }}</span>
+        </h6>
         </a>
     </div>
 
@@ -41,10 +44,21 @@
                 </a>
             @endif
             <div class="clearfix"></div>
+
+            @include('errors.flash')
+
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-xs-12 col-md-9">
                     <a target="_blank" href="@{{spec.id | internalRoute}}">
-                        <h4>@{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}}</h4>
+                        <h4>
+                            @{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}}
+                            <span class="label label-success"
+                                  v-if="spec.company_spec_revision.revision_date | isNewRevision"
+                            >
+                                new revision
+                            </span>
+                        </h4>
+
                     </a>
                     <h5 class="help-block">@{{spec.company_spec_revision.revision_summary  | capitalize}}</h5>
                 </div>

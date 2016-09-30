@@ -2,12 +2,12 @@
 
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
+use App\CustomerSpecRevision;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
 use App\Http\Requests\ExternalSpecRequest;
 use ErrorException;
-use Illuminate\Http\Request;
 use JavaScript;
 
 class ExternalController extends Controller {
@@ -48,7 +48,10 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('external.create', [ "categories" => $this->categories ]);
+        return view('external.create', [
+            "categories" => $this->categories,
+            "reviewers_list" => CustomerSpecRevision::uniqueReviewer()
+        ]);
     }
 
     /**
@@ -58,8 +61,16 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(ExternalSpecRequest $request) {
-        $this->factory->store(new ExternalSpecification, $request);
-        return redirect(route("external.index"));
+        try {
+            if (CustomerSpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
+
+            $this->factory->store(new ExternalSpecification, $request);
+            flash("Document successfully added to database!.","success");
+            return redirect(route("external.index"));
+        } catch(DuplicateEntryException $e) {
+            flash("document already exist!.","danger");
+            return redirect()->back();
+        }
     }
 
     /**
@@ -97,6 +108,8 @@ class ExternalController extends Controller {
      */
     public function update(ExternalSpecRequest $request, CustomerSpec $external) {
         $this->factory->update(new ExternalSpecification($external), $request);
+
+        flash("Database successfully updated!.","success");
         return redirect(route("external.index"));
     }
 
@@ -125,9 +138,8 @@ class ExternalController extends Controller {
      */
     protected function getSpec(CustomerSpec $external, $revision)
     {
-        $document = $revision
+        return $revision
             ? $external->customerSpecRevision()->whereRevision($revision)->first()->document
             : $external->customerSpecRevision()->orderBy('revision', 'desc')->first()->document;
-        return $document;
     }
 }

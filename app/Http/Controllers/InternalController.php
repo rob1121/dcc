@@ -2,6 +2,7 @@
 
 use App\CompanySpec;
 use App\CompanySpecCategory;
+use App\CompanySpecRevision;
 use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\File\Document;
 use App\DCC\Internal\InternalSpecification;
@@ -18,13 +19,28 @@ class InternalController extends Controller {
         $this->categories = CompanySpecCategory::getCategoryList();
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index() {
+        $category_with_new_revisions = CompanySpecRevision::countOfNewRevision();
+
+        $this->categories = $this->categories->map(function($item) use ($category_with_new_revisions) {
+                return [
+                    "category_no" => $item->category_no,
+                    "category_name" => $item->category_name,
+                    "count" => $category_with_new_revisions->where("category_no",$item->category_no)->count()
+                ];
+
+        });
+
         JavaScript::put('category', $this->categories->first());
 
         return view('internal.index', [
             "categories" => $this->categories
         ]);
     }
+
     /**
      * display view create
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -44,9 +60,11 @@ class InternalController extends Controller {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
             $this->factory->store(new InternalSpecification, $request);
+            flash("document save to the database!.","success");
             return redirect(route("internal.index"));
         } catch(DuplicateEntryException $e) {
-            return $e->getMessage();
+            flash("document already exist!.","danger");
+            return redirect()->back();
         }
     }
 
@@ -79,6 +97,7 @@ class InternalController extends Controller {
      */
     public function update(InternalSpecRequest $request, CompanySpec $internal) {
         $this->factory->update(new InternalSpecification($internal), $request);
+        flash("Database successfully updated!.","success");
         return redirect(route("internal.index"));
     }
 

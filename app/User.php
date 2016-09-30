@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\DCC\Traits\ModelInstance;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use ModelInstance;
     use Notifiable;
 
     /**

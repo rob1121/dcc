@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\DCC\Traits\ModelInstance;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanySpec extends Model
 {
+    use ModelInstance;
+
     protected $fillable = ['name','spec_no'];
 
     protected $with = ['companySpecRevision', 'companySpecCategory'];

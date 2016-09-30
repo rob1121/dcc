@@ -10,7 +10,8 @@
 @endpush
 
 @push("script")
-<script src="{{URL::to("/js/internal-create.js")}}"></script>
+<script src="{{URL::to("/js/create.js")}}"></script>
+
 <script>
     function toggleCategory(selected) {
         if( "add_category" === selected.val() ) {
@@ -44,6 +45,8 @@
             <li><a href="{{route("internal.index")}}">Internal Specification</a></li>
             <li class="active"> New Internal Specification</li>
         </ol>
+
+          @include('errors.flash')
 
         <div class="panel panel-{{$errors->any() ? "danger" : "default"}}">
             <div class="panel-heading">

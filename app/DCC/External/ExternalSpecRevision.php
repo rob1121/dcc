@@ -1,6 +1,7 @@
 <?php namespace App\DCC\External;
 use App\CustomerSpec;
 use App\CustomerSpecRevision;
+use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationFactory;
 use App\DCC\SpecificationGateway;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ class ExternalSpecRevision implements SpecificationGateway {
     private $spec;
     private $factory;
 
-    public function __construct(CustomerSpec $spec=null) {
+    function __construct(CustomerSpec $spec=null) {
         $this->spec = $spec;
         $this->factory = new SpecificationFactory;
     }
@@ -18,10 +19,13 @@ class ExternalSpecRevision implements SpecificationGateway {
     function persist(Request $request) {
         $this->spec->customerSpecRevision()->firstOrCreate($request->all());
         $this->factory->store(new ExternalSpecFile($this->spec), $request);
+
         return $this->spec;
     }
 
     function update(Request $request) {
+
+        if ($this->spec === null) throw new SpecNotFoundException();
         $ids = $this->getIdsOfAllLastestRevision($request);
         $this->spec->customerSpecRevision()->whereIn("id",$ids)->delete();
 

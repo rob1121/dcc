@@ -2,21 +2,24 @@
 
 namespace App;
 
+use App\DCC\Traits\ModelInstance;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanySpecCategory extends Model
 {
+    use ModelInstance;
 
     protected $fillable = [ 'category_no', 'category_name' ];
 
-    public static function getCategoryList()
-    {
-        return self::get(["category_name","category_no"])->unique("category_no")->sortBy("category_no")->flatten();
+    public function companySpec(){
+        return $this->belongsTo(CompanySpec::class);
+    }
+    public static function categoryList() {
+        return self::with("companySpec")->get(["category_name","category_no","company_spec_id"]);
     }
 
-    public function companySpec()
-    {
-        return $this->belongsTo(CompanySpec::class);
+    public static function getCategoryList() {
+        return self::get(["category_name","category_no","company_spec_id"])->unique("category_no")->sortBy("category_no");
     }
 
     /**

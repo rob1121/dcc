@@ -45353,6 +45353,7 @@ Vue.filter('latestRevision', vFilter.latestRevision);
 Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
 Vue.filter('internalRoute', vFilter.internalRoute);
 Vue.filter('externalRoute', vFilter.externalRoute);
+Vue.filter('isNewRevision', vFilter.isNewRevision);
 
 var nav = new Vue({
     el: 'nav',
@@ -45396,7 +45397,7 @@ var nav = new Vue({
     }
 });
 
-},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":18,"./mixins/filters":19}],11:[function(require,module,exports){
+},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":19,"./mixins/filters":20}],11:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -45792,6 +45793,104 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+require('./app');
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        category: category,
+
+        modalDeleteConfirmation: {
+            category: {},
+            index: -1
+        },
+
+        currentIndex: 0,
+
+        pagination: {}
+    },
+
+    ready: function ready() {
+        this.getPagination();
+    },
+
+
+    methods: {
+        getSpecByCategory: function getSpecByCategory(category, index) {
+            this.setSpecCategory(category);
+            this.getPagination();
+            this.setActiveMenu(index);
+        },
+        setSpecCategory: function setSpecCategory(category) {
+            this.category = category;
+        },
+        setActiveMenu: function setActiveMenu(index) {
+            this.currentIndex = index;
+        },
+        getPagination: function getPagination() {
+            var _this = this;
+
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var loader = $(".loader");
+            loader.show();
+            var route = laroute.route('api.search.internal');
+            this.$http.get(route, {
+                params: {
+                    page: num,
+                    category: this.category.category_no
+                }
+            }).then(function (response) {
+                _this.pagination = response.json();
+                loader.hide();
+            }, function () {
+                return _this.getPagination(num);
+            });
+        },
+        prev: function prev() {
+            this.getPagination(this.pagination.current_page - 1);
+        },
+        next: function next() {
+            this.getPagination(this.pagination.current_page + 1);
+        },
+        showSideBar: function showSideBar() {
+            $('#sidebar').toggleClass("show-sidebar");
+            $('.main-content').toggleClass("compress-main-content");
+
+            this.toggleButton();
+        },
+        toggleButton: function toggleButton() {
+            var btn = $('.toggler-btn');
+
+            btn.children('i').toggleClass("fa-bars");
+            btn.children('i').toggleClass("fa-remove");
+        },
+        setModalSpec: function setModalSpec(spec) {
+            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
+
+            this.modalDeleteConfirmation.category = spec;
+            this.modalDeleteConfirmation.index = index;
+        },
+        resetModalData: function resetModalData() {
+            this.setModalSpec({});
+        },
+        removeSpec: function removeSpec() {
+            var _this2 = this;
+
+            var delete_route = laroute.route("internal.destroy", { internal: this.modalDeleteConfirmation.category.id });
+
+            this.$http.delete(delete_route).then(function () {
+                _this2.pagination.data.$remove(_this2.modalDeleteConfirmation.category);
+                _this2.resetModalData();
+            }, this.removeSpec());
+        }
+    }
+});
+
+},{"./app":10}],19:[function(require,module,exports){
+"use strict";
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -45975,7 +46074,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45989,6 +46088,7 @@ exports.telfordStandardDate = telfordStandardDate;
 exports.latestRevision = latestRevision;
 exports.internalRoute = internalRoute;
 exports.externalRoute = externalRoute;
+exports.isNewRevision = isNewRevision;
 
 var _moment = require("moment");
 
@@ -46016,104 +46116,11 @@ function externalRoute(id) {
     return laroute.route('external.show', { external: id });
 }
 
-},{"moment":4}],20:[function(require,module,exports){
-"use strict";
+function isNewRevision(revision_date) {
+    var revision_date = (0, _moment2.default)(revision_date);
+    return revision_date > (0, _moment2.default)().subtract(7, "days");
+}
 
-require('./app');
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: category,
-
-        modalDeleteConfirmation: {
-            category: {},
-            index: -1
-        },
-
-        currentIndex: 0,
-
-        pagination: {}
-    },
-
-    ready: function ready() {
-        this.getPagination();
-    },
-
-
-    methods: {
-        getSpecByCategory: function getSpecByCategory(category, index) {
-            this.setSpecCategory(category);
-            this.getPagination();
-            this.setActiveMenu(index);
-        },
-        setSpecCategory: function setSpecCategory(category) {
-            this.category = category;
-        },
-        setActiveMenu: function setActiveMenu(index) {
-            this.currentIndex = index;
-        },
-        getPagination: function getPagination() {
-            var _this = this;
-
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var loader = $(".loader");
-            loader.show();
-            var route = laroute.route('api.search.internal');
-            this.$http.get(route, {
-                params: {
-                    page: num,
-                    category: this.category.category_no
-                }
-            }).then(function (response) {
-                _this.pagination = response.json();
-                loader.hide();
-            }, function () {
-                return _this.getPagination(num);
-            });
-        },
-        prev: function prev() {
-            this.getPagination(this.pagination.current_page - 1);
-        },
-        next: function next() {
-            this.getPagination(this.pagination.current_page + 1);
-        },
-        showSideBar: function showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-        toggleButton: function toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-        setModalSpec: function setModalSpec(spec) {
-            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
-
-            this.modalDeleteConfirmation.category = spec;
-            this.modalDeleteConfirmation.index = index;
-        },
-        resetModalData: function resetModalData() {
-            this.setModalSpec({});
-        },
-        removeSpec: function removeSpec() {
-            var _this2 = this;
-
-            var delete_route = laroute.route("internal.destroy", { internal: this.modalDeleteConfirmation.category.id });
-
-            this.$http.delete(delete_route).then(function () {
-                _this2.pagination.data.$remove(_this2.modalDeleteConfirmation.category);
-                _this2.resetModalData();
-            }, this.removeSpec());
-        }
-    }
-});
-
-},{"./app":10}]},{},[20]);
+},{"moment":4}]},{},[18]);
 
 //# sourceMappingURL=internal-index.js.map

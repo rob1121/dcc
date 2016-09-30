@@ -25,6 +25,8 @@ Vue.filter('latestRevision', vFilter.latestRevision);
 Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
 Vue.filter('internalRoute', vFilter.internalRoute);
 Vue.filter('externalRoute', vFilter.externalRoute);
+Vue.filter('isNewRevision', vFilter.isNewRevision);
+
 
 const nav = new Vue({
     el: 'nav',

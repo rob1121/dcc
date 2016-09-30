@@ -13,7 +13,7 @@
         >
         <h6 class="pull-right" style="margin-right: 10%">
             <strong>@{{category.customer_name}}</strong>
-            <span class="badge">@{{ category.count }}</span>
+            <span class="label label-danger">@{{ category.count }}</span>
         </h6>
 
         </a>
@@ -43,6 +43,9 @@
                 </a>
             @endif
             <div class="clearfix"></div>
+
+            @include('errors.flash')
+
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-sm-12
                     @if(Auth::user() && Auth::user()->is_admin)         col-md-8
@@ -54,9 +57,11 @@
                     <a href="@{{spec.id | externalRoute}}" target="_blank" style="word-wrap: break-word">
                         <h4>@{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}} </h4>
                     </a>
-                    <h6 class="help-block">
-                        <strong>Revision:   </strong> @{{spec.customer_spec_revision | latestRevision 'revision' | uppercase}}
-                        <strong>Date:       </strong> @{{spec.customer_spec_revision | latestRevision 'revision_date' | telfordStandardDate}}
+                    <h6>
+                        <strong>Revision: </strong>
+                        <span class="label label-info">@{{spec.customer_spec_revision | latestRevision 'revision' | uppercase}}</span>
+                        <strong>Date: </strong>
+                        <span class="label label-info">@{{spec.customer_spec_revision | latestRevision 'revision_date' | telfordStandardDate}}</span>
                     </h6>
                 </div>
                 @if(Auth::user())

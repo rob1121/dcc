@@ -1,6 +1,7 @@
 <?php namespace App\DCC\External;
 
 use App\CustomerSpec;
+use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationFactory;
 use App\DCC\SpecificationGateway;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class ExternalSpecification implements SpecificationGateway {
     }
 
     function update(Request $request) {
+        if ($this->spec === null) throw new SpecNotFoundException();
         $this->spec->update($this->modelInstance($request));
         $this->factory->update(new ExternalSpecCategory($this->spec), $request);
         $this->factory->update(new ExternalSpecRevision($this->spec), $request);

@@ -2,6 +2,7 @@
 
 use App\CompanySpec;
 use App\CompanySpecRevision;
+use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationGateway;
 use Illuminate\Http\Request;
 use App\DCC\SpecificationFactory;
@@ -23,13 +24,9 @@ class InternalSpecRevision implements SpecificationGateway {
     }
 
     function update(Request $request) {
-        $this->spec->companySpecRevision->update($this->modelInstance($request));
+        if ($this->spec === null) throw new SpecNotFoundException();
+
+        $this->spec->companySpecRevision->update(CompanySpecRevision::instance($request)->toArray());
         $this->factory->update(new InternalSpecFile($this->spec), $request);
-    }
-
-    private function modelInstance($request) {
-        $newCompanySpecInstance = new CompanySpecRevision($request->all());
-
-        return $newCompanySpecInstance->toArray();
     }
 }

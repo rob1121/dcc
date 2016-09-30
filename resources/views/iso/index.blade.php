@@ -31,7 +31,11 @@
                     Add new ISO document<i class="fa fa-plus"></i>
                 </a>
             @endif
+
             <div class="clearfix"></div>
+
+            @include('errors.flash')
+
             <div class="deck" v-for="iso in isos" v-if="isos">
                 <div class="spec-no col-sm-12
                     @if(Auth::user() && Auth::user()->is_admin) col-md-9

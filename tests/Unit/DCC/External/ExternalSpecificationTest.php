@@ -44,6 +44,7 @@ class ExternalSpecificationTest extends TestCase {
             "spec_no" => "number",
             "name" => "spec name",
             "revision" => "**",
+            "reviewer" => "QA",
             "revision_date" => "2016-01-01",
             "customer_name" => "customer",
             "document" => new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE),

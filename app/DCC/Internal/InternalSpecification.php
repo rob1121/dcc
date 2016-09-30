@@ -1,6 +1,7 @@
 <?php namespace App\DCC\Internal;
 
 use App\CompanySpec;
+use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationGateway;
 use App\DCC\SpecificationFactory;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class InternalSpecification implements SpecificationGateway {
     }
 
     function persist(Request $request) {
-        $this->spec = CompanySpec::create($this->modelInstance($request));
+        $this->spec = CompanySpec::create(CompanySpec::instance($request)->toArray());
         $this->factory->store(new InternalSpecCategory($this->spec), $request);
         $this->factory->store(new InternalSpecRevision($this->spec), $request);
 
@@ -24,13 +25,9 @@ class InternalSpecification implements SpecificationGateway {
     }
 
     function update(Request $request) {
-        $this->spec->update($this->modelInstance($request));
+        if ($this->spec === null) throw new SpecNotFoundException();
+        $this->spec->update(CompanySpec::instance($request)->toArray());
         $this->factory->update(new InternalSpecRevision($this->spec), $request);
         $this->factory->update(new InternalSpecCategory($this->spec), $request);
-    }
-
-    protected function modelInstance($request) {
-        $newCompanySpecInstance = new CompanySpec($request->all());
-        return $newCompanySpecInstance->toArray();
     }
 }

@@ -32,7 +32,6 @@ class ExternalSpecSeeder extends Seeder
         DB::table('customer_specs')->truncate();
         DB::table('customer_spec_revisions')->truncate();
         DB::table('customer_spec_categories')->truncate();
-        DB::table('users')->truncate();
         DB::statement("SET FOREIGN_KEY_CHECKS = 1");
 
         for ($i = 0; $i < 25; $i++) {

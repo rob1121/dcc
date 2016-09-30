@@ -11,21 +11,21 @@ class IsoController extends Controller {
 
         return view("iso.index");
     }
-    
+
     public function show(Iso $iso) {
-        
+
     }
-    
+
     public function create() {
-        
+        return view("iso.create");
     }
-    
-    public function store() {
-        
+
+    public function store(IsoRequest $request) {
+
     }
-    
+
     public function edit(Iso $iso) {
-        
+
     }
 
     public function update(IsoRequest $request, Iso $iso) {

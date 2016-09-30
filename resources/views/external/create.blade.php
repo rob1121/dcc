@@ -10,7 +10,7 @@
 @endpush
 
 @push("script")
-    <script src="{{url("/js/external-create.js")}}"></script>
+    <script src="{{url("/js/create.js")}}"></script>
 @endpush
 
 @section('content')
@@ -23,6 +23,8 @@
           <li><a href="{{route("external.index")}}">External Specification</a></li>
           <li class="active"> New External Specification</li>
         </ol>
+
+          @include('errors.flash')
 
         <div class="panel panel-{{$errors->any() ? "danger" : "default"}}">
             <div class="panel-heading">
@@ -73,6 +75,22 @@
                                    error="{{$errors->has("name") ? $errors->first("name"):""}}"
                                    value="{{old("name")}}"
                         ></dcc-input>
+
+                        <dcc-input name="reviewer"
+                                   col="4"
+                                   list="reviewer_list"
+                                   error="{{$errors->has("reviewer") ? $errors->first("reviewer"):""}}"
+                                   value="{{old("reviewer")}}"
+                        ></dcc-input>
+
+                        <datalist id="reviewer_list" v-if="{{$reviewers_list}}">
+                            <option v-for="reviewer in {{$reviewers_list}}" value="@{{ reviewer }}">
+                        </datalist>
+
+                        <datalist id="reviewer_list" v-else>
+                            <option value="QA">
+                            <option value="PE">
+                        </datalist>
 
 
                         <dcc-input name="document"

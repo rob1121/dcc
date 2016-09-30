@@ -5,6 +5,7 @@ foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $ro
 }
 
 Route::get('/', function () {
+
     return redirect(route("internal.index"));
 });
 

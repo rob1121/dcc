@@ -32,14 +32,11 @@ class InternalSpecSeeder extends Seeder
         DB::table('company_specs')->truncate();
         DB::table('company_spec_revisions')->truncate();
         DB::table('company_spec_categories')->truncate();
-        DB::table('users')->truncate();
         DB::statement("SET FOREIGN_KEY_CHECKS = 1");
 
         for ($i = 0; $i < 25; $i++) {
             $rand_id = rand(1, 20);
             $rev = sprintf("%03d", $rand_id);
-
-            factory('App\User', 10)->create();
 
             $category_no = $faker->randomElement($specs_category);
 
@@ -50,6 +47,7 @@ class InternalSpecSeeder extends Seeder
 
             factory('App\CompanySpecRevision')->create([
                 'company_spec_id' => $id,
+                'revision_date' => $faker->dateTimeBetween("-1 month")
             ]);
 
             factory('App\CompanySpecCategory')->create([

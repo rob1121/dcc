@@ -45353,6 +45353,7 @@ Vue.filter('latestRevision', vFilter.latestRevision);
 Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
 Vue.filter('internalRoute', vFilter.internalRoute);
 Vue.filter('externalRoute', vFilter.externalRoute);
+Vue.filter('isNewRevision', vFilter.isNewRevision);
 
 var nav = new Vue({
     el: 'nav',
@@ -45396,7 +45397,7 @@ var nav = new Vue({
     }
 });
 
-},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":18,"./mixins/filters":19}],11:[function(require,module,exports){
+},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":19,"./mixins/filters":20}],11:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -45792,6 +45793,141 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+require("./app");
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        category: {
+            customer_name: category.customer_name
+        },
+
+        modalConfirmation: {
+            action: "update",
+            category: [],
+            indexOfSpecForUpdate: null
+        },
+
+        currentIndex: 0,
+
+        pagination: []
+    },
+
+    ready: function ready() {
+        this.getPagination();
+    },
+
+
+    filters: {
+        documentLink: function documentLink(specRevision) {
+            return laroute.route('external.show', { external: specRevision.customer_spec_id, revision: specRevision.revision });
+        },
+        count: function count(collection) {
+            return collection.length;
+        },
+        routeEditLink: function routeEditLink(id) {
+            return laroute.route("external.edit", { external: id });
+        },
+        isHasForReview: function isHasForReview(collection) {
+
+            for (var x in collection) {
+                if (collection[x].is_reviewed === 0) return false;
+            }return true;
+        }
+    },
+
+    methods: {
+        getSpecByCategory: function getSpecByCategory(category, index) {
+            this.setSpecCategory(category);
+            this.getPagination();
+            this.setActiveMenu(index);
+        },
+        setSpecCategory: function setSpecCategory(category) {
+            this.category = category;
+        },
+        setActiveMenu: function setActiveMenu(index) {
+            this.currentIndex = index;
+        },
+        getPagination: function getPagination() {
+            var _this = this;
+
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var loader = $(".loader");
+            loader.show();
+
+            var pagination_url = laroute.route('api.search.external');
+            this.$http.get(pagination_url, {
+                params: { page: num, category: this.category.customer_name }
+            }).then(function (response) {
+                _this.pagination = response.json();loader.hide();
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        },
+        prev: function prev() {
+            this.getPagination(this.pagination.current_page - 1);
+        },
+        next: function next() {
+            this.getPagination(this.pagination.current_page + 1);
+        },
+        showSideBar: function showSideBar() {
+            $('#sidebar').toggleClass("show-sidebar");
+            $('.main-content').toggleClass("compress-main-content");
+
+            this.toggleButton();
+        },
+        toggleButton: function toggleButton() {
+            var btn = $('.toggler-btn');
+
+            btn.children('i').toggleClass("fa-bars");
+            btn.children('i').toggleClass("fa-remove");
+        },
+        setModalSpec: function setModalSpec(spec, action) {
+            this.modalConfirmation.category = spec;
+            this.modalConfirmation.action = action;
+        },
+        modalAction: function modalAction() {
+            this.modalConfirmation.action === "update" ? this.updateSpecStatus() : this.removeSpec();
+        },
+        setUpdateSpec: function setUpdateSpec(specRevision) {
+            this.indexOfSpecForUpdate = specRevision;
+        },
+
+
+        errorDialogMessage: function errorDialogMessage() {
+            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+        },
+
+        updateSpecStatus: function updateSpecStatus() {
+            var _this2 = this;
+
+            var update_status = laroute.route("external.revision.update", { external: this.modalConfirmation.category.id });
+
+            this.$http.patch(update_status, { is_reviewed: 1, revision: this.indexOfSpecForUpdate.revision }).then(function () {
+                return _this2.modalConfirmation.category.customer_spec_revision.$remove(_this2.indexOfSpecForUpdate);
+            }, function () {
+                return _this2.errorDialogMessage();
+            });
+        },
+        removeSpec: function removeSpec() {
+            var _this3 = this;
+
+            var route_delete = laroute.route("external.destroy", { external: this.modalConfirmation.category.id });
+
+            this.$http.delete(route_delete).then(function () {
+                return _this3.pagination.data.$remove(_this3.modalConfirmation.category);
+            }, function () {
+                return _this3.errorDialogMessage();
+            });
+        }
+    }
+});
+
+},{"./app":10}],19:[function(require,module,exports){
+"use strict";
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -45975,7 +46111,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45989,6 +46125,7 @@ exports.telfordStandardDate = telfordStandardDate;
 exports.latestRevision = latestRevision;
 exports.internalRoute = internalRoute;
 exports.externalRoute = externalRoute;
+exports.isNewRevision = isNewRevision;
 
 var _moment = require("moment");
 
@@ -46016,141 +46153,11 @@ function externalRoute(id) {
     return laroute.route('external.show', { external: id });
 }
 
-},{"moment":4}],20:[function(require,module,exports){
-"use strict";
+function isNewRevision(revision_date) {
+    var revision_date = (0, _moment2.default)(revision_date);
+    return revision_date > (0, _moment2.default)().subtract(7, "days");
+}
 
-require("./app");
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: {
-            customer_name: category.customer_name
-        },
-
-        modalConfirmation: {
-            action: "update",
-            category: [],
-            indexOfSpecForUpdate: null
-        },
-
-        currentIndex: 0,
-
-        pagination: []
-    },
-
-    ready: function ready() {
-        this.getPagination();
-    },
-
-
-    filters: {
-        documentLink: function documentLink(specRevision) {
-            return laroute.route('external.show', { external: specRevision.customer_spec_id, revision: specRevision.revision });
-        },
-        count: function count(collection) {
-            return collection.length;
-        },
-        routeEditLink: function routeEditLink(id) {
-            return laroute.route("external.edit", { external: id });
-        },
-        isHasForReview: function isHasForReview(collection) {
-
-            for (var x in collection) {
-                if (collection[x].is_reviewed === 0) return false;
-            }return true;
-        }
-    },
-
-    methods: {
-        getSpecByCategory: function getSpecByCategory(category, index) {
-            this.setSpecCategory(category);
-            this.getPagination();
-            this.setActiveMenu(index);
-        },
-        setSpecCategory: function setSpecCategory(category) {
-            this.category = category;
-        },
-        setActiveMenu: function setActiveMenu(index) {
-            this.currentIndex = index;
-        },
-        getPagination: function getPagination() {
-            var _this = this;
-
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var loader = $(".loader");
-            loader.show();
-
-            var pagination_url = laroute.route('api.search.external');
-            this.$http.get(pagination_url, {
-                params: { page: num, category: this.category.customer_name }
-            }).then(function (response) {
-                _this.pagination = response.json();loader.hide();
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-        prev: function prev() {
-            this.getPagination(this.pagination.current_page - 1);
-        },
-        next: function next() {
-            this.getPagination(this.pagination.current_page + 1);
-        },
-        showSideBar: function showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-        toggleButton: function toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-        setModalSpec: function setModalSpec(spec, action) {
-            this.modalConfirmation.category = spec;
-            this.modalConfirmation.action = action;
-        },
-        modalAction: function modalAction() {
-            this.modalConfirmation.action === "update" ? this.updateSpecStatus() : this.removeSpec();
-        },
-        setUpdateSpec: function setUpdateSpec(specRevision) {
-            this.indexOfSpecForUpdate = specRevision;
-        },
-
-
-        errorDialogMessage: function errorDialogMessage() {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
-        },
-
-        updateSpecStatus: function updateSpecStatus() {
-            var _this2 = this;
-
-            var update_status = laroute.route("external.revision.update", { external: this.modalConfirmation.category.id });
-
-            this.$http.patch(update_status, { is_reviewed: 1, revision: this.indexOfSpecForUpdate.revision }).then(function () {
-                return _this2.modalConfirmation.category.customer_spec_revision.$remove(_this2.indexOfSpecForUpdate);
-            }, function () {
-                return _this2.errorDialogMessage();
-            });
-        },
-        removeSpec: function removeSpec() {
-            var _this3 = this;
-
-            var route_delete = laroute.route("external.destroy", { external: this.modalConfirmation.category.id });
-
-            this.$http.delete(route_delete).then(function () {
-                return _this3.pagination.data.$remove(_this3.modalConfirmation.category);
-            }, function () {
-                return _this3.errorDialogMessage();
-            });
-        }
-    }
-});
-
-},{"./app":10}]},{},[20]);
+},{"moment":4}]},{},[18]);
 
 //# sourceMappingURL=external-index.js.map

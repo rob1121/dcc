@@ -10,7 +10,7 @@
 @endpush
 
 @push('script')
-    <script src="{{url("/js/internal-edit.js")}}"></script>
+    <script src="{{URL::to("/js/edit.js")}}"></script>
 @endpush
 
 @section('content')

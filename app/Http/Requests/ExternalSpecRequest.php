@@ -30,6 +30,7 @@ class ExternalSpecRequest extends FormRequest
             'revision' => "required|min:2|max:5",
             'document' => 'required|mimes:pdf',
             'revision_date' => "required|date",
+            'reviewer' => "required",
             'customer_name' => 'required',
         ];
         $rules_for_spec_status_update = [

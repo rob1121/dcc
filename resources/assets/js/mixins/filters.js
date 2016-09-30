@@ -23,3 +23,8 @@ export function internalRoute(id) {
 export function externalRoute(id) {
     return laroute.route('external.show', {external: id});
 }
+
+export function isNewRevision(revision_date) {
+    var revision_date = moment(revision_date);
+    return revision_date > moment().subtract(7, "days");
+}

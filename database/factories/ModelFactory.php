@@ -88,6 +88,7 @@ $factory->define(App\CustomerSpecRevision::class, function (Faker\Generator $fak
         'customer_spec_id' =>  function() {
             return factory(App\CustomerSpec::class)->create()->id;
         },
+        'reviewer' =>  $faker->randomElement(["QA","PE"]) ,
         'is_reviewed' => $faker->randomElement([true,false]),
         'document' =>  $faker->word() ,
     ];
