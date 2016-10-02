@@ -11,25 +11,21 @@ class ExternalSpecFile implements SpecificationGateway {
     private $spec;
     private $request;
 
-    public function __construct(CustomerSpec $spec=null) {
+    public function __construct(Request $request, CustomerSpec $spec=null) {
         $this->spec = $spec;
+        $this->request = $request;
     }
 
-    function persist(Request $request) {
-        $this->setRequest($request);
+    function persist() {
         $path = $this->generatePathName();
         $document_name = $this->generateDocumentName();
-        $path = $request->document->storeAs($path, $document_name);
+        $path = $this->request->document->storeAs($path, $document_name);
 
         $this->getSpecInstance()->update(['document' => $path]);
     }
 
-    function update(Request $request) {
-        $this->persist($request);
-    }
-
-    protected function setRequest($request) {
-        $this->request = $request;
+    function update() {
+        $this->persist();
     }
 
     private function generatePathName() {
@@ -57,7 +53,7 @@ class ExternalSpecFile implements SpecificationGateway {
             ->whereCustomerSpecId($this->spec->id)
             ->whereRevision($this->request->revision);
     }
-
+    
     private function getRevision() {
         return $this->getSpecInstance()->first()->revision;
     }

@@ -13,6 +13,8 @@ class InternalSpecRevisionTest extends TestCase
     private $file;
     private $spec;
     private $factory;
+    private $expected;
+    private $actual;
 
     public function setUp()
     {
@@ -25,34 +27,51 @@ class InternalSpecRevisionTest extends TestCase
     /** @test */
     public function it_can_add_new_spec_revision()
     {
-        $actual = new Request($this->factory->make(["document" => $this->file])->toArray());
-        $expected = $actual->all();
+        $this->actual = new Request($this->factory->make(["document" => $this->file])->toArray());
+        $expected = $this->actual->all();
         array_pull($expected,"document");
         array_pull($expected,"company_spec_id");
 
-        (new InternalSpecRevision($this->spec))->persist($actual);
+        (new InternalSpecRevision($this->actual, $this->spec))->persist();
         $this->seeInDatabase("company_spec_revisions", $expected);
     }
 
     /** @test */
     public function it_should_update_spec_revision()
     {
-        $actual = new Request($this->factory->make([ "revision" => "**", "document" => $this->file ])->toArray());
-        $this->persistDummyDatabaseDataForRevision($actual);
-        $actual["revision_summary"] = "summary";
-        $expect = [
-            "revision" => "**",
-            "revision_summary" => "summary"
-        ];
+        $this->requestInstanceForUpdate();
 
-        (new InternalSpecRevision($this->spec))->update($actual);
-        $this->seeInDatabase("company_spec_revisions", $expect);
+        (new InternalSpecRevision($this->actual, $this->spec))->update();
+        $this->seeInDatabase("company_spec_revisions", $this->expected);
 
     }
 
-    private function persistDummyDatabaseDataForRevision($actual)
+    /**
+     * @expectedException App\DCC\Exceptions\SpecNotFoundException
+     * @test */
+    public function it_should_throw_exception_on_update_spec_revision()
     {
-        $this->spec->companySpecRevision()->create($actual->all());
+        $this->requestInstanceForUpdate();
+
+        (new InternalSpecRevision($this->actual))->update();
+        $this->dontSeeInDatabase("company_spec_revisions", $this->expected);
+
+    }
+
+    private function persistDummyDatabaseDataForRevision()
+    {
+        $this->spec->companySpecRevision()->create($this->actual->all());
+    }
+
+    protected function requestInstanceForUpdate()
+    {
+        $this->actual = new Request($this->factory->make(["revision" => "**", "document" => $this->file])->toArray());
+        $this->persistDummyDatabaseDataForRevision();
+        $this->actual["revision_summary"] = "summary";
+        $this->expected = [
+            "revision" => "**",
+            "revision_summary" => "summary"
+        ];
     }
 
 }

@@ -14,7 +14,7 @@
         >
         <h6>
             <strong>@{{category.category_no}} - @{{category.category_name}}</strong>
-            <span class="label label-danger" v-if="category.count">@{{ category.count }}</span>
+            {{-- <span class="label label-danger" v-if="category.count">@{{ category.count }}</span> --}}
         </h6>
         </a>
     </div>
@@ -49,7 +49,7 @@
 
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-xs-12 col-md-9">
-                    <a target="_blank" href="@{{spec.id | internalRoute}}">
+                    <a class="show-action-link" target="_blank" href="@{{spec.id | internalRoute}}">
                         <h4>
                             @{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}}
                             <span class="label label-success"

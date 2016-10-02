@@ -10,6 +10,8 @@ class ExternalSpecRevisionTest extends TestCase {
 
     private $spec;
     private $rev_instance;
+    private $actual;
+    private $expected;
 
     protected function setUp() {
         parent::setUp();
@@ -19,29 +21,34 @@ class ExternalSpecRevisionTest extends TestCase {
 
     /** @test */
     public function it_should_add_data_to_customer_spec_revision() {
-        $actual = new Request(factory(App\CustomerSpecRevision::class)->make($this->rev_instance)->toArray());
-        $expected = (new App\CustomerSpecRevision($actual->all()))->toArray();
+        $this->actual = new Request(factory(App\CustomerSpecRevision::class)->make($this->rev_instance)->toArray());
+        $this->expected = (new App\CustomerSpecRevision($this->actual->all()))->toArray();
 
-        (new ExternalSpecRevision($this->spec))->persist($actual);
-        $this->seeInDatabase("customer_spec_revisions", $expected);
+        (new ExternalSpecRevision($this->actual, $this->spec))->persist();
+        $this->seeInDatabase("customer_spec_revisions", $this->expected);
     }
 
     /** @test */
     public function it_should_update_data_from_customer_spec_revision() {
-        $actual = new Request(factory(App\CustomerSpecRevision::class)->make($this->rev_instance)->toArray());
-        $this->persistDummyDatabaseDataForRevision($actual);
-        $actual["revision"] = "aa";
-        $expected = [
-            "revision" => "aa",
-        ];
+        $this->requestInstanceForUpdate();
 
-        (new ExternalSpecRevision($this->spec))->update($actual);
-        $this->seeInDatabase("customer_spec_revisions", $expected);
+        (new ExternalSpecRevision($this->actual, $this->spec))->update();
+        $this->seeInDatabase("customer_spec_revisions", $this->expected);
     }
 
-    private function persistDummyDatabaseDataForRevision($actual)
+    /**
+     * @expectedException App\DCC\Exceptions\SpecNotFoundException
+     * @test */
+    public function it_should_throw_exception_on_update_data_from_customer_spec_revision() {
+        $this->requestInstanceForUpdate();
+
+        (new ExternalSpecRevision($this->actual))->update();
+        $this->dontSeeInDatabase("customer_spec_revisions", $this->expected);
+    }
+
+    private function persistDummyDatabaseDataForRevision()
     {
-        $this->spec->customerSpecRevision()->create($actual->all());
+        $this->spec->customerSpecRevision()->create($this->actual->all());
     }
 
     protected function generateRequestInstance() {
@@ -55,6 +62,16 @@ class ExternalSpecRevisionTest extends TestCase {
             "customer_name" => "customer",
             "document" => new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE),
         ]);
+    }
+
+    protected function requestInstanceForUpdate()
+    {
+        $this->actual = new Request(factory(App\CustomerSpecRevision::class)->make($this->rev_instance)->toArray());
+        $this->persistDummyDatabaseDataForRevision();
+        $this->actual["revision"] = "aa";
+        $this->expected = [
+            "revision" => "aa",
+        ];
     }
 
 }

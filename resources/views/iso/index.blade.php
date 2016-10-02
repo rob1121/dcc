@@ -43,7 +43,7 @@
                     @endif
                         justify">
 
-                    <a href="@{{iso.id | isoRoute}}" target="_blank" style="word-wrap: break-word">
+                    <a class="show-action-link" href="@{{iso.id | isoRoute}}" target="_blank" style="word-wrap: break-word">
                         <h4>@{{iso.spec_no | uppercase}} - @{{iso.name | uppercase}} </h4>
                     </a>
                     <h6 class="help-block">
@@ -64,7 +64,7 @@
                             <a id="delete-btn" class="btn btn-xs btn-danger"
                                data-toggle="modal"
                                href="#spec-confirm"
-                            @click="setModalSpec(spec)"
+                            @click="setModalSpec(iso)"
                             >
                             Remove <i class="fa fa-remove"></i>
                             </a>

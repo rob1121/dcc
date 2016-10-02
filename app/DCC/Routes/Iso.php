@@ -15,4 +15,9 @@ Route::group(["prefix" => "iso"], function() {
         "uses" => "IsoController@store",
         "as" => "iso.store"
     ]);
+
+    Route::delete("/{iso}", [
+        "uses" => "IsoController@destroy",
+        "as" => "iso.destroy"
+    ]);
 });

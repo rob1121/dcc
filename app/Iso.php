@@ -20,4 +20,10 @@ class Iso extends Model
     {
         return (new self($request->all()));
     }
+
+    public static function isExist(Request $request)
+    {
+        $instance = self::instance($request)->toArray();
+        return self::where($instance)->first();
+    }
 }

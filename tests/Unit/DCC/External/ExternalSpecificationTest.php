@@ -12,6 +12,8 @@ class ExternalSpecificationTest extends TestCase {
 
     private $request;
     private $spec;
+    private $actual;
+    private $expected;
 
     protected function setUp() {
         parent::setUp();
@@ -22,20 +24,28 @@ class ExternalSpecificationTest extends TestCase {
     /** @test */
     public function it_can_add_customer_spec()
     {
-        $expected = ["spec_no" => "number"];
+        $this->expected = ["spec_no" => "number"];
 
-        (new ExternalSpecification)->persist($this->request);
-        $this->seeInDatabase("customer_specs", $expected);
+        (new ExternalSpecification($this->request))->persist();
+        $this->seeInDatabase("customer_specs", $this->expected);
     }
 
     /** @test */
     public function it_can_update_customer_spec()
     {
-        $actual = $this->generateRequestInstance();
-        $expected = ["spec_no" => "number"];
-        $this->spec->customerSpecRevision()->create(factory(App\CustomerSpecRevision::class)->make()->toArray());
-        (new ExternalSpecification($this->spec))->update($actual);
-        $this->seeInDatabase("customer_specs", $expected);
+        $this->requestInstanceForUpdate();
+        (new ExternalSpecification($this->actual, $this->spec))->update();
+        $this->seeInDatabase("customer_specs", $this->expected);
+    }
+
+    /**
+     * @expectedException App\DCC\Exceptions\SpecNotFoundException
+     * @test */
+    public function it_can_throw_exception_on_update_customer_spec()
+    {
+        $this->requestInstanceForUpdate();
+        (new ExternalSpecification($this->actual))->update();
+        $this->dontSeeInDatabase("customer_specs", $this->expected);
     }
 
     protected function generateRequestInstance() {
@@ -49,6 +59,13 @@ class ExternalSpecificationTest extends TestCase {
             "customer_name" => "customer",
             "document" => new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE),
         ]);
+    }
+
+    protected function requestInstanceForUpdate()
+    {
+        $this->actual = $this->generateRequestInstance();
+        $this->expected = ["spec_no" => "number"];
+        $this->spec->customerSpecRevision()->create(factory(App\CustomerSpecRevision::class)->make()->toArray());
     }
 
 }

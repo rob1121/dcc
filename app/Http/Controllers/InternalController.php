@@ -23,16 +23,16 @@ class InternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        $category_with_new_revisions = CompanySpecRevision::countOfNewRevision();
+        // $category_with_new_revisions = CompanySpecRevision::countOfNewRevision();
 
-        $this->categories = $this->categories->map(function($item) use ($category_with_new_revisions) {
-                return [
-                    "category_no" => $item->category_no,
-                    "category_name" => $item->category_name,
-                    "count" => $category_with_new_revisions->where("category_no",$item->category_no)->count()
-                ];
+        // $this->categories = $this->categories->map(function($item) use ($category_with_new_revisions) {
+        //         return [
+        //             "category_no" => $item->category_no,
+        //             "category_name" => $item->category_name,
+        //             "count" => $category_with_new_revisions->where("category_no",$item->category_no)->count()
+        //         ];
 
-        });
+        // });
 
         JavaScript::put('category', $this->categories->first());
 
@@ -59,7 +59,7 @@ class InternalController extends Controller {
         try {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
-            $this->factory->store(new InternalSpecification, $request);
+            $this->factory->store(new InternalSpecification($request));
             flash("document save to the database!.","success");
             return redirect(route("internal.index"));
         } catch(DuplicateEntryException $e) {
@@ -96,7 +96,7 @@ class InternalController extends Controller {
      * @internal param CompanySpec $companySpec
      */
     public function update(InternalSpecRequest $request, CompanySpec $internal) {
-        $this->factory->update(new InternalSpecification($internal), $request);
+        $this->factory->update(new InternalSpecification($request, $internal));
         flash("Database successfully updated!.","success");
         return redirect(route("internal.index"));
     }

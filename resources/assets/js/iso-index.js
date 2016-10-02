@@ -44,10 +44,10 @@ const app = new Vue({
         },
 
         removeIso() {
-            var route_delete = laroute.route("iso.destroy", {external:this.selectedIso.id});
+            var route_delete = laroute.route("iso.destroy", {iso:this.selectedIso.id});
 
             this.$http.delete(route_delete)
-                .then( () => this.pagination.data.$remove(this.selectedIso),
+                .then( () => this.isos.$remove(this.selectedIso),
                        () => this.errorDialogMessage() );
         }
     }

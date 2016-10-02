@@ -3,6 +3,7 @@
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
 use App\CustomerSpecRevision;
+use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
@@ -20,27 +21,27 @@ class ExternalController extends Controller {
     }
 
     public function index() {
-        $categories = $this->categories->map(function($category) {
-            return [
-                "count" => $this->getCustomerSpecForReviewCountPerCategory($category->customer_name),
-                "customer_name" => $category->customer_name
-            ];
-        });
+//        $this->categories = $this->categories->map(function($category) {
+//            return [
+//                "count" => $this->getCustomerSpecForReviewCountPerCategory($category->customer_name),
+//                "customer_name" => $category->customer_name
+//            ];
+//        });
         JavaScript::put('category', $first_category = $this->categories->first());
 
-        return view('external.index', [ "categories" => $categories ]);
+        return view('external.index', [ "categories" => $this->categories ]);
     }
 
-    public function getCustomerSpecForReviewCountPerCategory($customer_name)
-    {
-        $a = CustomerSpecCategory::whereCustomerName($customer_name)->with(["customerSpec" => function($query) {
-            $query->with("customerSpecRevision");
-        }])->get()
-            ->map(function ($item) {
-                return $item->customerSpec->customerSpecRevision->where("is_reviewed",0)->count();
-            })->sum();
-        return $a;
-    }
+//    public function getCustomerSpecForReviewCountPerCategory($customer_name)
+//    {
+//        $a = CustomerSpecCategory::whereCustomerName($customer_name)->with(["customerSpec" => function($query) {
+//            $query->with("customerSpecRevision");
+//        }])->get()
+//            ->map(function ($item) {
+//                return $item->customerSpec->customerSpecRevision->where("is_reviewed",0)->count();
+//            })->sum();
+//        return $a;
+//    }
 
     /**
      * Show the form for creating a new resource.
@@ -64,7 +65,7 @@ class ExternalController extends Controller {
         try {
             if (CustomerSpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
-            $this->factory->store(new ExternalSpecification, $request);
+            $this->factory->store(new ExternalSpecification($request));
             flash("Document successfully added to database!.","success");
             return redirect(route("external.index"));
         } catch(DuplicateEntryException $e) {
@@ -107,7 +108,7 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(ExternalSpecRequest $request, CustomerSpec $external) {
-        $this->factory->update(new ExternalSpecification($external), $request);
+        $this->factory->update(new ExternalSpecification($request, $external));
 
         flash("Database successfully updated!.","success");
         return redirect(route("external.index"));

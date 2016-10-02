@@ -8,22 +8,19 @@ use Illuminate\Http\Request;
 
 class ExternalSpecCategory  implements SpecificationGateway {
     private $spec;
+    private $request;
 
-    public function __construct(CustomerSpec $spec) {
+    public function __construct(Request $request, CustomerSpec $spec=null) {
         $this->spec = $spec;
+        $this->request = $request;
     }
 
-    function persist(Request $request) {
-        return $this->spec->customerSpecCategory()->firstOrCreate($request->all());
+    function persist() {
+        return $this->spec->customerSpecCategory()->firstOrCreate($this->request->all());
     }
 
-    function update(Request $request) {
+    function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
-        $this->spec->customerSpecCategory()->update($this->modelInstance($request));
-    }
-
-    private function modelInstance($request) {
-        $newCompanySpecInstance = new CustomerSpecCategory($request->all());
-        return $newCompanySpecInstance->toArray();
+        $this->spec->customerSpecCategory()->update(CustomerSpecCategory::instance($this->request)->toArray());
     }
 }

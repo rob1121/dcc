@@ -10,55 +10,53 @@ class ExternalSpecRevision implements SpecificationGateway {
 
     private $spec;
     private $factory;
+    /**
+     * @var Request
+     */
+    private $request;
 
-    function __construct(CustomerSpec $spec=null) {
+    function __construct(Request $request, CustomerSpec $spec=null) {
         $this->spec = $spec;
         $this->factory = new SpecificationFactory;
+        $this->request = $request;
     }
 
-    function persist(Request $request) {
-        $this->spec->customerSpecRevision()->firstOrCreate($request->all());
-        $this->factory->store(new ExternalSpecFile($this->spec), $request);
+    function persist() {
+        $this->spec->customerSpecRevision()->firstOrCreate($this->request->all());
+        $this->factory->store(new ExternalSpecFile($this->request, $this->spec));
 
         return $this->spec;
     }
 
-    function update(Request $request) {
+    function update() {
 
         if ($this->spec === null) throw new SpecNotFoundException();
-        $ids = $this->getIdsOfAllLastestRevision($request);
+        $ids = $this->getIdsOfAllLatestRevision();
         $this->spec->customerSpecRevision()->whereIn("id",$ids)->delete();
 
-        $this->isRevisionExist($request)
-            ? $this->spec->customerSpecRevision()->whereRevision($request->revision)->update($this->modelInstance($request))
-            : $this->spec->customerSpecRevision()->create($this->modelInstance($request));
-        $this->factory->update(new ExternalSpecFile($this->spec), $request);
-    }
+        $this->isRevisionExist()
+            ? $this->spec->customerSpecRevision()->whereRevision($this->request->revision)->update(CustomerSpecRevision::instance($this->request)->toArray())
+            : $this->spec->customerSpecRevision()->create(CustomerSpecRevision::instance($this->request)->toArray());
 
-    private function modelInstance($request) {
-        $newCompanySpecInstance = new CustomerSpecRevision($request->all());
-        return $newCompanySpecInstance->toArray();
+        $this->factory->update(new ExternalSpecFile($this->request, $this->spec));
     }
 
     /**
-     * @param Request $request
      * @return mixed
      */
-    protected function isRevisionExist(Request $request) {
-        return $this->spec->customerSpecRevision()->whereRevision($request->revision)->count() > 0;
+    protected function isRevisionExist() {
+        return $this->spec->customerSpecRevision()->whereRevision($this->request->revision)->count() > 0;
     }
 
     /**
-     * @param Request $request
      * @return static
      */
-    protected function getIdsOfAllLastestRevision(Request $request)
+    protected function getIdsOfAllLatestRevision()
     {
-        $ids = collect($this->spec->customerSpecRevision)->filter(function ($item) use ($request) {
-            return strcasecmp($item->revision, $request->revision);
+        return collect($this->spec->customerSpecRevision)->filter(function ($item) {
+            return strcasecmp($item->revision, $this->request->revision);
         })->map(function ($item) {
             return $item->id;
         })->flatten();
-        return $ids;
     }
 }

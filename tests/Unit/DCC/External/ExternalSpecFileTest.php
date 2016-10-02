@@ -32,13 +32,13 @@ class ExternalSpecFileTest extends TestCase {
 
     /** @test */
     public function it_can_add_spec_revision_to_database() {
-        (new ExternalSpecFile($this->spec))->persist($this->actual);
+        (new ExternalSpecFile($this->actual, $this->spec))->persist();
         $this->seeInDatabase("customer_spec_revisions", $this->expected);
     }
 
     /** @test */
     public function it_can_update_spec_revision_to_database() {
-        (new ExternalSpecFile($this->spec))->update($this->actual);
+        (new ExternalSpecFile($this->actual, $this->spec))->update();
         $this->seeInDatabase("customer_spec_revisions", $this->expected);
     }
 

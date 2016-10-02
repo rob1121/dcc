@@ -8183,6 +8183,8 @@ th {
   -webkit-transition: border .1s ease-in-out;
   transition: border .1s ease-in-out;
   display: inline-block; }
+  .deck .show-action-link {
+    cursor: pointer; }
   .deck:hover {
     border-left: 3px solid darkred;
     background: #f2f2f2;

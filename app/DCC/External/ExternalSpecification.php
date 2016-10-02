@@ -10,28 +10,29 @@ class ExternalSpecification implements SpecificationGateway {
 
     private $spec;
     private $factory;
+    /**
+     * @var Request
+     */
+    private $request;
 
-    function __construct(CustomerSpec $spec=null) {
+    function __construct(Request $request, CustomerSpec $spec=null) {
         $this->factory = new SpecificationFactory;
         $this->spec = $spec;
+        $this->request = $request;
     }
 
-    function persist(Request $request) {
-        $this->spec = CustomerSpec::create($this->modelInstance($request));
-        $this->factory->store(new ExternalSpecCategory($this->spec), $request);
-            $this->factory->store(new ExternalSpecRevision($this->spec), $request);
+    function persist() {
+        $this->spec = CustomerSpec::create(CustomerSpec::instance($this->request)->toArray());
+        $this->factory->store(new ExternalSpecCategory($this->request, $this->spec));
+            $this->factory->store(new ExternalSpecRevision($this->request, $this->spec));
 
         return $this->spec;
     }
 
-    function update(Request $request) {
+    function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
-        $this->spec->update($this->modelInstance($request));
-        $this->factory->update(new ExternalSpecCategory($this->spec), $request);
-        $this->factory->update(new ExternalSpecRevision($this->spec), $request);
-    }
-
-    private function modelInstance($request) {
-        return (new CustomerSpec($request->all()))->toArray();
+        $this->spec->update(CustomerSpec::instance($this->request)->toArray());
+        $this->factory->update(new ExternalSpecCategory($this->request, $this->spec));
+        $this->factory->update(new ExternalSpecRevision($this->request, $this->spec));
     }
 }

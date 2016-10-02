@@ -24,6 +24,17 @@ const app = new Vue({
 	},
 
     filters: {
+	    filterReduceMap(customer) {
+           return _.reduce(this.pagination.data , (total, item) => {
+               if(item.customer_spec_category.customer_name === customer) {
+                   for(var x in item.customer_spec_revision) {
+                       if(item.customer_spec_revision[x].is_reviewed === 0) total++;
+                   }
+               }
+               return total;
+            },0);
+        },
+
         documentLink(specRevision) {
             return laroute.route('external.show', {external:specRevision.customer_spec_id,revision:specRevision.revision});
         },

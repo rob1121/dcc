@@ -13,7 +13,7 @@
         >
         <h6 class="pull-right" style="margin-right: 10%">
             <strong>@{{category.customer_name}}</strong>
-            <span class="label label-danger">@{{ category.count }}</span>
+            <span class="label label-danger" v-if="category.customer_name | filterReduceMap">@{{ category.customer_name | filterReduceMap }}</span>
         </h6>
 
         </a>
@@ -48,13 +48,13 @@
 
             <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
                 <div class="spec-no col-sm-12
-                    @if(Auth::user() && Auth::user()->is_admin)         col-md-8
-                    @elseif(Auth::user()&& ! Auth::user()->is_admin)    col-md-9
+                    @if(Auth::user() && Auth::user()->is_admin)         col-md-7
+                    @elseif(Auth::user()&& ! Auth::user()->is_admin)    col-md-8
                     @else col-md-12
                     @endif
                 justify">
 
-                    <a href="@{{spec.id | externalRoute}}" target="_blank" style="word-wrap: break-word">
+                    <a class="show-action-link" href="@{{spec.id | externalRoute}}" target="_blank" style="word-wrap: break-word">
                         <h4>@{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}} </h4>
                     </a>
                     <h6>
@@ -66,8 +66,8 @@
                 </div>
                 @if(Auth::user())
                     <div class="col-sm-12
-                        @if(Auth::user() && Auth::user()->is_admin)         col-md-4
-                        @elseif(Auth::user()&& ! Auth::user()->is_admin)    col-md-3
+                        @if(Auth::user() && Auth::user()->is_admin)         col-md-5
+                        @elseif(Auth::user()&& ! Auth::user()->is_admin)    col-md-4
                         @endif
                     ">
                         @if(Auth::user()->is_admin)

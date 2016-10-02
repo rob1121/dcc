@@ -10,24 +10,29 @@ class InternalSpecification implements SpecificationGateway {
 
     private $spec;
     private $factory;
+    /**
+     * @var Request
+     */
+    private $request;
 
-    public function __construct(CompanySpec $spec=null) {
+    public function __construct(Request $request, CompanySpec $spec=null) {
         $this->spec = $spec;
         $this->factory = new SpecificationFactory;
+        $this->request = $request;
     }
 
-    function persist(Request $request) {
-        $this->spec = CompanySpec::create(CompanySpec::instance($request)->toArray());
-        $this->factory->store(new InternalSpecCategory($this->spec), $request);
-        $this->factory->store(new InternalSpecRevision($this->spec), $request);
+    function persist() {
+        $this->spec = CompanySpec::create(CompanySpec::instance($this->request)->toArray());
+        $this->factory->store(new InternalSpecCategory($this->request, $this->spec));
+        $this->factory->store(new InternalSpecRevision($this->request, $this->spec));
 
         return $this->spec;
     }
 
-    function update(Request $request) {
+    function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
-        $this->spec->update(CompanySpec::instance($request)->toArray());
-        $this->factory->update(new InternalSpecRevision($this->spec), $request);
-        $this->factory->update(new InternalSpecCategory($this->spec), $request);
+        $this->spec->update(CompanySpec::instance($this->request)->toArray());
+        $this->factory->update(new InternalSpecRevision($this->request, $this->spec));
+        $this->factory->update(new InternalSpecCategory($this->request, $this->spec));
     }
 }

@@ -1,13 +1,13 @@
 <?php namespace App\DCC;
 
 class SpecificationFactory {
-    public function store(SpecificationGateway $spec, $request)
+    public function store(SpecificationGateway $spec)
     {
-        return $spec->persist($request);
+        return $spec->persist();
     }
 
-    public function update(SpecificationGateway $spec, $request)
+    public function update(SpecificationGateway $spec)
     {
-        $spec->update($request);
+        $spec->update();
     }
 }

@@ -13,28 +13,23 @@ class InternalSpecFile implements SpecificationGateway {
     private $documentName;
     private $request;
 
-    public function __construct(CompanySpec $spec=null)
+    public function __construct(Request $request, CompanySpec $spec=null)
     {
         $this->spec = $spec;
+        $this->request = $request;
     }
 
-    function persist(Request $request)
+    function persist()
     {
-        $this->setRequest($request);
         $this->makePath();
         $this->makeDocumentName();
-        $path = $request->document->storeAs($this->path, $this->documentName);
+        $path = $this->request->document->storeAs($this->path, $this->documentName);
         $this->getSpecInstance()->update(['document' => $path]);
     }
 
-    function update(Request $request)
+    function update()
     {
-        $this->persist($request);
-    }
-
-    protected function setRequest($request)
-    {
-        $this->request = $request;
+        $this->persist();
     }
 
     private function makePath()

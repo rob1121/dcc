@@ -10,23 +10,28 @@ use App\DCC\SpecificationFactory;
 class InternalSpecRevision implements SpecificationGateway {
     private $spec;
     private $factory;
+    /**
+     * @var Request
+     */
+    private $request;
 
-    public function __construct(CompanySpec $spec=null) {
+    public function __construct(Request $request, CompanySpec $spec=null) {
         $this->spec = $spec;
         $this->factory = new SpecificationFactory;
+        $this->request = $request;
     }
 
-    function persist(Request $request) {
-        $this->spec->companySpecRevision()->firstOrCreate($request->all());
-        $this->factory->store(new InternalSpecFile($this->spec), $request);
+    function persist() {
+        $this->spec->companySpecRevision()->firstOrCreate($this->request->all());
+        $this->factory->store(new InternalSpecFile($this->request, $this->spec));
 
         return $this->spec;
     }
 
-    function update(Request $request) {
+    function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
 
-        $this->spec->companySpecRevision->update(CompanySpecRevision::instance($request)->toArray());
-        $this->factory->update(new InternalSpecFile($this->spec), $request);
+        $this->spec->companySpecRevision->update(CompanySpecRevision::instance($this->request)->toArray());
+        $this->factory->update(new InternalSpecFile($this->request, $this->spec));
     }
 }
