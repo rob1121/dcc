@@ -28,3 +28,7 @@ export function isNewRevision(revision_date) {
     var revision_date = moment(revision_date);
     return revision_date > moment().subtract(7, "days");
 }
+
+export function count(obj) {
+    return _.size(obj);
+}

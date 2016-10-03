@@ -39,10 +39,6 @@ const app = new Vue({
             return laroute.route('external.show', {external:specRevision.customer_spec_id,revision:specRevision.revision});
         },
 
-        count(collection) {
-            return collection.length;
-        },
-
         routeEditLink(id) {
             return laroute.route("external.edit", {external:id});
         },

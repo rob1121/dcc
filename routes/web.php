@@ -21,3 +21,8 @@ Route::get('/home', [
     "as" => "home",
     "uses" => 'HomeController@index'
 ]);
+
+Route::get('/search', [
+    "as" => "search",
+    "uses" => 'SearchController@search'
+]);

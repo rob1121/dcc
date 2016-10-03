@@ -16,11 +16,11 @@ require('laravel-elixir-vueify');
 elixir(mix => {
     mix.copy("node_modules/font-awesome/fonts", "public/fonts")
         .sass('app.scss')
+        .browserify('login.js')
+        .browserify('register.js')
+        .browserify('create.js')
+        .browserify('edit.js')
         .browserify('internal-index.js')
-        // .browserify('login.js')
-        // .browserify('register.js')
-        //.browserify('create.js')
-        //.browserify('edit.js')
         .browserify('external-index.js')
         .browserify('iso-index.js')
         .browserSync({

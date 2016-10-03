@@ -47,7 +47,7 @@
 
             @include('errors.flash')
 
-            <div class="deck" v-for="spec in pagination.data" v-if="pagination.data.length !== 0">
+            <div class="deck" v-for="spec in pagination.data" v-if="pagination.data | count">
                 <div class="spec-no col-xs-12 col-md-9">
                     <a class="show-action-link" target="_blank" href="@{{spec.id | internalRoute}}">
                         <h4>
@@ -77,7 +77,7 @@
                     @endif
                 </div>
             </div>
-            <div v-if="pagination.data.length === 0" class="container">
+            <div v-if="! pagination.data | count" class="container">
                 <h1 class="text-danger">No document specification found.</h1>
             </div>
         </div>

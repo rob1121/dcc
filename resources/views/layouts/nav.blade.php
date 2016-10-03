@@ -43,10 +43,6 @@
                 <li class="{{route("iso.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("iso.index") }}">ISO</a>
                 </li>
-            </ul>
-
-            <!-- Right Side Of Navbar -->
-            <ul class="nav navbar-nav navbar-right">
                 <li class="navbar-form">
                     <form>
                         <input type="text" style="width: 200px;"
@@ -57,9 +53,13 @@
                                id="search-field"
                                @keyup.enter="displaySearchResult"
                         >
-                        <button @click="displaySearchResult" class="btn btn-default" name="search-field-submit">Search</button>
+                        <button @click.prevent="displaySearchResult" class="btn btn-default" name="search-field-submit">Search</button>
                     </form>
                 </li>
+            </ul>
+
+            <!-- Right Side Of Navbar -->
+            <ul class="nav navbar-nav navbar-right">
 
                 <!-- Authentication Links -->
                 @if (Auth::guest())
@@ -107,7 +107,7 @@
             <!-- TAB CONTENT -->
             <div class="tab-content">
                 <div class="active tab-pane fade in" id="tab1">
-                    <div class="search--deck-collection search-result--list" v-show="searchResults.internal">
+                    <div class="search--deck-collection search-result--list" v-if="searchResults.internal | count">
                         <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under Internal Specification
                         </h1>
                         <a class="search--deck" v-for="result in searchResults.internal" target="_blank"
@@ -131,7 +131,7 @@
                 </div>
                 <div class="tab-pane fade" id="tab2">
 
-                    <div class="search--deck-collection search-result--list" v-show="searchResults.external">
+                    <div class="search--deck-collection search-result--list" v-if="searchResults.external | count">
                         <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under External Specification
                         </h1>
                         <a class="search--deck" v-for="result in searchResults.external" target="_blank"

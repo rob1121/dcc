@@ -21,6 +21,7 @@ Vue.component('dcc-modal', require('./components/Modal.vue'));
 Vue.component('dcc-pulse', require('./components/PulseLoader.vue'));
 
 Vue.filter('trim', vFilter.trim);
+Vue.filter('count', vFilter.count);
 Vue.filter('latestRevision', vFilter.latestRevision);
 Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
 Vue.filter('internalRoute', vFilter.internalRoute);
@@ -39,17 +40,20 @@ const nav = new Vue({
 
     computed: {
         isSearchResultNotEmpty() {
-            return this.searchResults.internal > 0 && this.searchResults.external > 0;
+            return this.searchResults.internal && this.searchResults.external;
         },
     },
 
     methods: {
         displaySearchResult() {
-            this.$http.get(laroute.route("search", {q:this.searchKeyword}))
-                .then(
-                    response => { this.searchResults = response.json(); this.toggleSearchResult(); },
-                    () => this.errorDialogMessage()
-                );
+
+            var search_route = laroute.route("search");
+            this.$http.get(search_route, {
+                params: { q: this.searchKeyword}
+            }).then(
+                response => { this.searchResults = response.json(); this.toggleSearchResult(); },
+                () => this.errorDialogMessage()
+            );
         },
 
         errorDialogMessage: function () {
