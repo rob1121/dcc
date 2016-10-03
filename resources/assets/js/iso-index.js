@@ -7,7 +7,6 @@ const app = new Vue({
         isos,
 
         selectedIso: []
-
     },
 
     filters: {

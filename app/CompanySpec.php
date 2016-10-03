@@ -4,6 +4,7 @@ namespace App;
 
 use App\DCC\Traits\ModelInstance;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class CompanySpec extends Model
 {
@@ -28,16 +29,9 @@ class CompanySpec extends Model
      * @param $request
      * @return mixed
      */
-    public static function isExist($request)
+    public static function isExist(Request $request)
     {
-        $spec = collect(new self($request->all()))->toArray();
+        $spec = self::instance($request)->toArray();
         return self::where($spec)->first();
     }
-//
-//    public function setSpecNoAttribute()
-//    {
-//        $count = explode("-", self::last()->spec_no);
-//        $count[1]++;
-//        $this->attributes['spec_no'] = implode("-", $count);
-//    }
 }

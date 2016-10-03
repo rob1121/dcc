@@ -26,16 +26,16 @@
             <ul class="nav navbar-nav navbar-left">
                 <li class="{{route("internal.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("internal.index") }}">Internal Specification
-                        @if(newCompanySpecCount())
-                            <span class="label label-danger">{{newCompanySpecCount()}}</span>
+                        @if($count = newCompanySpecCount())
+                            <span class="label label-danger">{{$count}}</span>
                         @endif
                     </a>
                 </li>
                 @if(Auth::user())
                     <li class="{{route("external.index") === Request::url() ? "active" : ""}} nav-link">
                         <a href="{{ route("external.index") }}">External Specification
-                            @if(customerForSpecReviewCount())
-                                <span class="label label-danger">{{customerForSpecReviewCount()}}</span>
+                            @if($count = customerForSpecReviewCount())
+                                <span class="label label-danger">{{$count}}</span>
                             @endif
                         </a>
                     </li>

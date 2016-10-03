@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-@push('style')
-<style>
-    #app {
-        padding-top: 64px;
-        overflow-y: scroll;
-    }
-</style>
-@endpush
-
 @push('script')
     <script src="{{URL::to("/js/edit.js")}}"></script>
 @endpush
@@ -17,9 +8,7 @@
     <div class="container">
 
         <ol class="breadcrumb">
-            <li>
-                <a href="{{route("home")}}">Home</a>
-            </li>
+            <li><a href="{{route("home")}}">Home</a></li>
             <li><a href="{{route("internal.index")}}">Internal Specification</a></li>
             <li class="active">{{$spec->companySpecCategory->category_no}} - {{$spec->companySpecCategory->category_name}}</li>
             <li class="active">{{$spec->spec_no}} - {{$spec->name}}</li>
@@ -27,7 +16,7 @@
 
         <div class="panel panel-{{$errors->any() ? "danger" : "default"}}">
             <div class="panel-heading">
-                <h3 class="panel-title">Update Internal Specification</h3>1
+                <h3 class="panel-title">Update Internal Specification</h3>
             </div>
             <div class="panel-body">
                 <form action="{{route("internal.update",['internal' => $spec->id])}}" method="post" enctype="multipart/form-data" id="form-submit">
@@ -106,12 +95,5 @@
         </div>
     </div>
 
-    {{--=======================================MODALS=================================--}}
-    <dcc-modal title="Modal confirmation" id="spec-update">
-        <h1>Are you sure you want to submit?</h1>
-        <div class="text-center">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="submitForm">Yes</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-        </div>
-    </dcc-modal>
+@include('modal.confirmation');
 @endsection

@@ -1,38 +1,29 @@
 @extends('layouts.app')
 
-@push("style")
-<style>
-    #app {
-        padding-top: 64px;
-        overflow-y: scroll;
-    }
-</style>
-@endpush
-
 @push("script")
-<script src="{{URL::to("/js/create.js")}}"></script>
+    <script src="{{URL::to("/js/create.js")}}"></script>
 
-<script>
-    function toggleCategory(selected) {
-        if( "add_category" === selected.val() ) {
-            $("#category_no").val("");
-            $("#category_name").val("");
-            $(".category-group").removeClass("hidden");
-        } else {
-            $("#category_no").val(selected.val());
-            $("#category_name").val(selected.data("name"));
-            $(".category-group").addClass("hidden");
+    <script>
+        function toggleCategory(selected) {
+            if( "add_category" === selected.val() ) {
+                $("#category_no").val("");
+                $("#category_name").val("");
+                $(".category-group").removeClass("hidden");
+            } else {
+                $("#category_no").val(selected.val());
+                $("#category_name").val(selected.data("name"));
+                $(".category-group").addClass("hidden");
+            }
+
         }
 
-    }
+        if($("option:selected").val() === "add_category")
+            $(".category-group").removeClass("hidden");
 
-    if($("option:selected").val() === "add_category")
-        $(".category-group").removeClass("hidden");
-
-    $('#category').on("change", function() {
-        toggleCategory($('option:selected'));
-    });
-</script>
+        $('#category').on("change", function() {
+            toggleCategory($('option:selected'));
+        });
+    </script>
 @endpush
 
 @section('content')
@@ -145,12 +136,5 @@
         </div>
     </div>
 
-    {{--=======================================MODALS=================================--}}
-    <dcc-modal title="Modal confirmation" id="spec-submit">
-        <h1>Are you sure you want to submit?</h1>
-        <div class="text-center">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="submitForm">Yes</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-        </div>
-    </dcc-modal>
+@include('modal.confirmation');
 @endsection

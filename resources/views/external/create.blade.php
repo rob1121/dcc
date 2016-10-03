@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-@push("style")
-    <style>
-        #app {
-            padding-top: 64px;
-            overflow-y: scroll;
-        }
-    </style>
-@endpush
-
 @push("script")
     <script src="{{url("/js/create.js")}}"></script>
 @endpush

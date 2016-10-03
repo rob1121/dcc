@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push("style")
-  <style> #app { padding-top: 64px; overflow-y: scroll; min-height: 100vh; } </style>
-@endpush
-
 @push("script")
   <script src="{{URL::to("/js/create.js")}}"></script>
 @endpush

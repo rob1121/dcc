@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-@push('style')
-<style>
-    #app {
-        padding-top: 64px;
-        overflow-y: scroll;
-    }
-</style>
-@endpush
-
 @push('script')
 <script src="{{URL::to("/js/edit.js")}}"></script>
 @endpush
@@ -34,6 +25,7 @@
                       enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     {{ method_field('PATCH') }}
+
                     <input type="hidden" value="{{$spec->id}}" name="id">
                     <div class="container-fluid">
 
@@ -104,12 +96,5 @@
         </div>
     </div>
 
-    {{--=======================================MODALS=================================--}}
-    <dcc-modal title="Modal confirmation" id="spec-update">
-        <h1>Are you sure you want to submit?</h1>
-        <div class="text-center">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="submitForm">Yes</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-        </div>
-    </dcc-modal>
+@include('modal.confirmation');
 @endsection

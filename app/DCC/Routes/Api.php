@@ -15,5 +15,4 @@ Route::group(["prefix" => "api"], function() {
         "as" => "api.search.external.for_review",
         "uses" => "ApiController@forReviewSearch"
     ]);
-
 });

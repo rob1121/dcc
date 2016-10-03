@@ -24,8 +24,8 @@ class IsoRequest extends FormRequest
     public function rules()
     {
         return [
-            "spec_no" => "required|unique:isos,spec_no",
-            "name" =>  "required|unique:isos,name",
+            "spec_no" => "required",
+            "name" =>  "required",
             "document" =>  "required|mimes:pdf",
             "revision" =>  "required|min:2|max:10",
             "revision_date" =>  "required|date",
