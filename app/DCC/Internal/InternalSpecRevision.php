@@ -30,7 +30,6 @@ class InternalSpecRevision implements SpecificationGateway {
 
     function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
-
         $this->spec->companySpecRevision->update(CompanySpecRevision::instance($this->request)->toArray());
         $this->factory->update(new InternalSpecFile($this->request, $this->spec));
     }

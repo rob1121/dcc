@@ -15,20 +15,17 @@ return [
     |
     */
 
-    'default' => env('QUEUE_DRIVER', 'sync'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Queue Connections
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the connection information for each server that
-    | is used by your application. A default configuration has been added
-    | for each back-end shipped with Laravel. You are free to add more.
-    |
-    */
+    'default' => env('QUEUE_DRIVER', 'async'),
 
     'connections' => [
+
+        'async' => [
+            'driver' => 'async',
+            'table' => 'jobs',
+            'queue' => 'default',
+            'binary'      => 'php',
+            'binary_args' => '',
+        ],
 
         'sync' => [
             'driver' => 'sync',

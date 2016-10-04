@@ -1,5 +1,13 @@
 <?php
 
+use App\CompanySpec;
+use App\Events\SomeEvent;
+use App\Jobs\NotifyUserForSpecUpdate;
+use App\Mail\MailUpdatedSpecs;
+use App\Notifications\InternalSpecUpdateNotifier;
+use App\User;
+use Illuminate\Support\Facades\Mail;
+
 foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $route) {
     require $route->getPathname();
 }
@@ -9,11 +17,18 @@ Route::get('/', function () {
     return redirect(route("internal.index"));
 });
 
-//Route::get("/", function() {
-//    $user = User::first();
-//    $user->notify(new SpecsUpdate);
-////    Mail::to('telford@astigp.com')->send(new MailUpdatedSpecs);
-//});
+//web.php
+Route::get("/", function() {
+    $user = User::first();
+    $spec = Companyspec::first();
+    $user->notify(new InternalSpecUpdateNotifier($spec));
+});
+
+
+//    dispatch(new NotifyUserForSpecUpdate($spec));
+//    $user->notify(new InternalSpecUpdateNotifier($spec));
+//    Mail::to('robinsonlegaspi@astigp.com')->send(new MailUpdatedSpecs());
+//    Mail::to('telford@astigp.com')->send(new MailUpdatedSpecs);
 
 Auth::routes();
 

@@ -1,5 +1,10 @@
 <?php namespace App\Observers;
 
+use App\CompanySpec;
+use App\Jobs\NotifyUserForSpecUpdate;
+use App\Notifications\InternalSpecUpdateNotifier;
+use Illuminate\Support\Facades\Mail;
+
 class CompanySpecObserver
 {
     /**
@@ -9,9 +14,15 @@ class CompanySpecObserver
         flash("Document save to the database!.","success");
     }
 
-    public function updated()
+    /**
+     * @param CompanySpec $spec
+     */
+    public function saved(CompanySpec $spec)
     {
         flash("Database successfully updated!.","success");
+        Mail::to('robinsonlegaspi@astigp.com')->send(new \App\Mail\MailUpdatedSpecs());
+//        dispatch(new NotifyUserForSpecUpdate($spec));
+//        if(\Auth::user()) \Auth::user()->notify(new InternalSpecUpdateNotifier($spec));
     }
 
     /**

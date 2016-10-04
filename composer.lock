@@ -4,9 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b13cf5fd2137c87ef3f4acb8fbed996",
-    "content-hash": "ed3fa989b4b5325f03d6e4d572aca2a7",
+    "hash": "1862d6b10f3b49980f0f9cbc9d2b7d9c",
+    "content-hash": "03776441a6fb6a74b9cce44061d4ed4c",
     "packages": [
+        {
+            "name": "barryvdh/laravel-async-queue",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-async-queue.git",
+                "reference": "5b425bb2ce55f9ccfc0db4c52424936aed3641a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-async-queue/zipball/5b425bb2ce55f9ccfc0db4c52424936aed3641a9",
+                "reference": "5b425bb2ce55f9ccfc0db4c52424936aed3641a9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.0.x|5.1.x|5.2.x|5.3.x",
+                "illuminate/support": "5.0.x|5.1.x|5.2.x|5.3.x",
+                "php": ">=5.4.0",
+                "symfony/process": "~2.6|~3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\Queue\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "Async Queue Driver for Laravel (Push to background)",
+            "keywords": [
+                "async",
+                "background",
+                "laravel",
+                "queue"
+            ],
+            "time": "2016-08-23 19:32:34"
+        },
         {
             "name": "barryvdh/laravel-debugbar",
             "version": "V2.2.3",
@@ -4390,7 +4440,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "barryvdh/laravel-async-queue": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
