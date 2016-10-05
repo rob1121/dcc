@@ -45321,6 +45321,34 @@ exports.insert = function (css) {
 },{}],10:[function(require,module,exports){
 'use strict';
 
+var _filters = require('./mixins/filters');
+
+var vFilter = _interopRequireWildcard(_filters);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+require('./bootstrap');
+window.laroute = require('./laroute');
+
+
+Vue.component('dcc-input', require('./components/Input.vue'));
+Vue.component('dcc-textarea', require('./components/Textarea.vue'));
+Vue.component('dcc-button', require('./components/Button.vue'));
+Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
+Vue.component('dcc-modal', require('./components/Modal.vue'));
+Vue.component('dcc-pulse', require('./components/PulseLoader.vue'));
+
+Vue.filter('trim', vFilter.trim);
+Vue.filter('count', vFilter.count);
+Vue.filter('latestRevision', vFilter.latestRevision);
+Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
+Vue.filter('internalRoute', vFilter.internalRoute);
+Vue.filter('externalRoute', vFilter.externalRoute);
+Vue.filter('isNewRevision', vFilter.isNewRevision);
+
+},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":18,"./mixins/filters":19}],11:[function(require,module,exports){
+'use strict';
+
 window._ = require('lodash');
 
 /**
@@ -45366,7 +45394,7 @@ Vue.http.interceptors.push(function (request, next) {
 //     key: 'your-pusher-key'
 // });
 
-},{"bootstrap-sass":1,"jquery":2,"lodash":3,"vue":8,"vue-resource":7}],11:[function(require,module,exports){
+},{"bootstrap-sass":1,"jquery":2,"lodash":3,"vue":8,"vue-resource":7}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45391,7 +45419,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7ef4b48f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],12:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],13:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.datetime-picker[_v-6d9fcb99] {\n    position: relative;\n    display: inline-block;\n    font-family: \"Segoe UI\",\"Lucida Grande\",Helvetica,Arial,\"Microsoft YaHei\";\n    -webkit-font-smoothing: antialiased;\n    color: #333;\n}\n\n.datetime-picker *[_v-6d9fcb99] {\n    box-sizing: border-box;\n}\n\n.datetime-picker input[_v-6d9fcb99] {\n    width: 100%;\n    padding: 5px 10px;\n    height: 30px;\n    outline: 0 none;\n    border: 1px solid #ccc;\n    font-size: 13px;\n}\n\n.datetime-picker .picker-wrap[_v-6d9fcb99] {\n    position: absolute;\n    z-index: 1000;\n    width: 238px;\n    height: 280px;\n    margin-top: 2px;\n    background-color: #fff;\n    box-shadow: 0 0 6px #ccc;\n}\n\n.datetime-picker table[_v-6d9fcb99] {\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n    text-align: center;\n    font-size: 13px;\n}\n\n.datetime-picker tr[_v-6d9fcb99] {\n    height: 34px;\n    border: 0 none;\n}\n\n.datetime-picker th[_v-6d9fcb99], .datetime-picker td[_v-6d9fcb99] {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    width: 34px;\n    height: 34px;\n    padding: 0;\n    border: 0 none;\n    line-height: 34px;\n    text-align: center;\n}\n\n.datetime-picker td[_v-6d9fcb99] {\n    cursor: pointer;\n}\n\n.datetime-picker td[_v-6d9fcb99]:hover {\n    background-color: #f0f0f0;\n}\n\n.datetime-picker td.date-pass[_v-6d9fcb99], .datetime-picker td.date-future[_v-6d9fcb99] {\n    color: #aaa;\n}\n\n.datetime-picker td.date-active[_v-6d9fcb99] {\n    background-color: #ececec;\n    color: #3bb4f2;\n}\n\n.datetime-picker .date-head[_v-6d9fcb99] {\n    background-color: #3bb4f2;\n    text-align: center;\n    color: #fff;\n    font-size: 14px;\n}\n\n.datetime-picker .date-days[_v-6d9fcb99] {\n    color: #3bb4f2;\n    font-size: 14px;\n}\n\n.datetime-picker .show-year[_v-6d9fcb99] {\n    display: inline-block;\n    min-width: 62px;\n    vertical-align: middle;\n}\n\n.datetime-picker .show-month[_v-6d9fcb99] {\n    display: inline-block;\n    min-width: 28px;\n    vertical-align: middle;\n}\n\n.datetime-picker .btn-prev[_v-6d9fcb99],\n.datetime-picker .btn-next[_v-6d9fcb99] {\n    cursor: pointer;\n    display: inline-block;\n    padding: 0 10px;\n    vertical-align: middle;\n}\n\n.datetime-picker .btn-prev[_v-6d9fcb99]:hover,\n.datetime-picker .btn-next[_v-6d9fcb99]:hover {\n    background: rgba(16, 160, 234, 0.5);\n}\n")
 "use strict";
@@ -45542,7 +45570,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6d9fcb99", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],13:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45572,7 +45600,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78277606", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],14:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],15:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.close {\n    font-size: 3em;\n}\n\n.modal {\n    overflow-y: auto;\n}\n\n.modal-scroll {\n    height: 80vh;\n    overflow-y: auto;\n}\n")
 "use strict";
@@ -45606,7 +45634,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-40fa8340", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],15:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],16:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n/*.v-spinner\n{\n    margin: 100px auto;\n    text-align: center;\n}\n*/\n\n@-webkit-keyframes v-pulseStretchDelay\n{\n    0%,\n    80%\n    {\n        -webkit-transform: scale(1);\n        transform: scale(1);\n        -webkit-opacity: 1;\n        opacity: 1;\n    }\n    45%\n    {\n        -webkit-transform: scale(0.1);\n        transform: scale(0.1);\n        -webkit-opacity: 0.7;\n        opacity: 0.7;\n    }\n}\n\n@keyframes v-pulseStretchDelay\n{\n    0%,\n    80%\n    {\n        -webkit-transform: scale(1);\n        transform: scale(1);\n        -webkit-opacity: 1;\n        opacity: 1;\n    }\n    45%\n    {\n        -webkit-transform: scale(0.1);\n        transform: scale(0.1);\n        -webkit-opacity: 0.7;\n        opacity: 0.7;\n    }\n}\n")
 'use strict';
@@ -45683,7 +45711,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-b73d0602", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],16:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45711,7 +45739,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-23cd2357", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],17:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -45897,7 +45925,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45949,89 +45977,6 @@ function count(obj) {
     return _.size(obj);
 }
 
-},{"moment":4}],19:[function(require,module,exports){
-'use strict';
-
-var _filters = require('./mixins/filters');
-
-var vFilter = _interopRequireWildcard(_filters);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
- * building robust, powerful web applications using Vue and Laravel.
- */
-require('./bootstrap');
-window.laroute = require('./laroute');
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the body of the page. From here, you may begin adding components to
- * the application, or feel free to tweak this setup for your needs.
- */
-
-Vue.component('dcc-input', require('./components/Input.vue'));
-Vue.component('dcc-textarea', require('./components/Textarea.vue'));
-Vue.component('dcc-button', require('./components/Button.vue'));
-Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
-Vue.component('dcc-modal', require('./components/Modal.vue'));
-Vue.component('dcc-pulse', require('./components/PulseLoader.vue'));
-
-Vue.filter('trim', vFilter.trim);
-Vue.filter('count', vFilter.count);
-Vue.filter('latestRevision', vFilter.latestRevision);
-Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
-Vue.filter('internalRoute', vFilter.internalRoute);
-Vue.filter('externalRoute', vFilter.externalRoute);
-Vue.filter('isNewRevision', vFilter.isNewRevision);
-
-var nav = new Vue({
-    el: 'nav',
-
-    data: {
-        showResultDialog: false,
-        searchKeyword: "",
-        searchResults: []
-    },
-
-    computed: {
-        isSearchResultNotEmpty: function isSearchResultNotEmpty() {
-            return this.searchResults.internal && this.searchResults.external;
-        }
-    },
-
-    methods: {
-        displaySearchResult: function displaySearchResult() {
-            var _this = this;
-
-            var search_route = laroute.route("search");
-            this.$http.get(search_route, {
-                params: { q: this.searchKeyword }
-            }).then(function (response) {
-                _this.searchResults = response.json();_this.toggleSearchResult();
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-
-
-        errorDialogMessage: function errorDialogMessage() {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
-        },
-
-        toggleSearchResult: function toggleSearchResult() {
-            this.showResultDialog = true;
-        },
-        closeResultDialog: function closeResultDialog() {
-            this.showResultDialog = false;
-            this.searchResults = [];
-            this.searchKeyword = "";
-        }
-    }
-});
-
-},{"./bootstrap":10,"./components/Button.vue":11,"./components/Datepicker.vue":12,"./components/Input.vue":13,"./components/Modal.vue":14,"./components/PulseLoader.vue":15,"./components/Textarea.vue":16,"./laroute":17,"./mixins/filters":18}]},{},[19]);
+},{"moment":4}]},{},[10]);
 
 //# sourceMappingURL=app.js.map

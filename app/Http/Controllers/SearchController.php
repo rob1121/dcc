@@ -15,6 +15,7 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
+
         return [
             "internal" => self::searchFor("company_specs", new CompanySpec, $request->q),
             "external" =>  self::searchFor("customer_specs", new CustomerSpec, $request->q),

@@ -1,4 +1,5 @@
 require('./app');
+import search from "./mixins/search";
 
 const app = new Vue({
     el: "#app",
@@ -11,33 +12,25 @@ const app = new Vue({
             index: -1
         },
 
-        currentIndex: 0,
-
         pagination: {},
     },
+    mixins: [search],
 
     ready() {
         this.getPagination();
     },
 
     methods: {
-        getSpecByCategory(category, index) {
+        getSpecByCategory(category) {
             this.setSpecCategory(category);
             this.getPagination();
-            this.setActiveMenu(index);
         },
 
         setSpecCategory(category) {
             this.category = category;
         },
 
-        setActiveMenu(index) {
-            this.currentIndex = index;
-        },
-
         getPagination(num = "") {
-            var loader = $(".loader");
-            loader.show();
             var route = laroute.route('api.search.internal');
             this.$http.get(route, {
                 params: {
@@ -47,7 +40,7 @@ const app = new Vue({
             })
                 .then( response => {
                     this.pagination = response.json();
-                    loader.hide();
+                    this.closeResultDialog();
                 }, () => this.getPagination(num));
         },
 
@@ -73,9 +66,8 @@ const app = new Vue({
             btn.children('i').toggleClass("fa-remove");
         },
 
-        setModalSpec(spec, index = -1) {
+        setModalSpec(spec) {
             this.modalDeleteConfirmation.category = spec;
-            this.modalDeleteConfirmation.index = index;
         },
 
         resetModalData() {

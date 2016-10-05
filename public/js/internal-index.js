@@ -45327,19 +45327,9 @@ var vFilter = _interopRequireWildcard(_filters);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
- * building robust, powerful web applications using Vue and Laravel.
- */
 require('./bootstrap');
 window.laroute = require('./laroute');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the body of the page. From here, you may begin adding components to
- * the application, or feel free to tweak this setup for your needs.
- */
 
 Vue.component('dcc-input', require('./components/Input.vue'));
 Vue.component('dcc-textarea', require('./components/Textarea.vue'));
@@ -45355,51 +45345,6 @@ Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
 Vue.filter('internalRoute', vFilter.internalRoute);
 Vue.filter('externalRoute', vFilter.externalRoute);
 Vue.filter('isNewRevision', vFilter.isNewRevision);
-
-var nav = new Vue({
-    el: 'nav',
-
-    data: {
-        showResultDialog: false,
-        searchKeyword: "",
-        searchResults: []
-    },
-
-    computed: {
-        isSearchResultNotEmpty: function isSearchResultNotEmpty() {
-            return this.searchResults.internal && this.searchResults.external;
-        }
-    },
-
-    methods: {
-        displaySearchResult: function displaySearchResult() {
-            var _this = this;
-
-            var search_route = laroute.route("search");
-            this.$http.get(search_route, {
-                params: { q: this.searchKeyword }
-            }).then(function (response) {
-                _this.searchResults = response.json();_this.toggleSearchResult();
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-
-
-        errorDialogMessage: function errorDialogMessage() {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
-        },
-
-        toggleSearchResult: function toggleSearchResult() {
-            this.showResultDialog = true;
-        },
-        closeResultDialog: function closeResultDialog() {
-            this.showResultDialog = false;
-            this.searchResults = [];
-            this.searchKeyword = "";
-        }
-    }
-});
 
 },{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":19,"./mixins/filters":20}],11:[function(require,module,exports){
 'use strict';
@@ -45797,7 +45742,14 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+var _search = require("./mixins/search");
+
+var _search2 = _interopRequireDefault(_search);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 require('./app');
+
 
 var app = new Vue({
     el: "#app",
@@ -45810,10 +45762,9 @@ var app = new Vue({
             index: -1
         },
 
-        currentIndex: 0,
-
         pagination: {}
     },
+    mixins: [_search2.default],
 
     ready: function ready() {
         this.getPagination();
@@ -45821,24 +45772,18 @@ var app = new Vue({
 
 
     methods: {
-        getSpecByCategory: function getSpecByCategory(category, index) {
+        getSpecByCategory: function getSpecByCategory(category) {
             this.setSpecCategory(category);
             this.getPagination();
-            this.setActiveMenu(index);
         },
         setSpecCategory: function setSpecCategory(category) {
             this.category = category;
-        },
-        setActiveMenu: function setActiveMenu(index) {
-            this.currentIndex = index;
         },
         getPagination: function getPagination() {
             var _this = this;
 
             var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
 
-            var loader = $(".loader");
-            loader.show();
             var route = laroute.route('api.search.internal');
             this.$http.get(route, {
                 params: {
@@ -45847,7 +45792,7 @@ var app = new Vue({
                 }
             }).then(function (response) {
                 _this.pagination = response.json();
-                loader.hide();
+                _this.closeResultDialog();
             }, function () {
                 return _this.getPagination(num);
             });
@@ -45871,10 +45816,7 @@ var app = new Vue({
             btn.children('i').toggleClass("fa-remove");
         },
         setModalSpec: function setModalSpec(spec) {
-            var index = arguments.length <= 1 || arguments[1] === undefined ? -1 : arguments[1];
-
             this.modalDeleteConfirmation.category = spec;
-            this.modalDeleteConfirmation.index = index;
         },
         resetModalData: function resetModalData() {
             this.setModalSpec({});
@@ -45892,7 +45834,7 @@ var app = new Vue({
     }
 });
 
-},{"./app":10}],19:[function(require,module,exports){
+},{"./app":10,"./mixins/search":21}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -46130,6 +46072,58 @@ function count(obj) {
     return _.size(obj);
 }
 
-},{"moment":4}]},{},[18]);
+},{"moment":4}],21:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            showResultDialog: false,
+            searchKeyword: "",
+            searchResults: []
+        };
+    },
+
+
+    computed: {
+        isSearchResultNotEmpty: function isSearchResultNotEmpty() {
+            return this.searchResults.internal && this.searchResults.external;
+        }
+    },
+
+    methods: {
+        displaySearchResult: function displaySearchResult() {
+            var _this = this;
+
+            var search_route = laroute.route("search");
+            this.$http.get(search_route, {
+                params: { q: this.searchKeyword }
+            }).then(function (response) {
+                _this.searchResults = response.json();_this.toggleSearchResult();
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        },
+        errorDialogMessage: function errorDialogMessage() {
+            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+        },
+        toggleSearchResult: function toggleSearchResult() {
+            this.showResultDialog = true;
+        },
+        closeResultDialog: function closeResultDialog() {
+            this.showResultDialog = false;
+            this.searchResults = [];
+            this.searchKeyword = "";
+        },
+        clearSearchInput: function clearSearchInput() {
+            this.closeResultDialog();
+        }
+    }
+};
+
+},{}]},{},[18]);
 
 //# sourceMappingURL=internal-index.js.map

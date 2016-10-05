@@ -1,62 +1,32 @@
-#sidebar
-    position: relative
-    z-index: 2
-    float: left
-    height: 100vh
-    width: 20%
-    padding-top: 64px
-    overflow: hidden
-    transition: .3s ease-in-out
-    background: #fff
+//#sidebar
+//    position: relative
+//    z-index: 2
+//    float: left
+//    height: 100vh
+//    width: 20%
+//    padding-top: 64px
+//    overflow: hidden
+//    transition: .3s ease-in-out
+//
+//    &:hover
+//        overflow-y: auto
+//
+//    &.show-sidebar
+//        transform: translateX(0)
+
+.btn-link.sidebar-link
+    display: inline-block
+    text-decoration: none !important
+    word-wrap: break-word
+    color: $text-color
+    margin-bottom: 5px
+    color: darkred
 
     &:hover
-        overflow-y: auto
+        color: darken(darkred, 5%)
 
-    &.show-sidebar
-        transform: translateX(0)
-
-    .btn-link
-        float: left
-        text-decoration: none !important
-        padding: 5px 10px
-        margin: 0 0 0 5px
-        text-transform: uppercase
-        width: 100%
-        word-wrap: break-word
-        display: inline-block
-        color: $text-color
-        background: #fff
-        border: 1px solid transparent
-        border-left: 3px solid #fff
-
-        &:hover
-            background: $dcc-hover-color
-            border: 1px solid #ddd
-            border-left: 3px solid darkred
-
-        &.active
-            background: $dcc-hover-color
-            border: 1px solid #ddd
-            font-weight: bold
-            border-left: 3px solid darkred
-
-.main-content
-    position: absolute
-    top: 0
-    right: 0
-    height: 100vh
-    width: 80%
-    padding: 64px 30px 10px 30px
-    overflow-y: auto
-    transition: .3s ease-in-out
-    background: darken($body-bg, 5%)
-
-    &.compress-main-content
-        width: 75%
-
-.toggler-btn
-    display: none
-    margin-bottom: 10px
+    &.active
+        color: darken(darkred, 5%) !important
 
 .loader
     position: fixed
@@ -71,17 +41,5 @@
         position: fixed
         top: 50%
         left: 50%
-
-
-@media (max-width: 1000px)
-    #sidebar
-        transform: translateX(-300px)
-
-    .main-content
-        width: 100%
-
-    .toggler-btn
-        display: block
-
 
 

@@ -1,14 +1,14 @@
-<nav class="navbar navbar-default navbar-fixed-top navbar">
+<nav class="navbar navbar-default navbar">
     <div class="container">
         <div class="navbar-header">
 
             <!-- Collapsed Hamburger -->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#app-navbar-collapse">
+            <button type="button" class="navbar-toggle collapsed" style="background: darkred;color: #FFF"
+                    {{--data-toggle="collapse"--}}
+                    {{--data-target="#app-navbar-collapse" --}}
+            >
                 <span class="sr-only">Toggle Navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+                <i class="fa fa-align-justify"></i>
             </button>
 
             <!-- Branding Image -->
@@ -42,19 +42,6 @@
                 @endif
                 <li class="{{route("iso.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("iso.index") }}">ISO</a>
-                </li>
-                <li class="navbar-form">
-                    <form>
-                        <input type="text" style="width: 200px;"
-                               class="form-control"
-                               placeholder="&#128270; Search for Specification"
-                               v-model="searchKeyword"
-                               name="search-field"
-                               id="search-field"
-                               @keyup.enter="displaySearchResult"
-                        >
-                        <button @click.prevent="displaySearchResult" class="btn btn-default" name="search-field-submit">Search</button>
-                    </form>
                 </li>
             </ul>
 
@@ -92,67 +79,6 @@
                     </li>
                 @endif
             </ul>
-        </div>
-    </div>
-    <div class="search-result" v-show="showResultDialog" v-cloak>
-        <button class="close" @click="closeResultDialog"><i class="fa fa-remove"></i></button>
-        <br>
-        <br>
-        <div class="container">
-            <!-- TAB NAVIGATION -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#tab1" role="tab" data-toggle="tab">Internal Specification Result:</a></li>
-                @if(Auth::user() && Auth::user()->is_admin)<li><a href="#tab2" role="tab" data-toggle="tab">External Specification Result:</a></li>@endif
-            </ul>
-            <!-- TAB CONTENT -->
-            <div class="tab-content">
-                <div class="active tab-pane fade in" id="tab1">
-                    <div class="search--deck-collection search-result--list" v-if="searchResults.internal | count">
-                        <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under Internal Specification
-                        </h1>
-                        <a class="search--deck" v-for="result in searchResults.internal" target="_blank"
-                           href="@{{result.id | internalRoute}}"
-                           placholder="view file">
-                            <div class="search--spec-no col-xs-offset-1 col-xs-10">
-                                <h4>@{{result.spec_no | uppercase}} - @{{result.name | uppercase}}</h4>
-                                <h5>@{{result.company_spec_revision.revision_summary | capitalize}}</h5>
-                                <h6 class="help-block">
-                                    <strong>Date: </strong>@{{result.company_spec_revision | telfordStandardDate}}
-                                    <strong>Revision: </strong>@{{result.company_spec_revision.revision | uppercase}}
-                                </h6>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div v-else>
-                        <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}
-                                "</strong></h1>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="tab2">
-
-                    <div class="search--deck-collection search-result--list" v-if="searchResults.external | count">
-                        <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong> under External Specification
-                        </h1>
-                        <a class="search--deck" v-for="result in searchResults.external" target="_blank"
-                           href="@{{result.id | externalRoute}}"
-                           placeholder="view file">
-                            <div class="search--spec-no cpl-xs-offset-1 col-xs-10">
-                                <h4>@{{result.spec_no | uppercase}} - @{{result.name | uppercase}}</h4>
-                                <h6 class="help-block justify">
-                                    <strong>Date: </strong>@{{result.customer_spec_revision | latestRevision "revision_date" | telfordStandardDate}}
-                                    <strong>Revision: </strong>@{{result.customer_spec_revision | latestRevision "revision" | uppercase}}
-                                </h6>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div v-else>
-                        <h1 class="text-left search-result--list">No Result Found for <strong>"@{{ searchKeyword }}
-                                "</strong></h1>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </nav>

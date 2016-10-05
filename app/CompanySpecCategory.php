@@ -14,12 +14,16 @@ class CompanySpecCategory extends Model
     public function companySpec(){
         return $this->belongsTo(CompanySpec::class);
     }
+
     public static function categoryList() {
         return self::with("companySpec")->get(["category_name","category_no","company_spec_id"]);
     }
 
     public static function getCategoryList() {
-        return self::get(["category_name","category_no","company_spec_id"])->unique("category_no")->sortBy("category_no");
+        return self::orderBy("category_name")->get(["category_name","category_no"])->unique("category_no")->map(function($category) {
+            $category_name = \Str::title($category->category_name);
+            return collect($category)->put("name", "{$category->category_no} {$category_name}");
+        });
     }
 
     /**

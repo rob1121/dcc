@@ -5,7 +5,7 @@
 @endpush
 
 @section("content")
-    <div id="sidebar">
+    <div class="col-xs-2">
         <a v-for="(index, category) in {{$categories}}"
            href="#"
            :class="['btn-link', {'active': currentIndex == index }]"

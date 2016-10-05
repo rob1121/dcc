@@ -19,12 +19,113 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+    <style type="text/css">
+        .clear-btn {
+            cursor:pointer;
+            float:right;
+            margin-top: -28px;
+            margin-right: 10px;
+        }
+
+        .search-output {
+            margin-bottom: 80px;
+        }
+
+        #app {
+            display: flex;
+        }
+        #app>#sidebar {
+            padding-left: 15px;
+            width: 20%;
+        }
+        #app>.content {
+            padding: 50px;
+            width: 80%;
+        }
+
+        #sidebar {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media screen and (max-width: 770px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            /*.content {*/
+                /*width: 125%;*/
+            /*}*/
+
+            /*#app {*/
+                /*width: 125%;*/
+                /*transform: translateX(-20%);*/
+            /*}*/
+            .active #app {
+                width: 170vw;
+            }
+
+            .active #app > #sidebar {
+                width: 70vw;
+            }
+
+            .active #app > .content {
+                width: 100vw;
+            }
+
+            .active .nav {
+                transform: translateX(70vw);
+            }
+        }
+    </style>
 </head>
 <body>
+<div class="nav">
     @include("layouts.nav")
+</div>
 
     <div id="app" v-cloak>
-        @yield('content')
+        @if(isset($categories))
+            <div id="sidebar">
+                <form>
+                    <div class="form-group">
+                        <label for=""> Search:
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="&#128270;"
+                                   v-model="searchKeyword"
+                                   name="search-field"
+                                   id="search-field"
+                                   @keyup.enter="displaySearchResult"
+                            >
+                            <span class="clear-btn" v-if="searchKeyword" @click="clearSearchInput">&times;</span>
+                        </label>
+                        <button @click.prevent="displaySearchResult"
+                                class="btn btn-default"
+                                name="search-field-submit"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </form>
+                <a v-for="category in {{$categories}}"
+                   href="#"
+                   class="sidebar-link btn-link"
+                @click.prevent="getSpecByCategory(category)"
+                >
+                    @{{category.name}}
+                </a>
+            </div>
+        @endif
+
+        <div class="content" v-show="! showResultDialog">
+            @yield('content')
+        </div>
+
+        <div class="content search-output" v-show="showResultDialog">
+            @include("layouts.search_engine")
+        </div>
     </div>
 
     @include('layouts.footer')
@@ -32,6 +133,10 @@
     <!-- Scripts -->
     {{-- <script src="/js/app.js"></script> --}}
     @stack("script")
-
+<script>
+    $("button.navbar-toggle").click(function() {
+        $(".body").toggleClass("active");
+    });
+</script>
 </body>
 </html>

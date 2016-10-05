@@ -45327,19 +45327,9 @@ var vFilter = _interopRequireWildcard(_filters);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
- * building robust, powerful web applications using Vue and Laravel.
- */
 require('./bootstrap');
 window.laroute = require('./laroute');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the body of the page. From here, you may begin adding components to
- * the application, or feel free to tweak this setup for your needs.
- */
 
 Vue.component('dcc-input', require('./components/Input.vue'));
 Vue.component('dcc-textarea', require('./components/Textarea.vue'));
@@ -45355,51 +45345,6 @@ Vue.filter('telfordStandardDate', vFilter.telfordStandardDate);
 Vue.filter('internalRoute', vFilter.internalRoute);
 Vue.filter('externalRoute', vFilter.externalRoute);
 Vue.filter('isNewRevision', vFilter.isNewRevision);
-
-var nav = new Vue({
-    el: 'nav',
-
-    data: {
-        showResultDialog: false,
-        searchKeyword: "",
-        searchResults: []
-    },
-
-    computed: {
-        isSearchResultNotEmpty: function isSearchResultNotEmpty() {
-            return this.searchResults.internal && this.searchResults.external;
-        }
-    },
-
-    methods: {
-        displaySearchResult: function displaySearchResult() {
-            var _this = this;
-
-            var search_route = laroute.route("search");
-            this.$http.get(search_route, {
-                params: { q: this.searchKeyword }
-            }).then(function (response) {
-                _this.searchResults = response.json();_this.toggleSearchResult();
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-
-
-        errorDialogMessage: function errorDialogMessage() {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
-        },
-
-        toggleSearchResult: function toggleSearchResult() {
-            this.showResultDialog = true;
-        },
-        closeResultDialog: function closeResultDialog() {
-            this.showResultDialog = false;
-            this.searchResults = [];
-            this.searchKeyword = "";
-        }
-    }
-});
 
 },{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":18,"./mixins/filters":20}],11:[function(require,module,exports){
 'use strict';

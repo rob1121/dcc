@@ -1,23 +1,25 @@
 .deck-collection
-  padding-bottom: 64px
+    padding-bottom: 64px
 
 .deck
-  margin-bottom: 5px
-  width: 100%
-  background: #fff
-  padding: 10px 5px
-  border: 1px solid $laravel-border-color
-  border-left-width: 3px
-  transition: border .1s ease-in-out
-  display: inline-block
+    margin-bottom: 5px
+    width: 100%
+    background: #fff
+    padding: 10px 5px
+    border: 1px solid $laravel-border-color
+    border-left-width: 3px
+    transition: border .1s ease-in-out
+    display: inline-block
+    font-weight: bold !important
 
-  .show-action-link
-    cursor: pointer
+    .show-action-link
+        cursor: pointer
+        text-decoration: none
 
-  &:hover
-    border-left: 3px solid darkred
-    background: $dcc-hover-color
-    +dcc-box-shadow()
+    &:hover
+        border-left: 3px solid darkred
+        background: $dcc-hover-color
+        +dcc-box-shadow()
 
 .spec-no
     font-weight: bold
