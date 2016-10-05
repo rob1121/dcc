@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs" role="tablist">
-    <li class="active"><a href="#tab1" role="tab" data-toggle="tab">Internal Specification Result:</a></li>
+    <li class="active"><a href="#tab1" role="tab" data-toggle="tab">Internal Specification Result</a></li>
     @if(Auth::user() && Auth::user()->is_admin)
-        <li><a href="#tab2" role="tab" data-toggle="tab">External Specification Result:</a></li>
+        <li><a href="#tab2" role="tab" data-toggle="tab">External Specification Result</a></li>
     @endif
 </ul>
 <!-- TAB CONTENT -->

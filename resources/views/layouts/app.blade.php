@@ -36,16 +36,31 @@
         }
         #app>#sidebar {
             padding-left: 15px;
-            width: 20%;
+            width: 20vw;
         }
         #app>.content {
             padding: 50px;
-            width: 80%;
+            width: 80vw;
         }
 
         #sidebar {
             display: flex;
             flex-direction: column;
+        }
+        .white-cover {
+            background: #fff;
+            opacity: 0.8;
+            padding:0;
+            top:0;
+            bottom:0;
+            width:100vw;
+            position: fixed;
+            z-index:5;
+            transform: translateX(60vw);
+            display: none;
+        }
+        .menu-link.sidebar-link {
+            display: none;
         }
 
         @media screen and (max-width: 770px) {
@@ -54,20 +69,25 @@
                 overflow-x: hidden;
             }
 
-            /*.content {*/
-                /*width: 125%;*/
-            /*}*/
+        .active .menu-link {
+            display: block;
+        }
 
-            /*#app {*/
-                /*width: 125%;*/
-                /*transform: translateX(-20%);*/
-            /*}*/
+            #app > #sidebar {
+                display: none;
+            }
+
+            #app .content {
+                width: 100vw;
+            }
+
             .active #app {
-                width: 170vw;
+                width: 160vw;
             }
 
             .active #app > #sidebar {
-                width: 70vw;
+                display: flex;
+                width: 60vw;
             }
 
             .active #app > .content {
@@ -75,7 +95,11 @@
             }
 
             .active .nav {
-                transform: translateX(70vw);
+                transform: translateX(60vw);
+            }
+
+            .active .white-cover {
+                display: block;
             }
         }
     </style>
@@ -86,8 +110,24 @@
 </div>
 
     <div id="app" v-cloak>
-        @if(isset($categories))
+
             <div id="sidebar">
+            <h3 class=" menu-link sidebar-link">Menu:</h3>
+            <a class="menu-link sidebar-link btn-link" href="{{ route("internal.index") }}">Internal Specification
+                @if($count = newCompanySpecCount())
+                    <span class="label label-danger">{{$count}}</span>
+                @endif
+            </a>
+            @if(Auth::user())
+                    <a class="menu-link sidebar-link btn-link" href="{{ route("external.index") }}">External Specification
+                        @if($count = customerForSpecReviewCount())
+                            <span class="label label-danger">{{$count}}</span>
+                        @endif
+                    </a>
+            @endif
+            <a class="menu-link sidebar-link btn-link" href="{{ route("iso.index") }}">ISO</a>
+        <br><br>
+        @if(isset($categories))
                 <form>
                     <div class="form-group">
                         <label for=""> Search:
@@ -102,13 +142,15 @@
                             <span class="clear-btn" v-if="searchKeyword" @click="clearSearchInput">&times;</span>
                         </label>
                         <button @click.prevent="displaySearchResult"
-                                class="btn btn-default"
+                                class="btn btn-default btn-search"
                                 name="search-field-submit"
                         >
                             Search
                         </button>
                     </div>
                 </form>
+
+            <h3>Specification Category:</h3>
                 <a v-for="category in {{$categories}}"
                    href="#"
                    class="sidebar-link btn-link"
@@ -116,9 +158,9 @@
                 >
                     @{{category.name}}
                 </a>
-            </div>
         @endif
-
+            </div>
+        <div class="white-cover"></div>
         <div class="content" v-show="! showResultDialog">
             @yield('content')
         </div>
@@ -134,9 +176,8 @@
     {{-- <script src="/js/app.js"></script> --}}
     @stack("script")
 <script>
-    $("button.navbar-toggle").click(function() {
-        $(".body").toggleClass("active");
-    });
+    $("button.navbar-toggle").click(function() { $("body").addClass("active"); });
+    $(".white-cover").click(function() { $("body").removeClass("active"); });
 </script>
 </body>
 </html>

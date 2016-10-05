@@ -20,7 +20,11 @@ export default {
             this.$http.get(search_route, {
                 params: { q: this.searchKeyword}
             }).then(
-                response => { this.searchResults = response.json(); this.toggleSearchResult(); },
+                response => {
+                    this.searchResults = response.json();
+                    this.toggleSearchResult();
+                    $("body").removeClass("active");
+                },
                 () => this.errorDialogMessage()
             );
         },
@@ -37,6 +41,7 @@ export default {
             this.showResultDialog =false;
             this.searchResults = [];
             this.searchKeyword = "";
+            $("body").removeClass("active");
         },
 
         clearSearchInput() {

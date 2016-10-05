@@ -1,18 +1,73 @@
-//#sidebar
-//    position: relative
-//    z-index: 2
-//    float: left
-//    height: 100vh
-//    width: 20%
-//    padding-top: 64px
-//    overflow: hidden
-//    transition: .3s ease-in-out
-//
-//    &:hover
-//        overflow-y: auto
-//
-//    &.show-sidebar
-//        transform: translateX(0)
+.clear-btn
+    cursor: pointer
+    float: right
+    margin-top: -28px
+    margin-right: 10px
+
+.search-output
+    margin-bottom: 80px
+
+#app
+    display: flex
+
+    #sidebar
+        padding-left: 15px
+        width: 20vw
+    .content
+        padding: 50px
+        width: 80vw
+
+    #sidebar
+        display: flex
+        flex-direction: column
+
+    .white-cover
+        background: #fff
+        opacity: 0.8
+        padding: 0px
+        top: 0
+        bottom: 0
+        width: 100vw
+        position: fixed
+        z-index: 5
+        transform: translateX(60vw)
+        display: none
+
+    .menu-link.sidebar-link
+        display: none
+
+@media screen and (max-width: 770px)
+
+    body
+        overflow-x: hidden
+
+    #app
+        #sidebar
+            display: none
+
+    #app
+        .content
+            width: 100vw
+
+    &.active .menu-link
+        display: block
+
+    &.active #app
+        width: 160vw
+
+    &.active #app > #sidebar
+        display: flex
+        width: 60vw
+
+    &.active #app > .content
+        width: 100vw
+
+    &.active .nav
+        transform: translateX(60vw)
+
+    .active .white-cover
+        display: block
+
 
 .btn-link.sidebar-link
     display: inline-block
@@ -27,19 +82,3 @@
 
     &.active
         color: darken(darkred, 5%) !important
-
-.loader
-    position: fixed
-    display: none
-    background: rgba(255,255,255, 0.5)
-    top: 0
-    bottom: 0
-    width: 100%
-    z-index: 1
-
-    .v-spinner
-        position: fixed
-        top: 50%
-        left: 50%
-
-
