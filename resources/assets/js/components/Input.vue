@@ -1,13 +1,13 @@
 <template>
     <div :class="['form-group',{'has-error' : error }, 'col-sm-'+col]">
         <label class="control-label">{{label ? label : name |capitalize}}</label>
-        <input type="{{type}}"
+        <input :type="type"
                class="form-control input-sm"
                v-model="value"
-               name="{{name}}"
-               id="{{name}}"
+               :name="name"
+               :id="name"
                :list="list"
-               readonly="{{readOnly}}"
+               :readonly="readOnly"
         >
         <h6 class="help-block" v-show="error">{{error}}</h6>
     </div>

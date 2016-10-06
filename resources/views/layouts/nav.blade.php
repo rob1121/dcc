@@ -26,24 +26,24 @@
             <ul class="nav navbar-nav navbar-left">
                 <li class="{{route("internal.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("internal.index") }}">Internal Specification
-                        @if($nav['internal'])
-                            <span class="label label-danger">{{$nav['internal']}}</span>
+                        @if($internal)
+                            <span class="label label-danger">{{$internal}}</span>
                         @endif
                     </a>
                 </li>
                 @if(Auth::user())
                     <li class="{{route("external.index") === Request::url() ? "active" : ""}} nav-link">
                         <a href="{{ route("external.index") }}">External Specification
-                            @if($nav['external'])
-                                <span class="label label-danger">{{$nav['external']}}</span>
+                            @if($external)
+                                <span class="label label-danger">{{$external}}</span>
                             @endif
                         </a>
                     </li>
                 @endif
                 <li class="{{route("iso.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("iso.index") }}">ISO
-                        @if($nav['iso'])
-                            <span class="label label-danger">{{$nav['iso']}}</span>
+                        @if($iso)
+                            <span class="label label-danger">{{$iso}}</span>
                         @endif
                     </a>
                 </li>

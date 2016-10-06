@@ -3,17 +3,22 @@
 use Carbon\Carbon;
 
 function customerForSpecReviewCount() {
-    return App\CustomerSpecRevision::whereIsReviewed(0)->count();
+    $count =  App\CustomerSpecRevision::whereIsReviewed(0)->count();
+    return $count;
 }
 
 function newCompanySpecCount() {
-    return App\CompanySpecRevision::where("revision_date",">", Carbon::now()->subDays(7))->count();
+    $count =  App\CompanySpecRevision::where("revision_date",">", Carbon::now()->subDays(7))->count();
+    return $count;
 }
 
 function newCustomerSpecCount() {
-    return App\CustomerSpecRevision::where("revision_date",">", Carbon::now()->subDays(7))->count();
+    $count =  App\CustomerSpecRevision::where("revision_date",">", Carbon::now()->subDays(7))->count();
+    return $count;
 }
 
 function newIsoDocumentCount() {
-    return App\Iso::where("revision_date",">", Carbon::now()->subDays(7))->count();
+    $count =  App\Iso::where("revision_date",">", Carbon::now()->subDays(7))->count();
+    return $count;
 }
+

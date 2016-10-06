@@ -32,3 +32,11 @@ export function isNewRevision(revision_date) {
 export function count(obj) {
     return _.size(obj);
 }
+
+export function capitalize(string) {
+    return _.capitalize(string);
+}
+
+export function capitalize(string) {
+    return _.toUpper(string);
+}

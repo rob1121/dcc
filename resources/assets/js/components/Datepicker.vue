@@ -113,8 +113,8 @@
         <label class="control-label">{{label ? label : name |capitalize}}</label>
         <input type="text"
                class="form-control input-sm"
-               name="{{name}}"
-               id="{{name}}"
+               :name="name"
+               :id="name"
                :style="styleObj"
                :readonly="readonly"
                :value="value"
@@ -271,10 +271,14 @@
                 }
             }
         },
-        ready () {
-            this.now = this.parse(this.value) || new Date();
-            document.addEventListener('click', this.leave, false);
+
+        mounted() {
+            this.$nextTick(() => {
+                this.now = this.parse(this.value) || new Date();
+                document.addEventListener('click', this.leave, false);
+            })
         },
+
         beforeDestroy () {
             document.removeEventListener('click', this.leave, false);
         }

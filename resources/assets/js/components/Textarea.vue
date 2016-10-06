@@ -4,8 +4,8 @@
         <textarea rows="5"
                   cols="30"
                   class="form-control"
-                  name="{{name}}"
-                  id="{{name}}"
+                  :name="name"
+                  :id="name"
                   v-model="value"
         ></textarea>
         <h6 class="help-block" v-show="error">{{error}}</h6>

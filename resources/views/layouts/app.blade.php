@@ -1,3 +1,10 @@
+
+@php
+    $internal = \App\CompanySpecRevision::where("revision_date",">", \Carbon::now()->subDays(7))->count();
+    $external = \App\CustomerSpecRevision::whereIsReviewed(0)->count();
+    $iso = \App\Iso::where("revision_date",">", \Carbon::now()->subDays(7))->count();
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +28,7 @@
     </script>
 </head>
 <body>
+
 <div class="nav">
     @include("layouts.nav")
 </div>
@@ -31,20 +39,24 @@
         <h4 class="menu-title">Menu:</h4>
 
         <a class="menu-link sidebar-link btn-link" href="{{ route("internal.index") }}">Internal Specification
-            @if($count = newCompanySpecCount())
-                <span class="label label-danger">{{$count}}</span>
+            @if($internal)
+                <span class="label label-danger">{{$internal}}</span>
             @endif
         </a>
 
         @if(Auth::user())
             <a class="menu-link sidebar-link btn-link" href="{{ route("external.index") }}">External Specification
-                @if($count = customerForSpecReviewCount())
-                    <span class="label label-danger">{{$count}}</span>
+                @if($external)
+                    <span class="label label-danger">{{$external}}</span>
                 @endif
             </a>
         @endif
 
-        <a class="menu-link sidebar-link btn-link" href="{{ route("iso.index") }}">ISO</a>
+        <a class="menu-link sidebar-link btn-link" href="{{ route("iso.index") }}">ISO
+        @if($iso)
+            <span class="label label-danger">{{$iso}}</span>
+        @endif
+        </a>
         @if (Auth::guest())
 
             <a class="menu-link sidebar-link" href="{{ url('/login') }}">Login</a>

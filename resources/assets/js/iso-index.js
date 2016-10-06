@@ -35,8 +35,15 @@ const app = new Vue({
             var route_delete = laroute.route("iso.destroy", {iso:this.selectedIso.id});
 
             this.$http.delete(route_delete)
-                .then( () => this.isos.$remove(this.selectedIso),
-                       () => this.errorDialogMessage() );
+                .then(
+                    () => this.delete(this.selectedIso),
+                    () => this.errorDialogMessage()
+                );
+        },
+
+        delete(iso) {
+            var index = this.isos.indexOf(iso);
+            this.isos.splice(index, 1);
         }
     }
 });

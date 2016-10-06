@@ -20,8 +20,9 @@ class CompanySpecCategory extends Model
     }
 
     public static function getCategoryList() {
-        return self::orderBy("category_name")->get(["category_name","category_no"])->unique("category_no")->map(function($category) {
-            $category_name = \Str::title($category->category_name);
+        $arr = self::orderBy("category_name")->get(["category_name","category_no"])->unique("category_no");
+        return collect($arr)->map(function($category) {
+            $category_name = \Str::title($category["category_name"]);
             return collect($category)->put("name", "{$category->category_no} {$category_name}");
         });
     }

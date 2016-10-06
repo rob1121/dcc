@@ -20,8 +20,8 @@ const app = new Vue({
 
     mixins: [search],
 
-	ready() {
-		this.getPagination();
+	mounted() {
+		this.$nextTick( () => this.getPagination() )
 	},
 
     filters: {
@@ -73,10 +73,14 @@ const app = new Vue({
             this.$http.get(pagination_url, {
                 params: { page:num, category:this.category.customer_name }
             }).then(
-                response => {
-                    this.pagination = response.json();
-                    this.closeResultDialog();
-                }, () => this.errorDialogMessage());
+                (response) => this.setPagination(response.json()),
+                () => this.errorDialogMessage()
+            );
+        },
+
+        setPagination(obj) {
+            this.pagination = obj;
+            this.closeResultDialog();
         },
 
         prev() {
@@ -111,7 +115,7 @@ const app = new Vue({
 
             this.$http.patch(update_status, {is_reviewed: 1,revision:this.indexOfSpecForUpdate.revision})
                 .then(
-                    () => this.modalConfirmation.category.customer_spec_revision.$remove(this.indexOfSpecForUpdate),
+                    () => this.delete(this.modalConfirmation.category.customer_spec_revision, this.indexOfSpecForUpdate),
                     () => this.errorDialogMessage()
                 );
         },
@@ -121,9 +125,14 @@ const app = new Vue({
 
             this.$http.delete(route_delete)
                 .then(
-                    () => this.pagination.data.$remove(this.modalConfirmation.category),
+                    () => this.delete(this.pagination.data, this.modalConfirmation.category),
                     () => this.errorDialogMessage()
                 );
+        },
+
+        delete(collection, spec) {
+            var index = collection.indexOf(spec);
+            collection.splice(index, 1)
         }
     }
 });

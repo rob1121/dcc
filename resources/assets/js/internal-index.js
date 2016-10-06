@@ -14,10 +14,11 @@ const app = new Vue({
 
         pagination: {},
     },
+
     mixins: [search],
 
-    ready() {
-        this.getPagination();
+    mounted() {
+        this.$nextTick( () => this.getPagination() )
     },
 
     methods: {
@@ -30,6 +31,11 @@ const app = new Vue({
             this.category = category;
         },
 
+        setPagination(obj) {
+            this.pagination = obj;
+            this.closeResultDialog();
+        },
+
         getPagination(num = "") {
             var route = laroute.route('api.search.internal');
             this.$http.get(route, {
@@ -38,10 +44,10 @@ const app = new Vue({
                     category: this.category.category_no
                 }
             })
-                .then( response => {
-                    this.pagination = response.json();
-                    this.closeResultDialog();
-                }, () => this.getPagination(num));
+                .then(
+                    (response) => this.setPagination(response.json()),
+                    () => errorDialogMessage()
+                );
         },
 
         prev() {
@@ -64,10 +70,20 @@ const app = new Vue({
             var delete_route = laroute.route("internal.destroy", {internal: this.modalDeleteConfirmation.category.id});
 
             this.$http.delete(delete_route)
-                .then( () => {
-                    this.pagination.data.$remove(this.modalDeleteConfirmation.category);
-                    this.resetModalData();
-                }, this.removeSpec());
+                .then(
+                    () => this.delete(this.modalDeleteConfirmation.category),
+                    () => errorDialogMessage()
+                );
         },
-    }
+    },
+
+    delete(spec) {
+        var index = this.pagination.data.indexOf(spec);
+        this.pagination.data.splice(index, 1);
+        this.resetModalData();
+    },
+
+    errorDialogMessage() {
+        return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+    },
 });
