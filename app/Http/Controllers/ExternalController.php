@@ -20,7 +20,7 @@ class ExternalController extends Controller {
         $this->middleware("auth");
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
         $this->factory = new SpecificationFactory;
-        $this->categories = CustomerSpecCategory::customerList();
+        $this->categories = CustomerSpecCategory::getCategoryList();
     }
 
     /**
@@ -29,7 +29,10 @@ class ExternalController extends Controller {
     public function index() {
         \JavaScript::put('category', $first_category = $this->categories->first());
 
-        return view('external.index', [ "categories" => $this->categories ]);
+        return view('external.index', [
+            "categories" => $this->categories,
+            "show" => true
+        ]);
     }
 
     /**
@@ -37,7 +40,7 @@ class ExternalController extends Controller {
      */
     public function create() {
         return view('external.create', [
-            "categories" => $this->categories,
+            "category_lists" => $this->categories,
             "reviewers_list" => CustomerSpecRevision::uniqueReviewer()
         ]);
     }

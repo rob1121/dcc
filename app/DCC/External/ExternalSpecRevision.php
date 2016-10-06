@@ -22,7 +22,7 @@ class ExternalSpecRevision implements SpecificationGateway {
     }
 
     function persist() {
-        $this->spec->customerSpecRevision()->firstOrCreate($this->request->all());
+        $this->spec->customerSpecRevision()->firstOrCreate(CustomerSpecRevision::instance($this->request)->toArray());
         $this->factory->store(new ExternalSpecFile($this->request, $this->spec));
 
         return $this->spec;

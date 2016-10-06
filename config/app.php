@@ -184,7 +184,7 @@ return [
         TomLingham\Searchy\SearchyServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
-        Barryvdh\Queue\AsyncServiceProvider::class
+        App\Providers\ComposerServiceProvider::class
     ],
 
     /*

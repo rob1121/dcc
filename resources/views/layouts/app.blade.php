@@ -11,173 +11,102 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Styles -->
     <link rel="stylesheet" href="{{URL::to("/css/app.css")}}">
-    @stack("style")
+@stack("style")
 
-    <!-- Scripts -->
+<!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
-            'csrfToken' => csrf_token(),
+                'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-    <style type="text/css">
-        .clear-btn {
-            cursor:pointer;
-            float:right;
-            margin-top: -28px;
-            margin-right: 10px;
-        }
-
-        .search-output {
-            margin-bottom: 80px;
-        }
-
-        #app {
-            display: flex;
-        }
-        #app>#sidebar {
-            padding-left: 15px;
-            width: 20vw;
-        }
-        #app>.content {
-            padding: 50px;
-            width: 80vw;
-        }
-
-        #sidebar {
-            display: flex;
-            flex-direction: column;
-        }
-        .white-cover {
-            background: #fff;
-            opacity: 0.8;
-            padding:0;
-            top:0;
-            bottom:0;
-            width:100vw;
-            position: fixed;
-            z-index:5;
-            transform: translateX(60vw);
-            display: none;
-        }
-        .menu-link.sidebar-link {
-            display: none;
-        }
-
-        @media screen and (max-width: 770px) {
-
-            body {
-                overflow-x: hidden;
-            }
-
-        .active .menu-link {
-            display: block;
-        }
-
-            #app > #sidebar {
-                display: none;
-            }
-
-            #app .content {
-                width: 100vw;
-            }
-
-            .active #app {
-                width: 160vw;
-            }
-
-            .active #app > #sidebar {
-                display: flex;
-                width: 60vw;
-            }
-
-            .active #app > .content {
-                width: 100vw;
-            }
-
-            .active .nav {
-                transform: translateX(60vw);
-            }
-
-            .active .white-cover {
-                display: block;
-            }
-        }
-    </style>
 </head>
 <body>
 <div class="nav">
     @include("layouts.nav")
 </div>
 
-    <div id="app" v-cloak>
+<div id="app" v-cloak>
 
-            <div id="sidebar">
-            <h3 class=" menu-link sidebar-link">Menu:</h3>
-            <a class="menu-link sidebar-link btn-link" href="{{ route("internal.index") }}">Internal Specification
-                @if($count = newCompanySpecCount())
+    <div id="sidebar">
+        <h4 class="menu-title">Menu:</h4>
+
+        <a class="menu-link sidebar-link btn-link" href="{{ route("internal.index") }}">Internal Specification
+            @if($count = newCompanySpecCount())
+                <span class="label label-danger">{{$count}}</span>
+            @endif
+        </a>
+
+        @if(Auth::user())
+            <a class="menu-link sidebar-link btn-link" href="{{ route("external.index") }}">External Specification
+                @if($count = customerForSpecReviewCount())
                     <span class="label label-danger">{{$count}}</span>
                 @endif
             </a>
-            @if(Auth::user())
-                    <a class="menu-link sidebar-link btn-link" href="{{ route("external.index") }}">External Specification
-                        @if($count = customerForSpecReviewCount())
-                            <span class="label label-danger">{{$count}}</span>
-                        @endif
-                    </a>
-            @endif
-            <a class="menu-link sidebar-link btn-link" href="{{ route("iso.index") }}">ISO</a>
-        <br><br>
-        @if(isset($categories))
-                <form>
-                    <div class="form-group">
-                        <label for=""> Search:
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="&#128270;"
-                                   v-model="searchKeyword"
-                                   name="search-field"
-                                   id="search-field"
-                                   @keyup.enter="displaySearchResult"
-                            >
-                            <span class="clear-btn" v-if="searchKeyword" @click="clearSearchInput">&times;</span>
-                        </label>
-                        <button @click.prevent="displaySearchResult"
-                                class="btn btn-default btn-search"
-                                name="search-field-submit"
-                        >
-                            Search
-                        </button>
-                    </div>
-                </form>
-
-            <h3>Specification Category:</h3>
-                <a v-for="category in {{$categories}}"
-                   href="#"
-                   class="sidebar-link btn-link"
-                @click.prevent="getSpecByCategory(category)"
-                >
-                    @{{category.name}}
-                </a>
         @endif
-            </div>
-        <div class="white-cover"></div>
-        <div class="content" v-show="! showResultDialog">
-            @yield('content')
-        </div>
 
-        <div class="content search-output" v-show="showResultDialog">
-            @include("layouts.search_engine")
-        </div>
+        <a class="menu-link sidebar-link btn-link" href="{{ route("iso.index") }}">ISO</a>
+        @if (Auth::guest())
+
+            <a class="menu-link sidebar-link" href="{{ url('/login') }}">Login</a>
+
+        @else
+
+            @if(Auth::user()->is_admin)
+                <a class="menu-link sidebar-link" href="{{ url('/register') }}">Register new user</a>
+                <a class="menu-link sidebar-link" href="{{ url('/user-list') }}">User list</a>
+            @endif
+
+            <a class="menu-link sidebar-link" href="{{ url('/logout') }}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+            > Logout </a>
+
+            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                  style="display: none;">
+                {{ csrf_field() }}
+            </form>
+        @endif
+
+        <br><br>
+
+        @include("sidebar.sidebar", ["show" => isset($show)])
+        @if(isset($categories))
+            <h4>Specification Category:</h4>
+
+            <a v-for="category in {{$categories}}"
+               href="#"
+               class="sidebar-link"
+               @click.prevent="getSpecByCategory(category)"
+            >
+                @{{category.name}}
+            </a>
+        @endif
     </div>
 
-    @include('layouts.footer')
+    <div class="white-cover"></div>
+    <div class="content">
+        @if(isset($show))
+            <div v-show="! showResultDialog">
+                @yield('content')
+                @include("search.result", ["show" => isset($show)])
+            </div>
+            <div class="search-output" v-show="showResultDialog">
+                @include("layouts.search_engine", ["show" => isset($show)])
+            </div>
+        @else @yield('content')
+        @endif
+    </div>
+</div>
 
-    <!-- Scripts -->
-    {{-- <script src="/js/app.js"></script> --}}
-    @stack("script")
+@include('layouts.footer')
+
+@stack("script")
 <script>
-    $("button.navbar-toggle").click(function() { $("body").addClass("active"); });
-    $(".white-cover").click(function() { $("body").removeClass("active"); });
+    $("button.navbar-toggle").click(function () {
+        $("body").addClass("active");
+    });
+    $(".white-cover").click(function () {
+        $("body").removeClass("active");
+    });
 </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 require("./app");
+import search from "./mixins/search";
 
 const app = new Vue({
     el: "#app",
@@ -8,6 +9,8 @@ const app = new Vue({
 
         selectedIso: []
     },
+
+    mixins:[search],
 
     filters: {
         isoRoute(id) {
@@ -20,25 +23,11 @@ const app = new Vue({
     },
 
     methods: {
-        toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-
-        showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-
         setModalSpec(iso) {
             this.selectedIso = iso;
         },
 
-        errorDialogMessage: function () {
+        errorDialogMessage() {
             return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
         },
 

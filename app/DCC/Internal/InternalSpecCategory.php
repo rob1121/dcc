@@ -19,7 +19,7 @@ class InternalSpecCategory implements SpecificationGateway {
     }
 
     function persist() {
-        return $this->spec->companySpecCategory()->firstOrCreate($this->request->all());
+        return $this->spec->companySpecCategory()->firstOrCreate(CompanySpecCategory::instance($this->request)->toArray());
     }
 
     function update() {

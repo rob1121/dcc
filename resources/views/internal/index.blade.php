@@ -1,9 +1,6 @@
-
 @extends("layouts.app")
 
-@push("script")
-<script src="{{URL::to("/js/internal-index.js")}}"></script>
-@endpush
+@push("script") <script src="{{URL::to("/js/internal-index.js")}}"></script> @endpush
 
 @section("content")
     <div class="deck-collection">
@@ -56,27 +53,6 @@
         </div>
         <div v-if="! pagination.data | count" class="container">
             <h1 class="text-danger">No document specification found.</h1>
-        </div>
-    </div>
-
-    <div class="pagination-link">
-        <div class="pagination-nav">
-            <ul class="pagination pull-right" v-if="pagination.total > 1">
-                <!-- Previous Page Link -->
-                <li class="disabled" v-if="pagination.current_page === 1"><span><i
-                                class="fa fa-arrow-left"></i></span></li>
-                <li v-else><a href="#" @click.prevent="prev" rel="prev"><i class="fa fa-arrow-left"></i></a></li>
-
-                <!-- Next Page Link -->
-                <li v-if="pagination.current_page !== pagination.last_page">
-                    <a href="#" @click.prevent="next" rel="next"><i class="fa fa-arrow-right"></i></a>
-                </li>
-                <li class="disabled" v-else><span><i class="fa fa-arrow-right"></i></span></li>
-            </ul>
-        </div>
-        <div class="pagination-text pull-right">
-            <h6><span>Displaying @{{ pagination.from }} to @{{ pagination.to }} of @{{ pagination.total }}</span>
-            </h6>
         </div>
     </div>
 

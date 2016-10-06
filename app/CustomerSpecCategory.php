@@ -20,6 +20,10 @@ class CustomerSpecCategory extends Model
     }
 
     public static function getCategoryList() {
-        return collect(self::orderBy('customer_name')->get())->unique('customer_name');
+        return self::orderBy("customer_name")->get(["customer_name"])->unique("customer_name")
+            ->map(function($category) {
+                $category_name = \Str::upper($category->customer_name);
+                return collect($category)->put("name", $category_name);
+            });
     }
 }

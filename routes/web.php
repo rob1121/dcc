@@ -18,11 +18,11 @@ Route::get('/', function () {
 });
 
 //web.php
-Route::get("/", function() {
-    $user = User::first();
-    $spec = Companyspec::first();
-    $user->notify(new InternalSpecUpdateNotifier($spec));
-});
+// Route::get("/", function() {
+//     $user = User::first();
+//     $spec = Companyspec::first();
+//     $user->notify(new InternalSpecUpdateNotifier($spec));
+// });
 
 
 //    dispatch(new NotifyUserForSpecUpdate($spec));

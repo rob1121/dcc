@@ -13,17 +13,16 @@
     #sidebar
         padding-left: 15px
         width: 20vw
+        display: flex
+        flex-direction: column
+
     .content
         padding: 50px
         width: 80vw
 
-    #sidebar
-        display: flex
-        flex-direction: column
-
     .white-cover
         background: #fff
-        opacity: 0.8
+        opacity: 0.6
         padding: 0px
         top: 0
         bottom: 0
@@ -33,8 +32,23 @@
         transform: translateX(60vw)
         display: none
 
-    .menu-link.sidebar-link
+a.sidebar-link
+    text-decoration: none !important
+    color: $text-color
+    margin-bottom: 5px
+    color: darkred
+
+    &:hover
+        color: darken(darkred, 10%)
+
+    &.active
+        color: darken(darkred, 10%)
+
+    &.menu-link
         display: none
+
+.menu-title
+    display: none
 
 @media screen and (max-width: 770px)
 
@@ -42,15 +56,29 @@
         overflow-x: hidden
 
     #app
-        #sidebar
-            display: none
-
-    #app
         .content
             width: 100vw
 
-    &.active .menu-link
-        display: block
+        #sidebar
+            display: none
+            background: #252243
+            position: relative
+            bottom: 0
+            margin-top: -11.7vh
+            padding-top: 10vh
+            color: #fff
+
+            a
+                color: #fff
+
+            .clear-btn
+                color: $text-color
+
+
+    &.active
+        .menu-link,
+        .menu-title
+            display: block !important
 
     &.active #app
         width: 160vw
@@ -65,20 +93,13 @@
     &.active .nav
         transform: translateX(60vw)
 
-    .active .white-cover
-        display: block
+    &.active .white-cover
+        display: block !important
 
 
-.btn-link.sidebar-link
-    display: inline-block
-    text-decoration: none !important
-    word-wrap: break-word
-    color: $text-color
-    margin-bottom: 5px
-    color: darkred
+    a.sidebar-link
+        &:hover
+            color: rgba(255,255,255,0.6) !important
 
-    &:hover
-        color: darken(darkred, 5%)
-
-    &.active
-        color: darken(darkred, 5%) !important
+        &.active
+            color: rgba(255,255,255,0.6) !important

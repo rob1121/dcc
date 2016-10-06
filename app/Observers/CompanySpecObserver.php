@@ -17,7 +17,7 @@ class CompanySpecObserver
     /**
      * @param CompanySpec $spec
      */
-    public function saved(CompanySpec $spec)
+    public function updated(CompanySpec $spec)
     {
         flash("Database successfully updated!.","success");
         Mail::to('robinsonlegaspi@astigp.com')->send(new \App\Mail\MailUpdatedSpecs());

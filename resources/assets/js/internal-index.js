@@ -52,20 +52,6 @@ const app = new Vue({
             this.getPagination(this.pagination.current_page + 1);
         },
 
-        showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-
-        toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-
         setModalSpec(spec) {
             this.modalDeleteConfirmation.category = spec;
         },

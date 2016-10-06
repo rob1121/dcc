@@ -5,7 +5,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="col-xs-10">
 
         <ol class="breadcrumb">
             <li><a href="{{route("home")}}">Home</a></li>
@@ -84,7 +84,7 @@
                         <button type="button"
                                 class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
                                 data-toggle="modal"
-                                href="#spec-update"
+                                href="#spec-submit"
                         >
                             Save <i class="fa fa-fa-floppy-o"></i>
                         </button>

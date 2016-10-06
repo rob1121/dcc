@@ -16,7 +16,7 @@ class ExternalSpecCategory  implements SpecificationGateway {
     }
 
     function persist() {
-        return $this->spec->customerSpecCategory()->firstOrCreate($this->request->all());
+        return $this->spec->customerSpecCategory()->firstOrCreate(CustomerSpecCategory::instance($this->request)->toArray());
     }
 
     function update() {

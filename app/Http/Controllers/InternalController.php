@@ -27,14 +27,17 @@ class InternalController extends Controller {
     public function index() {
         \JavaScript::put('category', $this->categories->first());
 
-        return view('internal.index', [ "categories" => $this->categories ]);
+        return view('internal.index', [
+            "categories" => $this->categories,
+            "show" => true
+        ]);
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
-        return view('internal.create', [ "categories" => $this->categories ]);
+        return view('internal.create', [ "category_lists" => $this->categories ]);
     }
 
     /**

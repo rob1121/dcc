@@ -5,7 +5,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="col-xs-10">
 
         <ol class="breadcrumb">
             <li>
@@ -72,12 +72,6 @@
         </div>
     </div>
 
-    {{--=======================================MODALS=================================--}}
-    <dcc-modal title="Modal confirmation" id="spec-submit">
-        <h1>Are you sure you want to submit?</h1>
-        <div class="text-center">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="submitForm">Yes</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-        </div>
-    </dcc-modal>
+
+@include('modal.confirmation')
 @endsection

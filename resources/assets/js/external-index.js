@@ -1,4 +1,5 @@
 require("./app");
+import search from "./mixins/search";
 
 const app = new Vue({
 	el: "#app",
@@ -14,10 +15,10 @@ const app = new Vue({
             indexOfSpecForUpdate: null
 		},
 
-		currentIndex: 0,
-
-		pagination: [],
+        pagination: {}
 	},
+
+    mixins: [search],
 
 	ready() {
 		this.getPagination();
@@ -68,16 +69,14 @@ const app = new Vue({
         },
 
         getPagination(num = "") {
-            var loader = $(".loader");
-            loader.show();
-
             var pagination_url = laroute.route('api.search.external');
             this.$http.get(pagination_url, {
                 params: { page:num, category:this.category.customer_name }
             }).then(
-                response => { this.pagination = response.json(); loader.hide(); },
-                () => this.errorDialogMessage()
-            );
+                response => {
+                    this.pagination = response.json();
+                    this.closeResultDialog();
+                }, () => this.errorDialogMessage());
         },
 
         prev() {
@@ -86,20 +85,6 @@ const app = new Vue({
 
         next() {
             this.getPagination(this.pagination.current_page + 1);
-        },
-
-        showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-
-        toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
         },
 
         setModalSpec(spec,action) {

@@ -45346,7 +45346,7 @@ Vue.filter('internalRoute', vFilter.internalRoute);
 Vue.filter('externalRoute', vFilter.externalRoute);
 Vue.filter('isNewRevision', vFilter.isNewRevision);
 
-},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":18,"./mixins/filters":19}],11:[function(require,module,exports){
+},{"./bootstrap":11,"./components/Button.vue":12,"./components/Datepicker.vue":13,"./components/Input.vue":14,"./components/Modal.vue":15,"./components/PulseLoader.vue":16,"./components/Textarea.vue":17,"./laroute":19,"./mixins/filters":20}],11:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -45742,6 +45742,59 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+var _search = require("./mixins/search");
+
+var _search2 = _interopRequireDefault(_search);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require("./app");
+
+
+var app = new Vue({
+    el: "body",
+
+    data: {
+        isos: isos,
+
+        selectedIso: []
+    },
+
+    mixins: [_search2.default],
+
+    filters: {
+        isoRoute: function isoRoute(id) {
+            return laroute.route('iso.show', { iso: id });
+        },
+        routeEditLink: function routeEditLink(id) {
+            return laroute.route("iso.edit", { iso: id });
+        }
+    },
+
+    methods: {
+        setModalSpec: function setModalSpec(iso) {
+            this.selectedIso = iso;
+        },
+        errorDialogMessage: function errorDialogMessage() {
+            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+        },
+        removeIso: function removeIso() {
+            var _this = this;
+
+            var route_delete = laroute.route("iso.destroy", { iso: this.selectedIso.id });
+
+            this.$http.delete(route_delete).then(function () {
+                return _this.isos.$remove(_this.selectedIso);
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        }
+    }
+});
+
+},{"./app":10,"./mixins/search":21}],19:[function(require,module,exports){
+"use strict";
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -45925,7 +45978,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45977,65 +46030,61 @@ function count(obj) {
     return _.size(obj);
 }
 
-},{"moment":4}],20:[function(require,module,exports){
+},{"moment":4}],21:[function(require,module,exports){
 "use strict";
 
-require("./app");
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        isos: isos,
-
-        selectedIso: []
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            showResultDialog: false,
+            searchKeyword: "",
+            searchResults: []
+        };
     },
 
-    filters: {
-        isoRoute: function isoRoute(id) {
-            return laroute.route('iso.show', { iso: id });
-        },
-        routeEditLink: function routeEditLink(id) {
-            return laroute.route("iso.edit", { iso: id });
+
+    computed: {
+        isSearchResultNotEmpty: function isSearchResultNotEmpty() {
+            return this.searchResults.internal && this.searchResults.external;
         }
     },
 
     methods: {
-        toggleButton: function toggleButton() {
-            var btn = $('.toggler-btn');
-
-            btn.children('i').toggleClass("fa-bars");
-            btn.children('i').toggleClass("fa-remove");
-        },
-        showSideBar: function showSideBar() {
-            $('#sidebar').toggleClass("show-sidebar");
-            $('.main-content').toggleClass("compress-main-content");
-
-            this.toggleButton();
-        },
-        setModalSpec: function setModalSpec(iso) {
-            this.selectedIso = iso;
-        },
-
-
-        errorDialogMessage: function errorDialogMessage() {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
-        },
-
-        removeIso: function removeIso() {
+        displaySearchResult: function displaySearchResult() {
             var _this = this;
 
-            var route_delete = laroute.route("iso.destroy", { iso: this.selectedIso.id });
-
-            this.$http.delete(route_delete).then(function () {
-                return _this.isos.$remove(_this.selectedIso);
+            var search_route = laroute.route("search");
+            this.$http.get(search_route, {
+                params: { q: this.searchKeyword }
+            }).then(function (response) {
+                _this.searchResults = response.json();
+                _this.toggleSearchResult();
+                $("body").removeClass("active");
             }, function () {
                 return _this.errorDialogMessage();
             });
+        },
+        errorDialogMessage: function errorDialogMessage() {
+            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+        },
+        toggleSearchResult: function toggleSearchResult() {
+            this.showResultDialog = true;
+        },
+        closeResultDialog: function closeResultDialog() {
+            this.showResultDialog = false;
+            this.searchResults = [];
+            this.searchKeyword = "";
+            $("body").removeClass("active");
+        },
+        clearSearchInput: function clearSearchInput() {
+            this.closeResultDialog();
         }
     }
-});
+};
 
-},{"./app":10}]},{},[20]);
+},{}]},{},[18]);
 
 //# sourceMappingURL=iso-index.js.map

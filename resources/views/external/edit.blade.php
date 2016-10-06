@@ -5,7 +5,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="col-xs-10">
 
         <ol class="breadcrumb">
             <li>
@@ -27,7 +27,7 @@
                     {{ method_field('PATCH') }}
 
                     <input type="hidden" value="{{$spec->id}}" name="id">
-                    <div class="container-fluid">
+                    <div class="row-fluid">
 
                         <dcc-input name="customer_name"
                                    col="4"
@@ -85,7 +85,7 @@
                         <button type="button"
                                 class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
                                 data-toggle="modal"
-                                href="#spec-update"
+                                href="#spec-submit"
                         >
                             Save <i class="fa fa-floppy-o"></i>
                         </button>

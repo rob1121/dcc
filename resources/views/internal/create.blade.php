@@ -27,7 +27,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="col-xs-10">
 
         <ol class="breadcrumb">
             <li>
@@ -46,26 +46,29 @@
             <div class="panel-body">
                 <form action="{{route('internal.store')}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
-                    <div class="form-group col-sm-12 @if($errors->has("category_no") || $errors->has("category_name")) has-error @endif">
-                        <label class="control-label">Specification Category</label>
-                        <select name="category" id="category" class="form-control input-sm">
-                            <option value="" selected disabled> -- Select One -- </option>
+                    <div class="row">
 
-                            <option v-for="category in {{$categories}}"
-                                    :value="category.category_no"
-                                    :data-name="category.category_name"
-                                    :selected="'{{old("category")}}' == category.category_no"
-                            >
-                                @{{ category.category_no }} - @{{ category.category_name }}
-                            </option>
+                        <div class="form-group col-xs-12 @if($errors->has("category_no") || $errors->has("category_name")) has-error @endif">
+                            <label class="control-label">Specification Category</label>
+                            <select name="category" id="category" class="form-control input-sm">
+                                <option value="" selected disabled> -- Select One -- </option>
 
-                            <option value="add_category" :selected="'{{old("category")}}' === 'add_category'">
-                                -- Input new category --
-                            </option>
-                        </select>
+                                <option v-for="category in {{$category_lists}}"
+                                        :value="category.category_no"
+                                        :data-name="category.category_name"
+                                        :selected="'{{old("category")}}' == category.category_no"
+                                >
+                                    @{{ category.category_no }} - @{{ category.category_name }}
+                                </option>
+
+                                <option value="add_category" :selected="'{{old("category")}}' === 'add_category'">
+                                    -- Input new category --
+                                </option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="category-group hidden">
+                    <div class="category-group hidden row">
                             <dcc-input name="category_no"
                                        col="4"
                                        label="category no."
@@ -83,45 +86,76 @@
                             ></dcc-input>
                     </div>
 
-                    <dcc-input name="spec_no"
-                               col="3"
-                               label="spec no."
-                               error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
-                               value="{{old("spec_no")}}"
-                    ></dcc-input>
+                    <div class="row">
 
-                    <dcc-input name="name"
-                               col="9"
-                               label="title"
-                               error="{{$errors->has("name") ? $errors->first("name"):""}}"
-                               value="{{old("name")}}"
-                    ></dcc-input>
+                        <dcc-input name="spec_no"
+                                   col="3"
+                                   label="spec no."
+                                   error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
+                                   value="{{old("spec_no")}}"
+                        ></dcc-input>
 
-                    <dcc-input name="revision"
-                               col="2"
-                               error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
-                               value="{{old("revision")}}"
-                    ></dcc-input>
+                        <dcc-input name="name"
+                                   col="9"
+                                   label="title"
+                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                                   value="{{old("name")}}"
+                        ></dcc-input>
+                    </div>
 
-                    <dcc-datepicker name="revision_date"
-                                    col="2"
-                                    label="date"
-                                    error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                    value="{{old("revision_date")}}"
-                    ></dcc-datepicker>
+                    <div class="row">
+                        <dcc-input name="revision"
+                                   col="2"
+                                   error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
+                                   value="{{old("revision")}}"
+                        ></dcc-input>
 
-                    <dcc-input name="document"
-                               col="3"
-                               type="file"
-                               error="{{$errors->has("document") ? $errors->first("document"):""}}"
-                               value="{{old("document")}}"
-                    ></dcc-input>
+                        <dcc-datepicker name="revision_date"
+                                        col="3"
+                                        label="date"
+                                        error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
+                                        value="{{old("revision_date")}}"
+                        ></dcc-datepicker>
 
-                    <dcc-textarea name="revision_summary"
-                                  label="revision summary"
-                                  error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
-                                  value="{{old("revision_summary")}}"
-                    ></dcc-textarea>
+                        <dcc-input name="document"
+                                   col="5"
+                                   type="file"
+                                   error="{{$errors->has("document") ? $errors->first("document"):""}}"
+                                   value="{{old("document")}}"
+                        ></dcc-input>
+                    </div>
+                    <div class="radio col-xs-12 row form-group">
+                        <label class="control-label">
+                            <input type="radio"
+                                   value="true"
+                                   id="notify_all"
+                                   name="notify_all"
+                                   @if(old("notify_all") !== "false") checked @endif
+                            >
+                            Create and notify everyone for new internal specification
+                        </label>
+                    </div>
+                    <div class="radio col-xs-12 row form-group">
+                        <label class="control-label">
+                            <input type="radio"
+                                   name="notify_all"
+                                   id="notify_all"
+                                   value="false"
+                                   @if(old("notify_all") === "false") checked @endif
+                            >
+                            Skip email notification
+                        </label>
+                    </div>
+
+                    <div class="row">
+
+                        <dcc-textarea name="revision_summary"
+                                      label="revision summary"
+                                      error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
+                                      value="{{old("revision_summary")}}"
+                        ></dcc-textarea>
+                    </div>
+
                     <div class="col-md-12">
                         <button type="button"
                                 class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"

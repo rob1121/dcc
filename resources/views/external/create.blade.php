@@ -5,7 +5,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="col-xs-10">
 
         <ol class="breadcrumb">
             <li>
@@ -35,7 +35,7 @@
                         ></dcc-input>
 
                         <datalist id="external_customer">
-                            <option v-for="category in {{$categories}}" value="@{{ category.customer_name }}">
+                            <option v-for="category in {{$category_lists}}" value="@{{ category.customer_name }}">
                         </datalist>
 
                         <dcc-input name="revision"

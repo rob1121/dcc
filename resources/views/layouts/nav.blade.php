@@ -26,22 +26,26 @@
             <ul class="nav navbar-nav navbar-left">
                 <li class="{{route("internal.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("internal.index") }}">Internal Specification
-                        @if($count = newCompanySpecCount())
-                            <span class="label label-danger">{{$count}}</span>
+                        @if($nav['internal'])
+                            <span class="label label-danger">{{$nav['internal']}}</span>
                         @endif
                     </a>
                 </li>
                 @if(Auth::user())
                     <li class="{{route("external.index") === Request::url() ? "active" : ""}} nav-link">
                         <a href="{{ route("external.index") }}">External Specification
-                            @if($count = customerForSpecReviewCount())
-                                <span class="label label-danger">{{$count}}</span>
+                            @if($nav['external'])
+                                <span class="label label-danger">{{$nav['external']}}</span>
                             @endif
                         </a>
                     </li>
                 @endif
                 <li class="{{route("iso.index") === Request::url() ? "active" : ""}} nav-link">
-                    <a href="{{ route("iso.index") }}">ISO</a>
+                    <a href="{{ route("iso.index") }}">ISO
+                        @if($nav['iso'])
+                            <span class="label label-danger">{{$nav['iso']}}</span>
+                        @endif
+                    </a>
                 </li>
             </ul>
 

@@ -22,7 +22,7 @@ class InternalSpecRevision implements SpecificationGateway {
     }
 
     function persist() {
-        $this->spec->companySpecRevision()->firstOrCreate($this->request->all());
+        $this->spec->companySpecRevision()->firstOrCreate(CompanySpecRevision::instance($this->request)->toArray());
         $this->factory->store(new InternalSpecFile($this->request, $this->spec));
 
         return $this->spec;

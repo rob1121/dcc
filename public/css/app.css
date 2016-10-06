@@ -7976,19 +7976,15 @@ button.close {
 .navbar-header {
   font-family: "Raleway", sans-serif; }
 
-[v-cloak] {
+#app[v-cloak] {
   display: none; }
 
 body {
   background: #e4ecf2;
   overflow-y: scroll; }
 
-#app > .container {
-  padding-top: 64px; }
-
-.with-sidebar {
-  margin-top: 64px;
-  overflow-y: scroll; }
+.pagination {
+  margin: 0px; }
 
 .navbar {
   border-radius: 0; }
@@ -8063,19 +8059,18 @@ th {
   display: flex; }
   #app #sidebar {
     padding-left: 15px;
-    width: 20vw; }
-  #app .content {
-    padding: 50px;
-    width: 80vw; }
-  #app #sidebar {
+    width: 20vw;
     display: -webkit-box;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column; }
+  #app .content {
+    padding: 50px;
+    width: 80vw; }
   #app .white-cover {
     background: #fff;
-    opacity: 0.8;
+    opacity: 0.6;
     padding: 0px;
     top: 0;
     bottom: 0;
@@ -8085,18 +8080,42 @@ th {
     -webkit-transform: translateX(60vw);
     transform: translateX(60vw);
     display: none; }
-  #app .menu-link.sidebar-link {
+
+a.sidebar-link {
+  text-decoration: none !important;
+  color: #636b6f;
+  margin-bottom: 5px;
+  color: darkred; }
+  a.sidebar-link:hover {
+    color: #580000; }
+  a.sidebar-link.active {
+    color: #580000; }
+  a.sidebar-link.menu-link {
     display: none; }
+
+.menu-title {
+  display: none; }
 
 @media screen and (max-width: 770px) {
   body {
     overflow-x: hidden; }
-  #app #sidebar {
-    display: none; }
   #app .content {
     width: 100vw; }
-  .active .menu-link {
-    display: block; }
+  #app #sidebar {
+    display: none;
+    background: #252243;
+    position: relative;
+    bottom: 0;
+    margin-top: -11.7vh;
+    padding-top: 10vh;
+    color: #fff; }
+    #app #sidebar a {
+      color: #fff; }
+    #app #sidebar .clear-btn {
+      color: #636b6f; }
+  .active .menu-link,
+  .active .menu-title {
+    display: block !important; }
   .active #app {
     width: 160vw; }
   .active #app > #sidebar {
@@ -8109,19 +8128,11 @@ th {
     -webkit-transform: translateX(60vw);
     transform: translateX(60vw); }
   .active .white-cover {
-    display: block; } }
-
-.btn-link.sidebar-link {
-  display: inline-block;
-  text-decoration: none !important;
-  word-wrap: break-word;
-  color: #636b6f;
-  margin-bottom: 5px;
-  color: darkred; }
-  .btn-link.sidebar-link:hover {
-    color: #720000; }
-  .btn-link.sidebar-link.active {
-    color: #720000 !important; }
+    display: block !important; }
+  a.sidebar-link:hover {
+    color: rgba(255, 255, 255, 0.6) !important; }
+  a.sidebar-link.active {
+    color: rgba(255, 255, 255, 0.6) !important; } }
 
 .fade-enter {
   opacity: 0;
@@ -8173,9 +8184,6 @@ th {
     -webkit-transform: translateX(-10px);
     transform: translateX(-10px); } }
 
-.deck-collection {
-  padding-bottom: 64px; }
-
 .deck {
   margin-bottom: 5px;
   width: 100%;
@@ -8197,19 +8205,5 @@ th {
 
 .spec-no {
   font-weight: bold; }
-
-.pagination-link {
-  position: fixed;
-  bottom: 20px;
-  right: 20px; }
-  .pagination-link .pagination {
-    margin: 0; }
-  .pagination-link .pagination-text {
-    width: 150px;
-    text-align: right;
-    margin: 0; }
-    .pagination-link .pagination-text span {
-      background: rgba(255, 255, 255, 0.5);
-      margin: 0; }
 
 /*# sourceMappingURL=app.css.map */

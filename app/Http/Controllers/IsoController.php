@@ -22,7 +22,7 @@ class IsoController extends Controller {
      */
     public function index() {
         \JavaScript::put("isos", Iso::all());
-        return view("iso.index"); }
+        return view("iso.index", ["show" => true ]); }
 
     /**
      * @param Iso $iso
