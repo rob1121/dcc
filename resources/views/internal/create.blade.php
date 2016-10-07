@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push("script")
-    <script src="{{URL::to("/js/create.js")}}"></script>
+    <script src="{{URL::to("/js/form.js")}}"></script>
 
     <script>
         function toggleCategory(selected) {
@@ -27,7 +27,7 @@
 @endpush
 
 @section('content')
-    <div class="col-xs-10">
+    <div class="form">
 
         <ol class="breadcrumb">
             <li>
@@ -72,7 +72,6 @@
                             <dcc-input name="category_no"
                                        col="4"
                                        label="category no."
-                                       list="category_list"
                                        error="{{$errors->has("category_no") ? $errors->first("category_no"):""}}"
                                        value="{{old("category_no")}}"
                             ></dcc-input>
@@ -80,7 +79,6 @@
                             <dcc-input name="category_name"
                                        col="8"
                                        label="category name"
-                                       list="category_list_name"
                                        error="{{$errors->has("category_name") ? $errors->first("category_name"):""}}"
                                        value="{{old("category_name")}}"
                             ></dcc-input>
@@ -89,14 +87,14 @@
                     <div class="row">
 
                         <dcc-input name="spec_no"
-                                   col="3"
+                                   col="4"
                                    label="spec no."
                                    error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
                                    value="{{old("spec_no")}}"
                         ></dcc-input>
 
                         <dcc-input name="name"
-                                   col="9"
+                                   col="8"
                                    label="title"
                                    error="{{$errors->has("name") ? $errors->first("name"):""}}"
                                    value="{{old("name")}}"
@@ -118,7 +116,7 @@
                         ></dcc-datepicker>
 
                         <dcc-input name="document"
-                                   col="5"
+                                   col="7"
                                    type="file"
                                    error="{{$errors->has("document") ? $errors->first("document"):""}}"
                                    value="{{old("document")}}"
@@ -156,19 +154,21 @@
                         ></dcc-textarea>
                     </div>
 
-                    <div class="col-md-12">
-                        <button type="button"
-                                class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
-                                data-toggle="modal"
-                                href="#spec-submit"
-                        >
-                            Submit <i class="fa fa-paper-plane"></i>
-                        </button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button"
+                                    class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
+                                    data-toggle="modal"
+                                    href="#spec-submit"
+                            >
+                                Submit <i class="fa fa-paper-plane"></i>
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-@include('modal.confirmation');
+@include('modal.confirmation')
 @endsection

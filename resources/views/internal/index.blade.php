@@ -9,8 +9,8 @@
                 <a href="{{route("home")}}">Home</a>
             </li>
             <li class="active">Internal Specification</li>
-            <li class="active">@{{ category.category_no | uppercase }}
-                - @{{ category.category_name | uppercase }}</li>
+            <li class="active">@{{uppercase(category.category_no)}}
+                - @{{uppercase(category.category_name)}}</li>
         </ol>
         @if(Auth::user() && Auth::user()->is_admin)
             <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
@@ -21,28 +21,28 @@
 
         @include('errors.flash')
 
-        <div class="deck" v-for="spec in pagination.data" v-if="pagination.data | count">
+        <div class="deck" v-for="spec in pagination.data" v-if="pagination.data">
             <div class="spec-no col-xs-12 col-md-9">
-                <a class="show-action-link" target="_blank" href="@{{spec.id | internalRoute}}">
+                <a class="show-action-link" target="_blank" :href="internalRouteFor(spec.id)">
                     <h4>
-                        @{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}}
+                        @{{uppercase(spec.spec_no)}} - @{{uppercase(spec.name)}}
                         <span class="label label-success"
-                              v-if="spec.company_spec_revision.revision_date | isNewRevision"
+                              v-if="isNewRevision(spec.company_spec_revision.revision_date)"
                         >
                             new revision
                         </span>
                     </h4>
 
                 </a>
-                <h5 class="help-block">@{{spec.company_spec_revision.revision_summary  | capitalize}}</h5>
+                <h5 class="help-block">@{{capitalize(spec.company_spec_revision.revision_summary)}}</h5>
             </div>
             <div class="col-xs-12 col-md-3">
                 <h6>
-                    <strong>Revision: </strong>@{{spec.company_spec_revision.revision | uppercase}}
-                    <strong>Date: </strong>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}
+                    <strong>Revision: </strong>@{{uppercase(spec.company_spec_revision.revision)}}
+                    <strong>Date: </strong>@{{telfordStandardDate(spec.company_spec_revision.revision_date)}}
                 </h6>
                 @if(Auth::user() && Auth::user()->is_admin)
-                    <a id="update-btn" class="btn btn-xs btn-default" href="@{{spec.id | internalRoute}}/edit">
+                    <a id="update-btn" class="btn btn-xs btn-default" :href="internalEditRouteFor(spec.id)">
                         Update <i class="fa fa-edit"></i>
                     </a>
                     <button id="delete-btn" class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
@@ -51,7 +51,7 @@
                 @endif
             </div>
         </div>
-        <div v-if="! pagination.data | count" class="container">
+        <div v-if="! pagination.data" class="container">
             <h1 class="text-danger">No document specification found.</h1>
         </div>
     </div>
@@ -65,7 +65,7 @@
             Are you sure you want to permanently <strong class="text-danger">delete</strong>
             <br>
             "<strong class="text-danger">
-                @{{ modalDeleteConfirmation.category.spec_no | uppercase}} - @{{ modalDeleteConfirmation.category.name | uppercase}}
+                @{{uppercase(modalConfirmation.category.spec_no)}} - @{{uppercase(modalConfirmation.category.name)}}
             </strong>"?
         </h3>
 

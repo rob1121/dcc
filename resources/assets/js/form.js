@@ -1,7 +1,6 @@
-require("./app");
-
+require('./app');
 const app = new Vue({
-    el: "#app",
+    el: "#app   ",
 
     methods: {
         submitForm() {
