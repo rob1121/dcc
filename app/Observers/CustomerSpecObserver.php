@@ -17,12 +17,4 @@ class CustomerSpecObserver
         flash("Database successfully updated!.","success");
     }
 
-    /**
-     * Listen to the User deleted event.
-     */
-    public function deleted()
-    {
-        flash("Document successfully deleted to database!.","success");
-    }
-
 }

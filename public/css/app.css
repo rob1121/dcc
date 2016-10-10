@@ -8184,6 +8184,13 @@ a.sidebar-link {
     -webkit-transform: translateX(-10px);
     transform: translateX(-10px); } }
 
+.form {
+  width: 52vw; }
+
+@media screen and (max-width: 770px) {
+  .form {
+    width: 82vw; } }
+
 .deck {
   margin-bottom: 5px;
   width: 100%;

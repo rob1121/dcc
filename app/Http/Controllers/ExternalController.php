@@ -18,6 +18,7 @@ class ExternalController extends Controller {
     public function __construct()
     {
         $this->middleware("auth");
+        $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
         $this->factory = new SpecificationFactory;
         $this->categories = CustomerSpecCategory::getCategoryList();
@@ -77,7 +78,7 @@ class ExternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(CustomerSpec $external) {
-        return view("external.edit", [ "spec" => $external, "categories" => $this->categories ]);
+        return view("external.edit", [ "spec" => $external, "category_lists" => $this->categories ]);
     }
 
     /**

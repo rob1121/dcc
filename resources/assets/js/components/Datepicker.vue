@@ -110,12 +110,12 @@
 
 <template>
     <div :class="['form-group',{'has-error' : error }, 'col-sm-'+col]">
-        <label class="control-label">{{label ? label : name |capitalize}}</label>
+        <label class="control-label">{{capitalize(label ? label : name)}}</label>
         <input type="text"
                class="form-control input-sm"
+               autocomplete="off"
                :name="name"
                :id="name"
-               :style="styleObj"
                :readonly="readonly"
                :value="value"
                @click="show = !show"
@@ -144,8 +144,8 @@
                     <tbody>
                     <tr v-for="i in 6">
                         <td v-for="j in 7"
-                            :class="date[i * 7 + j] && date[i * 7 + j].status"
-                            :date="date[i * 7 + j] && date[i * 7 + j].date"
+                            :class="getStatus(i,j)"
+                            :date="getDate(i,j)"
                             @click="pickDate(i * 7 + j)">{{date[i * 7 + j] && date[i * 7 + j].text}}</td>
                     </tr>
                     </tbody>
@@ -156,6 +156,7 @@
 </template>
 
 <script>
+
     export default {
         props: {
             name:{default:""},
@@ -167,6 +168,7 @@
             value: { type: String, default: '' },
             format: { type: String, default: 'YYYY-MM-DD' }
         },
+
         data () {
             return {
                 show: false,
@@ -185,6 +187,19 @@
             }
         },
         methods: {
+
+        getStatus(i, j) {
+            return this.date[i * 7 + j] && this.date[i * 7 + j].status
+        },
+
+        getDate(i, j) {
+            return this.date[i * 7 + j] && this.date[i * 7 + j].data
+        },
+
+          capitalize(string) {
+              return _.capitalize(string);
+          },
+
             close () {
                 this.show = false;
             },

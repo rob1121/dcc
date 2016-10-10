@@ -12,7 +12,7 @@
         <li class="active">ISO Document</li>
     </ol>
 
-    @if(Auth::user() && Auth::user()->is_admin)
+    @if(Auth::user() && isAdmin())
         <a href="{{route("iso.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
             Add new ISO document<i class="fa fa-plus"></i>
         </a>
@@ -22,28 +22,28 @@
 
     @include('errors.flash')
 
-    <div class="deck" v-for="iso in isos" v-if="isos">
+    <div class="deck" v-for="iso in pagination" v-if="pagination">
         <div class="spec-no col-sm-12
-            @if(Auth::user() && Auth::user()->is_admin) col-md-9
+            @if(Auth::user() && isAdmin()) col-md-9
             @else col-md-12
             @endif
                 justify">
 
-            <a class="show-action-link" href="@{{iso.id | isoRoute}}" target="_blank" style="word-wrap: break-word">
-                <h4>@{{iso.spec_no | uppercase}} - @{{iso.name | uppercase}} </h4>
+            <a class="show-action-link" :href="showRouteFor(iso.id)" target="_blank" style="word-wrap: break-word">
+                <h4>@{{uppercase(iso.spec_no)}} - @{{uppercase(iso.name)}} </h4>
             </a>
             <h6 class="help-block">
-                <strong>Revision:   </strong> @{{iso.revision | uppercase}}
-                <strong>Date:       </strong> @{{iso.revision_date | telfordStandardDate}}
+                <strong>Revision:   </strong> @{{uppercase(iso.revision)}}
+                <strong>Date:       </strong> @{{telfordStandardDate(iso.revision_date)}}
             </h6>
         </div>
         @if(Auth::user())
             <div class="col-sm-12
-                            @if(Auth::user() && Auth::user()->is_admin) col-md-3 @endif
+                            @if(Auth::user() && isAdmin()) col-md-3 @endif
                         ">
 
-                @if(Auth::user()->is_admin)
-                    <a id="update-btn" class="btn btn-xs btn-default" href="@{{iso.id | routeEditLink }}">
+                @if(isAdmin())
+                    <a id="update-btn" class="btn btn-xs btn-default" :href="editRouteFor(iso.id)">
                         Update <i class="fa fa-edit"></i>
                     </a>
 
@@ -58,7 +58,7 @@
             </div>
         @endif
     </div>
-    <div v-if="! isos" class="container">
+    <div v-if="! pagination" class="container">
         <h1 class="text-danger">No document specification found.</h1>
     </div>
 </div>
@@ -72,7 +72,7 @@
         <h4>
             Are you sure you want to permanently <strong class="text-danger">delete</strong>
             "<strong class="text-danger">
-                @{{ selectedIso.spec_no | uppercase }} - @{{ selectedIso.name | uppercase }}
+                @{{uppercase(selectedIso.spec_no)}} - @{{uppercase(selectedIso.name)}}
             </strong>"?
         </h4>
         <button type="button"

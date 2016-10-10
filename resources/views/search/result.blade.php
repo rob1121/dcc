@@ -1,5 +1,5 @@
 @if($show)
-    <p class="col-sm-6" v-if="pagination"><span>Displaying @{{ pagination.from }} to @{{ pagination.to }}
+    <p class="col-sm-6" v-if="pagination.total"><span>Displaying @{{ pagination.from }} to @{{ pagination.to }}
             of @{{ pagination.total }}</span></p>
 
     <div class="col-sm-6" v-if="pagination">

@@ -10,10 +10,10 @@
         <ol class="breadcrumb">
             <li><a href="{{route("home")}}">Home</a></li>
             <li class="active">Internal Specification</li>
-            <li class="active">@{{ category.customer_name | uppercase }}</li>
+            <li class="active">@{{ uppercase(category.customer_name) }}</li>
         </ol>
 
-        @if(Auth::user() && Auth::user()->is_admin)
+        @if(Auth::user() && isAdmin())
             <a href="{{route("external.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
                 Add new external specification <i class="fa fa-plus"></i>
             </a>
@@ -22,32 +22,32 @@
 
         @include('errors.flash')
 
-        <div class="deck" v-for="spec in pagination.data" v-if="pagination.data | count">
+        <div class="deck" v-for="spec in pagination.data" v-if="pagination.data">
             <div class="spec-no col-sm-12
-                @if(Auth::user() && Auth::user()->is_admin)         col-md-7
-                @elseif(Auth::user()&& ! Auth::user()->is_admin)    col-md-8
+                @if(Auth::user() && isAdmin())         col-md-7
+                @elseif(Auth::user()&& ! isAdmin())    col-md-8
                 @else col-md-12
                 @endif
             justify">
 
-                <a class="show-action-link" href="@{{spec.id | externalRoute}}" target="_blank" style="word-wrap: break-word">
-                    <h4>@{{spec.spec_no | uppercase}} - @{{spec.name | uppercase}} </h4>
+                <a class="show-action-link" :href="externalRouteFor(spec.id)" target="_blank" style="word-wrap: break-word">
+                    <h4>@{{uppercase(spec.spec_no)}} - @{{uppercase(spec.name)}} </h4>
                 </a>
                 <h6>
                     <strong>Revision: </strong>
-                    <span class="label label-info">@{{spec.customer_spec_revision | latestRevision 'revision' | uppercase}}</span>
+                    <span class="label label-info">@{{uppercase( getLatestRevision(spec.customer_spec_revision, 'revision') )}}</span>
                     <strong>Date: </strong>
-                    <span class="label label-info">@{{spec.customer_spec_revision | latestRevision 'revision_date' | telfordStandardDate}}</span>
+                    <span class="label label-info">@{{telfordStandardDate( getLatestRevision( spec.customer_spec_revision, "revision_date" ) )}}</span>
                 </h6>
             </div>
             @if(Auth::user())
                 <div class="col-sm-12
-                    @if(Auth::user() && Auth::user()->is_admin)         col-md-5
-                    @elseif(Auth::user()&& ! Auth::user()->is_admin)    col-md-4
+                    @if(Auth::user() && isAdmin())         col-md-5
+                    @elseif(Auth::user()&& ! isAdmin())    col-md-4
                     @endif
                 ">
-                    @if(Auth::user()->is_admin)
-                        <a id="update-btn" class="btn btn-xs btn-default" href="@{{spec.id | routeEditLink }}">
+                    @if(isAdmin())
+                        <a id="update-btn" class="btn btn-xs btn-default" :href="externalEditRouteFor(spec.id)">
                             Update <i class="fa fa-edit"></i>
                         </a>
 
@@ -64,15 +64,15 @@
                             href="#spec-for-review"
                             title="Click here to view specification for review"
                             @click="setModalSpec(spec,'update')"
-                            v-if="spec.customer_spec_revision | filterBy 0 in 'is_reviewed' | count"
+                            v-if="getCustomerSpecsForReview(spec.customer_spec_revision ).length"
                     >
-                        <span class="badge">@{{ spec.customer_spec_revision | filterBy 0 in 'is_reviewed' | count }}</span>
+                        <span class="badge">@{{getCustomerSpecsForReview( spec.customer_spec_revision ).length}}</span>
                         pending for review <i class="fa fa-file-o"></i>
                     </a>
                 </div>
             @endif
         </div>
-        <div v-if="! pagination.data | count" class="container">
+        <div v-if="! pagination.data" class="container">
             <h1 class="text-danger">No document specification found.</h1>
         </div>
     </div>
@@ -92,7 +92,7 @@
                 <h4>
                     Are you sure you want to permanently <strong class="text-danger">delete</strong>
                     "<strong class="text-danger">
-                        @{{ modalConfirmation.category.spec_no | uppercase }} - @{{ modalConfirmation.category.name | uppercase }}
+                        @{{ uppercase(modalConfirmation.category.spec_no)}} - @{{ uppercase(modalConfirmation.category.name)}}
                     </strong>"?
             </h4>
             </div>
@@ -123,20 +123,20 @@
                size="lg"
                scroll="on"
     >
-            <div v-for="specRevision in modalConfirmation.category.customer_spec_revision | filterBy 0 in 'is_reviewed'">
-                <div class="col-xs-{{Auth::user()->is_admin ? 8 : 9 }} col-xs-offset-1">
+            <div v-for="specRevision in customerSpecForReview">
+                <div class="col-xs-{{isAdmin() ? 8 : 9 }} col-xs-offset-1">
 
-                    <a v-if="modalConfirmation.category" href="@{{ specRevision | documentLink }}" target="_blank">
-                        <h4>@{{ modalConfirmation.category.spec_no | uppercase}} @{{ modalConfirmation.category.name | uppercase}}</h4>
+                    <a v-if="modalConfirmation.category" :href="externalRouteFor(specRevision)" target="_blank">
+                        <h4>@{{ uppercase(modalConfirmation.category.spec_no)}} @{{ uppercase(modalConfirmation.category.name)}}</h4>
                     </a>
 
                     <span class="help-block">
-                        <strong>Revision: </strong>@{{ specRevision.revision | uppercase}}
-                        <strong>Date: </strong>@{{ specRevision.revision_date | telfordStandardDate}}
+                        <strong>Revision: </strong>@{{ uppercase(specRevision.revision)}}
+                        <strong>Date: </strong>@{{telfordStandardDate(specRevision.revision_date)}}
                     </span>
                 </div>
 
-                @if(Auth::user()->is_admin)
+                @if(isAdmin())
                     <div class="col-xs-1">
                         <button type="button"
                                 class="btn btn-xs btn-default"
@@ -152,7 +152,7 @@
             </div>
         <div class="clearfix"></div>
             <h1 class="text-center text-success"
-                v-if="modalConfirmation.category.customer_spec_revision | isHasForReview">
+                v-if="customerSpecForReview.length < 1">
                 No pending external specification for review.
             </h1>
         <div class="clearfix"></div>

@@ -1,34 +1,21 @@
 require("./app");
 import search from "./mixins/search";
+import filter from "./mixins/filterMethods";
 
 const app = new Vue({
     el: "#app",
 
     data: {
-        isos,
+        pagination: isos,
 
         selectedIso: []
     },
 
-    mixins:[search],
-
-    filters: {
-        isoRoute(id) {
-            return laroute.route('iso.show', {iso:id});
-        },
-
-        routeEditLink(id) {
-            return laroute.route("iso.edit", {iso:id});
-        }
-    },
+    mixins:[search, filter],
 
     methods: {
         setModalSpec(iso) {
             this.selectedIso = iso;
-        },
-
-        errorDialogMessage() {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
         },
 
         removeIso() {
@@ -42,8 +29,16 @@ const app = new Vue({
         },
 
         delete(iso) {
-            var index = this.isos.indexOf(iso);
-            this.isos.splice(index, 1);
+            var index = this.pagination.indexOf(iso);
+            this.pagination.splice(index, 1);
+        },
+
+        showRouteFor(id) {
+            return laroute.route('iso.show', {iso:id});
+        },
+
+        editRouteFor(id) {
+            return laroute.route("iso.edit", {iso:id});
         }
     }
 });

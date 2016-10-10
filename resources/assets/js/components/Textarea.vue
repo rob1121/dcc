@@ -1,6 +1,6 @@
 <template>
     <div :class="['form-group',{'has-error' : error }, 'col-sm-'+col]">
-        <label class="control-label">{{label ? label : name |capitalize}}</label>
+        <label class="control-label">{{label ? label : capitalize(name)}}</label>
         <textarea rows="5"
                   cols="30"
                   class="form-control"
@@ -20,6 +20,12 @@
             error:{default:""},
             label:{default:""},
             col:{default:"12"}
+        },
+
+        methods: {
+          capitalize(string) {
+              return _.capitalize(string);
+          },
         }
     }
 </script>

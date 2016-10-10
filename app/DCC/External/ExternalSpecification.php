@@ -10,9 +10,6 @@ class ExternalSpecification implements SpecificationGateway {
 
     private $spec;
     private $factory;
-    /**
-     * @var Request
-     */
     private $request;
 
     function __construct(Request $request, CustomerSpec $spec=null) {
@@ -24,7 +21,9 @@ class ExternalSpecification implements SpecificationGateway {
     function persist() {
         $this->spec = CustomerSpec::create(CustomerSpec::instance($this->request)->toArray());
         $this->factory->store(new ExternalSpecCategory($this->request, $this->spec));
-            $this->factory->store(new ExternalSpecRevision($this->request, $this->spec));
+        $this->factory->store(new ExternalSpecRevision($this->request, $this->spec));
+
+        $this->notifyUser("New External Spec");
 
         return $this->spec;
     }
@@ -34,5 +33,15 @@ class ExternalSpecification implements SpecificationGateway {
         $this->spec->update(CustomerSpec::instance($this->request)->toArray());
         $this->factory->update(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->update(new ExternalSpecRevision($this->request, $this->spec));
+
+        $this->notifyUser("External Spec Update");
+    }
+
+
+    protected function notifyUser($caption) {
+        $users = \App\User::whereUserType("REVIEWER")->orWhere("user_type","ADMIN")->get();
+
+        if ($this->request->send_notification)
+            \Notification::send($users, \App\Notifications\ExternalSpecUpdateNotifier($this->spec, $caption));
     }
 }

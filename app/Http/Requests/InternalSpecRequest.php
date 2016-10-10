@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class InternalSpecRequest extends FormRequest
 {
@@ -23,15 +24,16 @@ class InternalSpecRequest extends FormRequest
      */
     public function rules()
     {
+        $id = Request::input("id");
         return [
-            'name' => "required",
-            'spec_no' => "required",
-            'revision' => "required|min:2|max:5",
-            'revision_summary' => "required",
-            'document' => 'required|mimes:pdf',
-            'revision_date' => "required|date",
-            'category_no' => 'required',
-            'category_name' => 'required'
+            "name"              => "required|unique:company_specs,name,{$id}",
+            "spec_no"           => "required|unique:company_specs,spec_no,{$id}",
+            "revision"          => "required|min:2|max:5",
+            "revision_summary"  => "required",
+            "document"          => "required|mimes:pdf",
+            "revision_date"     => "required|date",
+            "category_no"       => "required",
+            "category_name"     => "required"
         ];
     }
 }

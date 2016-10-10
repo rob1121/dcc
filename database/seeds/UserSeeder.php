@@ -20,7 +20,8 @@ class UserSeeder extends Seeder
             "employee_id" => 801,
             "password" => bcrypt("admin"),
             "department" => "QA",
-            "is_admin" => 1
+            "user_type" => "ADMIN",
+            "email" => "robinsonlegaspi@astigp.com",
         ]);
 
         $factory->create([
@@ -28,7 +29,8 @@ class UserSeeder extends Seeder
             "employee_id" => 802,
             "password" => bcrypt("user"),
             "department" => "QA",
-            "is_admin" => 0
+            "user_type" => "REVIEWER",
+            "email" => "robinson.legaspi@yahoo.com"
         ]);
     }
 }

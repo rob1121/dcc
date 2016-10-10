@@ -13,7 +13,7 @@ class IsoController extends Controller {
     private $factory;
 
     public function __construct() {
-        $this->middleware("auth", ["only" => ["create","store","edit","update","destroy"]]);
+        $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
         $this->factory = new SpecificationFactory(); }
 

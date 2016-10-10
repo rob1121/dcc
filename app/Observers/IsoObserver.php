@@ -13,13 +13,4 @@ class IsoObserver
     {
         flash("Database successfully updated!.","success");
     }
-
-    /**
-     * Listen to the User deleting event.
-     */
-    public function deleted()
-    {
-        flash("Document successfully deleted to database!.","success");
-    }
-
 }

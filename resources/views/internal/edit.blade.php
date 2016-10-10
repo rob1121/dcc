@@ -22,6 +22,7 @@
                 <form action="{{route("internal.update",['internal' => $spec->id])}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     {{ method_field('PATCH') }}
+                    <input type="hidden" value="{{$spec->id}}" name="id">
 
                     <div class="row">
                         <dcc-input name="category_no"
@@ -78,8 +79,34 @@
                                    value="{{$errors->has("document") || old("document") ? old("document") :  $spec->document}}"
                         ></dcc-input>
                     </div>
-                    <div class="row">
 
+                    <div class="row">
+                        <div class="radio col-xs-12 form-group">
+                            <label class="control-label">
+                                <input type="radio"
+                                       value="true"
+                                       id="send_notification"
+                                       name="send_notification"
+                                       @if(old("send_notification") !== "false") checked @endif
+                                >
+                                Notify everyone for update of internal specification
+                            </label>
+                        </div>
+
+                        <div class="radio col-xs-12 form-group">
+                            <label class="control-label">
+                                <input type="radio"
+                                       name="send_notification"
+                                       id="send_notification"
+                                       value="false"
+                                       @if(old("send_notification") === "false") checked @endif
+                                >
+                                Skip email notification
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <dcc-textarea name="revision_summary"
                                       label="revision summary"
                                       error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
@@ -87,6 +114,7 @@
                                       ? old("revision_summary") :  $spec->companySpecRevision->revision_summary }}"
                         ></dcc-textarea>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button"

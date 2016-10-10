@@ -16,7 +16,7 @@ require('bootstrap-sass');
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = require('vue');
+window.Vue = require('vue/dist/vue.js');
 require('vue-resource');
 
 /**
@@ -43,5 +43,9 @@ Vue.http.interceptors.push((request, next) => {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+window.laroute = require('./laroute');
+window.moment = require("moment");
+
 
 

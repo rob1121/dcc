@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@push("script")
-    <script src="{{url("/js/create.js")}}"></script>
+@push('script')
+<script src="{{URL::to("/js/form.js")}}"></script>
 @endpush
 
 @section('content')
-    <div class="col-xs-10">
+    <div class="form">
 
         <ol class="breadcrumb">
             <li>
@@ -25,7 +25,7 @@
 
                 <form action="{{route('external.store')}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
-                    <div class="container-fluid">
+                    <div class="row">
                         <dcc-input name="customer_name"
                                    col="4"
                                    label="customer name"
@@ -35,7 +35,7 @@
                         ></dcc-input>
 
                         <datalist id="external_customer">
-                            <option v-for="category in {{$category_lists}}" value="@{{ category.customer_name }}">
+                            <option v-for="category in {{$category_lists}}" :value="category.customer_name">
                         </datalist>
 
                         <dcc-input name="revision"
@@ -52,7 +52,7 @@
                         ></dcc-datepicker>
                     </div>
 
-                    <div class="container-fluid">
+                    <div class="row">
                         <dcc-input name="spec_no"
                                    col="4"
                                    label="spec no."
@@ -66,7 +66,9 @@
                                    error="{{$errors->has("name") ? $errors->first("name"):""}}"
                                    value="{{old("name")}}"
                         ></dcc-input>
+                    </div>
 
+                    <div class="row">
                         <dcc-input name="reviewer"
                                    col="4"
                                    list="reviewer_list"
@@ -75,7 +77,7 @@
                         ></dcc-input>
 
                         <datalist id="reviewer_list" v-if="{{$reviewers_list}}">
-                            <option v-for="reviewer in {{$reviewers_list}}" value="@{{ reviewer }}">
+                            <option v-for="reviewer in {{$reviewers_list}}" :value="reviewer">
                         </datalist>
 
                         <datalist id="reviewer_list" v-else>
@@ -85,11 +87,14 @@
 
 
                         <dcc-input name="document"
-                                   col="4"
+                                   col="8"
                                    type="file"
                                    error="{{$errors->has("document") ? $errors->first("document"):""}}"
                                    value="{{old("document")}}"
                         ></dcc-input>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-12">
                             <button type="button"
                                     class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
@@ -105,12 +110,5 @@
         </div>
     </div>
 
-    {{--=======================================MODALS=================================--}}
-    <dcc-modal title="Modal confirmation" id="spec-submit">
-        <h1>Are you sure you want to submit?</h1>
-        <div class="text-center">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="submitForm">Yes</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-        </div>
-    </dcc-modal>
+@include('modal.confirmation')
 @endsection

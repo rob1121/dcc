@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @push('script')
-<script src="{{URL::to("/js/edit.js")}}"></script>
+<script src="{{URL::to("/js/form.js")}}"></script>
 @endpush
 
 @section('content')
-    <div class="col-xs-10">
+    <div class="form">
 
         <ol class="breadcrumb">
             <li>
@@ -25,9 +25,10 @@
                       enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     {{ method_field('PATCH') }}
+                    <input type="hidden" value="{{$spec->id}}" name="id">
 
                     <input type="hidden" value="{{$spec->id}}" name="id">
-                    <div class="row-fluid">
+                    <div class="row">
 
                         <dcc-input name="customer_name"
                                    col="4"
@@ -39,7 +40,7 @@
                         ></dcc-input>
 
                         <datalist id="external_customer">
-                            <option v-for="category in {{$categories}}" value="@{{ category.customer_name }}">
+                            <option v-for="category in {{$category_lists}}" :value="category.customer_name">
                         </datalist>
 
                         <dcc-input name="revision"
@@ -59,36 +60,41 @@
                                             : collect($spec->customerSpecRevision)->sortBy("revision")->last()->revision_date}}"
                         ></dcc-datepicker>
                     </div>
+                    <div class="row">
+                        <dcc-input name="spec_no"
+                                   col="4"
+                                   label="spec no."
+                                   error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
+                                   value="{{$errors->has("spec_no") || old("spec_no") ? old("spec_no") :  $spec->spec_no}}"
+                        ></dcc-input>
 
-                    <dcc-input name="spec_no"
-                               col="4"
-                               label="spec no."
-                               error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
-                               value="{{$errors->has("spec_no") || old("spec_no") ? old("spec_no") :  $spec->spec_no}}"
-                    ></dcc-input>
+                        <dcc-input name="name"
+                                   col="8"
+                                   label="title"
+                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                                   value="{{$errors->has("name") || old("name") ? old("name") :  $spec->name}}"
+                        ></dcc-input>
+                    </div>
+                    <div class="row">
 
-                    <dcc-input name="name"
-                               col="8"
-                               label="title"
-                               error="{{$errors->has("name") ? $errors->first("name"):""}}"
-                               value="{{$errors->has("name") || old("name") ? old("name") :  $spec->name}}"
-                    ></dcc-input>
+                        <dcc-input name="document"
+                                   col="8"
+                                   type="file"
+                                   error="{{$errors->has("document") ? $errors->first("document"):""}}"
+                                   value="{{$errors->has("document") || old("document") ? old("document") :  $spec->document}}"
+                        ></dcc-input>
+                    </div>
 
-                    <dcc-input name="document"
-                               col="4"
-                               type="file"
-                               error="{{$errors->has("document") ? $errors->first("document"):""}}"
-                               value="{{$errors->has("document") || old("document") ? old("document") :  $spec->document}}"
-                    ></dcc-input>
-
-                    <div class="col-md-12">
-                        <button type="button"
-                                class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
-                                data-toggle="modal"
-                                href="#spec-submit"
-                        >
-                            Save <i class="fa fa-floppy-o"></i>
-                        </button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button"
+                                    class="btn pull-right btn-{{$errors->any() ? "danger" : "primary"}}"
+                                    data-toggle="modal"
+                                    href="#spec-submit"
+                            >
+                                Save <i class="fa fa-floppy-o"></i>
+                            </button>
+                        </div>
                     </div>
 
                 </form>

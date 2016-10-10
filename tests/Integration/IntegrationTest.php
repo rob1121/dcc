@@ -44,8 +44,7 @@ class IntegrationTest extends TestCase
 
     /** @test */
     public function it_should_see_when_admin_user() {
-        $this->user = factory(App\User::class)->create(["is_admin" => 1]);
-
+        $this->user = factory(App\User::class)->create(["user_type" => "ADMIN"]);
         $this->loginUser();
         $this->visit("/internal");
         $this->seeElement("#update-btn");
@@ -55,7 +54,7 @@ class IntegrationTest extends TestCase
         $this->seeElement("#delete-btn");
         $this->seeElement("#for-review-btn");
     }
-    
+
     /** @test */
     public function it_can_see_external_specification_link() {
         $this->be($this->user);

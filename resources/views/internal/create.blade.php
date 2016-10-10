@@ -122,24 +122,26 @@
                                    value="{{old("document")}}"
                         ></dcc-input>
                     </div>
+
                     <div class="radio col-xs-12 row form-group">
                         <label class="control-label">
                             <input type="radio"
                                    value="true"
-                                   id="notify_all"
-                                   name="notify_all"
-                                   @if(old("notify_all") !== "false") checked @endif
+                                   id="send_notification"
+                                   name="send_notification"
+                                   @if(old("send_notification") !== "false") checked @endif
                             >
-                            Create and notify everyone for new internal specification
+                            Notify everyone for new internal specification
                         </label>
                     </div>
+
                     <div class="radio col-xs-12 row form-group">
                         <label class="control-label">
                             <input type="radio"
-                                   name="notify_all"
-                                   id="notify_all"
+                                   name="send_notification"
+                                   id="send_notification"
                                    value="false"
-                                   @if(old("notify_all") === "false") checked @endif
+                                   @if(old("send_notification") === "false") checked @endif
                             >
                             Skip email notification
                         </label>

@@ -51,6 +51,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'department' => 'required',
+            'user_type' => "required",
             'employee_id' => 'numeric|required|unique:users,employee_id',
             'is_admin' => "required|boolean",
             'password' => 'required|min:6|confirmed',

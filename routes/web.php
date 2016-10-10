@@ -3,7 +3,7 @@
 use App\CompanySpec;
 use App\Events\SomeEvent;
 use App\Jobs\NotifyUserForSpecUpdate;
-use App\Mail\MailUpdatedSpecs;
+use App\Mail\MailSpecNewUpdate;
 use App\Notifications\InternalSpecUpdateNotifier;
 use App\User;
 use Illuminate\Support\Facades\Mail;

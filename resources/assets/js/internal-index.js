@@ -1,5 +1,7 @@
 require('./app');
+import abstract from "./mixins/abstract";
 import search from "./mixins/search";
+import filter from "./mixins/filterMethods";
 
 const app = new Vue({
     el: "#app",
@@ -7,7 +9,7 @@ const app = new Vue({
     data: {
         category,
 
-        modalDeleteConfirmation: {
+        modalConfirmation: {
             category: {},
             index: -1
         },
@@ -15,75 +17,26 @@ const app = new Vue({
         pagination: {},
     },
 
-    mixins: [search],
-
-    mounted() {
-        this.$nextTick( () => this.getPagination() )
-    },
+    mixins: [abstract, search, filter],
 
     methods: {
-        getSpecByCategory(category) {
-            this.setSpecCategory(category);
-            this.getPagination();
-        },
-
-        setSpecCategory(category) {
-            this.category = category;
-        },
-
-        setPagination(obj) {
-            this.pagination = obj;
-            this.closeResultDialog();
-        },
-
         getPagination(num = "") {
-            var route = laroute.route('api.search.internal');
-            this.$http.get(route, {
-                params: {
-                    page: num,
-                    category: this.category.category_no
-                }
-            })
-                .then(
-                    (response) => this.setPagination(response.json()),
-                    () => errorDialogMessage()
-                );
-        },
-
-        prev() {
-            this.getPagination(this.pagination.current_page - 1);
-        },
-
-        next() {
-            this.getPagination(this.pagination.current_page + 1);
+            var pagination_url = laroute.route('api.search.internal');
+            this.fetchData(pagination_url, num, this.category.category_no);
         },
 
         setModalSpec(spec) {
-            this.modalDeleteConfirmation.category = spec;
-        },
-
-        resetModalData() {
-            this.setModalSpec({});
+            this.modalConfirmation.category = spec;
         },
 
         removeSpec() {
-            var delete_route = laroute.route("internal.destroy", {internal: this.modalDeleteConfirmation.category.id});
-
-            this.$http.delete(delete_route)
-                .then(
-                    () => this.delete(this.modalDeleteConfirmation.category),
-                    () => errorDialogMessage()
-                );
+            var delete_route = laroute.route("internal.destroy", {internal: this.modalConfirmation.category.id});
+            this.destroyData(delete_route);
         },
-    },
 
-    delete(spec) {
-        var index = this.pagination.data.indexOf(spec);
-        this.pagination.data.splice(index, 1);
-        this.resetModalData();
-    },
-
-    errorDialogMessage() {
-        return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+        isNewRevision(revision_date) {
+            var revision_date = moment(revision_date);
+            return revision_date > moment().subtract(7, "days");
+        },
     },
 });

@@ -12,7 +12,7 @@
             <li class="active">@{{uppercase(category.category_no)}}
                 - @{{uppercase(category.category_name)}}</li>
         </ol>
-        @if(Auth::user() && Auth::user()->is_admin)
+        @if(Auth::user() && isAdmin())
             <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
                 Add new internal specification <i class="fa fa-plus"></i>
             </a>
@@ -41,7 +41,7 @@
                     <strong>Revision: </strong>@{{uppercase(spec.company_spec_revision.revision)}}
                     <strong>Date: </strong>@{{telfordStandardDate(spec.company_spec_revision.revision_date)}}
                 </h6>
-                @if(Auth::user() && Auth::user()->is_admin)
+                @if(Auth::user() && isAdmin())
                     <a id="update-btn" class="btn btn-xs btn-default" :href="internalEditRouteFor(spec.id)">
                         Update <i class="fa fa-edit"></i>
                     </a>

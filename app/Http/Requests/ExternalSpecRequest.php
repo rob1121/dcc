@@ -24,15 +24,17 @@ class ExternalSpecRequest extends FormRequest
      */
     public function rules()
     {
+        $id = Request::input("id");
         $rules_for_spec_revision_update = [
-            'name' => "required",
-            'spec_no' => "required",
+            'name' => "required|unique:customer_specs,name,{$id}",
+            'spec_no' => "required|unique:customer_specs,spec_no,{$id}",
             'revision' => "required|min:2|max:5",
             'document' => 'required|mimes:pdf',
             'revision_date' => "required|date",
             'reviewer' => Request::input("_method") ? "" : "required",
             'customer_name' => 'required',
         ];
+
         $rules_for_spec_status_update = [
             "is_reviewed" => "required|boolean",
             'revision' => "required|min:2|max:5",

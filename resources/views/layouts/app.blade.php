@@ -63,14 +63,14 @@
 
         @else
 
-            @if(Auth::user()->is_admin)
+            @if(isAdmin())
                 <a class="menu-link sidebar-link" href="{{ url('/register') }}">Register new user</a>
                 <a class="menu-link sidebar-link" href="{{ url('/user-list') }}">User list</a>
             @endif
 
             <a class="menu-link sidebar-link" href="{{ url('/logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-            > Logout </a>
+            > Logout</a>
 
             <form id="logout-form" action="{{ url('/logout') }}" method="POST"
                   style="display: none;">
@@ -112,6 +112,7 @@
 @include('layouts.footer')
 
 @stack("script")
+
 <script>
     $("button.navbar-toggle").click(function () {
         $("body").addClass("active");

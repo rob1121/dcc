@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @push('script')
-    <script src="{{URL::to("js/login.js")}}"></script>
+    <script src="{{URL::to("js/form.js")}}"></script>
 @endpush
 
 @section('content')
-    <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}} col-xs-8">
+    <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}} form">
         <div class="panel-heading">Login</div>
         <div class="panel-body">
             <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">

@@ -15,7 +15,8 @@ class InternalController extends Controller {
     private $categories;
 
     public function __construct() {
-        $this->middleware("auth", ["only" => ["create","store","edit","update","destroy"]]);
+        $this->middleware("auth", ["except" => ["index","show"]]);
+        $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
         $this->factory = new SpecificationFactory;
         $this->categories = CompanySpecCategory::getCategoryList();
@@ -49,6 +50,7 @@ class InternalController extends Controller {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
             $this->factory->store(new InternalSpecification($request));
+
             return redirect(route("internal.index"));
         } catch(DuplicateEntryException $e) {
             flash("document already exist!.","danger");
@@ -71,7 +73,7 @@ class InternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(CompanySpec $internal) {
-        return view('internal.edit', ['spec' => $internal, "categories" => $this->categories ]);
+        return view('internal.edit', ['spec' => $internal]);
     }
 
     /**
@@ -81,7 +83,7 @@ class InternalController extends Controller {
      */
     public function update(InternalSpecRequest $request, CompanySpec $internal) {
         $this->factory->update(new InternalSpecification($request, $internal));
-        return redirect(route("internal.index"));
+        return redirect()->route("internal.index");
     }
 
     /**

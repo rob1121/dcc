@@ -1,5 +1,5 @@
 require("./app");
-import search from "./mixins/search";
+import abstract from "./mixins/abstract";
 
 const app = new Vue({
 	el: "#app",
@@ -18,11 +18,7 @@ const app = new Vue({
         pagination: {}
 	},
 
-    mixins: [search],
-
-	mounted() {
-		this.$nextTick( () => this.getPagination() )
-	},
+    mixins: [abstract],
 
     filters: {
 	    filterReduceMap(customer) {
@@ -35,60 +31,35 @@ const app = new Vue({
                return total;
             },0);
         },
+    },
 
-        documentLink(specRevision) {
-            return laroute.route('external.show', {external:specRevision.customer_spec_id,revision:specRevision.revision});
-        },
-
-        routeEditLink(id) {
-            return laroute.route("external.edit", {external:id});
-        },
-
-        isHasForReview(collection) {
-
-            for(var x in collection)
-                if(collection[x].is_reviewed === 0) return false;
-
-            return true;
+    computed: {
+        customerSpecForReview() {
+            return this.getCustomerSpecsForReview(
+                this.modalConfirmation.category.customer_spec_revision
+            );
         }
     },
 
     methods: {
-        getSpecByCategory(category, index) {
-            this.setSpecCategory(category);
-            this.getPagination();
-            this.setActiveMenu(index);
+
+        externalRouteFor(specRevision) {
+            return laroute.route('external.show', {external:specRevision.customer_spec_id,revision:specRevision.revision});
         },
 
-        setSpecCategory(category) {
-            this.category = category;
+        getCustomerSpecsForReview(specs) {
+            return _.filter(specs, spec => {
+                return spec.is_reviewed;
+            });
         },
 
-        setActiveMenu(index) {
-            this.currentIndex = index;
+        getCustomerSpecsForReviewCount(specs) {
+            return _.size( this.getCustomerSpecsForReview(specs) );
         },
 
         getPagination(num = "") {
             var pagination_url = laroute.route('api.search.external');
-            this.$http.get(pagination_url, {
-                params: { page:num, category:this.category.customer_name }
-            }).then(
-                (response) => this.setPagination(response.json()),
-                () => this.errorDialogMessage()
-            );
-        },
-
-        setPagination(obj) {
-            this.pagination = obj;
-            this.closeResultDialog();
-        },
-
-        prev() {
-            this.getPagination(this.pagination.current_page - 1);
-        },
-
-        next() {
-            this.getPagination(this.pagination.current_page + 1);
+            this.fetchData(pagination_url, num, this.category.customer_name);
         },
 
         setModalSpec(spec,action) {
@@ -106,10 +77,6 @@ const app = new Vue({
             this.indexOfSpecForUpdate = specRevision;
         },
 
-        errorDialogMessage: function () {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
-        },
-
         updateSpecStatus() {
             var update_status = laroute.route("external.revision.update", {external:this.modalConfirmation.category.id});
 
@@ -122,17 +89,7 @@ const app = new Vue({
 
         removeSpec() {
             var route_delete = laroute.route("external.destroy", {external:this.modalConfirmation.category.id});
-
-            this.$http.delete(route_delete)
-                .then(
-                    () => this.delete(this.pagination.data, this.modalConfirmation.category),
-                    () => this.errorDialogMessage()
-                );
+            this.destroyData(route_delete);
         },
-
-        delete(collection, spec) {
-            var index = collection.indexOf(spec);
-            collection.splice(index, 1)
-        }
     }
 });

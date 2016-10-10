@@ -2,24 +2,26 @@
 
 namespace App\Mail;
 
+use App\CompanySpec;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MailUpdatedSpecs extends Mailable implements ShouldQueue
+class MailSpecNewUpdate extends Mailable implements ShouldQueue
 {
-    use InteractsWithQueue, SerializesModels;
+    use Queueable, SerializesModels;
     public $system = "DCC System";
+    private $spec;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param CompanySpec $spec
      */
-    public function __construct()
+    public function __construct(CompanySpec $spec)
     {
-        //
+        $this->spec = $spec;
     }
 
     /**
