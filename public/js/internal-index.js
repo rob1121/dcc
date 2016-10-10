@@ -48172,6 +48172,535 @@ exports.insert = function (css) {
 }
 
 },{}],11:[function(require,module,exports){
+/**
+ * vuex v2.0.0
+ * (c) 2016 Evan You
+ * @license MIT
+ */
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.Vuex = factory());
+}(this, (function () { 'use strict';
+
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook
+
+  devtoolHook.emit('vuex:init', store)
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState)
+  })
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state)
+  })
+}
+
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0])
+
+  if (version >= 2) {
+    var usesInit = Vue.config._lifecycleHooks.indexOf('init') > -1
+    Vue.mixin(usesInit ? { init: vuexInit } : { beforeCreate: vuexInit })
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit
+      _init.call(this, options)
+    }
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options
+    // store injection
+    if (options.store) {
+      this.$store = options.store
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store
+    }
+  }
+}
+
+function mapState (states) {
+  var res = {}
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      return typeof val === 'function'
+        ? val.call(this, this.$store.state, this.$store.getters)
+        : this.$store.state[val]
+    }
+  })
+  return res
+}
+
+function mapMutations (mutations) {
+  var res = {}
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      return this.$store.commit.apply(this.$store, [val].concat(args))
+    }
+  })
+  return res
+}
+
+function mapGetters (getters) {
+  var res = {}
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedGetter () {
+      if (!(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val))
+      }
+      return this.$store.getters[val]
+    }
+  })
+  return res
+}
+
+function mapActions (actions) {
+  var res = {}
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      return this.$store.dispatch.apply(this.$store, [val].concat(args))
+    }
+  })
+  return res
+}
+
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+var Vue // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  assert(Vue, "must call Vue.use(Vuex) before creating a store instance.")
+  assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.")
+
+  var state = options.state; if ( state === void 0 ) state = {};
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._options = options
+  this._committing = false
+  this._actions = Object.create(null)
+  this._mutations = Object.create(null)
+  this._wrappedGetters = Object.create(null)
+  this._runtimeModules = Object.create(null)
+  this._subscribers = []
+  this._watcherVM = new Vue()
+
+    // bind commit and dispatch to self
+  var store = this
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+    }
+    this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  }
+
+  // strict mode
+  this.strict = strict
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], options)
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state)
+
+  // apply plugins
+  plugins.concat(devtoolPlugin).forEach(function (plugin) { return plugin(this$1); })
+};
+
+var prototypeAccessors = { state: {} };
+
+prototypeAccessors.state.get = function () {
+  return this._vm.state
+};
+
+prototypeAccessors.state.set = function (v) {
+  assert(false, "Use store.replaceState() to explicit replace store state.")
+};
+
+Store.prototype.commit = function commit (type, payload, options) {
+    var this$1 = this;
+
+  // check object-style commit
+  if (isObject(type) && type.type) {
+    options = payload
+    payload = type
+    type = type.type
+  }
+  var mutation = { type: type, payload: payload }
+  var entry = this._mutations[type]
+  if (!entry) {
+    console.error(("[vuex] unknown mutation type: " + type))
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload)
+    })
+  })
+  if (!options || !options.silent) {
+    this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); })
+  }
+};
+
+Store.prototype.dispatch = function dispatch (type, payload) {
+  // check object-style dispatch
+  if (isObject(type) && type.type) {
+    payload = type
+    type = type.type
+  }
+  var entry = this._actions[type]
+  if (!entry) {
+    console.error(("[vuex] unknown action type: " + type))
+    return
+  }
+  return entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload)
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  var subs = this._subscribers
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn)
+  }
+  return function () {
+    var i = subs.indexOf(fn)
+    if (i > -1) {
+      subs.splice(i, 1)
+    }
+  }
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  assert(typeof getter === 'function', "store.watch only accepts a function.")
+  return this._watcherVM.$watch(function () { return getter(this$1.state); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm.state = state
+  })
+};
+
+Store.prototype.registerModule = function registerModule (path, module) {
+  if (typeof path === 'string') { path = [path] }
+  assert(Array.isArray(path), "module path must be a string or an Array.")
+  this._runtimeModules[path.join('.')] = module
+  installModule(this, this.state, path, module)
+  // reset store to update getters...
+  resetStoreVM(this, this.state)
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path] }
+  assert(Array.isArray(path), "module path must be a string or an Array.")
+    delete this._runtimeModules[path.join('.')]
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1))
+    Vue.delete(parentState, path[path.length - 1])
+  })
+  resetStore(this)
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  updateModule(this._options, newOptions)
+  resetStore(this)
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing
+  this._committing = true
+  fn()
+  this._committing = committing
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors );
+
+function updateModule (targetModule, newModule) {
+  if (newModule.actions) {
+    targetModule.actions = newModule.actions
+  }
+  if (newModule.mutations) {
+    targetModule.mutations = newModule.mutations
+  }
+  if (newModule.getters) {
+    targetModule.getters = newModule.getters
+  }
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!(targetModule.modules && targetModule.modules[key])) {
+        console.warn(
+          "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+          'manual reload is needed'
+        )
+        return
+      }
+      updateModule(targetModule.modules[key], newModule.modules[key])
+    }
+  }
+}
+
+function resetStore (store) {
+  store._actions = Object.create(null)
+  store._mutations = Object.create(null)
+  store._wrappedGetters = Object.create(null)
+  var state = store.state
+  // init root module
+  installModule(store, state, [], store._options, true)
+  // init all runtime modules
+  Object.keys(store._runtimeModules).forEach(function (key) {
+    installModule(store, state, key.split('.'), store._runtimeModules[key], true)
+  })
+  // reset vm
+  resetStoreVM(store, state)
+}
+
+function resetStoreVM (store, state) {
+  var oldVm = store._vm
+
+  // bind store public getters
+  store.getters = {}
+  var wrappedGetters = store._wrappedGetters
+  var computed = {}
+  Object.keys(wrappedGetters).forEach(function (key) {
+    var fn = wrappedGetters[key]
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = function () { return fn(store); }
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; }
+    })
+  })
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent
+  Vue.config.silent = true
+  store._vm = new Vue({
+    data: { state: state },
+    computed: computed
+  })
+  Vue.config.silent = silent
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store)
+  }
+
+  if (oldVm) {
+    // dispatch changes in all subscribed watchers
+    // to force getter re-evaluation.
+    store._withCommit(function () {
+      oldVm.state = null
+    })
+    Vue.nextTick(function () { return oldVm.$destroy(); })
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length
+  var state = module.state;
+  var actions = module.actions;
+  var mutations = module.mutations;
+  var getters = module.getters;
+  var modules = module.modules;
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1))
+    var moduleName = path[path.length - 1]
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, state || {})
+    })
+  }
+
+  if (mutations) {
+    Object.keys(mutations).forEach(function (key) {
+      registerMutation(store, key, mutations[key], path)
+    })
+  }
+
+  if (actions) {
+    Object.keys(actions).forEach(function (key) {
+      registerAction(store, key, actions[key], path)
+    })
+  }
+
+  if (getters) {
+    wrapGetters(store, getters, path)
+  }
+
+  if (modules) {
+    Object.keys(modules).forEach(function (key) {
+      installModule(store, rootState, path.concat(key), modules[key], hot)
+    })
+  }
+}
+
+function registerMutation (store, type, handler, path) {
+  if ( path === void 0 ) path = [];
+
+  var entry = store._mutations[type] || (store._mutations[type] = [])
+  entry.push(function wrappedMutationHandler (payload) {
+    handler(getNestedState(store.state, path), payload)
+  })
+}
+
+function registerAction (store, type, handler, path) {
+  if ( path === void 0 ) path = [];
+
+  var entry = store._actions[type] || (store._actions[type] = [])
+  var dispatch = store.dispatch;
+  var commit = store.commit;
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler({
+      dispatch: dispatch,
+      commit: commit,
+      getters: store.getters,
+      state: getNestedState(store.state, path),
+      rootState: store.state
+    }, payload, cb)
+    if (!isPromise(res)) {
+      res = Promise.resolve(res)
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err)
+        throw err
+      })
+    } else {
+      return res
+    }
+  })
+}
+
+function wrapGetters (store, moduleGetters, modulePath) {
+  Object.keys(moduleGetters).forEach(function (getterKey) {
+    var rawGetter = moduleGetters[getterKey]
+    if (store._wrappedGetters[getterKey]) {
+      console.error(("[vuex] duplicate getter key: " + getterKey))
+      return
+    }
+    store._wrappedGetters[getterKey] = function wrappedGetter (store) {
+      return rawGetter(
+        getNestedState(store.state, modulePath), // local state
+        store.getters, // getters
+        store.state // root state
+      )
+    }
+  })
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch('state', function () {
+    assert(store._committing, "Do not mutate vuex store state outside mutation handlers.")
+  }, { deep: true, sync: true })
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function install (_Vue) {
+  if (Vue) {
+    console.error(
+      '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+    )
+    return
+  }
+  Vue = _Vue
+  applyMixin(Vue)
+}
+
+// auto install in dist mode
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue)
+}
+
+var index = {
+  Store: Store,
+  install: install,
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions
+}
+
+return index;
+
+})));
+},{}],12:[function(require,module,exports){
 'use strict';
 
 require('./bootstrap');
@@ -48182,7 +48711,7 @@ Vue.component('dcc-button', require('./components/Button.vue'));
 Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 Vue.component('dcc-modal', require('./components/Modal.vue'));
 
-},{"./bootstrap":12,"./components/Button.vue":13,"./components/Datepicker.vue":14,"./components/Input.vue":15,"./components/Modal.vue":16,"./components/Textarea.vue":17}],12:[function(require,module,exports){
+},{"./bootstrap":13,"./components/Button.vue":14,"./components/Datepicker.vue":15,"./components/Input.vue":16,"./components/Modal.vue":17,"./components/Textarea.vue":18}],13:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -48233,7 +48762,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":21,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48258,7 +48787,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7ef4b48f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],14:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],15:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.datetime-picker[_v-6d9fcb99] {\n    position: relative;\n    display: inline-block;\n    font-family: \"Segoe UI\",\"Lucida Grande\",Helvetica,Arial,\"Microsoft YaHei\";\n    -webkit-font-smoothing: antialiased;\n    color: #333;\n}\n\n.datetime-picker *[_v-6d9fcb99] {\n    box-sizing: border-box;\n}\n\n.datetime-picker input[_v-6d9fcb99] {\n    width: 100%;\n    padding: 5px 10px;\n    height: 30px;\n    outline: 0 none;\n    border: 1px solid #ccc;\n    font-size: 13px;\n}\n\n.datetime-picker .picker-wrap[_v-6d9fcb99] {\n    position: absolute;\n    z-index: 1000;\n    width: 238px;\n    height: 280px;\n    margin-top: 2px;\n    background-color: #fff;\n    box-shadow: 0 0 6px #ccc;\n}\n\n.datetime-picker table[_v-6d9fcb99] {\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n    text-align: center;\n    font-size: 13px;\n}\n\n.datetime-picker tr[_v-6d9fcb99] {\n    height: 34px;\n    border: 0 none;\n}\n\n.datetime-picker th[_v-6d9fcb99], .datetime-picker td[_v-6d9fcb99] {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    width: 34px;\n    height: 34px;\n    padding: 0;\n    border: 0 none;\n    line-height: 34px;\n    text-align: center;\n}\n\n.datetime-picker td[_v-6d9fcb99] {\n    cursor: pointer;\n}\n\n.datetime-picker td[_v-6d9fcb99]:hover {\n    background-color: #f0f0f0;\n}\n\n.datetime-picker td.date-pass[_v-6d9fcb99], .datetime-picker td.date-future[_v-6d9fcb99] {\n    color: #aaa;\n}\n\n.datetime-picker td.date-active[_v-6d9fcb99] {\n    background-color: #ececec;\n    color: #3bb4f2;\n}\n\n.datetime-picker .date-head[_v-6d9fcb99] {\n    background-color: #3bb4f2;\n    text-align: center;\n    color: #fff;\n    font-size: 14px;\n}\n\n.datetime-picker .date-days[_v-6d9fcb99] {\n    color: #3bb4f2;\n    font-size: 14px;\n}\n\n.datetime-picker .show-year[_v-6d9fcb99] {\n    display: inline-block;\n    min-width: 62px;\n    vertical-align: middle;\n}\n\n.datetime-picker .show-month[_v-6d9fcb99] {\n    display: inline-block;\n    min-width: 28px;\n    vertical-align: middle;\n}\n\n.datetime-picker .btn-prev[_v-6d9fcb99],\n.datetime-picker .btn-next[_v-6d9fcb99] {\n    cursor: pointer;\n    display: inline-block;\n    padding: 0 10px;\n    vertical-align: middle;\n}\n\n.datetime-picker .btn-prev[_v-6d9fcb99]:hover,\n.datetime-picker .btn-next[_v-6d9fcb99]:hover {\n    background: rgba(16, 160, 234, 0.5);\n}\n")
 "use strict";
@@ -48409,7 +48938,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"of\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"off\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -48424,7 +48953,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6d9fcb99", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],15:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48460,7 +48989,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78277606", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],16:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],17:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.close {\n    font-size: 3em;\n}\n\n.modal {\n    overflow-y: auto;\n}\n\n.modal-scroll {\n    height: 80vh;\n    overflow-y: auto;\n}\n")
 "use strict";
@@ -48494,7 +49023,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-40fa8340", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],17:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48528,64 +49057,49 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-23cd2357", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],19:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var getData = exports.getData = function getData(store, url, num, category) {
+
+    this.$http.get(url, { params: { page: num, category: category } }).then(function (response) {
+        var dispatch = store.dispatch;
+        dispatch('GET_DATA', response.json());
+    }).catch(function (response) {
+        console.log('Error', response);
+    });
+};
+
+},{}],20:[function(require,module,exports){
 "use strict";
 
-var _abstract = require("./mixins/abstract");
-
-var _abstract2 = _interopRequireDefault(_abstract);
-
-var _search = require("./mixins/search");
-
-var _search2 = _interopRequireDefault(_search);
-
-var _filterMethods = require("./mixins/filterMethods");
-
-var _filterMethods2 = _interopRequireDefault(_filterMethods);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require('./app');
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: category,
-
-        modalConfirmation: {
-            category: {},
-            index: -1
-        },
-
-        pagination: {}
-    },
-
-    mixins: [_abstract2.default, _search2.default, _filterMethods2.default],
-
-    methods: {
-        getPagination: function getPagination() {
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var pagination_url = laroute.route('api.search.internal');
-            this.fetchData(pagination_url, num, this.category.category_no);
-        },
-        setModalSpec: function setModalSpec(spec) {
-            this.modalConfirmation.category = spec;
-        },
-        removeSpec: function removeSpec() {
-            var delete_route = laroute.route("internal.destroy", { internal: this.modalConfirmation.category.id });
-            this.destroyData(delete_route);
-        },
-        isNewRevision: function isNewRevision(revision_date) {
-            var revision_date = moment(revision_date);
-            return revision_date > moment().subtract(7, "days");
-        }
-    }
+Object.defineProperty(exports, "__esModule", {
+    value: true
 });
+var state = {
+    pagination: []
+};
 
-},{"./app":11,"./mixins/abstract":20,"./mixins/filterMethods":21,"./mixins/search":22}],19:[function(require,module,exports){
+var mutations = {
+    GET_DATA: function GET_DATA(state, data) {
+        state.pagination = data;
+    },
+    ADD_DATA: function ADD_DATA(state, data) {
+        state.pagination.push(data);
+    },
+    ERROR_MESSAGE: function ERROR_MESSAGE() {
+        return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+    }
+};
+
+exports.default = {
+    state: state, mutations: mutations
+};
+
+},{}],21:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48771,7 +49285,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48865,7 +49379,7 @@ exports.default = {
 	}
 };
 
-},{"./filterMethods":21,"./search":22}],21:[function(require,module,exports){
+},{"./filterMethods":23,"./search":24}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48888,7 +49402,7 @@ exports.default = {
 	}
 };
 
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48943,6 +49457,125 @@ exports.default = {
     }
 };
 
-},{}]},{},[18]);
+},{}],25:[function(require,module,exports){
+(function (process){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vue = require("vue/dist/vue.js");
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _vuex = require("vuex");
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+var _paginationStore = require("./../components/paginationStore");
+
+var _paginationStore2 = _interopRequireDefault(_paginationStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.use(_vuex2.default);
+
+_vue2.default.config.debug = true;
+
+var debug = process.env.NODE_ENV !== "production";
+
+exports.default = new _vuex2.default.Store({
+    modules: {
+        paginationStore: _paginationStore2.default
+    },
+    strict: debug
+});
+
+}).call(this,require('_process'))
+},{"./../components/paginationStore":20,"_process":5,"vue/dist/vue.js":9,"vuex":11}],26:[function(require,module,exports){
+"use strict";
+
+var _abstract = require("./mixins/abstract");
+
+var _abstract2 = _interopRequireDefault(_abstract);
+
+var _search = require("./mixins/search");
+
+var _search2 = _interopRequireDefault(_search);
+
+var _filterMethods = require("./mixins/filterMethods");
+
+var _filterMethods2 = _interopRequireDefault(_filterMethods);
+
+var _store = require("./vuex/store");
+
+var _store2 = _interopRequireDefault(_store);
+
+var _paginationActions = require("./components/paginationActions");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require('./app');
+
+
+var app = new Vue({
+    el: "#app",
+
+    store: _store2.default,
+
+    data: {
+        category: category,
+
+        modalConfirmation: {
+            category: {},
+            index: -1
+        },
+
+        pagination: {}
+    },
+
+    created: function created() {
+        this.getPagination();
+    },
+
+
+    mixins: [_abstract2.default, _search2.default, _filterMethods2.default],
+
+    methods: {
+        getPagination: function getPagination() {
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var pagination_url = laroute.route('api.search.internal');
+            this.fetchData(pagination_url, num, this.category.category_no);
+            this.getData(pagination_url, num, this.category.category_no);
+        },
+        setModalSpec: function setModalSpec(spec) {
+            this.modalConfirmation.category = spec;
+        },
+        removeSpec: function removeSpec() {
+            var delete_route = laroute.route("internal.destroy", { internal: this.modalConfirmation.category.id });
+            this.destroyData(delete_route);
+        },
+        isNewRevision: function isNewRevision(revision_date) {
+            var revision_date = moment(revision_date);
+            return revision_date > moment().subtract(7, "days");
+        }
+    },
+
+    vuex: {
+        getters: {
+            paginationStore: function paginationStore(state) {
+                return state.paginationStore.pagination;
+            }
+        },
+
+        actions: {
+            getData: _paginationActions.getData
+        }
+    }
+});
+
+},{"./app":12,"./components/paginationActions":19,"./mixins/abstract":22,"./mixins/filterMethods":23,"./mixins/search":24,"./vuex/store":25}]},{},[26]);
 
 //# sourceMappingURL=internal-index.js.map

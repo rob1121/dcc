@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48409,7 +48409,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"of\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"off\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -48529,19 +48529,6 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
-"use strict";
-
-require('./app');
-
-var app = new Vue({
-    el: "#app"
-});
-
-$(".modal-btn").click(function () {
-    $("#form-submit").submit();
-});
-
-},{"./app":11}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48727,6 +48714,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}]},{},[18]);
+},{}],19:[function(require,module,exports){
+"use strict";
+
+require('./app');
+
+var app = new Vue({
+    el: "#app"
+});
+
+$(".modal-btn").click(function () {
+    $("#form-submit").submit();
+});
+
+},{"./app":11}]},{},[19]);
 
 //# sourceMappingURL=form.js.map

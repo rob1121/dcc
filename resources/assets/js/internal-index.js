@@ -2,9 +2,14 @@ require('./app');
 import abstract from "./mixins/abstract";
 import search from "./mixins/search";
 import filter from "./mixins/filterMethods";
+import store from "./vuex/store";
+
+import {getData} from "./components/paginationActions";
 
 const app = new Vue({
     el: "#app",
+
+    store,
 
     data: {
         category,
@@ -17,12 +22,17 @@ const app = new Vue({
         pagination: {},
     },
 
+    created() {
+        this.getPagination();
+    },
+
     mixins: [abstract, search, filter],
 
     methods: {
         getPagination(num = "") {
             var pagination_url = laroute.route('api.search.internal');
             this.fetchData(pagination_url, num, this.category.category_no);
+            this.getData(pagination_url, num, this.category.category_no);
         },
 
         setModalSpec(spec) {
@@ -39,4 +49,14 @@ const app = new Vue({
             return revision_date > moment().subtract(7, "days");
         },
     },
+
+    vuex: {
+        getters: {
+            paginationStore: state => state.paginationStore.pagination
+        },
+        
+        actions: {
+            getData
+        }
+    }
 });

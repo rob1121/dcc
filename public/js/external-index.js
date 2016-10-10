@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48409,7 +48409,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"of\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"off\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -48529,102 +48529,6 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
-"use strict";
-
-var _abstract = require("./mixins/abstract");
-
-var _abstract2 = _interopRequireDefault(_abstract);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require("./app");
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: {
-            customer_name: category.customer_name
-        },
-
-        modalConfirmation: {
-            action: "update",
-            category: [],
-            indexOfSpecForUpdate: null
-        },
-
-        pagination: {}
-    },
-
-    mixins: [_abstract2.default],
-
-    filters: {
-        filterReduceMap: function filterReduceMap(customer) {
-            return _.reduce(this.pagination.data, function (total, item) {
-                if (item.customer_spec_category.customer_name === customer) {
-                    for (var x in item.customer_spec_revision) {
-                        if (item.customer_spec_revision[x].is_reviewed === 0) total++;
-                    }
-                }
-                return total;
-            }, 0);
-        }
-    },
-
-    computed: {
-        customerSpecForReview: function customerSpecForReview() {
-            return this.getCustomerSpecsForReview(this.modalConfirmation.category.customer_spec_revision);
-        }
-    },
-
-    methods: {
-        externalRouteFor: function externalRouteFor(specRevision) {
-            return laroute.route('external.show', { external: specRevision.customer_spec_id, revision: specRevision.revision });
-        },
-        getCustomerSpecsForReview: function getCustomerSpecsForReview(specs) {
-            return _.filter(specs, function (spec) {
-                return spec.is_reviewed;
-            });
-        },
-        getCustomerSpecsForReviewCount: function getCustomerSpecsForReviewCount(specs) {
-            return _.size(this.getCustomerSpecsForReview(specs));
-        },
-        getPagination: function getPagination() {
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var pagination_url = laroute.route('api.search.external');
-            this.fetchData(pagination_url, num, this.category.customer_name);
-        },
-        setModalSpec: function setModalSpec(spec, action) {
-            this.modalConfirmation.category = spec;
-            this.modalConfirmation.action = action;
-        },
-        modalAction: function modalAction() {
-            this.modalConfirmation.action === "update" ? this.updateSpecStatus() : this.removeSpec();
-        },
-        setUpdateSpec: function setUpdateSpec(specRevision) {
-            this.indexOfSpecForUpdate = specRevision;
-        },
-        updateSpecStatus: function updateSpecStatus() {
-            var _this = this;
-
-            var update_status = laroute.route("external.revision.update", { external: this.modalConfirmation.category.id });
-
-            this.$http.patch(update_status, { is_reviewed: 1, revision: this.indexOfSpecForUpdate.revision }).then(function () {
-                return _this.delete(_this.modalConfirmation.category.customer_spec_revision, _this.indexOfSpecForUpdate);
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-        removeSpec: function removeSpec() {
-            var route_delete = laroute.route("external.destroy", { external: this.modalConfirmation.category.id });
-            this.destroyData(route_delete);
-        }
-    }
-});
-
-},{"./app":11,"./mixins/abstract":20}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48810,7 +48714,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48904,7 +48808,7 @@ exports.default = {
 	}
 };
 
-},{"./filterMethods":21,"./search":22}],21:[function(require,module,exports){
+},{"./filterMethods":20,"./search":21}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48927,7 +48831,7 @@ exports.default = {
 	}
 };
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48982,6 +48886,102 @@ exports.default = {
     }
 };
 
-},{}]},{},[18]);
+},{}],22:[function(require,module,exports){
+"use strict";
+
+var _abstract = require("./mixins/abstract");
+
+var _abstract2 = _interopRequireDefault(_abstract);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require("./app");
+
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        category: {
+            customer_name: category.customer_name
+        },
+
+        modalConfirmation: {
+            action: "update",
+            category: [],
+            indexOfSpecForUpdate: null
+        },
+
+        pagination: {}
+    },
+
+    mixins: [_abstract2.default],
+
+    filters: {
+        filterReduceMap: function filterReduceMap(customer) {
+            return _.reduce(this.pagination.data, function (total, item) {
+                if (item.customer_spec_category.customer_name === customer) {
+                    for (var x in item.customer_spec_revision) {
+                        if (item.customer_spec_revision[x].is_reviewed === 0) total++;
+                    }
+                }
+                return total;
+            }, 0);
+        }
+    },
+
+    computed: {
+        customerSpecForReview: function customerSpecForReview() {
+            return this.getCustomerSpecsForReview(this.modalConfirmation.category.customer_spec_revision);
+        }
+    },
+
+    methods: {
+        externalRouteFor: function externalRouteFor(specRevision) {
+            return laroute.route('external.show', { external: specRevision.customer_spec_id, revision: specRevision.revision });
+        },
+        getCustomerSpecsForReview: function getCustomerSpecsForReview(specs) {
+            return _.filter(specs, function (spec) {
+                return spec.is_reviewed;
+            });
+        },
+        getCustomerSpecsForReviewCount: function getCustomerSpecsForReviewCount(specs) {
+            return _.size(this.getCustomerSpecsForReview(specs));
+        },
+        getPagination: function getPagination() {
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var pagination_url = laroute.route('api.search.external');
+            this.fetchData(pagination_url, num, this.category.customer_name);
+        },
+        setModalSpec: function setModalSpec(spec, action) {
+            this.modalConfirmation.category = spec;
+            this.modalConfirmation.action = action;
+        },
+        modalAction: function modalAction() {
+            this.modalConfirmation.action === "update" ? this.updateSpecStatus() : this.removeSpec();
+        },
+        setUpdateSpec: function setUpdateSpec(specRevision) {
+            this.indexOfSpecForUpdate = specRevision;
+        },
+        updateSpecStatus: function updateSpecStatus() {
+            var _this = this;
+
+            var update_status = laroute.route("external.revision.update", { external: this.modalConfirmation.category.id });
+
+            this.$http.patch(update_status, { is_reviewed: 1, revision: this.indexOfSpecForUpdate.revision }).then(function () {
+                return _this.delete(_this.modalConfirmation.category.customer_spec_revision, _this.indexOfSpecForUpdate);
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        },
+        removeSpec: function removeSpec() {
+            var route_delete = laroute.route("external.destroy", { external: this.modalConfirmation.category.id });
+            this.destroyData(route_delete);
+        }
+    }
+});
+
+},{"./app":11,"./mixins/abstract":19}]},{},[22]);
 
 //# sourceMappingURL=external-index.js.map

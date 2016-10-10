@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48409,7 +48409,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"of\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"['form-group',{'has-error' : error }, 'col-sm-'+col]\" _v-6d9fcb99=\"\">\n    <label class=\"control-label\" _v-6d9fcb99=\"\">{{capitalize(label ? label : name)}}</label>\n    <input type=\"text\" class=\"form-control input-sm\" autocomplete=\"off\" :name=\"name\" :id=\"name\" :readonly=\"readonly\" :value=\"value\" @click=\"show = !show\" _v-6d9fcb99=\"\">\n    <h6 class=\"help-block\" v-show=\"error\" _v-6d9fcb99=\"\">{{error}}</h6>\n    <div class=\"datetime-picker\" :style=\"{ width: width }\" _v-6d9fcb99=\"\">\n        <div class=\"picker-wrap\" v-show=\"show\" _v-6d9fcb99=\"\">\n            <table class=\"date-picker\" _v-6d9fcb99=\"\">\n                <thead _v-6d9fcb99=\"\">\n                <tr class=\"date-head\" _v-6d9fcb99=\"\">\n                    <th colspan=\"4\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"yearClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-year\" _v-6d9fcb99=\"\">{{now.getFullYear()}}</span>\n                        <span class=\"btn-next\" @click=\"yearClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                    <th colspan=\"3\" _v-6d9fcb99=\"\">\n                        <span class=\"btn-prev\" @click=\"monthClick(-1)\" _v-6d9fcb99=\"\">&lt;</span>\n                        <span class=\"show-month\" _v-6d9fcb99=\"\">{{months[now.getMonth()]}}</span>\n                        <span class=\"btn-next\" @click=\"monthClick(1)\" _v-6d9fcb99=\"\">&gt;</span>\n                    </th>\n                </tr>\n                <tr class=\"date-days\" _v-6d9fcb99=\"\">\n                    <th v-for=\"day in days\" _v-6d9fcb99=\"\">{{day}}</th>\n                </tr>\n                </thead>\n                <tbody _v-6d9fcb99=\"\">\n                <tr v-for=\"i in 6\" _v-6d9fcb99=\"\">\n                    <td v-for=\"j in 7\" :class=\"getStatus(i,j)\" :date=\"getDate(i,j)\" @click=\"pickDate(i * 7 + j)\" _v-6d9fcb99=\"\">{{date[i * 7 + j] &amp;&amp; date[i * 7 + j].text}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -48529,61 +48529,6 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
-"use strict";
-
-var _search = require("./mixins/search");
-
-var _search2 = _interopRequireDefault(_search);
-
-var _filterMethods = require("./mixins/filterMethods");
-
-var _filterMethods2 = _interopRequireDefault(_filterMethods);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require("./app");
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        pagination: isos,
-
-        selectedIso: []
-    },
-
-    mixins: [_search2.default, _filterMethods2.default],
-
-    methods: {
-        setModalSpec: function setModalSpec(iso) {
-            this.selectedIso = iso;
-        },
-        removeIso: function removeIso() {
-            var _this = this;
-
-            var route_delete = laroute.route("iso.destroy", { iso: this.selectedIso.id });
-
-            this.$http.delete(route_delete).then(function () {
-                return _this.delete(_this.selectedIso);
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-        delete: function _delete(iso) {
-            var index = this.pagination.indexOf(iso);
-            this.pagination.splice(index, 1);
-        },
-        showRouteFor: function showRouteFor(id) {
-            return laroute.route('iso.show', { iso: id });
-        },
-        editRouteFor: function editRouteFor(id) {
-            return laroute.route("iso.edit", { iso: id });
-        }
-    }
-});
-
-},{"./app":11,"./mixins/filterMethods":20,"./mixins/search":21}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48769,7 +48714,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48792,7 +48737,7 @@ exports.default = {
 	}
 };
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48847,6 +48792,61 @@ exports.default = {
     }
 };
 
-},{}]},{},[18]);
+},{}],21:[function(require,module,exports){
+"use strict";
+
+var _search = require("./mixins/search");
+
+var _search2 = _interopRequireDefault(_search);
+
+var _filterMethods = require("./mixins/filterMethods");
+
+var _filterMethods2 = _interopRequireDefault(_filterMethods);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require("./app");
+
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        pagination: isos,
+
+        selectedIso: []
+    },
+
+    mixins: [_search2.default, _filterMethods2.default],
+
+    methods: {
+        setModalSpec: function setModalSpec(iso) {
+            this.selectedIso = iso;
+        },
+        removeIso: function removeIso() {
+            var _this = this;
+
+            var route_delete = laroute.route("iso.destroy", { iso: this.selectedIso.id });
+
+            this.$http.delete(route_delete).then(function () {
+                return _this.delete(_this.selectedIso);
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        },
+        delete: function _delete(iso) {
+            var index = this.pagination.indexOf(iso);
+            this.pagination.splice(index, 1);
+        },
+        showRouteFor: function showRouteFor(id) {
+            return laroute.route('iso.show', { iso: id });
+        },
+        editRouteFor: function editRouteFor(id) {
+            return laroute.route("iso.edit", { iso: id });
+        }
+    }
+});
+
+},{"./app":11,"./mixins/filterMethods":19,"./mixins/search":20}]},{},[21]);
 
 //# sourceMappingURL=iso-index.js.map
