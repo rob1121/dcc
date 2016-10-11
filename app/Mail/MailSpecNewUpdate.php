@@ -12,7 +12,7 @@ class MailSpecNewUpdate extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     public $system = "DCC System";
-    private $spec;
+    public $spec;
 
     /**
      * Create a new message instance.

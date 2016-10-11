@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48531,6 +48531,102 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+var _abstract = require("./mixins/abstract");
+
+var _abstract2 = _interopRequireDefault(_abstract);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require("./app");
+
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        category: {
+            customer_name: category.customer_name
+        },
+
+        modalConfirmation: {
+            action: "update",
+            category: [],
+            indexOfSpecForUpdate: null
+        },
+
+        pagination: {}
+    },
+
+    mixins: [_abstract2.default],
+
+    filters: {
+        filterReduceMap: function filterReduceMap(customer) {
+            return _.reduce(this.pagination.data, function (total, item) {
+                if (item.customer_spec_category.customer_name === customer) {
+                    for (var x in item.customer_spec_revision) {
+                        if (item.customer_spec_revision[x].is_reviewed === 0) total++;
+                    }
+                }
+                return total;
+            }, 0);
+        }
+    },
+
+    computed: {
+        customerSpecForReview: function customerSpecForReview() {
+            return this.getCustomerSpecsForReview(this.modalConfirmation.category.customer_spec_revision);
+        }
+    },
+
+    methods: {
+        externalRouteFor: function externalRouteFor(specRevision) {
+            return laroute.route('external.show', { external: specRevision.customer_spec_id, revision: specRevision.revision });
+        },
+        getCustomerSpecsForReview: function getCustomerSpecsForReview(specs) {
+            return _.filter(specs, function (spec) {
+                return spec.is_reviewed;
+            });
+        },
+        getCustomerSpecsForReviewCount: function getCustomerSpecsForReviewCount(specs) {
+            return _.size(this.getCustomerSpecsForReview(specs));
+        },
+        getPagination: function getPagination() {
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var pagination_url = laroute.route('api.search.external');
+            this.fetchData(pagination_url, num, this.category.customer_name);
+        },
+        setModalSpec: function setModalSpec(spec, action) {
+            this.modalConfirmation.category = spec;
+            this.modalConfirmation.action = action;
+        },
+        modalAction: function modalAction() {
+            this.modalConfirmation.action === "update" ? this.updateSpecStatus() : this.removeSpec();
+        },
+        setUpdateSpec: function setUpdateSpec(specRevision) {
+            this.indexOfSpecForUpdate = specRevision;
+        },
+        updateSpecStatus: function updateSpecStatus() {
+            var _this = this;
+
+            var update_status = laroute.route("external.revision.update", { external: this.modalConfirmation.category.id });
+
+            this.$http.patch(update_status, { is_reviewed: 1, revision: this.indexOfSpecForUpdate.revision }).then(function () {
+                return _this.delete(_this.modalConfirmation.category.customer_spec_revision, _this.indexOfSpecForUpdate);
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        },
+        removeSpec: function removeSpec() {
+            var route_delete = laroute.route("external.destroy", { external: this.modalConfirmation.category.id });
+            this.destroyData(route_delete);
+        }
+    }
+});
+
+},{"./app":11,"./mixins/abstract":20}],19:[function(require,module,exports){
+"use strict";
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -48714,7 +48810,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48734,7 +48830,7 @@ var _filterMethods2 = _interopRequireDefault(_filterMethods);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-	mounted: function mounted() {
+	created: function created() {
 		var _this = this;
 
 		this.$nextTick(function () {
@@ -48808,7 +48904,7 @@ exports.default = {
 	}
 };
 
-},{"./filterMethods":20,"./search":21}],20:[function(require,module,exports){
+},{"./filterMethods":21,"./search":22}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48823,7 +48919,7 @@ exports.default = {
 			return _.capitalize(string);
 		},
 		trim: function trim(string) {
-			if (string.length <= 64) return string;else if (64 <= 3) return string.slice(0, 64) + "...";else return string.slice(0, 64 - 3) + "...";
+			if (string.length <= 150) return string;else if (150 <= 3) return string.slice(0, 150) + "...";else return string.slice(0, 150 - 3) + "...";
 		},
 		telfordStandardDate: function telfordStandardDate(dt) {
 			return moment(dt).format("MM/DD/Y");
@@ -48831,7 +48927,7 @@ exports.default = {
 	}
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48886,102 +48982,6 @@ exports.default = {
     }
 };
 
-},{}],22:[function(require,module,exports){
-"use strict";
-
-var _abstract = require("./mixins/abstract");
-
-var _abstract2 = _interopRequireDefault(_abstract);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require("./app");
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: {
-            customer_name: category.customer_name
-        },
-
-        modalConfirmation: {
-            action: "update",
-            category: [],
-            indexOfSpecForUpdate: null
-        },
-
-        pagination: {}
-    },
-
-    mixins: [_abstract2.default],
-
-    filters: {
-        filterReduceMap: function filterReduceMap(customer) {
-            return _.reduce(this.pagination.data, function (total, item) {
-                if (item.customer_spec_category.customer_name === customer) {
-                    for (var x in item.customer_spec_revision) {
-                        if (item.customer_spec_revision[x].is_reviewed === 0) total++;
-                    }
-                }
-                return total;
-            }, 0);
-        }
-    },
-
-    computed: {
-        customerSpecForReview: function customerSpecForReview() {
-            return this.getCustomerSpecsForReview(this.modalConfirmation.category.customer_spec_revision);
-        }
-    },
-
-    methods: {
-        externalRouteFor: function externalRouteFor(specRevision) {
-            return laroute.route('external.show', { external: specRevision.customer_spec_id, revision: specRevision.revision });
-        },
-        getCustomerSpecsForReview: function getCustomerSpecsForReview(specs) {
-            return _.filter(specs, function (spec) {
-                return spec.is_reviewed;
-            });
-        },
-        getCustomerSpecsForReviewCount: function getCustomerSpecsForReviewCount(specs) {
-            return _.size(this.getCustomerSpecsForReview(specs));
-        },
-        getPagination: function getPagination() {
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var pagination_url = laroute.route('api.search.external');
-            this.fetchData(pagination_url, num, this.category.customer_name);
-        },
-        setModalSpec: function setModalSpec(spec, action) {
-            this.modalConfirmation.category = spec;
-            this.modalConfirmation.action = action;
-        },
-        modalAction: function modalAction() {
-            this.modalConfirmation.action === "update" ? this.updateSpecStatus() : this.removeSpec();
-        },
-        setUpdateSpec: function setUpdateSpec(specRevision) {
-            this.indexOfSpecForUpdate = specRevision;
-        },
-        updateSpecStatus: function updateSpecStatus() {
-            var _this = this;
-
-            var update_status = laroute.route("external.revision.update", { external: this.modalConfirmation.category.id });
-
-            this.$http.patch(update_status, { is_reviewed: 1, revision: this.indexOfSpecForUpdate.revision }).then(function () {
-                return _this.delete(_this.modalConfirmation.category.customer_spec_revision, _this.indexOfSpecForUpdate);
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-        removeSpec: function removeSpec() {
-            var route_delete = laroute.route("external.destroy", { external: this.modalConfirmation.category.id });
-            this.destroyData(route_delete);
-        }
-    }
-});
-
-},{"./app":11,"./mixins/abstract":19}]},{},[22]);
+},{}]},{},[18]);
 
 //# sourceMappingURL=external-index.js.map

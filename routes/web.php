@@ -1,11 +1,6 @@
 <?php
 
 use App\CompanySpec;
-use App\Events\SomeEvent;
-use App\Jobs\NotifyUserForSpecUpdate;
-use App\Mail\MailSpecNewUpdate;
-use App\Notifications\InternalSpecUpdateNotifier;
-use App\User;
 use Illuminate\Support\Facades\Mail;
 
 foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $route) {
@@ -13,7 +8,9 @@ foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $ro
 }
 
 Route::get('/', function () {
+    $mail = new App\Mail\MailSpecNewUpdate(CompanySpec::first());
 
+    Mail::to('robinsonlegaspi@astigp.com')->send($mail);
     return redirect(route("internal.index"));
 });
 

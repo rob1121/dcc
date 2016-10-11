@@ -3,7 +3,7 @@ import filter from "./filterMethods";
 
 export default {
 
-	mounted() {
+	created() {
 		this.$nextTick( () => this.getPagination() )
 	},
 

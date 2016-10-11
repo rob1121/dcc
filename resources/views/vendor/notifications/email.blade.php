@@ -44,13 +44,13 @@ $style = [
 
     'anchor' => 'color: #3869D4;',
     'header-1' => 'margin-top: 0; color: #2F3133; font-size: 19px; font-weight: bold; text-align: left;',
-    'paragraph' => 'margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em;',
+    'paragraph' => 'margin-top: 0; color: #74787E; font-size: 16px; line-height: 1.5em;word-break: break;',
     'paragraph-sub' => 'margin-top: 0; color: #74787E; font-size: 12px; line-height: 1.5em;',
     'paragraph-center' => 'text-align: center;',
 
     /* Buttons ------------------------------ */
 
-    'button' => 'display: block; display: inline-block; width: 200px; min-height: 20px; padding: 10px;
+    'button' => 'display: block; display: inline-block;font-weight: bold; width: 200px; min-height: 20px; padding: 10px;
                  background-color: #3869D4; border-radius: 3px; color: #ffffff; font-size: 15px; line-height: 25px;
                  text-align: center; text-decoration: none; -webkit-text-size-adjust: none;',
 
@@ -97,7 +97,7 @@ $style = [
 
                                         <!-- Intro -->
                                         @foreach ($introLines as $line)
-                                            <p style="{{ $style['paragraph'] }}">
+                                            <p style="{{ $style['paragraph'] }};max-width: 90vw">
                                                 {{ $line }}
                                             </p>
                                         @endforeach

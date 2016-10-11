@@ -28,8 +28,13 @@ class InternalSpecUpdateNotifier extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject("{$this->caption}: {$this->spec->spec_no} - {$this->spec->name}")
-            ->line("Revision summary:")
+            ->line("Specification No.: {$this->spec->spec_no}")
+            ->line("Document Title: {$this->spec->name}")
+            ->line("Revision: {$this->spec->companySpecRevision->revision}")
+            ->line("Summary of Changes:")
             ->line("{$this->spec->companySpecRevision->revision_summary}")
+            ->line(" ")
+            ->line(" ")
             ->action('View it now', url('/'))
             ->success()
             ->line('Feel free to contance me');

@@ -34,7 +34,7 @@
                     </h4>
 
                 </a>
-                <h5 class="help-block">@{{capitalize(spec.company_spec_revision.revision_summary)}}</h5>
+                <h5 class="help-block">@{{capitalize(trim(spec.company_spec_revision.revision_summary))}}</h5>
             </div>
             <div class="col-xs-12 col-md-3">
                 <h6>

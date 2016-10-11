@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48531,6 +48531,19 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+require('./app');
+
+var app = new Vue({
+    el: "#app"
+});
+
+$(".modal-btn").click(function () {
+    $("#form-submit").submit();
+});
+
+},{"./app":11}],19:[function(require,module,exports){
+"use strict";
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -48714,19 +48727,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
-"use strict";
-
-require('./app');
-
-var app = new Vue({
-    el: "#app"
-});
-
-$(".modal-btn").click(function () {
-    $("#form-submit").submit();
-});
-
-},{"./app":11}]},{},[19]);
+},{}]},{},[18]);
 
 //# sourceMappingURL=form.js.map
