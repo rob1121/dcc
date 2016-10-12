@@ -1,6 +1,6 @@
 <?php
-use App\CompanySpec;
-use Illuminate\Http\Request;
+
+use App\Mail\ExternalSpecFollowUpMailer;
 
 foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $route) {
     require $route->getPathname();

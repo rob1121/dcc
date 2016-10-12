@@ -2,6 +2,7 @@
 
 use App\CompanySpec;
 use App\CompanySpecCategory;
+use App\CustomerSpecRevision;
 use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\File\Document;

@@ -47,6 +47,5 @@ class InternalSpecification implements SpecificationGateway {
             $mail = new InternalSpecMailer($this->spec, $caption);
             Mail::to(User::all())->send($mail);
         }
-//            \Notification::send($users, new InternalSpecUpdateNotifier($this->spec,));
     }
 }

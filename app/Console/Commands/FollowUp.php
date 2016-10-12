@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\CompanySpec;
+use App\Mail\ExternalSpecFollowUpMailer;
 use App\Mail\InternalSpecMailer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -40,6 +41,6 @@ class FollowUp extends Command
      */
     public function handle()
     {
-        Mail::to("robinsonlegaspi@astigp.com")->send(new InternalSpecMailer(CompanySpec::first(), "test only"));
+        Mail::to("robinsonlegaspi@astigp.com")->send(new ExternalSpecFollowUpMailer());
     }
 }

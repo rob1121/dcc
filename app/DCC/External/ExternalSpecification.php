@@ -4,7 +4,9 @@ use App\CustomerSpec;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationFactory;
 use App\DCC\SpecificationGateway;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ExternalSpecification implements SpecificationGateway {
 
@@ -39,9 +41,11 @@ class ExternalSpecification implements SpecificationGateway {
 
 
     protected function notifyUser($caption) {
-        $users = \App\User::whereUserType("REVIEWER")->orWhere("user_type","ADMIN")->get();
 
-        if ($this->request->send_notification)
-            \Notification::send($users, \App\Notifications\ExternalSpecUpdateNotifier($this->spec, $caption));
+        if ($this->request->send_notification) {
+            $users = \App\User::whereUserType("REVIEWER")->orWhere("user_type","ADMIN")->get();
+            $mail = new ExternalSpecMailer($this->spec, $caption);
+            Mail::to($users)->send($mail);
+        }
     }
 }

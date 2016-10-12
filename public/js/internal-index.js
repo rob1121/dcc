@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48531,63 +48531,6 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
-var _abstract = require("./mixins/abstract");
-
-var _abstract2 = _interopRequireDefault(_abstract);
-
-var _search = require("./mixins/search");
-
-var _search2 = _interopRequireDefault(_search);
-
-var _filterMethods = require("./mixins/filterMethods");
-
-var _filterMethods2 = _interopRequireDefault(_filterMethods);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require('./app');
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        category: category,
-
-        modalConfirmation: {
-            category: {},
-            index: -1
-        },
-
-        pagination: {}
-    },
-
-    mixins: [_abstract2.default, _search2.default, _filterMethods2.default],
-
-    methods: {
-        getPagination: function getPagination() {
-            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
-
-            var pagination_url = laroute.route('api.search.internal');
-            this.fetchData(pagination_url, num, this.category.category_no);
-        },
-        setModalSpec: function setModalSpec(spec) {
-            this.modalConfirmation.category = spec;
-        },
-        removeSpec: function removeSpec() {
-            var delete_route = laroute.route("internal.destroy", { internal: this.modalConfirmation.category.id });
-            this.destroyData(delete_route);
-        },
-        isNewRevision: function isNewRevision(revision_date) {
-            var revision_date = moment(revision_date);
-            return revision_date > moment().subtract(7, "days");
-        }
-    }
-});
-
-},{"./app":11,"./mixins/abstract":20,"./mixins/filterMethods":21,"./mixins/search":22}],19:[function(require,module,exports){
-"use strict";
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -48771,7 +48714,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48865,7 +48808,7 @@ exports.default = {
 	}
 };
 
-},{"./filterMethods":21,"./search":22}],21:[function(require,module,exports){
+},{"./filterMethods":20,"./search":21}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48888,7 +48831,7 @@ exports.default = {
 	}
 };
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48943,6 +48886,63 @@ exports.default = {
     }
 };
 
-},{}]},{},[18]);
+},{}],22:[function(require,module,exports){
+"use strict";
+
+var _abstract = require("./mixins/abstract");
+
+var _abstract2 = _interopRequireDefault(_abstract);
+
+var _search = require("./mixins/search");
+
+var _search2 = _interopRequireDefault(_search);
+
+var _filterMethods = require("./mixins/filterMethods");
+
+var _filterMethods2 = _interopRequireDefault(_filterMethods);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require('./app');
+
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        category: category,
+
+        modalConfirmation: {
+            category: {},
+            index: -1
+        },
+
+        pagination: {}
+    },
+
+    mixins: [_abstract2.default, _search2.default, _filterMethods2.default],
+
+    methods: {
+        getPagination: function getPagination() {
+            var num = arguments.length <= 0 || arguments[0] === undefined ? "" : arguments[0];
+
+            var pagination_url = laroute.route('api.search.internal');
+            this.fetchData(pagination_url, num, this.category.category_no);
+        },
+        setModalSpec: function setModalSpec(spec) {
+            this.modalConfirmation.category = spec;
+        },
+        removeSpec: function removeSpec() {
+            var delete_route = laroute.route("internal.destroy", { internal: this.modalConfirmation.category.id });
+            this.destroyData(delete_route);
+        },
+        isNewRevision: function isNewRevision(revision_date) {
+            var revision_date = moment(revision_date);
+            return revision_date > moment().subtract(7, "days");
+        }
+    }
+});
+
+},{"./app":11,"./mixins/abstract":19,"./mixins/filterMethods":20,"./mixins/search":21}]},{},[22]);
 
 //# sourceMappingURL=internal-index.js.map
