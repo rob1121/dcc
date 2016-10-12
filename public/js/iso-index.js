@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48531,6 +48531,61 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
+var _search = require("./mixins/search");
+
+var _search2 = _interopRequireDefault(_search);
+
+var _filterMethods = require("./mixins/filterMethods");
+
+var _filterMethods2 = _interopRequireDefault(_filterMethods);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require("./app");
+
+
+var app = new Vue({
+    el: "#app",
+
+    data: {
+        pagination: isos,
+
+        selectedIso: []
+    },
+
+    mixins: [_search2.default, _filterMethods2.default],
+
+    methods: {
+        setModalSpec: function setModalSpec(iso) {
+            this.selectedIso = iso;
+        },
+        removeIso: function removeIso() {
+            var _this = this;
+
+            var route_delete = laroute.route("iso.destroy", { iso: this.selectedIso.id });
+
+            this.$http.delete(route_delete).then(function () {
+                return _this.delete(_this.selectedIso);
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        },
+        delete: function _delete(iso) {
+            var index = this.pagination.indexOf(iso);
+            this.pagination.splice(index, 1);
+        },
+        showRouteFor: function showRouteFor(id) {
+            return laroute.route('iso.show', { iso: id });
+        },
+        editRouteFor: function editRouteFor(id) {
+            return laroute.route("iso.edit", { iso: id });
+        }
+    }
+});
+
+},{"./app":11,"./mixins/filterMethods":20,"./mixins/search":21}],19:[function(require,module,exports){
+"use strict";
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 (function () {
@@ -48714,7 +48769,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48737,7 +48792,7 @@ exports.default = {
 	}
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48792,61 +48847,6 @@ exports.default = {
     }
 };
 
-},{}],21:[function(require,module,exports){
-"use strict";
-
-var _search = require("./mixins/search");
-
-var _search2 = _interopRequireDefault(_search);
-
-var _filterMethods = require("./mixins/filterMethods");
-
-var _filterMethods2 = _interopRequireDefault(_filterMethods);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require("./app");
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        pagination: isos,
-
-        selectedIso: []
-    },
-
-    mixins: [_search2.default, _filterMethods2.default],
-
-    methods: {
-        setModalSpec: function setModalSpec(iso) {
-            this.selectedIso = iso;
-        },
-        removeIso: function removeIso() {
-            var _this = this;
-
-            var route_delete = laroute.route("iso.destroy", { iso: this.selectedIso.id });
-
-            this.$http.delete(route_delete).then(function () {
-                return _this.delete(_this.selectedIso);
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-        delete: function _delete(iso) {
-            var index = this.pagination.indexOf(iso);
-            this.pagination.splice(index, 1);
-        },
-        showRouteFor: function showRouteFor(id) {
-            return laroute.route('iso.show', { iso: id });
-        },
-        editRouteFor: function editRouteFor(id) {
-            return laroute.route("iso.edit", { iso: id });
-        }
-    }
-});
-
-},{"./app":11,"./mixins/filterMethods":19,"./mixins/search":20}]},{},[21]);
+},{}]},{},[18]);
 
 //# sourceMappingURL=iso-index.js.map

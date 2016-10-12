@@ -14,7 +14,8 @@
         "tom-lingham/searchy": "^2.0",
         "lord/laroute": "^2.3",
         "laracasts/flash": "^2.0",
-        "jacobbennett/laravel-http2serverpush": "^1.2"
+        "jacobbennett/laravel-http2serverpush": "^1.2",
+        "alfredo-ramos/parsedown-extra-laravel": "^0.5.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

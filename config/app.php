@@ -51,7 +51,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', "http://" . gethostbyname(gethostname()) . "/dcc_2016/public"),
 
     /*
     |--------------------------------------------------------------------------
@@ -184,7 +184,8 @@ return [
         TomLingham\Searchy\SearchyServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
-        App\Providers\ComposerServiceProvider::class
+        App\Providers\ComposerServiceProvider::class,
+        AlfredoRamos\ParsedownExtra\ParsedownExtraServiceProvider::class,
     ],
 
     /*
@@ -235,7 +236,8 @@ return [
         'Carbon' => Carbon\Carbon::class,
         'Str' => Illuminate\Support\Str::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        'Searchy' => TomLingham\Searchy\Facades\Searchy::class
+        'Searchy' => TomLingham\Searchy\Facades\Searchy::class,
+        'Markdown'  => AlfredoRamos\ParsedownExtra\Facades\ParsedownExtra::class
     ],
 
 ];

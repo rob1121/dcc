@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => 'admin@dcc.com',
-        'name' => 'DCC Specification Update',
+        'name' => 'DCC Online',
     ],
 
     /*

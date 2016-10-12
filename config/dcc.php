@@ -2,4 +2,8 @@
 
 return [
     'server' => env('DCC_SERVER','/dcc_2016/public'),
+
+    'sub_title' => "Document Control Center Online",
+
+    'title' => "DCC Online",
 ];

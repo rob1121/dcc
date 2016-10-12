@@ -4,9 +4,10 @@ use App\CompanySpec;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationGateway;
 use App\DCC\SpecificationFactory;
-use App\Notifications\InternalSpecUpdateNotifier;
+use App\Mail\InternalSpecMailer;
 use App\User;
 use Illuminate\Http\Request;
+use Mail;
 
 class InternalSpecification implements SpecificationGateway {
 
@@ -42,9 +43,10 @@ class InternalSpecification implements SpecificationGateway {
     }
 
     protected function notifyUser($caption) {
-        $users = User::first();
-
-        if ($this->request->send_notification)
-            \Notification::send($users, new InternalSpecUpdateNotifier($this->spec, $caption));
+        if ($this->request->send_notification) {
+            $mail = new InternalSpecMailer($this->spec, $caption);
+            Mail::to(User::all())->send($mail);
+        }
+//            \Notification::send($users, new InternalSpecUpdateNotifier($this->spec,));
     }
 }
