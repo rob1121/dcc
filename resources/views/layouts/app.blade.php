@@ -18,8 +18,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Styles -->
     <link rel="stylesheet" href="{{URL::to("/css/app.css")}}">
-@stack("style")
-
+    @stack("style")
 <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -28,7 +27,6 @@
     </script>
 </head>
 <body>
-
 <div class="nav">
     @include("layouts.nav")
 </div>

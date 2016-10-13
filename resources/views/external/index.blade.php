@@ -21,8 +21,13 @@
         <div class="clearfix"></div>
 
         @include('errors.flash')
-
-        <div class="deck" v-for="spec in pagination.data" v-if="pagination.data">
+        <div class="col-md-12"v-if="pagination.data">
+            <select name="status_filter" id="status_filter" v-model="status_filter">
+                <option value="all">All</option>
+                <option value="for review">For Review</option>
+            </select>
+        </div>
+        <div class="deck" v-for="spec in externalSpecs" v-if="pagination.data">
             <div class="spec-no col-sm-12
                 @if(Auth::user() && isAdmin())         col-md-7
                 @elseif(Auth::user()&& ! isAdmin())    col-md-8
@@ -30,7 +35,7 @@
                 @endif
             justify">
 
-                <a class="show-action-link" :href="externalRouteFor(spec.id)" target="_blank" style="word-wrap: break-word">
+                <a class="show-action-link" :href="externalRouteFor(spec.customer_spec_revision)" target="_blank" style="word-wrap: break-word">
                     <h4>@{{uppercase(spec.spec_no)}} - @{{uppercase(spec.name)}} </h4>
                 </a>
                 <h6>

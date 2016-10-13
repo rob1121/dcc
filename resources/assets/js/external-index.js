@@ -5,6 +5,8 @@ const app = new Vue({
 	el: "#app",
 
 	data: {
+        status_filter: "all",
+
 		category: {
 			customer_name: category.customer_name
 		},
@@ -20,30 +22,38 @@ const app = new Vue({
 
     mixins: [abstract],
 
-    filters: {
-	    filterReduceMap(customer) {
-           return _.reduce(this.pagination.data , (total, item) => {
-               if(item.customer_spec_category.customer_name === customer) {
-                   for(var x in item.customer_spec_revision) {
-                       if(item.customer_spec_revision[x].is_reviewed === 0) total++;
-                   }
-               }
-               return total;
-            },0);
-        },
-    },
+    // filters: {
+	   //  filterReduceMap(customer) {
+    //        return _.reduce(this.pagination.data , (total, item) => {
+    //            if(item.customer_spec_category.customer_name === customer) {
+    //                for(var x in item.customer_spec_revision) {
+    //                    if(item.customer_spec_revision[x].is_reviewed === 0) total++;
+    //                }
+    //            }
+    //            return total;
+    //         },0);
+    //     },
+    // },
 
     computed: {
         customerSpecForReview() {
             return this.getCustomerSpecsForReview(
                 this.modalConfirmation.category.customer_spec_revision
             );
+        },
+
+        externalSpecs() {
+            return this.pagination.data;
+            var filtered = this.pagination.data;
+
+            return this.status_filter === "all" ? this.pagination.data : filtered;
         }
     },
 
     methods: {
 
         externalRouteFor(specRevision) {
+            specRevision = _.sortBy(specRevision, ['revision'])[specRevision.length-1];
             return laroute.route('external.show', {external:specRevision.customer_spec_id,revision:specRevision.revision});
         },
 
@@ -58,7 +68,7 @@ const app = new Vue({
         },
 
         getPagination(num = "") {
-            var pagination_url = laroute.route('api.search.external');
+            var pagination_url = laroute.route('api.sestatus_filter arch.external');
             this.fetchData(pagination_url, num, this.category.customer_name);
         },
 

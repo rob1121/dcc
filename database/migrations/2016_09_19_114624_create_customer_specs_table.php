@@ -16,6 +16,7 @@ class CreateCustomerSpecsTable extends Migration
         Schema::create('customer_specs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('spec_no');
+            $table->string('reviewer');
             $table->string('name');
             $table->timestamps();
         });

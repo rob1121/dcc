@@ -1,7 +1,6 @@
 <?php namespace App\Observers;
 
 use App\CompanySpec;
-use Illuminate\Support\Facades\Mail;
 
 class CompanySpecObserver
 {
@@ -12,10 +11,11 @@ class CompanySpecObserver
         flash("Document save to the database!.","success");
     }
 
-    /**
+    /*
      * @param CompanySpec $spec
      */
-    public function updated(CompanySpec $spec)
+    public function saved
+    ()
     {
         flash("Database successfully updated!.","success");
     }

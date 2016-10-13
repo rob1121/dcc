@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerSpec extends Model {
 
     use ModelInstance;
-    protected $fillable = [ 'spec_no', 'name' ];
+
+    protected $fillable = [ 'spec_no', 'name', 'reviewer' ];
 
     protected $with = ['customerSpecRevision', 'customerSpecCategory'];
 
@@ -19,6 +20,10 @@ class CustomerSpec extends Model {
 
     public function customerSpecCategory() {
         return $this->hasOne(CustomerSpecCategory::class);
+    }
+
+    public static function uniqueReviewer() {
+        return self::get(["reviewer"])->unique("reviewer")->pluck("reviewer");
     }
 
     public static function forReview()

@@ -21,12 +21,13 @@ class ExternalSpecMailer extends Mailable implements ShouldQueue
      */
     public function __construct(CustomerSpec $spec, $caption)
     {
-        $this->mail_subject = \Str::upper("{$caption} {$spec->spec_no} {$spec->customerSpecRevision->revision}");
+        $rev = collect($spec->customerSpecRevision)->sortBy("revision")->last()->revision;
+        $this->mail_subject = \Str::upper("{$caption} {$spec->spec_no} {$rev}");
         $this->data = [
             "spec" => $spec,
             "sub_title" => config("dcc.sub_title", ""),
             "system" => config("dcc.title", ""),
-            "route" => config("app.url") . "/internal/{$spec->id}"
+            "route" => config("app.url") . "/external/{$spec->id}"
         ];
     }
 

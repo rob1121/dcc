@@ -12,7 +12,7 @@ class CustomerSpecObserver
     /**
      * Listen to the Document updated event.
      */
-    public function updated()
+    public function saved()
     {
         flash("Database successfully updated!.","success");
     }

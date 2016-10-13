@@ -1,10 +1,6 @@
-<?php
+<?php namespace App\Console\Commands;
 
-namespace App\Console\Commands;
-
-use App\CompanySpec;
 use App\Mail\ExternalSpecFollowUpMailer;
-use App\Mail\InternalSpecMailer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 

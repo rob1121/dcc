@@ -19,7 +19,6 @@ class CreateCustomerSpecRevisionsTable extends Migration
             $table->integer('customer_spec_id')->unsigned();
             $table->date('revision_date');
             $table->string('document')->nullable();
-            $table->string('reviewer');
             $table->boolean('is_reviewed')->default(false);
             $table->foreign('customer_spec_id')->references('id')->on('customer_specs')->onDelete('cascade');
             $table->timestamps();

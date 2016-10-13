@@ -94,6 +94,30 @@
                         ></dcc-input>
                     </div>
 
+                    <div class="radio col-xs-12 row form-group">
+                        <label class="control-label">
+                            <input type="radio"
+                                   value="true"
+                                   id="send_notification"
+                                   name="send_notification"
+                                   @if(old("send_notification") !== "false") checked @endif
+                            >
+                            Notify everyone for new internal specification
+                        </label>
+                    </div>
+
+                    <div class="radio col-xs-12 row form-group">
+                        <label class="control-label">
+                            <input type="radio"
+                                   name="send_notification"
+                                   id="send_notification"
+                                   value="false"
+                                   @if(old("send_notification") === "false") checked @endif
+                            >
+                            Skip email notification
+                        </label>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button"

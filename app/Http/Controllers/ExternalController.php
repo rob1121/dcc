@@ -5,6 +5,7 @@ use App\CustomerSpecCategory;
 use App\CustomerSpecRevision;
 use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\Exceptions\SpecNotFoundException;
+use App\DCC\Exceptions\SpecAlreadyReviewedException;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
@@ -42,7 +43,7 @@ class ExternalController extends Controller {
     public function create() {
         return view('external.create', [
             "category_lists" => $this->categories,
-            "reviewers_list" => CustomerSpecRevision::uniqueReviewer()
+            "reviewers_list" => CustomerSpec::uniqueReviewer()
         ]);
     }
 
@@ -69,8 +70,14 @@ class ExternalController extends Controller {
      * @throws SpecNotFoundException
      */
     public function show(CustomerSpec $external, $revision=null) {
-        try { return (new Document($this->getSpec($external, $revision)))->showPDF(); }
+        try {
+            $doc = $this->getSpec($external, $revision);
+
+            if($doc->is_reviewed) throw new SpecAlreadyReviewedException("This spec Already Reviewed");
+            return (new Document($doc))->showPDF();
+        }
         catch (ErrorException $e) { throw new SpecNotFoundException("External Specification not found in the database"); }
+        catch (SpecAlreadyReviewedException $e) { return $e.getMessage(); }
     }
 
     /**

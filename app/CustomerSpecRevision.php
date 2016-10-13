@@ -10,13 +10,8 @@ class CustomerSpecRevision extends Model
     use ModelInstance;
     protected $fillable = [
         'revision',
-        'revision_date',
-        'reviewer'
+        'revision_date'
     ];
-
-    public static function uniqueReviewer() {
-        return self::get(["reviewer"])->unique("reviewer")->pluck("reviewer");
-    }
 
     public function customerSpec()
     {
