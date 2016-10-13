@@ -3,7 +3,7 @@ import filter from "./filterMethods";
 
 export default {
 
-	created() {
+	mounted() {
 		this.$nextTick( () => this.getPagination() )
 	},
 
@@ -14,7 +14,9 @@ export default {
 			this.$http.get(pagination_url, {
 				params: { page:num, category: category }
 			}).then(
-				(response) => this.setPagination(response.json()),
+				response => {
+					this.setPagination(response.json())
+				},
 				() => this.errorDialogMessage()
 			);
 		},

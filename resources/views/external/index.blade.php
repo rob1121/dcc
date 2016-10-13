@@ -21,13 +21,17 @@
         <div class="clearfix"></div>
 
         @include('errors.flash')
-        <div class="col-md-12"v-if="pagination.data">
-            <select name="status_filter" id="status_filter" v-model="status_filter">
-                <option value="all">All</option>
-                <option value="for review">For Review</option>
-            </select>
+        <div v-if="externalSpecs">
+            <label>Show:</label>
+
+                <select name="status_filter" id="status_filter" v-model="status_filter">
+                    <option value="all">All</option>
+                    <option value="for review">Specification For Review</option>
+                </select>
         </div>
-        <div class="deck" v-for="spec in externalSpecs" v-if="pagination.data">
+
+
+        <div class="deck" v-for="spec in externalSpecs" v-if="externalSpecs">
             <div class="spec-no col-sm-12
                 @if(Auth::user() && isAdmin())         col-md-7
                 @elseif(Auth::user()&& ! isAdmin())    col-md-8
@@ -77,7 +81,7 @@
                 </div>
             @endif
         </div>
-        <div v-if="! pagination.data" class="container">
+        <div v-if="! externalSpecs" class="container">
             <h1 class="text-danger">No document specification found.</h1>
         </div>
     </div>

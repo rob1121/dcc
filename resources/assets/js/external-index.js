@@ -17,7 +17,7 @@ const app = new Vue({
             indexOfSpecForUpdate: null
 		},
 
-        pagination: {}
+        pagination: []
 	},
 
     mixins: [abstract],
@@ -43,23 +43,29 @@ const app = new Vue({
         },
 
         externalSpecs() {
-            return this.pagination.data;
-            var filtered = this.pagination.data;
+            var filtered_result = _.filter(
+                this.pagination.data,
+                spec => _.find( spec.customer_spec_revision, {is_reviewed: 0} )
+            );
 
-            return this.status_filter === "all" ? this.pagination.data : filtered;
+            return this.status_filter == "all" ? this.pagination.data : filtered_result;
         }
     },
 
     methods: {
 
         externalRouteFor(specRevision) {
-            specRevision = _.sortBy(specRevision, ['revision'])[specRevision.length-1];
-            return laroute.route('external.show', {external:specRevision.customer_spec_id,revision:specRevision.revision});
+            const spec = _.sortBy(specRevision, ['revision'])[specRevision.length-1];
+
+            return laroute.route('external.show', {
+                external: specRevision.customer_spec_id,
+                revision: specRevision.revision
+            });
         },
 
         getCustomerSpecsForReview(specs) {
             return _.filter(specs, spec => {
-                return spec.is_reviewed;
+                return spec.is_reviewed < 1;
             });
         },
 
@@ -68,7 +74,7 @@ const app = new Vue({
         },
 
         getPagination(num = "") {
-            var pagination_url = laroute.route('api.sestatus_filter arch.external');
+            var pagination_url = laroute.route('api.search.external');
             this.fetchData(pagination_url, num, this.category.customer_name);
         },
 
