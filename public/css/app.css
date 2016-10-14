@@ -7973,15 +7973,17 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+body {
+  background: #e4ecf2;
+  overflow-y: scroll;
+  padding: 0;
+  margin: 0; }
+
 .navbar-header {
   font-family: "Raleway", sans-serif; }
 
 #app[v-cloak] {
   display: none; }
-
-body {
-  background: #e4ecf2;
-  overflow-y: scroll; }
 
 .pagination {
   margin: 0px; }
@@ -8042,14 +8044,8 @@ body {
 .search--revision {
   color: #636b6f; }
 
-th {
+.table th {
   text-transform: capitalize; }
-
-.clear-btn {
-  cursor: pointer;
-  float: right;
-  margin-top: -28px;
-  margin-right: 10px; }
 
 .search-output {
   margin-bottom: 80px; }
@@ -8080,6 +8076,13 @@ th {
     -webkit-transform: translateX(60vw);
     transform: translateX(60vw);
     display: none; }
+  #app .clear-btn {
+    position: absolute;
+    z-index: 5;
+    right: 90px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%); }
 
 a.sidebar-link {
   text-decoration: none !important;
@@ -8106,9 +8109,11 @@ a.sidebar-link {
     background: #252243;
     position: relative;
     bottom: 0;
-    margin-top: -11.7vh;
-    padding-top: 10vh;
-    color: #fff; }
+    margin-top: -12vh;
+    padding-top: 11.5vh;
+    color: #fff;
+    overflow: auto;
+    padding-bottom: 11.5vh; }
     #app #sidebar a {
       color: #fff; }
     #app #sidebar .clear-btn {

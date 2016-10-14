@@ -2,9 +2,7 @@
 
 use App\CompanySpec;
 use App\CompanySpecCategory;
-use App\CustomerSpecRevision;
 use App\DCC\Exceptions\DuplicateEntryException;
-use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\File\Document;
 use App\DCC\Internal\InternalSpecification;
 use App\DCC\SpecificationFactory;
@@ -19,6 +17,7 @@ class InternalController extends Controller {
         $this->middleware("auth", ["except" => ["index","show"]]);
         $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
+
         $this->factory = new SpecificationFactory;
         $this->categories = CompanySpecCategory::getCategoryList();
     }
@@ -48,13 +47,12 @@ class InternalController extends Controller {
      */
     public function store(InternalSpecRequest $request) {
         try {
-            if (CompanySpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
+            if (CompanySpec::isExist($request)) throw new DuplicateEntryException();
 
             $this->factory->store(new InternalSpecification($request));
-
             return redirect(route("internal.index"));
         } catch(DuplicateEntryException $e) {
-            flash("document already exist!.","danger");
+            flash("{$request->spec_no} {$request->name} already exist!.","danger");
             return redirect()->back();
         }
     }
@@ -62,11 +60,10 @@ class InternalController extends Controller {
     /**
      * @param CompanySpec $internal
      * @return mixed
-     * @throws SpecNotFoundException
      */
     public function show(CompanySpec $internal) {
         try { return (new Document($internal->companySpecRevision->document))->showPDF(); }
-        catch (ErrorException $e) { throw new SpecNotFoundException("External Specification not found in the database"); }
+        catch (ErrorException $e) { abort(406,"Specification not found in the database"); }
     }
 
     /**

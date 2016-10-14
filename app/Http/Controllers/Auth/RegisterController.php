@@ -36,7 +36,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('auth.admin');
+       $this->middleware('auth.admin');
     }
 
     /**
@@ -48,13 +48,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'department' => 'required',
-            'user_type' => "required",
+            'name'        => 'required|max:255',
+            'email'       => 'required|email|max:255|unique:users',
+            'department'  => 'required',
+            'user_type'   => "required",
             'employee_id' => 'numeric|required|unique:users,employee_id',
-            'is_admin' => "required|boolean",
-            'password' => 'required|min:6|confirmed',
+            'password'    => 'required|min:6|confirmed',
         ]);
     }
 
@@ -67,12 +66,12 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name'        => $data['name'],
+            'email'       => $data['email'],
             'employee_id' => $data['employee_id'],
-            'department' => $data['department'],
-            'is_admin' => $data['is_admin'],
-            'password' => bcrypt($data['password']),
+            'department'  => $data['department'],
+            'user_type'   => $data['user_type'],
+            'password'    => bcrypt($data['password']),
         ]);
     }
 }

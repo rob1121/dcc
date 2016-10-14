@@ -3,14 +3,12 @@
 namespace App\Mail;
 
 use App\CustomerSpec;
-use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ExternalSpecFollowUpMailer extends Mailable implements ShouldQueue
+class ExternalSpecFollowUpMailer extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels;
     public $mail_subject;
     public $data = [];
 

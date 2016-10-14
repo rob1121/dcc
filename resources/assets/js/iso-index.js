@@ -2,10 +2,11 @@ require("./app");
 import search from "./mixins/search";
 import filter from "./mixins/filterMethods";
 
-const app = new Vue({
+const app = new Vue( {
     el: "#app",
 
-    data: {
+    data:
+    {
         pagination: isos,
 
         selectedIso: []
@@ -13,32 +14,53 @@ const app = new Vue({
 
     mixins:[search, filter],
 
-    methods: {
-        setModalSpec(iso) {
+    methods:
+    {
+        getLatestRevision(revArray, column) {
+            return typeof revArray[revArray.length-1][column] !== undefined
+                ? revArray[revArray.length-1][column]
+                : "N/A";
+        },
+
+        internalRouteFor(id)
+        {
+            return laroute.route('internal.show', {internal: id});
+        },
+
+        externalRouteFor(id)
+        {
+            return laroute.route('external.show', {external: id});
+        },
+
+        setModalSpec(iso)
+        {
             this.selectedIso = iso;
         },
 
-        removeIso() {
+        removeIso()
+        {
             var route_delete = laroute.route("iso.destroy", {iso:this.selectedIso.id});
 
-            this.$http.delete(route_delete)
-                .then(
-                    () => this.delete(this.selectedIso),
-                    () => this.errorDialogMessage()
-                );
+            this.$http.delete(route_delete).then(
+                () => this.delete(this.selectedIso),
+                () => this.errorDialogMessage()
+            );
         },
 
-        delete(iso) {
+        delete(iso)
+        {
             var index = this.pagination.indexOf(iso);
             this.pagination.splice(index, 1);
         },
 
-        showRouteFor(id) {
+        showRouteFor(id)
+        {
             return laroute.route('iso.show', {iso:id});
         },
 
-        editRouteFor(id) {
+        editRouteFor(id)
+        {
             return laroute.route("iso.edit", {iso:id});
         }
     }
-});
+} );

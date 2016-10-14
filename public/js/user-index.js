@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":18,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48533,72 +48533,6 @@ if (module.hot) {(function () {  module.hot.accept()
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _search = require("./mixins/search");
-
-var _search2 = _interopRequireDefault(_search);
-
-var _filterMethods = require("./mixins/filterMethods");
-
-var _filterMethods2 = _interopRequireDefault(_filterMethods);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-require("./app");
-
-
-var app = new Vue({
-    el: "#app",
-
-    data: {
-        pagination: isos,
-
-        selectedIso: []
-    },
-
-    mixins: [_search2.default, _filterMethods2.default],
-
-    methods: {
-        getLatestRevision: function getLatestRevision(revArray, column) {
-            return _typeof(revArray[revArray.length - 1][column]) !== undefined ? revArray[revArray.length - 1][column] : "N/A";
-        },
-        internalRouteFor: function internalRouteFor(id) {
-            return laroute.route('internal.show', { internal: id });
-        },
-        externalRouteFor: function externalRouteFor(id) {
-            return laroute.route('external.show', { external: id });
-        },
-        setModalSpec: function setModalSpec(iso) {
-            this.selectedIso = iso;
-        },
-        removeIso: function removeIso() {
-            var _this = this;
-
-            var route_delete = laroute.route("iso.destroy", { iso: this.selectedIso.id });
-
-            this.$http.delete(route_delete).then(function () {
-                return _this.delete(_this.selectedIso);
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-        delete: function _delete(iso) {
-            var index = this.pagination.indexOf(iso);
-            this.pagination.splice(index, 1);
-        },
-        showRouteFor: function showRouteFor(id) {
-            return laroute.route('iso.show', { iso: id });
-        },
-        editRouteFor: function editRouteFor(id) {
-            return laroute.route("iso.edit", { iso: id });
-        }
-    }
-});
-
-},{"./app":11,"./mixins/filterMethods":20,"./mixins/search":21}],19:[function(require,module,exports){
-"use strict";
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 (function () {
 
     var laroute = function () {
@@ -48606,8 +48540,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var routes = {
 
             absolute: false,
-            rootUrl: 'http://localhost',
-            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "api\/internal\/search", "name": "api.search.internal", "action": "App\Http\Controllers\ApiController@internalSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/external\/search", "name": "api.search.external", "action": "App\Http\Controllers\ApiController@externalSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/external\/search-for-review", "name": "api.search.external.for_review", "action": "App\Http\Controllers\ApiController@forReviewSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external", "name": "external.index", "action": "App\Http\Controllers\ExternalController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/create", "name": "external.create", "action": "App\Http\Controllers\ExternalController@create" }, { "host": null, "methods": ["POST"], "uri": "external", "name": "external.store", "action": "App\Http\Controllers\ExternalController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/{external}\/{revision?}", "name": "external.show", "action": "App\Http\Controllers\ExternalController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/spec\/{external}\/edit", "name": "external.edit", "action": "App\Http\Controllers\ExternalController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "external\/{external}", "name": "external.update", "action": "App\Http\Controllers\ExternalController@update" }, { "host": null, "methods": ["PATCH"], "uri": "external\/{external}\/update-status", "name": "external.revision.update", "action": "App\Http\Controllers\ExternalController@updateRevision" }, { "host": null, "methods": ["DELETE"], "uri": "external\/{external}", "name": "external.destroy", "action": "App\Http\Controllers\ExternalController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal", "name": "internal.index", "action": "App\Http\Controllers\InternalController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/create", "name": "internal.create", "action": "App\Http\Controllers\InternalController@create" }, { "host": null, "methods": ["POST"], "uri": "internal", "name": "internal.store", "action": "App\Http\Controllers\InternalController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/{internal}", "name": "internal.show", "action": "App\Http\Controllers\InternalController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/{internal}\/edit", "name": "internal.edit", "action": "App\Http\Controllers\InternalController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "internal\/{internal}", "name": "internal.update", "action": "App\Http\Controllers\InternalController@update" }, { "host": null, "methods": ["DELETE"], "uri": "internal\/{internal}", "name": "internal.destroy", "action": "App\Http\Controllers\InternalController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso", "name": "iso.index", "action": "App\Http\Controllers\IsoController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso\/create", "name": "iso.create", "action": "App\Http\Controllers\IsoController@create" }, { "host": null, "methods": ["POST"], "uri": "iso", "name": "iso.store", "action": "App\Http\Controllers\IsoController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso\/{iso}", "name": "iso.show", "action": "App\Http\Controllers\IsoController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso\/{iso}\/edit", "name": "iso.edit", "action": "App\Http\Controllers\IsoController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "iso\/{iso}", "name": "iso.update", "action": "App\Http\Controllers\IsoController@update" }, { "host": null, "methods": ["DELETE"], "uri": "iso\/{iso}", "name": "iso.destroy", "action": "App\Http\Controllers\IsoController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": null, "action": "Closure" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "login", "name": "login", "action": "App\Http\Controllers\Auth\LoginController@showLoginForm" }, { "host": null, "methods": ["POST"], "uri": "login", "name": null, "action": "App\Http\Controllers\Auth\LoginController@login" }, { "host": null, "methods": ["POST"], "uri": "logout", "name": null, "action": "App\Http\Controllers\Auth\LoginController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "register", "name": null, "action": "App\Http\Controllers\Auth\RegisterController@showRegistrationForm" }, { "host": null, "methods": ["POST"], "uri": "register", "name": null, "action": "App\Http\Controllers\Auth\RegisterController@register" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "password\/reset", "name": null, "action": "App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm" }, { "host": null, "methods": ["POST"], "uri": "password\/email", "name": null, "action": "App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "password\/reset\/{token}", "name": null, "action": "App\Http\Controllers\Auth\ResetPasswordController@showResetForm" }, { "host": null, "methods": ["POST"], "uri": "password\/reset", "name": null, "action": "App\Http\Controllers\Auth\ResetPasswordController@reset" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "home", "name": "home", "action": "App\Http\Controllers\HomeController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "search", "action": "App\Http\Controllers\SearchController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/user", "name": null, "action": "Closure" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }],
+            rootUrl: 'http://203.177.213.4/dcc_2016/public',
+            routes: [{ "host": null, "methods": ["GET", "HEAD"], "uri": "api\/internal\/search", "name": "api.search.internal", "action": "App\Http\Controllers\ApiController@internalSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/external\/search", "name": "api.search.external", "action": "App\Http\Controllers\ApiController@externalSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/external\/search-for-review", "name": "api.search.external.for_review", "action": "App\Http\Controllers\ApiController@forReviewSearch" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external", "name": "external.index", "action": "App\Http\Controllers\ExternalController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/create", "name": "external.create", "action": "App\Http\Controllers\ExternalController@create" }, { "host": null, "methods": ["POST"], "uri": "external", "name": "external.store", "action": "App\Http\Controllers\ExternalController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/{external}\/{revision?}", "name": "external.show", "action": "App\Http\Controllers\ExternalController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "external\/spec\/{external}\/edit", "name": "external.edit", "action": "App\Http\Controllers\ExternalController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "external\/{external}", "name": "external.update", "action": "App\Http\Controllers\ExternalController@update" }, { "host": null, "methods": ["PATCH"], "uri": "external\/{external}\/update-status", "name": "external.revision.update", "action": "App\Http\Controllers\ExternalController@updateRevision" }, { "host": null, "methods": ["DELETE"], "uri": "external\/{external}", "name": "external.destroy", "action": "App\Http\Controllers\ExternalController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal", "name": "internal.index", "action": "App\Http\Controllers\InternalController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/create", "name": "internal.create", "action": "App\Http\Controllers\InternalController@create" }, { "host": null, "methods": ["POST"], "uri": "internal", "name": "internal.store", "action": "App\Http\Controllers\InternalController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/{internal}", "name": "internal.show", "action": "App\Http\Controllers\InternalController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "internal\/{internal}\/edit", "name": "internal.edit", "action": "App\Http\Controllers\InternalController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "internal\/{internal}", "name": "internal.update", "action": "App\Http\Controllers\InternalController@update" }, { "host": null, "methods": ["DELETE"], "uri": "internal\/{internal}", "name": "internal.destroy", "action": "App\Http\Controllers\InternalController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso", "name": "iso.index", "action": "App\Http\Controllers\IsoController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso\/create", "name": "iso.create", "action": "App\Http\Controllers\IsoController@create" }, { "host": null, "methods": ["POST"], "uri": "iso", "name": "iso.store", "action": "App\Http\Controllers\IsoController@store" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso\/{iso}", "name": "iso.show", "action": "App\Http\Controllers\IsoController@show" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "iso\/{iso}\/edit", "name": "iso.edit", "action": "App\Http\Controllers\IsoController@edit" }, { "host": null, "methods": ["PATCH"], "uri": "iso\/{iso}", "name": "iso.update", "action": "App\Http\Controllers\IsoController@update" }, { "host": null, "methods": ["DELETE"], "uri": "iso\/{iso}", "name": "iso.destroy", "action": "App\Http\Controllers\IsoController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "employee", "name": "user.index", "action": "AppHttpControllersUserController@index" }, { "host": null, "methods": ["DELETE"], "uri": "employee", "name": "user.destroy", "action": "AppHttpControllersUserController@destroy" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "\/", "name": null, "action": "Closure" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "login", "name": "login", "action": "App\Http\Controllers\Auth\LoginController@showLoginForm" }, { "host": null, "methods": ["POST"], "uri": "login", "name": null, "action": "App\Http\Controllers\Auth\LoginController@login" }, { "host": null, "methods": ["POST"], "uri": "logout", "name": null, "action": "App\Http\Controllers\Auth\LoginController@logout" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "register", "name": null, "action": "App\Http\Controllers\Auth\RegisterController@showRegistrationForm" }, { "host": null, "methods": ["POST"], "uri": "register", "name": null, "action": "App\Http\Controllers\Auth\RegisterController@register" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "password\/reset", "name": null, "action": "App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm" }, { "host": null, "methods": ["POST"], "uri": "password\/email", "name": null, "action": "App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "password\/reset\/{token}", "name": null, "action": "App\Http\Controllers\Auth\ResetPasswordController@showResetForm" }, { "host": null, "methods": ["POST"], "uri": "password\/reset", "name": null, "action": "App\Http\Controllers\Auth\ResetPasswordController@reset" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "home", "name": "home", "action": "App\Http\Controllers\HomeController@index" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "search", "name": "search", "action": "App\Http\Controllers\SearchController@search" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "api\/user", "name": null, "action": "Closure" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/open", "name": "debugbar.openhandler", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@handle" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/clockwork\/{id}", "name": "debugbar.clockwork", "action": "Barryvdh\Debugbar\Controllers\OpenHandlerController@clockwork" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/stylesheets", "name": "debugbar.assets.css", "action": "Barryvdh\Debugbar\Controllers\AssetController@css" }, { "host": null, "methods": ["GET", "HEAD"], "uri": "_debugbar\/assets\/javascript", "name": "debugbar.assets.js", "action": "Barryvdh\Debugbar\Controllers\AssetController@js" }],
             prefix: '',
 
             route: function route(name, parameters, _route) {
@@ -48780,84 +48714,48 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	methods: {
-		uppercase: function uppercase(string) {
-			return _.toUpper(string);
-		},
-		capitalize: function capitalize(string) {
-			return _.capitalize(string);
-		},
-		trim: function trim(string) {
-			if (string.length <= 150) return string;else if (150 <= 3) return string.slice(0, 150) + "...";else return string.slice(0, 150 - 3) + "...";
-		},
-		telfordStandardDate: function telfordStandardDate(dt) {
-			return moment(dt).format("MM/DD/Y");
-		}
-	}
-};
+require('./app');
 
-},{}],21:[function(require,module,exports){
-"use strict";
+var app = new Vue({
+  el: "#app",
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    data: function data() {
-        return {
-            showResultDialog: false,
-            searchKeyword: "",
-            searchResults: []
-        };
+  data: {
+    pagination: {}
+  },
+
+  mounted: function mounted() {
+    this.getUsers();
+  },
+
+
+  filters: {
+    capitalize: function capitalize(string) {
+      return _.toUpper(string);
     },
-
-
-    computed: {
-        isSearchResultNotEmpty: function isSearchResultNotEmpty() {
-            return this.searchResults.internal && this.searchResults.external;
-        }
-    },
-
-    methods: {
-        displaySearchResult: function displaySearchResult() {
-            var _this = this;
-
-            var search_route = laroute.route("search");
-            this.$http.get(search_route, {
-                params: { q: this.searchKeyword }
-            }).then(function (response) {
-                _this.searchResults = response.json();
-                _this.toggleSearchResult();
-                $("body").removeClass("active");
-            }, function () {
-                return _this.errorDialogMessage();
-            });
-        },
-        errorDialogMessage: function errorDialogMessage() {
-            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
-        },
-        toggleSearchResult: function toggleSearchResult() {
-            this.showResultDialog = true;
-        },
-        closeResultDialog: function closeResultDialog() {
-            this.showResultDialog = false;
-            this.searchResults = [];
-            this.searchKeyword = "";
-            $("body").removeClass("active");
-        },
-        clearSearchInput: function clearSearchInput() {
-            this.closeResultDialog();
-        }
+    nameCase: function nameCase(name) {
+      return _.map(name.split(" "), function (word) {
+        return _.capitalize(word);
+      }).join(" ");
     }
-};
+  },
 
-},{}]},{},[18]);
+  methods: {
+    getUsers: function getUsers() {
+      var _this = this;
 
-//# sourceMappingURL=iso-index.js.map
+      return this.$http.get(laroute.route("api.search.user")).then(function (response) {
+        _this.pagination = response.json();
+      });
+    },
+    deleteUser: function deleteUser(user) {
+      this.$http.delete(user.route);
+    }
+  }
+});
+
+},{"./app":11}]},{},[19]);
+
+//# sourceMappingURL=user-index.js.map

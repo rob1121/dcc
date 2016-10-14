@@ -64,7 +64,7 @@
                         <ul class="dropdown-menu" role="menu">
                             @if(isAdmin())
                                 <li><a href="{{ url('/register') }}">Register new user</a></li>
-                                <li><a href="{{ url('/user-list') }}">User list</a></li>
+                                <li><a href="{{ route("user.index") }}">User list</a></li>
                                 <li role="separator" class="divider"></li>
                             @endif
                             <li>

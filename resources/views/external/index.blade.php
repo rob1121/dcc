@@ -6,7 +6,6 @@
 
 @section("content")
     <div class="deck-collection">
-
         <ol class="breadcrumb">
             <li><a href="{{route("home")}}">Home</a></li>
             <li class="active">Internal Specification</li>

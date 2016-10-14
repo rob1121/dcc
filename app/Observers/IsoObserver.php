@@ -9,7 +9,7 @@ class IsoObserver
         flash("Document save to the database!.","success");
     }
 
-    public function updated()
+    public function save()
     {
         flash("Database successfully updated!.","success");
     }

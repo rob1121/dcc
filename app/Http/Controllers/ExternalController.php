@@ -2,10 +2,7 @@
 
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
-use App\CustomerSpecRevision;
 use App\DCC\Exceptions\DuplicateEntryException;
-use App\DCC\Exceptions\SpecNotFoundException;
-use App\DCC\Exceptions\SpecAlreadyReviewedException;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
@@ -58,7 +55,7 @@ class ExternalController extends Controller {
             $this->factory->store(new ExternalSpecification($request));
             return redirect()->route("external.index");
         } catch(DuplicateEntryException $e) {
-            flash("document already exist!.","danger");
+            flash("{$request->spec_no} {$request->name} document already exist!.","danger");
             return redirect()->back();
         }
     }
@@ -67,17 +64,17 @@ class ExternalController extends Controller {
      * @param CustomerSpec $external
      * @param null $revision
      * @return mixed
-     * @throws SpecNotFoundException
      */
-    public function show(CustomerSpec $external, $revision=null) {
-        try {
+    public function show(CustomerSpec $external, $revision=null)
+    {
+        try
+        {
             $doc = $this->getSpec($external, $revision);
 
-            if($doc->is_reviewed) throw new SpecAlreadyReviewedException("This spec Already Reviewed");
+            if($doc->is_reviewed) abort(407,"Spec you are trying to view is already reviewed");
             return (new Document($doc))->showPDF();
-        }
-        catch (ErrorException $e) { throw new SpecNotFoundException("External Specification not found in the database"); }
-        catch (SpecAlreadyReviewedException $e) { return $e.getMessage(); }
+
+        } catch (ErrorException $e) { abort(406,"External Specification not found in the database"); }
     }
 
     /**

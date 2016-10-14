@@ -16,7 +16,7 @@ class Document
     public function showPDF()
     {
         try {
-            if( ! file_exists($this->path)) throw new SpecNotFoundException;
+            if( ! file_exists($this->path)) throw new SpecNotFoundException("specs not found", 406);
             return $this->displayPageInPdfType();
         } catch(SpecNotFoundException $e) {
             return $this->redirectToError404();

@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers;
 
 use App\DCC\Exceptions\DuplicateEntryException;
-use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\File\Document;
 use App\DCC\Iso\IsoDocument;
 use App\DCC\SpecificationFactory;
@@ -12,31 +11,45 @@ use ErrorException;
 class IsoController extends Controller {
     private $factory;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
-        $this->factory = new SpecificationFactory(); }
+        $this->factory = new SpecificationFactory();
+    }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
+    public function index()
+    {
         \JavaScript::put("isos", Iso::all());
-        return view("iso.index", ["show" => true ]); }
+        return view("iso.index", ["show" => true ]);
+    }
 
     /**
      * @param Iso $iso
      * @return mixed
-     * @throws SpecNotFoundException
      */
-    public function show(Iso $iso) {
-        try { return (new Document($iso->document))->showPDF(); }
-        catch (ErrorException $e) { throw new SpecNotFoundException("External Specification not found in the database"); } }
+    public function show(Iso $iso)
+    {
+        try
+        {
+            return (new Document($iso->document))->showPDF();
+        }
+        catch (ErrorException $e)
+        {
+            abort(406,"External Specification not found in the database");
+        }
+    }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create() { return view("iso.create"); }
+    public function create()
+    {
+        return view("iso.create");
+    }
 
     /**
      * @param IsoRequest $request

@@ -11,6 +11,11 @@ Route::group(["prefix" => "api"], function() {
         "uses" => "ApiController@externalSearch"
     ]);
 
+    Route::get( "/user/search", [
+        "as" => "api.search.user",
+        "uses" => "ApiController@userSearch"
+    ]);
+
     Route::get( "/external/search-for-review", [
         "as" => "api.search.external.for_review",
         "uses" => "ApiController@forReviewSearch"

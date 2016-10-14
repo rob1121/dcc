@@ -5,7 +5,6 @@ use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationFactory;
 use App\DCC\SpecificationGateway;
 use App\Mail\ExternalSpecMailer;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 

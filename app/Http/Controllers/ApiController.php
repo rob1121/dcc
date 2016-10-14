@@ -40,4 +40,13 @@ class ApiController extends Controller
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET');
     }
+
+    public function userSearch(Request $request)
+    {
+        $user = \App\User::allUser();
+
+        return response()->json($user)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET');
+    }
 }

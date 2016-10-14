@@ -22,11 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('email:followup')->timezone('Asia/Manila')
-            ->everyMinute()
-//            ->dailyAt("15:00")
-//            ->dailyAt("10:00")
-        ;
+        $schedule->command('email:followup')->timezone('Asia/Manila')->dailyAt("14:10");
     }
 
     /**

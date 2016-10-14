@@ -60,7 +60,6 @@
             <a class="menu-link sidebar-link" href="{{ url('/login') }}">Login</a>
 
         @else
-
             @if(isAdmin())
                 <a class="menu-link sidebar-link" href="{{ url('/register') }}">Register new user</a>
                 <a class="menu-link sidebar-link" href="{{ url('/user-list') }}">User list</a>

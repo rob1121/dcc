@@ -10,6 +10,14 @@
         <div class="active tab-pane fade in" id="tab1">
             <div class="search--deck-collection search-result--list" v-if="searchResults.internal">
                 <h1>Search result Found for <strong>"@{{ searchKeyword }}"</strong>
+
+
+                    <button @click.prevent="clearSearchInput"
+                            class="btn btn-default btn-search"
+                            name="search-field-submit"
+                    >
+                        <i class="fa fa-remove"></i>
+                    </button>
                 </h1>
                 <a class="search--deck" v-for="result in searchResults.internal" target="_blank"
                    :href="internalRouteFor(result.id)"
@@ -33,7 +41,16 @@
         <div class="tab-pane fade" id="tab2">
 
             <div class="search--deck-collection search-result--list" v-if="searchResults.external">
-                <h1>Search result found for <strong>"@{{ searchKeyword }}"</strong>
+                <h1>
+                    Search result found for <strong>"@{{ searchKeyword }}"</strong>
+
+
+                    <button @click.prevent="clearSearchInput"
+                            class="btn btn-default btn-search"
+                            name="search-field-submit"
+                    >
+                        <i class="fa fa-remove"></i>
+                    </button>
                 </h1>
                 <a class="search--deck" v-for="result in searchResults.external" target="_blank"
                    :href="externalRouteFor(result.id)"
