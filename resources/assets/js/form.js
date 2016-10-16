@@ -7,3 +7,4 @@ const app = new Vue({
 $(".modal-btn").click(function() {
     $("#form-submit").submit();
 });
+

@@ -2,6 +2,19 @@
 
 @push('script')
 <script src="{{URL::to("js/form.js")}}"></script>
+<script>
+    function togglePassword(userType) {
+        var password = $(".password");
+        if( userType === "EMAIL RECEIVER ONLY" ) password.hide()
+        else password.show();
+    }
+
+    togglePassword($("#user_type").val());
+
+    $("#user_type").on("change", function() {
+        togglePassword($(this).val());
+    });
+</script>
 @endpush
 
 @section('content')
@@ -17,10 +30,10 @@
 
                 <div class="col-xs-6">
                     <select name="user_type" id="user_type" class="form-control">
-                        <option value="" disabled selected> -- Select One -- </option>
-                        <option value="ADMIN"  @if(old("user_type") === "ADMIN") selected @endif>ADMIN</option>
-                        <option value="REVIEWER"  @if(old("user_type") === "REVIEWER") selected @endif>REVIEWER</option>
-                        <option value="EMAIL RECEIVER ONLY"  @if(old("user_type") === "EMAIL RECEIVER ONLY") selected @endif>EMAIL RECEIVER ONLY</option>
+                        <option disabled selected> -- Select One -- </option>
+                        <option @if(old("user_type") === "ADMIN" || ( isset($user) && $user->user_type === "ADMIN" )) selected @endif>ADMIN</option>
+                        <option @if(old("user_type") === "REVIEWER" || ( isset($user) && $user->user_type === "REVIEWER" )) selected @endif>REVIEWER</option>
+                        <option @if(old("user_type") === "EMAIL RECEIVER ONLY" || ( isset($user) && $user->user_type === "EMAIL RECEIVER ONLY" )) selected @endif>EMAIL RECEIVER ONLY</option>
                     </select>
 
                     @if ($errors->has('user_type'))
@@ -37,8 +50,8 @@
                 <div class="col-xs-6">
                     <select name="department" id="department" class="form-control">
                         <option value="" disabled selected> -- Select One -- </option>
-                        <option value="QA"  @if(old("department") === "QA") selected @endif>QA</option>
-                        <option value="PE"  @if(old("department") === "PE") selected @endif>PE</option>
+                        <option value="QA"  @if(old("department") === "QA" || ( isset($user) && $user->department === "QA" )) selected @endif>QA</option>
+                        <option value="PE"  @if(old("department") === "PE" || ( isset($user) && $user->department === "PE" )) selected @endif>PE</option>
                     </select>
 
                     @if ($errors->has('department'))
@@ -53,7 +66,12 @@
                 <label for="employee_id" class="col-xs-4 control-label">Employee ID</label>
 
                 <div class="col-xs-6">
-                    <input id="employee_id" type="text" class="form-control" name="employee_id" value="{{ old('employee_id') }}">
+                    <input id="employee_id"
+                           type="text"
+                           class="form-control"
+                           name="employee_id"
+                           value="@if(old('employee_id')) {{old('employee_id')}} @elseif(isset($user)) {{$user->employee_id}} @endif"
+                    >
 
                     @if ($errors->has('employee_id'))
                         <span class="help-block">
@@ -67,7 +85,13 @@
                 <label for="name" class="col-xs-4 control-label">Name</label>
 
                 <div class="col-xs-6">
-                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" autofocus>
+                    <input id="name"
+                           type="text"
+                           class="form-control"
+                           name="name"
+                           value="@if(old("name")) {{old('name')}}  @elseif(isset($user)) {{$user->name}} @endif"
+
+                    >
 
                     @if ($errors->has('name'))
                         <span class="help-block">
@@ -81,7 +105,12 @@
                 <label for="email" class="col-xs-4 control-label">E-Mail Address</label>
 
                 <div class="col-xs-6">
-                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
+                    <input id="email"
+                           type="email"
+                           class="form-control"
+                           name="email"
+                           value="@If(old('email')) {{old('email')}} @elseif(isset($user)) {{$user->email}} @endif"
+                    >
 
                     @if ($errors->has('email'))
                         <span class="help-block">
@@ -91,7 +120,7 @@
                 </div>
             </div>
 
-            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+            <div class="password form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                 <label for="password" class="col-xs-4 control-label">Password</label>
 
                 <div class="col-xs-6">
@@ -105,7 +134,7 @@
                 </div>
             </div>
 
-            <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+            <div class="password form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                 <label for="password-confirm" class="col-xs-4 control-label">Confirm Password</label>
 
                 <div class="col-xs-6">

@@ -24,11 +24,14 @@ const app = new Vue( {
     },
 
 	methods: {
+		editRouteFor(id) {
+			return laroute.route("user.edit", {user: id});
+		},
+
     	getUsers()
 		{
     		return this.$http.get(laroute.route("api.search.user"))
-				.then(response => {
-					this.pagination = response.json() });
+				.then(response => this.pagination = response.json());
 		},
 
     	deleteUser(user)

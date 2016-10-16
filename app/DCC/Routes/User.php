@@ -1,9 +1,14 @@
 <?php
-Route::group(["prefix" => "employee"], function() {
-   Route::get("/", [
-       "uses" => "UserController@index",
-       "as" => "user.index"
-   ]);
+Route::group(["prefix" => "user"], function() {
+    Route::get("/", [
+        "uses" => "UserController@index",
+        "as" => "user.index"
+    ]);
+
+    Route::get("/{user}/edit", [
+        "uses" => "UserController@edit",
+        "as" => "user.edit"
+    ]);
 
    Route::delete("/", [
        "uses" => "UserController@destroy",

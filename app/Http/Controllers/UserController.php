@@ -19,6 +19,11 @@ class UserController extends Controller
         return view( "user.index");
     }
 
+    public function edit(User $user)
+    {
+        return view("auth.register", ["user" => $user]);
+    }
+
     public function destroy(User $user)
     {
     	$user->delete();

@@ -21,6 +21,7 @@ elixir(mix => {
         // .browserify('external-index.js')
         //.browserify('iso-index.js')
         .browserify('user-index.js')
+        .browserify('form.js')
         .browserSync({
             proxy: "dcc_2016.me"
         });
