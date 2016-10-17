@@ -24,19 +24,19 @@ const app = new Vue( {
     },
 
 	methods: {
-		editRouteFor(id) {
-			return laroute.route("user.edit", {user: id});
+		remove(user)
+		{
+		    const delete_route = laroute.route("user.destroy", {user: user.id});
+		    this.$http.delete(delete_route).then(
+                () => this.pagination.data.split(user),
+                error => console.log(error.text())
+            );
 		},
 
     	getUsers()
 		{
     		return this.$http.get(laroute.route("api.search.user"))
 				.then(response => this.pagination = response.json());
-		},
-
-    	deleteUser(user)
-		{
-    		this.$http.delete(user.route);
 		}
 	}
 } );

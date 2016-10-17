@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 
 class InternalSpecCategory implements SpecificationGateway {
     private $spec;
-    /**
-     * @var Request
-     */
     private $request;
 
     public function __construct(Request $request, CompanySpec $spec=null) {

@@ -15,7 +15,8 @@
         "lord/laroute": "^2.3",
         "laracasts/flash": "^2.0",
         "jacobbennett/laravel-http2serverpush": "^1.2",
-        "alfredo-ramos/parsedown-extra-laravel": "^0.5.1"
+        "alfredo-ramos/parsedown-extra-laravel": "^0.5.1",
+        "spatie/laravel-backup": "^3.0.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

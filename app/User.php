@@ -44,7 +44,8 @@ class User extends Authenticatable
 
         $users["data"] = collect($users["data"])->map(function($item) use($charCount) {
             $item["employee_id"] = sprintf("%0{$charCount}d", $item["employee_id"]);
-            $item = collect($item)->put("delete_route", route("user.destroy", ["user" => $item["id"] ]) );
+            $item = collect($item)->put("delete_route", route("user.destroy", ["user" => $item["id"] ]) )
+                ->put("edit_route", route("user.edit", ["user" => $item["id"] ]) );
             return $item;
         });
 

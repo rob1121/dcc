@@ -3,21 +3,36 @@
 @push('script')
 <script src="{{URL::to("js/form.js")}}"></script>
 <script>
+    var userType = $("#user_type");
+    var password = $(".password");
+
     function togglePassword(userType) {
-        var password = $(".password");
         if( userType === "EMAIL RECEIVER ONLY" ) password.hide()
         else password.show();
     }
 
-    togglePassword($("#user_type").val());
+    togglePassword(userType.val());
 
-    $("#user_type").on("change", function() {
+    userType.on("change", function() {
         togglePassword($(this).val());
     });
 </script>
 @endpush
 
 @section('content')
+
+<ol class="breadcrumb form">
+    <li>
+        <a href="{{route("home")}}">Home</a>
+    </li>
+
+    <li class="active">
+        <a  href="{{route("user.index")}}">Users</a>
+    </li>
+
+    <li class="active">{{ isset($user) ? $user->employee_id . " - " . $user->name : "Add new user" }}</li>
+</ol>
+
 @include('errors.flash')
 <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}} form">
     <div class="panel-heading">Register</div>

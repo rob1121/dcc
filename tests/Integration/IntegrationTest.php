@@ -10,7 +10,7 @@ class IntegrationTest extends TestCase
 
     public function setUp() {
         parent::setUp();
-        $this->user = factory(App\User::class)->create();
+        $this->user = factory(App\User::class)->create(["user_type" => "RECEIVER"]);
     }
 
     /** @test */

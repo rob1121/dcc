@@ -6,6 +6,14 @@
 
 @section('content')
 <div class="form">
+
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{route("home")}}">Home</a>
+        </li>
+        <li class="active">Users</li>
+    </ol>
+
     <div class="row-fluid">
         <a href="{{url('/register')}}" class="btn btn-primary pull-right">Add new user <i class="fa fa-plus"></i></a>
     </div>
@@ -22,13 +30,13 @@
         <tbody>
             <tr v-for="user in pagination.data">
                 <td class="text-right">@{{ user.employee_id }}</td>
-                <td>@{{ user.name | nameCase }}</td>
+                <td style="white-space: nowrap;">@{{ user.name | nameCase }}</td>
                 <td>@{{ user.user_type | capitalize }}</td>
                 <td>@{{ user.department | capitalize }}</td>
                 <td>@{{ user.email }}</td>
                 <td class="text-right">
-                    <a :href="editRouteFor(user.id)" class="btn btn-default btn-xs">edit <i class="fa fa-edit"></i></a>
-                    <button @click="deleteUser(user)" class="btn btn-danger btn-xs">delete <i class="fa fa-remove"></i></button>
+                    <a :href="user.edit_route" class="btn btn-default btn-xs">edit <i class="fa fa-edit"></i></a>
+                    <button @click="remove(user)" class="btn btn-danger btn-xs">delete <i class="fa fa-remove"></i></button>
                 </td>
             </tr>
         </tbody>

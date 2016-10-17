@@ -48,6 +48,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'backup' => [
+            'driver' => 'local',
+            'root' => "d:/system/dcc/backup",
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

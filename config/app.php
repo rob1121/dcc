@@ -175,7 +175,7 @@ return [
         App\Providers\AppServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-//        App\Providers\EventServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
@@ -186,6 +186,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
         AlfredoRamos\ParsedownExtra\ParsedownExtraServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class
     ],
 
     /*

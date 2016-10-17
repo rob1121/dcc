@@ -8088,7 +8088,7 @@ a.sidebar-link {
   text-decoration: none !important;
   color: #636b6f;
   margin-bottom: 5px;
-  color: darkred; }
+  margin-left: 10px; }
   a.sidebar-link:hover {
     color: #580000; }
   a.sidebar-link.active {

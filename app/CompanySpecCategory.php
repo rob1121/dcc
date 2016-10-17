@@ -3,11 +3,12 @@
 namespace App;
 
 use App\DCC\Traits\ModelInstance;
+use App\Dcc\Traits\Presenter\InternalSpecCategoryPresenter;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanySpecCategory extends Model
 {
-    use ModelInstance;
+    use ModelInstance,InternalSpecCategoryPresenter;
 
     protected $fillable = [ 'category_no', 'category_name' ];
 
@@ -21,10 +22,9 @@ class CompanySpecCategory extends Model
 
     public static function getCategoryList() {
         $arr = self::orderBy("category_name")->get(["category_name","category_no"])->unique("category_no");
-        return collect($arr)->map(function($category) {
-            $category_name = \Str::title($category["category_name"]);
-            return collect($category)->put("name", "{$category->category_no} {$category_name}");
-        });
+        return collect($arr)->map(
+            function($category) { return collect($category)->put("name", "{$category->category_title}"); }
+        );
     }
 
     /**

@@ -3,12 +3,13 @@
 namespace App;
 
 use App\DCC\Traits\ModelInstance;
+use App\Dcc\Traits\Presenter\InternalSpecPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class CompanySpec extends Model
 {
-    use ModelInstance;
+    use ModelInstance, InternalSpecPresenter;
 
     protected $fillable = ['name','spec_no'];
 

@@ -26,6 +26,7 @@ class InternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
+//        dd(CompanySpec::first()->spec_name);
         \JavaScript::put('category', $this->categories->first());
 
         return view('internal.index', [

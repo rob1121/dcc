@@ -16,7 +16,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return view( "user.index");
+        return view("user.index");
     }
 
     public function edit(User $user)
@@ -26,6 +26,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        return ["data" => "hello"];
     	$user->delete();
     }
 }

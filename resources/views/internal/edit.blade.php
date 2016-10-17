@@ -10,8 +10,8 @@
         <ol class="breadcrumb">
             <li><a href="{{route("home")}}">Home</a></li>
             <li><a href="{{route("internal.index")}}">Internal Specification</a></li>
-            <li class="active">{{$spec->companySpecCategory->category_no}} - {{$spec->companySpecCategory->category_name}}</li>
-            <li class="active">{{$spec->spec_no}} - {{$spec->name}}</li>
+            <li class="active">{{$spec->companySpecCategory->category_title}}</li>
+            <li class="active">{{$spec->spec_name}}</li>
         </ol>
 
         <div class="panel panel-{{$errors->any() ? "danger" : "default"}}">
