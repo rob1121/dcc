@@ -24,6 +24,7 @@ class InternalSpecRequest extends FormRequest
      */
     public function rules()
     {
+        dd(Request::all());
         $id = Request::input("id");
         return [
             "name"              => "required|unique:company_specs,name,{$id}|max:100",

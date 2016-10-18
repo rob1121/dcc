@@ -15,6 +15,11 @@ class CompanySpec extends Model
 
     protected $with = ['companySpecRevision', 'companySpecCategory'];
 
+    public function originator()
+    {
+        return $this->hasMany(\App\Originator::class);
+    }
+
     public function companySpecRevision()
     {
         return $this->hasOne(CompanySpecRevision::class);

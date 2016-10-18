@@ -28,6 +28,7 @@ export default {
 					() => this.errorDialogMessage()
 				);
 		},
+
 		getSpecByCategory(category) {
 			this.setSpecCategory(category);
 			this.getPagination();

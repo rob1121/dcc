@@ -28,10 +28,16 @@ const app = new Vue( {
 		{
 		    const delete_route = laroute.route("user.destroy", {user: user.id});
 		    this.$http.delete(delete_route).then(
-                () => this.pagination.data.split(user),
+                () => this.deleteItem(this.pagination.data, user),
                 error => console.log(error.text())
             );
 		},
+
+        deleteItem(collection, item)
+        {
+            var index = collection.indexOf(item);
+            collection.splice(index, 1)
+        },
 
     	getUsers()
 		{

@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
         \DB::table("users")->truncate();
 
         $factory = factory(App\User::class);
-
+        factory(App\User::class, 15)->create();
         $factory->create([
             "name" => "admin",
             "employee_id" => 801,

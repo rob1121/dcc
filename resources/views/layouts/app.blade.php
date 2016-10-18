@@ -96,10 +96,10 @@
         @if(isset($show))
             <div v-show="! showResultDialog">
                 @yield('content')
-                @include("search.result", ["show" => isset($show)])
+                @include("search.result")
             </div>
             <div class="search-output" v-show="showResultDialog">
-                @include("layouts.search_engine", ["show" => isset($show)])
+                @include("layouts.search_engine")
             </div>
         @else @yield('content')
         @endif

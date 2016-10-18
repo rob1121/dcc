@@ -25,6 +25,7 @@ class InternalSpecification implements SpecificationGateway {
 
     function persist() {
         $this->spec = CompanySpec::create($this->company_spec_instance);
+        $this->factory->store(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->store(new InternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new InternalSpecRevision($this->request, $this->spec));
 
@@ -36,6 +37,7 @@ class InternalSpecification implements SpecificationGateway {
     function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
         $this->spec->update($this->company_spec_instance);
+        $this->factory->update(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->update(new InternalSpecRevision($this->request, $this->spec));
         $this->factory->update(new InternalSpecCategory($this->request, $this->spec));
 

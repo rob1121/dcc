@@ -7,6 +7,7 @@ use App\DCC\File\Document;
 use App\DCC\Internal\InternalSpecification;
 use App\DCC\SpecificationFactory;
 use App\Http\Requests\InternalSpecRequest;
+use App\User;
 use ErrorException;
 
 class InternalController extends Controller {
@@ -39,7 +40,10 @@ class InternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
-        return view('internal.create', [ "category_lists" => $this->categories ]);
+        return view('internal.create', [
+            "category_lists"    => $this->categories,
+            "departments"       => User::departmentList()
+        ]);
     }
 
     /**

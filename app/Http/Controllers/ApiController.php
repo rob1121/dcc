@@ -4,7 +4,6 @@ use App\CompanySpec;
 use App\CompanySpecCategory;
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
-use App\CustomerSpecRevision;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller

@@ -18,6 +18,7 @@ class InternalSpecificationTest extends TestCase {
         parent::setUp();
         $this->request = $this->generateRequestInstance();
         $this->spec = factory(App\CompanySpec::class)->create();
+        factory(App\User::class, 10)->create();
     }
 
     /** @test */
@@ -56,6 +57,7 @@ class InternalSpecificationTest extends TestCase {
             "revision_date" => "2016-01-01",
             "category_no" => "company",
             "category_name" => "company",
+            "departments" => ["QA", "PE"],
             "document" => new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE),
         ]);
     }

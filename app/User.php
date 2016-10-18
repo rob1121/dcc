@@ -12,20 +12,10 @@ class User extends Authenticatable
     use ModelInstance;
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'email', 'employee_id', 'department', 'user_type', 'password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -56,5 +46,12 @@ class User extends Authenticatable
     {
         $id = self::orderBy("employee_id", "desc")->first()->employee_id;
         return strlen($id);
+    }
+
+    public static function departmentList()
+    {
+        return self::get(['department'])->unique("department")->map(function($department) {
+            return $department->department;
+        })->toArray();
     }
 }

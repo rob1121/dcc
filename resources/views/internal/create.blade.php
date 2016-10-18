@@ -23,12 +23,27 @@
         $('#category').on("change", function() {
             toggleCategory($('option:selected'));
         });
+
+        var chosen = $(".chosen-select");
+
+        chosen.chosen({
+            disable_search_threshold: 10,
+            no_results_text: "Oops, nothing found!",
+            max_selected_options: 5,
+            display: "block",
+            width: "100%",
+        });
+
+        chosen.bind("chosen:maxselected", function () {
+            alert("sorry, you've reached maximum selected option");
+        });
+
+        chosen.val("").trigger("chosen:updated");
     </script>
 @endpush
 
 @section('content')
     <div class="form">
-
         <ol class="breadcrumb">
             <li>
                 <a href="{{route("home")}}">Home</a>
@@ -145,6 +160,16 @@
                             >
                             Skip email notification
                         </label>
+                    </div>
+
+                    <div class="row-fluid form-group">
+                        <label class="control-label"><strong>Department</strong></label>
+                        <br>
+                        <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]">
+                            @foreach($departments as $department)
+                                <option>{{$department}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="row">
