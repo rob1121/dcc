@@ -21,6 +21,7 @@
     "vue-resource": "^0.9.3"
   },
   "dependencies": {
+    "chosen-js": "^1.6.2",
     "font-awesome": "^4.6.3",
     "laravel-elixir-vueify": "^2.0.0",
     "moment": "^2.15.0",

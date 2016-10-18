@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InternalSpecRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class InternalSpecRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return "ADMIN" === Auth::user()->user_type;
     }
 
     /**
@@ -24,7 +25,6 @@ class InternalSpecRequest extends FormRequest
      */
     public function rules()
     {
-        dd(Request::all());
         $id = Request::input("id");
         return [
             "name"              => "required|unique:company_specs,name,{$id}|max:100",
@@ -34,7 +34,8 @@ class InternalSpecRequest extends FormRequest
             "document"          => "required|mimes:pdf",
             "revision_date"     => "required|date",
             "category_no"       => "required|max:100",
-            "category_name"     => "required|max:100"
+            "category_name"     => "required|max:100",
+            "department"     => "required"
         ];
     }
 }

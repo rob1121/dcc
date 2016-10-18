@@ -1,5 +1,16 @@
 @extends('layouts.app')
+@push('style')
+<style>
+    .chosen-choices {
+        background: #fff;
+        border-radius: 3px;
+    }
 
+    .has-error .chosen-choices {
+        border: 1px solid #a94442;
+    }
+</style>
+@endpush
 @push("script")
     <script src="{{URL::to("/js/form.js")}}"></script>
 
@@ -38,7 +49,8 @@
             alert("sorry, you've reached maximum selected option");
         });
 
-        chosen.val("").trigger("chosen:updated");
+        chosen.val({!! collect(old("department"))->toJson() !!});
+        chosen.trigger("chosen:updated");
     </script>
 @endpush
 
@@ -162,14 +174,15 @@
                         </label>
                     </div>
 
-                    <div class="row-fluid form-group">
-                        <label class="control-label"><strong>Department</strong></label>
+                    <div class="row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
+                        <label class="control-label"><strong>Department </strong></label>
                         <br>
-                        <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]">
+                        <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
                             @foreach($departments as $department)
                                 <option>{{$department}}</option>
                             @endforeach
                         </select>
+                        <span class="help-block">{{$errors->has("department") ? $errors->first("department"):""}}</span>
                     </div>
 
                     <div class="row">

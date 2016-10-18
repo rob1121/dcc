@@ -11,7 +11,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement("SET FOREIGN_KEY_CHECKS = 0");
         \DB::table("users")->truncate();
+        DB::statement("SET FOREIGN_KEY_CHECKS = 1");
 
         $factory = factory(App\User::class);
         factory(App\User::class, 15)->create();
