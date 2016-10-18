@@ -19,6 +19,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public function originator()
+    {
+        return $this->hasMany(\App\Originator::class);
+    }
 
     public static function isExist(Request $request)
     {

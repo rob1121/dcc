@@ -11,16 +11,16 @@ class Originator extends Model
     protected $fillable = [ 'department', 'user_id' ];
 
     protected $with = [
-        'users'
+        'user', 'companySpec'
     ];
 
     public function companySpec()
     {
-        return $this->belongsToMany(\App\CompanySpec::class);
+        return $this->belongsTo(\App\CompanySpec::class);
     }
 
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany(\App\User::class);
+        return $this->belongsTo(\App\User::class);
     }
 }
