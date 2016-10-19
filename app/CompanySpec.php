@@ -1,6 +1,4 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use App\DCC\Traits\ModelInstance;
 use App\Dcc\Traits\Presenter\InternalSpecPresenter;
@@ -11,9 +9,17 @@ class CompanySpec extends Model
 {
     use ModelInstance, InternalSpecPresenter;
 
-    protected $fillable = ['name','spec_no'];
+    protected $fillable = [
+        'name','spec_no'
+    ];
 
-    protected $with = ['companySpecRevision', 'companySpecCategory'];
+    protected $appends = [
+        'spec_name', 'originator_departments'
+    ];
+
+    protected $with = [
+        'companySpecRevision', 'companySpecCategory', 'originator'
+    ];
 
     public function originator()
     {
@@ -32,12 +38,13 @@ class CompanySpec extends Model
 
     /**
      * check if request instance already exist in the database
+     *
      * @param $request
      * @return mixed
      */
     public static function isExist(Request $request)
     {
-        $spec = self::instance($request)->toArray();
+        $spec = self::instance($request);
         return self::where($spec)->first();
     }
 }

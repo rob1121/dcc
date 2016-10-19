@@ -1,16 +1,5 @@
 @extends('layouts.app')
-@push('style')
-<style>
-    .chosen-choices {
-        background: #fff;
-        border-radius: 3px;
-    }
 
-    .has-error .chosen-choices {
-        border: 1px solid #a94442;
-    }
-</style>
-@endpush
 @push("script")
     <script src="{{URL::to("/js/form.js")}}"></script>
 
@@ -43,10 +32,6 @@
             max_selected_options: 5,
             display: "block",
             width: "100%",
-        });
-
-        chosen.bind("chosen:maxselected", function () {
-            alert("sorry, you've reached maximum selected option");
         });
 
         chosen.val({!! collect(old("department"))->toJson() !!});
@@ -85,7 +70,7 @@
                                         :data-name="category.category_name"
                                         :selected="'{{old("category")}}' == category.category_no"
                                 >
-                                    @{{ category.category_no }} - @{{ category.category_name }}
+                                    @{{ category.category_title }}
                                 </option>
 
                                 <option value="add_category" :selected="'{{old("category")}}' === 'add_category'">
@@ -149,29 +134,30 @@
                                    value="{{old("document")}}"
                         ></dcc-input>
                     </div>
+                    <div class="form-group">
+                        <div class="radio col-xs-12 row">
+                            <label class="control-label">
+                                <input type="radio"
+                                       value="true"
+                                       id="send_notification"
+                                       name="send_notification"
+                                       @if(old("send_notification") !== "false") checked @endif
+                                >
+                                Notify everyone for new internal specification
+                            </label>
+                        </div>
 
-                    <div class="radio col-xs-12 row form-group">
-                        <label class="control-label">
-                            <input type="radio"
-                                   value="true"
-                                   id="send_notification"
-                                   name="send_notification"
-                                   @if(old("send_notification") !== "false") checked @endif
-                            >
-                            Notify everyone for new internal specification
-                        </label>
-                    </div>
-
-                    <div class="radio col-xs-12 row form-group">
-                        <label class="control-label">
-                            <input type="radio"
-                                   name="send_notification"
-                                   id="send_notification"
-                                   value="false"
-                                   @if(old("send_notification") === "false") checked @endif
-                            >
-                            Skip email notification
-                        </label>
+                        <div class="radio col-xs-12 row">
+                            <label class="control-label">
+                                <input type="radio"
+                                       name="send_notification"
+                                       id="send_notification"
+                                       value="false"
+                                       @if(old("send_notification") === "false") checked @endif
+                                >
+                                Skip email notification
+                            </label>
+                        </div>
                     </div>
 
                     <div class="row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
@@ -188,7 +174,7 @@
                     <div class="row">
 
                         <dcc-textarea name="revision_summary"
-                                      label="revision summary"
+                                      label="Revision Summary"
                                       error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
                                       value="{{old("revision_summary")}}"
                         ></dcc-textarea>

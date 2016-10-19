@@ -49454,7 +49454,6 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
-require('chosen-js');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -49493,7 +49492,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":19,"bootstrap-sass":1,"chosen-js":2,"jquery":3,"lodash":4,"moment":5,"vue-resource":8,"vue/dist/vue.js":10}],14:[function(require,module,exports){
+},{"./laroute":20,"bootstrap-sass":1,"jquery":3,"lodash":4,"moment":5,"vue-resource":8,"vue/dist/vue.js":10}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49789,6 +49788,20 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":9,"vue-hot-reload-api":7}],19:[function(require,module,exports){
+'use strict';
+
+require('./app');
+require('chosen-js');
+
+var app = new Vue({
+    el: "#app"
+});
+
+$(".modal-btn").click(function () {
+    $("#form-submit").submit();
+});
+
+},{"./app":12,"chosen-js":2}],20:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -49974,19 +49987,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}],20:[function(require,module,exports){
-"use strict";
-
-require('./app');
-
-var app = new Vue({
-    el: "#app"
-});
-
-$(".modal-btn").click(function () {
-    $("#form-submit").submit();
-});
-
-},{"./app":12}]},{},[20]);
+},{}]},{},[19]);
 
 //# sourceMappingURL=form.js.map

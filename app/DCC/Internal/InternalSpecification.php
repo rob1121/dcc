@@ -1,13 +1,13 @@
 <?php namespace App\DCC\Internal;
 
 use App\CompanySpec;
+use App\CompanySpecCategory;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationGateway;
 use App\DCC\SpecificationFactory;
 use App\Mail\InternalSpecMailer;
 use App\User;
 use Illuminate\Http\Request;
-use Mail;
 
 class InternalSpecification implements SpecificationGateway {
 
@@ -17,18 +17,18 @@ class InternalSpecification implements SpecificationGateway {
     private $company_spec_instance;
 
     public function __construct(Request $request, CompanySpec $spec=null) {
-        $this->spec = $spec;
-        $this->factory = new SpecificationFactory;
-        $this->request = $request;
-        $this->company_spec_instance = CompanySpec::instance($this->request)->toArray();
+        $this->spec                  = $spec;
+        $this->factory               = new SpecificationFactory;
+        $this->request               = $request;
+        $this->company_spec_instance = CompanySpec::instance($this->request);
     }
 
     function persist() {
-        $this->spec = CompanySpec::create($this->company_spec_instance);
+        $spec = $this->filterRequestToSpecInstance();
+        $this->spec = CompanySpec::create( $spec );
         $this->factory->store(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->store(new InternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new InternalSpecRevision($this->request, $this->spec));
-
         $this->notifyUser("New Internal Spec");
 
         return $this->spec;
@@ -44,10 +44,26 @@ class InternalSpecification implements SpecificationGateway {
         $this->notifyUser("Internal Spec Update");
     }
 
-    protected function notifyUser($caption) {
-        if ($this->request->send_notification) {
-            $mail = new InternalSpecMailer(CompanySpec::find($this->spec->id), $caption);
-            Mail::to(User::all())->send($mail);
+    private function filterRequestToSpecInstance()
+    {
+        $spec_no = CompanySpecCategory::generateSpecNo( $this->request );
+        $this->company_spec_instance["spec_no"] = $spec_no->companySpec;
+        dd($this->company_spec_instance);
+        return array_add( $this->company_spec_instance, 'spec_no', $spec_no );
+    }
+
+    protected function notifyUser($caption)
+    {
+        if ( $this->sendNotification() )
+        {
+            $mail       = new InternalSpecMailer(CompanySpec::find($this->spec->id), $caption);
+            $originator = User::departmentIsIn($this->spec->originator_departments);
+            \Mail::to( $originator )->send($mail);
         }
+    }
+
+    protected function sendNotification()
+    {
+        return "true" === $this->request->send_notification;
     }
 }

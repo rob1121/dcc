@@ -53,23 +53,30 @@ class InternalSpecCategoryTest extends TestCase
         $this->dontSeeInDatabase("company_spec_categories", $this->expected);
     }
 
-    private function modelInstance($request)
-    {
-        $companySpecCategory = new CompanySpecCategory($request->toArray());
-        return $companySpecCategory->toArray();
-    }
-
     private function createDummyCategoryInstanceForUpdateTest()
     {
-        $model_instance = CompanySpecCategory::instance(
-            new Request($this->factory->make()->toArray())
-        )->toArray();
+        $this->spec->companySpecCategory()->create(
+            $this->modelInstance()
+        );
 
-        $this->spec->companySpecCategory()->create($model_instance);
-        $this->expected = ["category_no" => "update spec"];
+        $this->setExpected( ["category_no" => "update spec"] );
+
+        $request = new Request($this->factory->make( $this->expected )->toArray());
 
         $this->actual = new Request(
-            CompanySpecCategory::instance(new Request($this->factory->make(["category_no" => "update spec"])->toArray()))->toArray()
+            CompanySpecCategory::instance( $request )
+        );
+    }
+
+    public function setExpected(array $expected)
+    {
+        $this->expected = $expected;
+    }
+
+    private function modelInstance()
+    {
+        return  CompanySpecCategory::instance(
+            new Request($this->factory->make()->toArray())
         );
     }
 }

@@ -8331,6 +8331,13 @@ button.close {
     background-repeat: no-repeat !important; } }
 
 /* @end */
+.chosen-choices {
+  background: #fff;
+  border-radius: 3px; }
+
+.has-error .chosen-choices {
+  border: 1px solid #a94442; }
+
 body {
   background: #e4ecf2;
   overflow-y: scroll;

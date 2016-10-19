@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             "name" => "admin",
             "employee_id" => 801,
             "password" => bcrypt("admin"),
-            "department" => "QA",
+            "department" => "ADMIN",
             "user_type" => "ADMIN",
             "email" => "robinsonlegaspi@astigp.com",
         ]);

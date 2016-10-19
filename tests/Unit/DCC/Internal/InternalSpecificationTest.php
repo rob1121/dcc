@@ -16,8 +16,8 @@ class InternalSpecificationTest extends TestCase {
 
     protected function setUp() {
         parent::setUp();
-        $this->request = $this->generateRequestInstance();
         $this->spec = factory(App\CompanySpec::class)->create();
+        $this->request = $this->generateRequestInstance();
         factory(App\User::class, 10)->create();
     }
 
@@ -49,15 +49,18 @@ class InternalSpecificationTest extends TestCase {
     }
 
     private function generateRequestInstance() {
+
+        $category = factory(App\CompanySpecCategory::class)->create(["company_spec_id" => $this->spec->id]);
+
         return new Request([
             "spec_no" => "number",
             "name" => "spec name",
             "revision" => "**",
             "revision_summary" => "this is spec",
             "revision_date" => "2016-01-01",
-            "category_no" => "company",
-            "category_name" => "company",
-            "departments" => ["QA", "PE"],
+            "category_no" => $category->category_no,
+            "category_name" => $category->category_name,
+            "department" => ["QA", "PE"],
             "document" => new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE),
         ]);
     }

@@ -27,7 +27,7 @@ class InternalSpecOriginatorTest extends TestCase
     public function it_can_add_instance_to_database()
     {
         $this->actual = new Request($this->factory->make()->toArray());
-        $this->expected = ["user_id" => $this->actual->user_id];
+        $this->expected = ["department" => $this->actual->department];
 
         (new InternalSpecOriginator($this->actual, $this->spec))->persist();
 
@@ -63,14 +63,14 @@ class InternalSpecOriginatorTest extends TestCase
     private function createDummyOriginatorInstanceForUpdateTest()
     {
         $model_instance = Originator::instance(
-            new Request($this->factory->make()->toArray())
-        )->toArray();
+            new Request( $this->factory->make()->toArray() )
+        );
 
         $this->spec->originator()->create($model_instance);
-        $this->expected = ["user_id" => 11];
+        $this->expected = ["department" => "QA"];
 
         $this->actual = new Request(
-            Originator::instance(new Request($this->factory->make(["user_id" => 11])->toArray()))->toArray()
+            Originator::instance(new Request($this->factory->make(["department" => "QA"])->toArray()))
         );
     }
 }

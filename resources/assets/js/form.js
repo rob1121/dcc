@@ -1,4 +1,5 @@
 require('./app');
+require('chosen-js');
 
 const app = new Vue({
     el: "#app"

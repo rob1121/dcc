@@ -9,8 +9,7 @@
                 <a href="{{route("home")}}">Home</a>
             </li>
             <li class="active">Internal Specification</li>
-            <li class="active">@{{uppercase(category.category_no)}}
-                - @{{uppercase(category.category_name)}}</li>
+            <li class="active">@{{uppercase(category.category_title)}}</li>
         </ol>
         @if(Auth::user() && isAdmin())
             <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
@@ -25,7 +24,7 @@
             <div class="spec-no col-xs-12 col-md-9">
                 <a class="show-action-link" target="_blank" :href="internalRouteFor(spec.id)">
                     <h4>
-                        @{{uppercase(spec.spec_no)}} - @{{uppercase(spec.name)}}
+                        @{{uppercase(spec.spec_name)}}
                         <span class="label label-success"
                               v-if="isNewRevision(spec.company_spec_revision.revision_date)"
                         >
@@ -65,7 +64,7 @@
             Are you sure you want to permanently <strong class="text-danger">delete</strong>
             <br>
             "<strong class="text-danger">
-                @{{uppercase(modalConfirmation.category.spec_no)}} - @{{uppercase(modalConfirmation.category.name)}}
+                @{{uppercase(modalConfirmation.category.spec_name)}}
             </strong>"?
         </h3>
 

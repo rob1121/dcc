@@ -6,6 +6,6 @@ trait ModelInstance
 {
     public static function instance(Request $request)
     {
-        return new self($request->all());
+        return (new self($request->all()))->getAttributes();
     }
 }

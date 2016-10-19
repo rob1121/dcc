@@ -30,13 +30,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Originator::class, function (Faker\Generator $faker) {
-    $user = factory(App\User::class)->create();
     return [
-        'user_id' => $user->id,
         'company_spec_id' => function() {
             return factory(\App\CompanySpec::class)->create()->id;
         },
-        'department' => $user->department
+        'department' => $faker->randomElement(["QA","PE"])
     ];
 });
 

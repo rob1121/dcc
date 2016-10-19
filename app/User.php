@@ -19,7 +19,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
+
+    /**
+     * return user with department equals to originator department
+     *
+     * @param array $originator_departments
+     * @return mixed
+     */
+    public static function departmentIsIn(array $originator_departments)
+    {
+        return self::whereIn("department", $originator_departments)->get();
+    }
+
     public function originator()
     {
         return $this->hasMany(\App\Originator::class);

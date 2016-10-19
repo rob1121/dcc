@@ -2,6 +2,23 @@
 
 @push('script')
     <script src="{{URL::to("/js/form.js")}}"></script>
+
+    <script>
+        var chosen = $(".chosen-select");
+
+        chosen.chosen({
+            disable_search_threshold: 10,
+            no_results_text: "Oops, nothing found!",
+            max_selected_options: 5,
+            display: "block",
+            width: "100%",
+        });
+
+        chosen.val(
+                {!! old("department") ? collect(old("department"))->toJson() : collect($spec->originator_departments)->toJson()  !!}
+        );
+        chosen.trigger("chosen:updated");
+    </script>
 @endpush
 
 @section('content')
@@ -16,40 +33,23 @@
 
         <div class="panel panel-{{$errors->any() ? "danger" : "default"}}">
             <div class="panel-heading">
-                <h3 class="panel-title">Update Internal Specification</h3>
+                <h3 class="panel-title"><strong>{{$spec->spec_name}}</strong></h3>
             </div>
             <div class="panel-body">
                 <form action="{{route("internal.update",['internal' => $spec->id])}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     {{ method_field('PATCH') }}
                     <input type="hidden" value="{{$spec->id}}" name="id">
-
                     <div class="row">
-                        <dcc-input name="category_no"
-                                   col="4"
-                                   label="category no."
-                                   error="{{$errors->has("category_no") ? $errors->first("category_no"):""}}"
-                                   value="{{$errors->has("category_no") || old("category_no")
-                                ? old("category_no") :  $spec->companySpecCategory->category_no}}"
-                        ></dcc-input>
-
-                        <dcc-input name="category_name"
-                                   col="8"
-                                   label="category name"
-                                   error="{{$errors->has("category_name") ? $errors->first("category_name"):""}}"
-                                   value="{{$errors->has("category_name") || old("category_name")
-                                ? old("category_name") :  $spec->companySpecCategory->category_name}}"
+                        <dcc-input name="name"
+                                   col="12"
+                                   label="title"
+                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                                   value="{{$errors->has("name") || old("name") ? old("name") :  $spec->name}}"
                         ></dcc-input>
                     </div>
 
                     <div class="row">
-                        <dcc-input name="spec_no"
-                                   col="4"
-                                   label="spec no."
-                                   error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
-                                   value="{{$errors->has("spec_no") || old("spec_no") ? old("spec_no") :  $spec->spec_no}}"
-                        ></dcc-input>
-
                         <dcc-input name="revision"
                                    col="4"
                                    error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
@@ -63,14 +63,6 @@
                                         value="{{$errors->has("revision_date") || old("revision_date")
                                         ? old("revision_date") :  $spec->companySpecRevision->revision_date}}"
                         ></dcc-datepicker>
-                    </div>
-                    <div class="row">
-                        <dcc-input name="name"
-                                   col="8"
-                                   label="title"
-                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
-                                   value="{{$errors->has("name") || old("name") ? old("name") :  $spec->name}}"
-                        ></dcc-input>
 
                         <dcc-input name="document"
                                    col="4"
@@ -106,9 +98,20 @@
                         </div>
                     </div>
 
+                    <div class="row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
+                        <label class="control-label"><strong>Department </strong></label>
+                        <br>
+                        <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
+                            @foreach($departments as $department)
+                                <option>{{$department}}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{$errors->has("department") ? $errors->first("department"):""}}</span>
+                    </div>
+
                     <div class="row">
                         <dcc-textarea name="revision_summary"
-                                      label="revision summary"
+                                      label="Revision Summary"
                                       error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
                                       value="{{$errors->has("revision_summary") || old("revision_summary")
                                       ? old("revision_summary") :  $spec->companySpecRevision->revision_summary }}"

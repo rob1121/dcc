@@ -17,9 +17,11 @@ class InternalSpecOriginator implements SpecificationGateway {
 
     public function persist()
     {
-        $departments = collect($this->request->department)->toArray();
-        $users = \App\User::whereIn("department", $departments)->get(["id","department"])->toArray();
-        return $this->spec->originator()->createMany($this->toOriginatorInstance($users));
+        $originator = $this->originatorInstanceOf(
+            collect( $this->request->department )->toArray()
+        );
+
+        return $this->spec->originator()->createMany( $originator );
     }
 
     public function update()
@@ -30,20 +32,10 @@ class InternalSpecOriginator implements SpecificationGateway {
         $this->persist();
     }
 
-    protected function toRequestInstance($users)
+    protected function originatorInstanceOf(array $departments)
     {
-        $users = collect($users)->toArray();
-        return new Request($users);
-    }
-
-    protected function toOriginatorInstance(array $users)
-    {
-        return collect($users)->map(function($user) {
-            $user["user_id"] = $user['id'];
-            return $user;
-        })
-        ->map(function($user) { return $this->toRequestInstance($user); })
-        ->map(function($request) { return Originator::instance($request); })
-        ->toArray();
+        return collect($departments)->map(
+            function($department) { return ["department" => $department]; }
+        )->toArray();
     }
 }

@@ -22,7 +22,7 @@ class ExternalSpecRevision implements SpecificationGateway {
     }
 
     function persist() {
-        $this->spec->customerSpecRevision()->firstOrCreate(CustomerSpecRevision::instance($this->request)->toArray());
+        $this->spec->customerSpecRevision()->firstOrCreate(CustomerSpecRevision::instance($this->request));
         $this->factory->store(new ExternalSpecFile($this->request, $this->spec));
 
         return $this->spec;
@@ -35,8 +35,8 @@ class ExternalSpecRevision implements SpecificationGateway {
         $this->spec->customerSpecRevision()->whereIn("id",$ids)->delete();
 
         $this->isRevisionExist()
-            ? $this->spec->customerSpecRevision()->whereRevision($this->request->revision)->update(CustomerSpecRevision::instance($this->request)->toArray())
-            : $this->spec->customerSpecRevision()->create(CustomerSpecRevision::instance($this->request)->toArray());
+            ? $this->spec->customerSpecRevision()->whereRevision($this->request->revision)->update(CustomerSpecRevision::instance($this->request))
+            : $this->spec->customerSpecRevision()->create(CustomerSpecRevision::instance($this->request));
 
         $this->factory->update(new ExternalSpecFile($this->request, $this->spec));
     }

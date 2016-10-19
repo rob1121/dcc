@@ -16,11 +16,11 @@ class ExternalSpecCategory  implements SpecificationGateway {
     }
 
     function persist() {
-        return $this->spec->customerSpecCategory()->firstOrCreate(CustomerSpecCategory::instance($this->request)->toArray());
+        return $this->spec->customerSpecCategory()->firstOrCreate(CustomerSpecCategory::instance($this->request));
     }
 
     function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
-        $this->spec->customerSpecCategory()->update(CustomerSpecCategory::instance($this->request)->toArray());
+        $this->spec->customerSpecCategory()->update(CustomerSpecCategory::instance($this->request));
     }
 }

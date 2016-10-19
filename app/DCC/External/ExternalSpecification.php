@@ -21,7 +21,7 @@ class ExternalSpecification implements SpecificationGateway {
     }
 
     function persist() {
-        $this->spec = CustomerSpec::create(CustomerSpec::instance($this->request)->toArray());
+        $this->spec = CustomerSpec::create(CustomerSpec::instance($this->request));
         $this->factory->store(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new ExternalSpecRevision($this->request, $this->spec));
 
@@ -32,7 +32,7 @@ class ExternalSpecification implements SpecificationGateway {
 
     function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
-        $this->spec->update(CustomerSpec::instance($this->request)->toArray());
+        $this->spec->update(CustomerSpec::instance($this->request));
         $this->factory->update(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->update(new ExternalSpecRevision($this->request, $this->spec));
 

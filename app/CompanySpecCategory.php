@@ -5,12 +5,26 @@ namespace App;
 use App\DCC\Traits\ModelInstance;
 use App\Dcc\Traits\Presenter\InternalSpecCategoryPresenter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class CompanySpecCategory extends Model
 {
     use ModelInstance,InternalSpecCategoryPresenter;
 
-    protected $fillable = [ 'category_no', 'category_name' ];
+    protected $fillable = [
+        'category_no', 'category_name'
+    ];
+
+    protected $appends = [
+        'category_title'
+    ];
+
+    public static function generateSpecNo(Request $request)
+    {
+        return self::whereCategoryNo($request->category_no)
+            ->with('companySpec')
+            ->get();
+    }
 
     public function companySpec(){
         return $this->belongsTo(CompanySpec::class);
@@ -21,10 +35,10 @@ class CompanySpecCategory extends Model
     }
 
     public static function getCategoryList() {
-        $arr = self::orderBy("category_name")->get(["category_name","category_no"])->unique("category_no");
-        return collect($arr)->map(
-            function($category) { return collect($category)->put("name", "{$category->category_title}"); }
-        );
+        return collect( self::orderBy("category_name")->get(["category_name","category_no"])->unique("category_no") )
+            ->map( function($category) {
+                return collect($category)->put("name", "{$category->category_title}");
+            } );
     }
 
     /**

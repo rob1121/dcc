@@ -422,3 +422,13 @@ $chosen-sprite-retina: url('chosen-sprite@2x.png') !default;
     }
 }
 /* @end */
+
+
+.chosen-choices {
+    background: #fff;
+    border-radius: 3px;
+}
+
+.has-error .chosen-choices {
+    border: 1px solid #a94442;
+}

@@ -22,7 +22,7 @@ class InternalSpecRevision implements SpecificationGateway {
     }
 
     function persist() {
-        $this->spec->companySpecRevision()->firstOrCreate(CompanySpecRevision::instance($this->request)->toArray());
+        $this->spec->companySpecRevision()->firstOrCreate(CompanySpecRevision::instance($this->request));
         $this->factory->store(new InternalSpecFile($this->request, $this->spec));
 
         return $this->spec;
@@ -30,7 +30,7 @@ class InternalSpecRevision implements SpecificationGateway {
 
     function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
-        $this->spec->companySpecRevision->update(CompanySpecRevision::instance($this->request)->toArray());
+        $this->spec->companySpecRevision->update(CompanySpecRevision::instance($this->request));
         $this->factory->update(new InternalSpecFile($this->request, $this->spec));
     }
 }
