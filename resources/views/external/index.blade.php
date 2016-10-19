@@ -39,19 +39,19 @@
             justify">
 
                 <a class="show-action-link" :href="externalRouteFor(spec.customer_spec_revision)" target="_blank" style="word-wrap: break-word">
-                    <h4>@{{uppercase(spec.spec_no)}} - @{{uppercase(spec.name)}} </h4>
+                    <h4>@{{spec.spec_name}} </h4>
                 </a>
                 <h6>
                     <strong>Revision: </strong>
-                    <span class="label label-info">@{{uppercase( getLatestRevision(spec.customer_spec_revision, 'revision') )}}</span>
+                    <span class="label label-info">@{{spec.latest_revision}}</span>
                     <strong>Date: </strong>
-                    <span class="label label-info">@{{telfordStandardDate( getLatestRevision( spec.customer_spec_revision, "revision_date" ) )}}</span>
+                    <span class="label label-info">@{{spec.latest_revision_date}}</span>
                 </h6>
             </div>
             @if(Auth::user())
                 <div class="col-sm-12
-                    @if(Auth::user() && isAdmin())         col-md-5
-                    @elseif(Auth::user()&& ! isAdmin())    col-md-4
+                    @if(Auth::user() && isAdmin())          col-md-5
+                    @elseif(Auth::user() && ! isAdmin())    col-md-4
                     @endif
                 ">
                     @if(isAdmin())
@@ -100,8 +100,8 @@
                 <h4>
                     Are you sure you want to permanently <strong class="text-danger">delete</strong>
                     "<strong class="text-danger">
-                        @{{ uppercase(modalConfirmation.category.spec_no)}} - @{{ uppercase(modalConfirmation.category.name)}}
-                    </strong>"?
+                        @{{modalConfirmation.category.spec_name}}
+                    </strong>" ?
             </h4>
             </div>
             <div v-if="modalConfirmation.action === 'delete'">
@@ -135,7 +135,7 @@
                 <div class="col-xs-{{isAdmin() ? 8 : 9 }} col-xs-offset-1">
 
                     <a v-if="modalConfirmation.category" :href="externalRouteFor(specRevision)" target="_blank">
-                        <h4>@{{ uppercase(modalConfirmation.category.spec_no)}} @{{ uppercase(modalConfirmation.category.name)}}</h4>
+                        <h4>@{{modalConfirmation.category.spec_name}}</h4>
                     </a>
 
                     <span class="help-block">

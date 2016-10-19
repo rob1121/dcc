@@ -3,9 +3,15 @@
 
 trait InternalSpecPresenter
 {
+
+    public function getSpecIdAttribute()
+    {
+        return $this->companySpecCategory->category_no . " - " . sprintf("%d03", $this->spec_no);
+    }
+
     public function getSpecNameAttribute()
     {
-        return \Str::upper($this->spec_no) . ' - ' . \Str::title($this->name);
+        return \Str::upper($this->spec_id) . ' - ' . \Str::title($this->name);
     }
 
     public function getOriginatorDepartmentsAttribute()

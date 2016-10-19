@@ -72,15 +72,8 @@ export default {
 			return laroute.route('external.show', {external: id});
 		},
 
-
 		externalEditRouteFor(id) {
 			return laroute.route("external.edit", {external:id});
-		},
-
-		getLatestRevision(revArray, column) {
-			return typeof revArray[revArray.length-1][column] !== undefined
-				? revArray[revArray.length-1][column]
-				: "N/A";
 		},
 	}
 }

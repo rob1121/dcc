@@ -16,8 +16,14 @@
 
         chosen.val(
                 {!! old("department") ? collect(old("department"))->toJson() : collect($spec->originator_departments)->toJson()  !!}
-        );
-        chosen.trigger("chosen:updated");
+        ).trigger("chosen:updated");
+
+        $("input[name='send_notification']").on('change', function() {
+            var department = $(".department");
+
+            if( $(this).val() === "true" ) department.show();
+            else department.hide();
+        });
     </script>
 @endpush
 
@@ -98,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
+                    <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
                         <label class="control-label"><strong>Department </strong></label>
                         <br>
                         <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>

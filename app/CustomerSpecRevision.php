@@ -1,6 +1,4 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use App\DCC\Traits\ModelInstance;
 use Illuminate\Database\Eloquent\Model;

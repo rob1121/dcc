@@ -40,17 +40,25 @@ class ExternalSpecification implements SpecificationGateway {
     }
 
 
-    protected function notifyUser($caption) {
+    protected function notifyUser( $caption )
+    {
+        if ( $this->sendNotification() )
+            Mail::to( $this->reviewers() )->send( $this->mailTemplate( $caption ) );
+    }
 
-        if ($this->request->send_notification) {
-            $users = \App\User::whereUserType("REVIEWER")
-                ->whereDepartment($this->spec->reviewer)
-                ->orWhere("user_type","ADMIN")
-                ->get();
+    protected function sendNotification()
+    {
+        return "true" === $this->request->send_notification;
+    }
 
-            $spec = CustomerSpec::find($this->spec->id);
-            $mail = new ExternalSpecMailer($spec, $caption);
-            Mail::to($users)->send($mail);
-        }
+    protected function reviewers()
+    {
+        return \App\User::getReviewer($this->spec->reviewer);
+    }
+
+    protected function mailTemplate($message)
+    {
+        $spec = CustomerSpec::find($this->spec->id);
+        return new ExternalSpecMailer($spec, $message);
     }
 }

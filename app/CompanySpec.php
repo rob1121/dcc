@@ -14,7 +14,7 @@ class CompanySpec extends Model
     ];
 
     protected $appends = [
-        'spec_name', 'originator_departments'
+        'spec_name', 'originator_departments', 'spec_id'
     ];
 
     protected $with = [

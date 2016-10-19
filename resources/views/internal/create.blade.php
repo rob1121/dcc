@@ -34,8 +34,15 @@
             width: "100%",
         });
 
-        chosen.val({!! collect(old("department"))->toJson() !!});
-        chosen.trigger("chosen:updated");
+        chosen.val({!! collect(old("department"))->toJson() !!})
+                .trigger("chosen:updated");
+
+        $("input[name='send_notification']").on('change', function() {
+            var department = $(".department");
+
+            if( $(this).val() === "true" ) department.show();
+            else department.hide();
+        });
     </script>
 @endpush
 
@@ -97,16 +104,8 @@
                     </div>
 
                     <div class="row">
-
-                        <dcc-input name="spec_no"
-                                   col="4"
-                                   label="spec no."
-                                   error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
-                                   value="{{old("spec_no")}}"
-                        ></dcc-input>
-
                         <dcc-input name="name"
-                                   col="8"
+                                   col="12"
                                    label="title"
                                    error="{{$errors->has("name") ? $errors->first("name"):""}}"
                                    value="{{old("name")}}"
@@ -160,7 +159,7 @@
                         </div>
                     </div>
 
-                    <div class="row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
+                    <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
                         <label class="control-label"><strong>Department </strong></label>
                         <br>
                         <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>

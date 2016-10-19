@@ -1,5 +1,5 @@
 <?php
-use App\DCC\External\ExternalSpecification;
+
 use App\DCC\Internal\InternalSpecification;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,13 +19,12 @@ class InternalSpecificationTest extends TestCase {
         $this->spec = factory(App\CompanySpec::class)->create();
         $this->request = $this->generateRequestInstance();
         factory(App\User::class, 10)->create();
+        $this->expected = ["name" => "spec name"];
     }
 
     /** @test */
     public function it_can_add_company_spec()
     {
-        $this->expected = ["spec_no" => "number"];
-
         (new InternalSpecification($this->request))->persist();
         $this->seeInDatabase("company_specs", $this->expected);
     }
@@ -50,10 +49,9 @@ class InternalSpecificationTest extends TestCase {
 
     private function generateRequestInstance() {
 
-        $category = factory(App\CompanySpecCategory::class)->create(["company_spec_id" => $this->spec->id]);
+        $category = factory(App\CompanySpecCategory::class)->create();
 
         return new Request([
-            "spec_no" => "number",
             "name" => "spec name",
             "revision" => "**",
             "revision_summary" => "this is spec",
@@ -68,7 +66,6 @@ class InternalSpecificationTest extends TestCase {
     protected function requestInstanceForUpdate()
     {
         $this->actual = $this->generateRequestInstance();
-        $this->expected = ["spec_no" => "number"];
         $this->spec->companySpecRevision()->create(factory(App\CompanySpecRevision::class)->make()->toArray());
     }
 

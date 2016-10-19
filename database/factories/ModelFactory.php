@@ -40,7 +40,7 @@ $factory->define(App\Originator::class, function (Faker\Generator $faker) {
 
 $factory->define(App\CompanySpec::class, function (Faker\Generator $faker) {
     return [
-        'spec_no' =>  $faker->word() ,
+        'spec_no' =>  $faker->randomNumber() ,
         'name' =>  $faker->sentence() ,
     ];
 });
@@ -76,7 +76,7 @@ $factory->define(App\CompanySpecRevision::class, function (Faker\Generator $fake
 
 $factory->define(App\CustomerSpec::class, function (Faker\Generator $faker) {
     return [
-        'spec_no' =>  $faker->word() ,
+        'spec_no' =>  $faker->randomNumber() ,
         'name' =>  $faker->sentence() ,
         'reviewer' =>  $faker->randomElement(["QA","PE"]) ,
     ];
@@ -106,7 +106,7 @@ $factory->define(App\CustomerSpecRevision::class, function (Faker\Generator $fak
 
 $factory->define(App\Iso::class, function (Faker\Generator $faker) {
     return [
-        'spec_no' =>  $faker->word ,
+        'spec_no' =>  $faker->randomNumber() ,
         'name' =>  $faker->name ,
         'document' =>  $faker->word ,
         'revision' => $faker->word,

@@ -3,14 +3,21 @@
 namespace App;
 
 use App\DCC\Traits\ModelInstance;
+use App\DCC\Traits\Presenter\ExternalSpecPresenter;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomerSpec extends Model {
 
-    use ModelInstance;
+    use ModelInstance, ExternalSpecPresenter;
 
-    protected $fillable = [ 'spec_no', 'name', 'reviewer' ];
+    protected $fillable = [
+        'spec_no', 'name', 'reviewer'
+    ];
+
+    protected $appends = [
+        'spec_name', 'latest_revision', 'latest_revision_date'
+    ];
 
     protected $with = ['customerSpecRevision', 'customerSpecCategory'];
 

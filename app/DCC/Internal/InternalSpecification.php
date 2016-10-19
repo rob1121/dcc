@@ -5,9 +5,10 @@ use App\CompanySpecCategory;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationGateway;
 use App\DCC\SpecificationFactory;
-use App\Mail\InternalSpecMailer;
+use App\Mail\InternalSpecMailer;    
 use App\User;
 use Illuminate\Http\Request;
+use Mail;
 
 class InternalSpecification implements SpecificationGateway {
 
@@ -23,9 +24,10 @@ class InternalSpecification implements SpecificationGateway {
         $this->company_spec_instance = CompanySpec::instance($this->request);
     }
 
-    function persist() {
-        $spec = $this->filterRequestToSpecInstance();
-        $this->spec = CompanySpec::create( $spec );
+    function persist()
+    {
+        $this->company_spec_instance["spec_no"] = CompanySpecCategory::generateSpecNo( $this->request );
+        $this->spec = CompanySpec::create( $this->company_spec_instance );
         $this->factory->store(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->store(new InternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new InternalSpecRevision($this->request, $this->spec));
@@ -44,26 +46,24 @@ class InternalSpecification implements SpecificationGateway {
         $this->notifyUser("Internal Spec Update");
     }
 
-    private function filterRequestToSpecInstance()
-    {
-        $spec_no = CompanySpecCategory::generateSpecNo( $this->request );
-        $this->company_spec_instance["spec_no"] = $spec_no->companySpec;
-        dd($this->company_spec_instance);
-        return array_add( $this->company_spec_instance, 'spec_no', $spec_no );
-    }
-
     protected function notifyUser($caption)
     {
         if ( $this->sendNotification() )
-        {
-            $mail       = new InternalSpecMailer(CompanySpec::find($this->spec->id), $caption);
-            $originator = User::departmentIsIn($this->spec->originator_departments);
-            \Mail::to( $originator )->send($mail);
-        }
+            Mail::to( $this->originators() )->send( $this->mailTemplate($caption) );
     }
 
     protected function sendNotification()
     {
         return "true" === $this->request->send_notification;
+    }
+
+    protected function originators()
+    {
+        return User::departmentIsIn($this->spec->originator_departments);
+    }
+
+    protected function mailTemplate($caption)
+    {
+        return new InternalSpecMailer(CompanySpec::find($this->spec->id), $caption);
     }
 }

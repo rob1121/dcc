@@ -31,6 +31,12 @@ class User extends Authenticatable
         return self::whereIn("department", $originator_departments)->get();
     }
 
+    public static function getReviewer($reviewer)
+    {
+        return self::whereUserType("REVIEWER")->whereDepartment($reviewer)
+            ->orWhere("user_type","ADMIN")->get();
+    }
+
     public function originator()
     {
         return $this->hasMany(\App\Originator::class);

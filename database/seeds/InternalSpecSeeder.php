@@ -37,12 +37,12 @@ class InternalSpecSeeder extends Seeder
 
         for ($i = 0; $i < 25; $i++) {
             $rand_id = rand(1, 20);
-            $rev = sprintf("%03d", $rand_id);
+            $rev = sprintf("%03d", $i);
 
             $category_no = $faker->randomElement($specs_category);
 
             $id = factory('App\CompanySpec')->create([
-                'spec_no' => "{$category_no}-{$rev}",
+                'spec_no' => $rev,
                 "name" => $faker->sentence(rand(3,8))
             ])->id;
 
