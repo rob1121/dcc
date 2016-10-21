@@ -186,7 +186,8 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
         AlfredoRamos\ParsedownExtra\ParsedownExtraServiceProvider::class,
-        Spatie\Backup\BackupServiceProvider::class
+        Spatie\Backup\BackupServiceProvider::class,
+        Spatie\FailedJobMonitor\FailedJobMonitorServiceProvider::class
     ],
 
     /*

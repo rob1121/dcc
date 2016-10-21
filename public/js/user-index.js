@@ -48717,17 +48717,193 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 },{}],19:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _search = require("./search");
+
+var _search2 = _interopRequireDefault(_search);
+
+var _filterMethods = require("./filterMethods");
+
+var _filterMethods2 = _interopRequireDefault(_filterMethods);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+	mounted: function mounted() {
+		var _this = this;
+
+		this.$nextTick(function () {
+			return _this.getPagination();
+		});
+	},
+
+
+	mixins: [_search2.default, _filterMethods2.default],
+
+	methods: {
+		fetchData: function fetchData(pagination_url, num, category) {
+			var _this2 = this;
+
+			this.$http.get(pagination_url, {
+				params: { page: num, category: category }
+			}).then(function (response) {
+				_this2.setPagination(response.json());
+			}, function () {
+				return _this2.errorDialogMessage();
+			});
+		},
+		destroyData: function destroyData(route_delete) {
+			var _this3 = this;
+
+			this.$http.delete(route_delete).then(function () {
+				return _this3.delete(_this3.pagination.data, _this3.modalConfirmation.category);
+			}, function () {
+				return _this3.errorDialogMessage();
+			});
+		},
+		getSpecByCategory: function getSpecByCategory(category) {
+			this.setSpecCategory(category);
+			this.getPagination();
+		},
+		setSpecCategory: function setSpecCategory(category) {
+			this.category = category;
+		},
+		setPagination: function setPagination(obj) {
+			this.pagination = obj;
+			this.closeResultDialog();
+		},
+		delete: function _delete(collection, spec) {
+			var index = collection.indexOf(spec);
+			collection.splice(index, 1);
+		},
+		prev: function prev() {
+			this.getPagination(this.pagination.current_page - 1);
+		},
+		next: function next() {
+			this.getPagination(this.pagination.current_page + 1);
+		},
+		errorDialogMessage: function errorDialogMessage() {
+			return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+		},
+		internalRouteFor: function internalRouteFor(id) {
+			return laroute.route('internal.show', { internal: id });
+		},
+		internalEditRouteFor: function internalEditRouteFor(id) {
+			return laroute.route("internal.edit", { internal: id });
+		},
+		externalRouteFor: function externalRouteFor(id) {
+			return laroute.route('external.show', { external: id });
+		},
+		externalEditRouteFor: function externalEditRouteFor(id) {
+			return laroute.route("external.edit", { external: id });
+		}
+	}
+};
+
+},{"./filterMethods":20,"./search":21}],20:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	methods: {
+		uppercase: function uppercase(string) {
+			return _.toUpper(string);
+		},
+		capitalize: function capitalize(string) {
+			return _.capitalize(string);
+		},
+		trim: function trim(string) {
+			if (string.length <= 150) return string;else if (150 <= 3) return string.slice(0, 150) + "...";else return string.slice(0, 150 - 3) + "...";
+		},
+		telfordStandardDate: function telfordStandardDate(dt) {
+			return moment(dt).format("MM/DD/Y");
+		}
+	}
+};
+
+},{}],21:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            showResultDialog: false,
+            searchKeyword: "",
+            searchResults: []
+        };
+    },
+
+
+    computed: {
+        isSearchResultNotEmpty: function isSearchResultNotEmpty() {
+            return this.searchResults.internal && this.searchResults.external;
+        }
+    },
+
+    methods: {
+        displaySearchResult: function displaySearchResult() {
+            var _this = this;
+
+            var search_route = laroute.route("search");
+            this.$http.get(search_route, {
+                params: { q: this.searchKeyword }
+            }).then(function (response) {
+                _this.searchResults = response.json();
+                _this.toggleSearchResult();
+                $("body").removeClass("active");
+            }, function () {
+                return _this.errorDialogMessage();
+            });
+        },
+        errorDialogMessage: function errorDialogMessage() {
+            return alert("Oops, server error!. Try refreshing your browser. \n \n if this message box keeps on coming contact system administrator");
+        },
+        toggleSearchResult: function toggleSearchResult() {
+            this.showResultDialog = true;
+        },
+        closeResultDialog: function closeResultDialog() {
+            this.showResultDialog = false;
+            this.searchResults = [];
+            this.searchKeyword = "";
+            $("body").removeClass("active");
+        },
+        clearSearchInput: function clearSearchInput() {
+            this.closeResultDialog();
+        }
+    }
+};
+
+},{}],22:[function(require,module,exports){
+"use strict";
+
+var _abstract = require("./mixins/abstract");
+
+var _abstract2 = _interopRequireDefault(_abstract);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 require('./app');
+
 
 var app = new Vue({
     el: "#app",
+
+    mixins: [_abstract2.default],
 
     data: {
         pagination: {}
     },
 
     mounted: function mounted() {
-        this.getUsers();
+        this.getPagination();
     },
 
 
@@ -48757,16 +48933,14 @@ var app = new Vue({
             var index = collection.indexOf(item);
             collection.splice(index, 1);
         },
-        getUsers: function getUsers() {
-            var _this2 = this;
+        getPagination: function getPagination() {
+            var num = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
 
-            return this.$http.get(laroute.route("api.search.user")).then(function (response) {
-                return _this2.pagination = response.json();
-            });
+            this.fetchData(laroute.route("api.search.user"), num, '');
         }
     }
 });
 
-},{"./app":11}]},{},[19]);
+},{"./app":11,"./mixins/abstract":19}]},{},[22]);
 
 //# sourceMappingURL=user-index.js.map

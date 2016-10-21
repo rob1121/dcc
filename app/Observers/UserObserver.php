@@ -9,4 +9,9 @@ class UserObserver
     public function created() {
         flash("User successfully added to database!.","success");
     }
+
+    public function saved()
+    {
+        flash("User Database successfully updated!.","success");
+    }
 }

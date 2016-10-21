@@ -37,8 +37,12 @@
 <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}} form">
     <div class="panel-heading">Register</div>
     <div class="panel-body">
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
+        <form class="form-horizontal" role="form" method="POST" action="{{ isset($user) ? route("user.update", ["user" => $user->id]) : url('/register') }}">
             {{ csrf_field() }}
+            @if(isset($user))
+                <input type="hidden" name="_method" value="PATCH">
+                <input type="hidden" name="id" value="{{isset($user) ? $user->id : null }}">
+            @endif
 
             <div class="form-group{{ $errors->has('user_type') ? ' has-error' : '' }}">
                 <label for="user_type" class="col-xs-4 control-label">User Type</label>
@@ -165,9 +169,15 @@
 
             <div class="form-group">
                 <div class="col-xs-6 col-xs-offset-4">
-                    <button type="submit" class="btn btn-{{ $errors->any() ? "danger" : "primary" }} pull-right">
-                        Register User <i class="fa fa-users"></i>
-                    </button>
+                    @if( ! isset($user))
+                        <button type="submit" class="btn btn-{{ $errors->any() ? "danger" : "primary" }} pull-right">
+                            Register User <i class="fa fa-users"></i>
+                        </button>
+                    @else
+                        <button type="submit" class="btn btn-{{ $errors->any() ? "danger" : "primary" }} pull-right">
+                            Update User <i class="fa fa-save"></i>
+                        </button>
+                    @endif
                 </div>
             </div>
         </form>

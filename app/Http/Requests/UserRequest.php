@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
-class IsoRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +27,11 @@ class IsoRequest extends FormRequest
     public function rules()
     {
         return [
-            "spec_no" => "required",
-            "name" =>  "required",
-            "document" =>  "required|mimes:pdf",
-            "revision" =>  "required|min:2|max:10",
-            "revision_date" =>  "required|date",
+            "user_type" => "required",
+            "department" => "required",
+            "employee_id" => ["required", Rule::unique("users")->ignore(Request::input("id"))],
+            "email" => ["required", Rule::unique("users")->ignore(Request::input("id"))],
+
         ];
     }
 }

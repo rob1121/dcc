@@ -1,14 +1,17 @@
 require('./app');
+import abstract from "./mixins/abstract";
 
 const app = new Vue( {
     el: "#app",
+
+	mixins: [abstract],
 
 	data: {
     	pagination: {}
 	},
 
 	mounted() {
-		this.getUsers();
+		this.getPagination();
 	},
 
     filters: {
@@ -24,14 +27,14 @@ const app = new Vue( {
     },
 
 	methods: {
-		remove(user)
-		{
-		    const delete_route = laroute.route("user.destroy", {user: user.id});
-		    this.$http.delete(delete_route).then(
+        remove(user)
+        {
+            const delete_route = laroute.route("user.destroy", {user: user.id});
+            this.$http.delete(delete_route).then(
                 () => this.deleteItem(this.pagination.data, user),
                 error => console.log(error.text())
             );
-		},
+        },
 
         deleteItem(collection, item)
         {
@@ -39,10 +42,9 @@ const app = new Vue( {
             collection.splice(index, 1)
         },
 
-    	getUsers()
-		{
-    		return this.$http.get(laroute.route("api.search.user"))
-				.then(response => this.pagination = response.json());
-		}
-	}
+        getPagination(num = null)
+        {
+            this.fetchData(laroute.route("api.search.user"), num, '');
+        }
+    }
 } );
