@@ -10,6 +10,11 @@ Route::group(["prefix" => "user"], function() {
         "as" => "user.edit"
     ]);
 
+    Route::patch("/{user}", [
+        "uses" => "UserController@update",
+        "as" => "user.update"
+    ]);
+
    Route::delete("/{user}", [
        "uses" => "UserController@destroy",
        "as" => "user.destroy"

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExternalSpecRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class ExternalSpecRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return "ADMIN" === Auth::user()->user_type;
     }
 
     /**

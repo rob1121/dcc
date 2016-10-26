@@ -14,8 +14,7 @@ class CompanySpecObserver
     /*
      * @param CompanySpec $spec
      */
-    public function saved
-    ()
+    public function saved()
     {
         flash("Database successfully updated!.","success");
     }
