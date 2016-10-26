@@ -48766,51 +48766,56 @@ require('./app');
 
 
 var app = new Vue({
-  el: "#app",
+    el: "#app",
 
-  data: {
-    pagination: {},
-    keyword: ""
-  },
-
-  mounted: function mounted() {
-    this.getUsers();
-  },
-
-
-  filters: {
-    capitalize: _stringformatter.capitalize,
-    nameCase: function nameCase(name) {
-      return _.map(name.split(" "), function (word) {
-        return _.capitalize(word);
-      }).join(" ");
-    }
-  },
-
-  methods: {
-    search: _search.search,
-    remove: function remove(user) {
-      var _this = this;
-
-      var delete_route = laroute.route("user.destroy", { user: user.id });
-      this.$http.delete(delete_route).then(function () {
-        return _this.deleteItem(_this.pagination.data, user);
-      }, function (error) {
-        return console.log(error.text());
-      });
+    data: {
+        pagination: {},
+        keyword: ""
     },
-    deleteItem: function deleteItem(collection, item) {
-      var index = collection.indexOf(item);
-      collection.splice(index, 1);
-    },
-    getUsers: function getUsers() {
-      var _this2 = this;
 
-      return this.$http.get(laroute.route("api.search.user")).then(function (response) {
-        return _this2.pagination = response.json();
-      });
+    mounted: function mounted() {
+        this.getUsers();
+    },
+
+
+    filters: {
+        capitalize: _stringformatter.capitalize,
+        toUpper: _stringformatter.toUpper,
+        nameCase: function nameCase(name) {
+            return _.map(name.split(" "), function (word) {
+                return _.capitalize(word);
+            }).join(" ");
+        }
+    },
+
+    methods: {
+        search: _search.search,
+        clearSearch: function clearSearch() {
+            this.search('users', 'all');
+            this.keyword = "";
+        },
+        remove: function remove(user) {
+            var _this = this;
+
+            var delete_route = laroute.route("user.destroy", { user: user.id });
+            this.$http.delete(delete_route).then(function () {
+                return _this.deleteItem(_this.pagination.data, user);
+            }, function (error) {
+                return console.log(error.text());
+            });
+        },
+        deleteItem: function deleteItem(collection, item) {
+            var index = collection.indexOf(item);
+            collection.splice(index, 1);
+        },
+        getUsers: function getUsers() {
+            var _this2 = this;
+
+            return this.$http.get(laroute.route("api.search.user")).then(function (response) {
+                return _this2.pagination = response.json();
+            });
+        }
     }
-  }
 });
 
 },{"./app":11,"./modules/search":19,"./modules/stringformatter":20}]},{},[21]);

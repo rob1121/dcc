@@ -34,10 +34,9 @@
         <div class="col-md-5">
             <div class="input-group">
                 <input type="text" v-model="keyword" @keypress.enter="search('users', keyword)" class="form-control">
-
                 <span class="input-group-btn">
                 <button @click="search('users', keyword)" class="btn btn-default">search</button>
-                <button @click="search('users', keyword)" class="btn btn-default">clear search</button>
+                <button @click="clearSearch" class="btn btn-default">clear search</button>
             </span>
             </div>
         </div>
@@ -52,9 +51,9 @@
             </thead>
             <tbody>
             <tr v-for="user in pagination.data">
-                <td class="text-right">@{{ user.employee_id }}</td>
+                <td class="text-right">@{{ user.employee_id}}</td>
                 <td style="white-space: nowrap;">@{{ user.name | nameCase }}</td>
-                <td  style="white-space: nowrap;">@{{ user.user_type | capitalize }}</td>
+                <td  style="white-space: nowrap;">@{{ user.user_type | toUpper }}</td>
                 <td>@{{ user.department | capitalize }}</td>
                 <td>@{{ user.email }}</td>
                 <td class="text-right"  style="white-space: nowrap;">

@@ -17,6 +17,8 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
+        if ($request->q === "all") return self::model($request->table)->allUser();
+
         return self::searchFor(
             $request->table,
             self::model($request->table),

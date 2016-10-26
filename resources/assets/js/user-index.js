@@ -1,5 +1,5 @@
 require('./app');
-import { capitalize } from "./modules/stringformatter";
+import { toUpper, capitalize } from "./modules/stringformatter";
 import { search } from "./modules/search";
 
 const app = new Vue( {
@@ -16,6 +16,7 @@ const app = new Vue( {
 
     filters: {
 		capitalize,
+        toUpper,
     	nameCase(name)
     	{
     		return _.map( name.split(" ") , (word) => _.capitalize(word) ).join(" ");
@@ -24,6 +25,10 @@ const app = new Vue( {
 
 	methods: {
         search,
+        clearSearch() {
+          this.search('users', 'all');
+            this.keyword = "";
+        },
 		remove(user)
 		{
 		    const delete_route = laroute.route("user.destroy", {user: user.id});
