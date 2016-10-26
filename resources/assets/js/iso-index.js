@@ -1,6 +1,6 @@
 require("./app");
-import search from "./mixins/search";
-import filter from "./mixins/filterMethods";
+import { toUpper, capitalize } from "./modules/stringformatter";
+import { telfordStandardDate } from "./modules/dateFormatter";
 
 const app = new Vue( {
     el: "#app",
@@ -12,7 +12,11 @@ const app = new Vue( {
         selectedIso: []
     },
 
-    mixins:[search, filter],
+    filters: {
+        toUpper,
+        capitalize,
+        telfordStandardDate
+    },
 
     methods:
     {
@@ -20,16 +24,6 @@ const app = new Vue( {
             return typeof revArray[revArray.length-1][column] !== undefined
                 ? revArray[revArray.length-1][column]
                 : "N/A";
-        },
-
-        internalRouteFor(id)
-        {
-            return laroute.route('internal.show', {internal: id});
-        },
-
-        externalRouteFor(id)
-        {
-            return laroute.route('external.show', {external: id});
         },
 
         setModalSpec(iso)

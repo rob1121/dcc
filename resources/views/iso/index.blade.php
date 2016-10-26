@@ -5,7 +5,7 @@
 @endpush
 
 @section("content")
-<div class="deck-collection">
+<div class="form">
 
     <ol class="breadcrumb">
         <li><a href="{{route("home")}}">Home</a></li>
@@ -22,41 +22,42 @@
 
     @include('errors.flash')
 
-    <div class="deck" v-for="iso in pagination" v-if="pagination">
-        <div class="spec-no col-sm-12
-            @if(Auth::user() && isAdmin()) col-md-9
-            @else col-md-12
-            @endif
-                justify">
 
-            <a class="show-action-link" :href="showRouteFor(iso.id)" target="_blank" style="word-wrap: break-word">
-                <h4>@{{uppercase(iso.spec_no)}} - @{{uppercase(iso.name)}} </h4>
-            </a>
-            <h6 class="help-block">
-                <strong>Revision:   </strong> @{{uppercase(iso.revision)}}
-                <strong>Date:       </strong> @{{telfordStandardDate(iso.revision_date)}}
-            </h6>
-        </div>
-        @if(Auth::user())
-            <div class="col-sm-12
-                            @if(Auth::user() && isAdmin()) col-md-3 @endif
-                        ">
-
-                @if(isAdmin())
-                    <a id="update-btn" class="btn btn-xs btn-default" :href="editRouteFor(iso.id)">
-                        Update <i class="fa fa-edit"></i>
+    <div class="panel panel-default">
+        <table class="table table-hover">
+            <tbody v-if="pagination.length">
+            <tr v-for="spec in pagination">
+                <td>
+                    <a :href="spec.iso_show">
+                        <strong>@{{spec.name | toUpper}}</strong>
                     </a>
+                    <br>
+                    <strong>Revision: </strong>@{{spec.revision}}
+                    <strong>Date: </strong>@{{spec.revision_date}}
+                </td>
+                <td>
+                        @if(isAdmin())
+                            <a id="update-btn" class="btn btn-xs btn-default" :href="spec.iso_edit">
+                                Update <i class="fa fa-edit"></i>
+                            </a>
 
-                    <a id="delete-btn" class="btn btn-xs btn-danger"
-                       data-toggle="modal"
-                       href="#spec-confirm"
-                    @click="setModalSpec(iso)"
-                    >
-                    Remove <i class="fa fa-remove"></i>
-                    </a>
-                @endif
-            </div>
-        @endif
+                            <a id="delete-btn" class="btn btn-xs btn-danger"
+                               data-toggle="modal"
+                               href="#spec-confirm"
+                            @click="setModalSpec(iso)"
+                            >
+                            Remove <i class="fa fa-remove"></i>
+                            </a>
+                        @endif
+                </td>
+            </tr>
+            </tbody>
+            <tfoot v-else>
+            <tr>
+                <td colspan="2" class="text-center text-danger">No document specification found.</td>
+            </tr>
+            </tfoot>
+        </table>
     </div>
     <div v-if="! pagination" class="container">
         <h1 class="text-danger">No document specification found.</h1>
@@ -72,7 +73,7 @@
         <h4>
             Are you sure you want to permanently <strong class="text-danger">delete</strong>
             "<strong class="text-danger">
-                @{{uppercase(selectedIso.spec_no)}} - @{{uppercase(selectedIso.name)}}
+                @{{selectedIso.title}}
             </strong>"?
         </h4>
         <button type="button"

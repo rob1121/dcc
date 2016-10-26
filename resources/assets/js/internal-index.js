@@ -1,8 +1,7 @@
 require('./app');
 import abstract from "./mixins/abstract";
-import search from "./mixins/search";
-import filter from "./mixins/filterMethods";
-
+import { toUpper, capitalize } from "./modules/stringformatter";
+import { telfordStandardDate } from "./modules/dateFormatter";
 const app = new Vue({
     el: "#app",
 
@@ -17,12 +16,18 @@ const app = new Vue({
         pagination: {},
     },
 
-    mixins: [abstract, search, filter],
+    mixins: [abstract],
+
+    filters: {
+        toUpper,
+        capitalize,
+        telfordStandardDate
+    },
 
     methods: {
-        getPagination(num = "") {
+        getPagination() {
             var pagination_url = laroute.route('api.search.internal');
-            this.fetchData(pagination_url, num, this.category.category_no);
+            this.fetchData(pagination_url, this.category.category_no);
         },
 
         setModalSpec(spec) {
@@ -32,11 +37,6 @@ const app = new Vue({
         removeSpec() {
             var delete_route = laroute.route("internal.destroy", {internal: this.modalConfirmation.category.id});
             this.destroyData(delete_route);
-        },
-
-        isNewRevision(revision_date) {
-            var revision_date = moment(revision_date);
-            return revision_date > moment().subtract(7, "days");
-        },
-    },
+        }
+    }
 });

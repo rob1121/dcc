@@ -16,7 +16,7 @@ class ApiController extends Controller
                 return $data->company_spec_id;
             })->toArray();
 
-        $company_spec = CompanySpec::whereIn('id', $ids)->orderBy("spec_no")->paginate();
+        $company_spec = CompanySpec::whereIn('id', $ids)->orderBy("spec_no")->get();
 
         return response()->json($company_spec)
             ->header('Access-Control-Allow-Origin', '*')
@@ -33,7 +33,7 @@ class ApiController extends Controller
 
         $customer_spec = CustomerSpec::with(["customerSpecRevision" => function ($query) {
             $query->orderBy("revision", "asc");
-        }])->whereIn('id', $ids)->orderBy("spec_no")->paginate();
+        }])->whereIn('id', $ids)->orderBy("spec_no")->get();
 
         return response()->json($customer_spec)
             ->header('Access-Control-Allow-Origin', '*')

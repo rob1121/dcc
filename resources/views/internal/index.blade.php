@@ -9,7 +9,7 @@
                 <a href="{{route("home")}}">Home</a>
             </li>
             <li class="active">Internal Specification</li>
-            <li class="active">@{{uppercase(category.category_title)}}</li>
+            <li class="active">@{{category.category_title | toUpper}}</li>
         </ol>
         @if(Auth::user() && isAdmin())
             <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
@@ -19,39 +19,39 @@
         <div class="clearfix"></div>
 
         @include('errors.flash')
-
-        <div class="deck" v-for="spec in pagination.data" v-if="pagination.data">
-            <div class="spec-no col-xs-12 col-md-9">
-                <a class="show-action-link" target="_blank" :href="internalRouteFor(spec.id)">
-                    <h4>
-                        @{{uppercase(spec.spec_name)}}
-                        <span class="label label-success"
-                              v-if="isNewRevision(spec.company_spec_revision.revision_date)"
-                        >
-                            new revision
-                        </span>
-                    </h4>
-
-                </a>
-                <h5 class="help-block">@{{capitalize(trim(spec.company_spec_revision.revision_summary))}}</h5>
-            </div>
-            <div class="col-xs-12 col-md-3">
-                <h6>
-                    <strong>Revision: </strong>@{{uppercase(spec.company_spec_revision.revision)}}
-                    <strong>Date: </strong>@{{telfordStandardDate(spec.company_spec_revision.revision_date)}}
-                </h6>
-                @if(Auth::user() && isAdmin())
-                    <a id="update-btn" class="btn btn-xs btn-default" :href="internalEditRouteFor(spec.id)">
-                        Update <i class="fa fa-edit"></i>
-                    </a>
-                    <button id="delete-btn" class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
-                    setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
-                    </button>
-                @endif
-            </div>
-        </div>
-        <div v-if="! pagination.data" class="container">
-            <h1 class="text-danger">No document specification found.</h1>
+        <div class="panel panel-default">
+            <table class="table table-hover">
+                <tbody v-if="pagination.length">
+                <tr v-for="spec in pagination">
+                    <td>
+                        <a :href="spec.internal_show">
+                            <span class="label label-success" v-if="spec.highlight">@{{ spec.highlight }}</span>
+                            <strong>@{{spec.spec_name | toUpper}}</strong>
+                        </a>
+                        <br>
+                        <small>@{{spec.revision_summary | capitalize}}</small>
+                    </td>
+                    <td>
+                        <strong>Revision: </strong>@{{spec.company_spec_revision.revision | toUpper}}
+                        <strong>Date: </strong>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}
+                        <br>
+                        @if(Auth::user() && isAdmin())
+                            <a id="update-btn" class="btn btn-xs btn-default" :href="spec.internal_edit">
+                                Update <i class="fa fa-edit"></i>
+                            </a>
+                            <button id="delete-btn" class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
+                        setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
+                            </button>
+                        @endif
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot v-else>
+                <tr>
+                    <td colspan="2" class="text-center text-danger">No document specification found.</td>
+                </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
             Are you sure you want to permanently <strong class="text-danger">delete</strong>
             <br>
             "<strong class="text-danger">
-                @{{uppercase(modalConfirmation.category.spec_name)}}
+                @{{modalConfirmation.category.spec_name | toUpper}}
             </strong>"?
         </h3>
 

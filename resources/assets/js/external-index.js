@@ -1,5 +1,7 @@
 require("./app");
 import abstract from "./mixins/abstract";
+import { toUpper, capitalize } from "./modules/stringformatter";
+import { telfordStandardDate } from "./modules/dateFormatter";
 
 const app = new Vue({
 	el: "#app",
@@ -22,6 +24,12 @@ const app = new Vue({
 
     mixins: [abstract],
 
+    filters: {
+        toUpper,
+        capitalize,
+        telfordStandardDate
+    },
+
     computed: {
         customerSpecForReview() {
             return this.getCustomerSpecsForReview(
@@ -31,11 +39,11 @@ const app = new Vue({
 
         externalSpecs() {
             var filtered_result = _.filter(
-                this.pagination.data,
+                this.pagination,
                 spec => _.find( spec.customer_spec_revision, {is_reviewed: 0} )
             );
 
-            return this.status_filter == "all" ? this.pagination.data : filtered_result;
+            return this.status_filter == "all" ? this.pagination : filtered_result;
         }
     },
 
@@ -60,9 +68,9 @@ const app = new Vue({
             return _.size( this.getCustomerSpecsForReview(specs) );
         },
 
-        getPagination(num = "") {
+        getPagination() {
             var pagination_url = laroute.route('api.search.external');
-            this.fetchData(pagination_url, num, this.category.customer_name);
+            this.fetchData(pagination_url, this.category.customer_name);
         },
 
         setModalSpec(spec,action) {

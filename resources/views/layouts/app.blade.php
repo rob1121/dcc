@@ -76,8 +76,6 @@
         @endif
 
         <br><br>
-
-        @include("sidebar.sidebar", ["show" => isset($show)])
         @if(isset($categories))
             <h4>Specification Category:</h4>
 
@@ -93,16 +91,7 @@
 
     <div class="white-cover"></div>
     <div class="content">
-        @if(isset($show))
-            <div v-show="! showResultDialog">
-                @yield('content')
-                @include("search.result")
-            </div>
-            <div class="search-output" v-show="showResultDialog">
-                @include("layouts.search_engine")
-            </div>
-        @else @yield('content')
-        @endif
+        @yield('content')
     </div>
 </div>
 

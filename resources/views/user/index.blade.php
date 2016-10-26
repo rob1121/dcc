@@ -31,14 +31,24 @@
     </div>
     @include("errors.flash")
     <div class="table-responsive">
+        <div class="col-md-5">
+            <div class="input-group">
+                <input type="text" v-model="keyword" @keypress.enter="search('users', keyword)" class="form-control">
+
+                <span class="input-group-btn">
+                <button @click="search('users', keyword)" class="btn btn-default">search</button>
+                <button @click="search('users', keyword)" class="btn btn-default">clear search</button>
+            </span>
+            </div>
+        </div>
         <table class="table">
             <thead>
-            <th class="text-right">#</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Department</th>
-            <th>Email</th>
-            <th class="text-right">Action</th>
+                <th class="text-right">#</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th class="text-right">Action</th>
             </thead>
             <tbody>
             <tr v-for="user in pagination.data">
@@ -55,6 +65,5 @@
             </tbody>
         </table>
     </div>
-    @include("search.result")
 </div>
 @endsection

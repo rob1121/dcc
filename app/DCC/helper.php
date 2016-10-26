@@ -2,6 +2,6 @@
 
 function isAdmin()
 {
-    return Auth::user()->user_type === "ADMIN";
+    return Auth::user() && Auth::user()->user_type === "ADMIN";
 }
 

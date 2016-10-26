@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li><a href="{{route("home")}}">Home</a></li>
             <li class="active">Internal Specification</li>
-            <li class="active">@{{ uppercase(category.customer_name) }}</li>
+            <li class="active">@{{ category.customer_name | toUpper }}</li>
         </ol>
 
         @if(Auth::user() && isAdmin())
@@ -29,56 +29,53 @@
                 </select>
         </div>
 
-
-        <div class="deck" v-for="spec in externalSpecs" v-if="externalSpecs">
-            <div class="spec-no col-sm-12
-                @if(Auth::user() && isAdmin())         col-md-7
-                @elseif(Auth::user()&& ! isAdmin())    col-md-8
-                @else col-md-12
-                @endif
-            justify">
-
-                <a class="show-action-link" :href="externalRouteFor(spec.customer_spec_revision)" target="_blank" style="word-wrap: break-word">
-                    <h4>@{{spec.spec_name}} </h4>
-                </a>
-                <h6>
-                    <strong>Revision: </strong>
-                    <span class="label label-info">@{{spec.latest_revision}}</span>
-                    <strong>Date: </strong>
-                    <span class="label label-info">@{{spec.latest_revision_date}}</span>
-                </h6>
-            </div>
-            @if(Auth::user())
-                <div class="col-sm-12
-                    @if(Auth::user() && isAdmin())          col-md-5
-                    @elseif(Auth::user() && ! isAdmin())    col-md-4
-                    @endif
-                ">
-                    @if(isAdmin())
-                        <a id="update-btn" class="btn btn-xs btn-default" :href="externalEditRouteFor(spec.id)">
-                            Update <i class="fa fa-edit"></i>
+        <div class="panel panel-default">
+            <table class="table table-hover">
+                <tbody v-if="externalSpecs.length">
+                <tr v-for="spec in externalSpecs">
+                    <td>
+                        <a :href="spec.iso_show">
+                            <strong>@{{spec.spec_name | toUpper}}</strong>
                         </a>
+                        <br>
+                        <strong>Revision: </strong>@{{spec.latest_revision}}
+                        <strong>Date: </strong>@{{spec.latest_revision_date}}
+                    </td>
+                    <td>
+                        @if(Auth::user())
+                            @if(isAdmin())
+                                <a id="update-btn" class="btn btn-xs btn-default" :href="spec.external_edit">
+                                    Update <i class="fa fa-edit"></i>
+                                </a>
 
-                        <a id="delete-btn" class="btn btn-xs btn-danger"
-                                data-toggle="modal"
-                                href="#spec-confirm"
+                                <a id="delete-btn" class="btn btn-xs btn-danger"
+                                   data-toggle="modal"
+                                   href="#spec-confirm"
                                 @click=" setModalSpec(spec,'delete')"
-                        >
-                        Remove <i class="fa fa-remove"></i>
-                        </a>
-                    @endif
-                    <a id="for-review-btn" class="btn btn-xs btn-success"
-                            data-toggle="modal"
-                            href="#spec-for-review"
-                            title="Click here to view specification for review"
+                                >
+                                Remove <i class="fa fa-remove"></i>
+                                </a>
+                            @endif
+                            <a id="for-review-btn" class="btn btn-xs btn-success"
+                               data-toggle="modal"
+                               href="#spec-for-review"
+                               title="Click here to view specification for review"
                             @click="setModalSpec(spec,'update')"
                             v-if="getCustomerSpecsForReview(spec.customer_spec_revision ).length"
-                    >
-                        <span class="badge">@{{getCustomerSpecsForReview( spec.customer_spec_revision ).length}}</span>
-                        pending for review <i class="fa fa-file-o"></i>
-                    </a>
-                </div>
-            @endif
+                            >
+                            <span class="badge">@{{getCustomerSpecsForReview( spec.customer_spec_revision ).length}}</span>
+                            pending for review <i class="fa fa-file-o"></i>
+                            </a>
+                        @endif
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot v-else>
+                <tr>
+                    <td colspan="2" class="text-center text-danger">No document specification found.</td>
+                </tr>
+                </tfoot>
+            </table>
         </div>
         <div v-if="! externalSpecs" class="container">
             <h1 class="text-danger">No document specification found.</h1>
@@ -139,8 +136,8 @@
                     </a>
 
                     <span class="help-block">
-                        <strong>Revision: </strong>@{{ uppercase(specRevision.revision)}}
-                        <strong>Date: </strong>@{{telfordStandardDate(specRevision.revision_date)}}
+                        <strong>Revision: </strong>@{{ specRevision.revision | toUpper}}
+                        <strong>Date: </strong>@{{specRevision.revision_date | telfordStandardDate}}
                     </span>
                 </div>
 

@@ -16,4 +16,14 @@ trait ExternalSpecPresenter
     {
         return \Str::upper($this->customerSpecRevision->sortBy("revision")->last()->revision_date);
     }
+
+    public function getExternalShowAttribute()
+    {
+        return route("external.show", ["external" => $this->id]);
+    }
+
+    public function getExternalEditAttribute()
+    {
+        return route("external.edit", ["external" => $this->id]);
+    }
 }

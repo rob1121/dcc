@@ -20,4 +20,26 @@ trait InternalSpecPresenter
             return $origin->department;
         } )->toArray();
     }
+
+    public function getInternalShowAttribute()
+    {
+        return route("internal.show", ["internal" => $this->id]);
+    }
+
+    public function getInternalDestroyAttribute()
+    {
+        return route("internal.destroy", ["internal" => $this->id]);
+    }
+
+    public function getRevisionSummaryAttribute()
+    {
+        return str_limit($this->companySpecRevision->revision_summary, 50);
+    }
+
+    public function getHighlightAttribute()
+    {
+        return $this->companySpecRevision->revision_date > \Carbon::now()->subDays(7)
+            ? "new revision"
+            : "";
+    }
 }

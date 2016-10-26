@@ -3,14 +3,21 @@
 namespace App;
 
 use App\DCC\Traits\ModelInstance;
+use App\Dcc\Traits\Presenter\IsoPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class Iso extends Model
 {
-    use ModelInstance;
+    use ModelInstance, IsoPresenter;
 
-    protected $fillable = [ 'spec_no', 'name', 'document', 'revision', 'revision_date' ];
+    protected $fillable = [
+        'spec_no', 'name', 'document', 'revision', 'revision_date'
+    ];
+
+    protected $appends = [
+        'title', 'iso_show', 'iso_edit'
+    ];
 
     /**
      * @param Request $request

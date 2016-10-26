@@ -16,7 +16,7 @@ class CustomerSpec extends Model {
     ];
 
     protected $appends = [
-        'spec_name', 'latest_revision', 'latest_revision_date'
+        'spec_name', 'latest_revision', 'latest_revision_date', 'external_show', 'external_edit'
     ];
 
     protected $with = ['customerSpecRevision', 'customerSpecCategory'];
