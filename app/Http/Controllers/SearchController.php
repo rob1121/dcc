@@ -31,7 +31,7 @@ class SearchController extends Controller
         return Searchy::search($db_name)->fields(self::columns($db_name))->query($query)->getQuery()->limit(10)->get()
             ->flatMap(function($item) use($collection) {
                 return $collection->whereId($item->id)->get();
-            });
+            })->userTransformer();
     }
 
     private static function columns($table)

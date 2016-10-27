@@ -16,7 +16,7 @@ require('laravel-elixir-vueify');
 elixir(mix => {
     mix
     .copy("node_modules/font-awesome/fonts", "public/fonts")
-        .sass('app.scss')
+        // .sass('app.scss')
         // .browserify('form.js')
         // .browserify('internal-index.js')
         // .browserify('external-index.js')

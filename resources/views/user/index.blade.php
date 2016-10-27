@@ -15,7 +15,7 @@
 @endpush
 
 @section('content')
-<div v-if="pagination.data" class="container" >
+<div v-if="pagination" class="container" >
 
     <ol class="breadcrumb">
         <li>
@@ -40,6 +40,7 @@
             </span>
             </div>
         </div>
+
         <table class="table">
             <thead>
                 <th class="text-right">#</th>
@@ -50,11 +51,11 @@
                 <th class="text-right">Action</th>
             </thead>
             <tbody>
-            <tr v-for="user in pagination.data">
+            <tr v-for="user in pagination">
                 <td class="text-right">@{{ user.employee_id}}</td>
                 <td style="white-space: nowrap;">@{{ user.name | nameCase }}</td>
                 <td  style="white-space: nowrap;">@{{ user.user_type | toUpper }}</td>
-                <td>@{{ user.department | capitalize }}</td>
+                <td>@{{ user.department | toUpper }}</td>
                 <td>@{{ user.email }}</td>
                 <td class="text-right"  style="white-space: nowrap;">
                     <a :href="user.edit_route" class="btn btn-default btn-xs">edit <i class="fa fa-edit"></i></a>

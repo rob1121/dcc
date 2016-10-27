@@ -50,18 +50,16 @@ class User extends Authenticatable
 
     public static function allUser()
     {
-        $charCount = self::employeeIdHighestCharCount();
+        $users = self::all()->userTransformer();
 
-        $users = self::paginate(15)->toArray();
+        $usersMap = $users->map(function($item) {
+            $route_links = collect($item)->put("delete_route", route("user.destroy", ["user" => $item->id ]) )
+                ->put("edit_route", route("user.edit", ["user" => $item->id ]) );
 
-        $users["data"] = collect($users["data"])->map(function($item) use($charCount) {
-            $item["employee_id"] = sprintf("%0{$charCount}d", $item["employee_id"]);
-            $item = collect($item)->put("delete_route", route("user.destroy", ["user" => $item["id"] ]) )
-                ->put("edit_route", route("user.edit", ["user" => $item["id"] ]) );
-            return $item;
-        });
+            return $route_links;
+        })->toArray();
 
-        return $users;
+        return $usersMap;
     }
 
     public static function employeeIdHighestCharCount()

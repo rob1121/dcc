@@ -5,7 +5,7 @@ const search = function(table, keyword = "")
     this.$http.get(search_route, {
         params: { table: table, q: keyword}
     }).then(
-        response => this.pagination.data = response.json(),
+        response => this.pagination = response.json(),
         () => this.errorDialogMessage()
     );
 };

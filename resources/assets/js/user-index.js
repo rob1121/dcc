@@ -26,14 +26,14 @@ const app = new Vue( {
 	methods: {
         search,
         clearSearch() {
-          this.search('users', 'all');
-            this.keyword = "";
+			this.search('users', 'all');
+			this.keyword = "";
         },
 		remove(user)
 		{
 		    const delete_route = laroute.route("user.destroy", {user: user.id});
 		    this.$http.delete(delete_route).then(
-                () => this.deleteItem(this.pagination.data, user),
+                () => this.deleteItem(this.pagination, user),
                 error => console.log(error.text())
             );
 		},
@@ -46,8 +46,10 @@ const app = new Vue( {
 
     	getUsers()
 		{
-    		return this.$http.get(laroute.route("api.search.user"))
-				.then(response => this.pagination = response.json());
+    		return this.$http.get(laroute.route("api.search.user")).then(
+				response => this.pagination = response.json(),
+                error => console.log(error)
+            );
 		}
 	}
 } );

@@ -187,7 +187,8 @@ return [
         App\Providers\ComposerServiceProvider::class,
         AlfredoRamos\ParsedownExtra\ParsedownExtraServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
-        Spatie\FailedJobMonitor\FailedJobMonitorServiceProvider::class
+        Spatie\FailedJobMonitor\FailedJobMonitorServiceProvider::class,
+        App\Providers\MacroServiceProvider::class
     ],
 
     /*

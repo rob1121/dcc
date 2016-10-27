@@ -48730,7 +48730,7 @@ var search = function search(table) {
     this.$http.get(search_route, {
         params: { table: table, q: keyword }
     }).then(function (response) {
-        return _this.pagination.data = response.json();
+        return _this.pagination = response.json();
     }, function () {
         return _this.errorDialogMessage();
     });
@@ -48799,7 +48799,7 @@ var app = new Vue({
 
             var delete_route = laroute.route("user.destroy", { user: user.id });
             this.$http.delete(delete_route).then(function () {
-                return _this.deleteItem(_this.pagination.data, user);
+                return _this.deleteItem(_this.pagination, user);
             }, function (error) {
                 return console.log(error.text());
             });
@@ -48813,6 +48813,8 @@ var app = new Vue({
 
             return this.$http.get(laroute.route("api.search.user")).then(function (response) {
                 return _this2.pagination = response.json();
+            }, function (error) {
+                return console.log(error);
             });
         }
     }
