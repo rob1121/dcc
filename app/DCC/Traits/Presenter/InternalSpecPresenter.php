@@ -6,7 +6,7 @@ trait InternalSpecPresenter
 
     public function getSpecIdAttribute()
     {
-        return $this->companySpecCategory->category_no . " - " . sprintf("%d03", $this->spec_no);
+        return $this->companySpecCategory->category_no . " - " . sprintf("%03d", $this->spec_no);
     }
 
     public function getSpecNameAttribute()
@@ -16,9 +16,7 @@ trait InternalSpecPresenter
 
     public function getOriginatorDepartmentsAttribute()
     {
-        return $this->originator->map( function( $origin ) {
-            return $origin->department;
-        } )->toArray();
+        return $this->originator->pluck('department');
     }
 
     public function getInternalShowAttribute()
@@ -29,6 +27,11 @@ trait InternalSpecPresenter
     public function getInternalDestroyAttribute()
     {
         return route("internal.destroy", ["internal" => $this->id]);
+    }
+
+    public function getInternalEditAttribute()
+    {
+        return route("internal.edit", ["internal" => $this->id]);
     }
 
     public function getRevisionSummaryAttribute()

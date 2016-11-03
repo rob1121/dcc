@@ -5,5 +5,5 @@ return [
 
     'sub_title' => "Document Control Center Online",
 
-    'title' => "DCC Online",
+    'title' => "DCC Online"
 ];

@@ -19,12 +19,20 @@
         <div class="clearfix"></div>
 
         @include('errors.flash')
+        <div class="row">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <input type="text" v-model="searchKey" placeholder="Look for...">
+                </div>
+            </div>
+            <br><br>
+        </div>
         <div class="panel panel-default">
             <table class="table table-hover">
-                <tbody v-if="pagination.length">
-                <tr v-for="spec in pagination">
+                <tbody v-if="documents.length">
+                <tr v-for="spec in documents">
                     <td>
-                        <a :href="spec.internal_show">
+                        <a :href="spec.internal_show" target="_black">
                             <span class="label label-success" v-if="spec.highlight">@{{ spec.highlight }}</span>
                             <strong>@{{spec.spec_name | toUpper}}</strong>
                         </a>
@@ -37,7 +45,7 @@
                         <br>
                         @if(Auth::user() && isAdmin())
                             <a id="update-btn" class="btn btn-xs btn-default" :href="spec.internal_edit">
-                                Update <i class="fa fa-edit"></i>
+                                Update<i class="fa fa-edit"></i>
                             </a>
                             <button id="delete-btn" class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
                         setModalSpec(spec)">Remove <i class="fa fa-remove"></i>

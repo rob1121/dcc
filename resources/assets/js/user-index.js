@@ -1,17 +1,30 @@
 require('./app');
 import { toUpper, capitalize } from "./modules/stringformatter";
-import { search } from "./modules/search";
 
 const app = new Vue( {
     el: "#app",
 
 	data: {
     	pagination: {},
-		keyword: ""
+		keyword: "",
+		sort: {
+    		key: "employee_id",
+			in: true
+		},
+		searchKey: ""
 	},
 
 	mounted() {
 		this.getUsers();
+	},
+
+	computed: {
+
+		users() {
+			const filter = this.filterUser();
+
+			return _.orderBy(filter,[this.sort.key], [this.sort.in ? "asc" : "desc"]);
+		}
 	},
 
     filters: {
@@ -24,7 +37,21 @@ const app = new Vue( {
     },
 
 	methods: {
-        search,
+    	filterUser() {
+			return _.filter(this.pagination, (o) => {
+				return o.name.toLowerCase().includes(this.searchKey.toLowerCase())
+					|| o.employee_id.toLowerCase().includes(this.searchKey.toLowerCase())
+					|| o.department.toLowerCase().includes(this.searchKey.toLowerCase())
+					|| o.user_type.toLowerCase().includes(this.searchKey.toLowerCase())
+					|| o.email.toLowerCase().includes(this.searchKey.toLowerCase());
+			});
+		},
+
+		sortColumn(key) {
+			this.sort.in = this.sort.key === key ? ! this.sort.in : this.sort.in;
+			this.sort.key = key;
+		},
+
         clearSearch() {
 			this.search('users', 'all');
 			this.keyword = "";

@@ -8,8 +8,14 @@ const app = new Vue( {
     data:
     {
         pagination: isos,
+        selectedIso: [],
+        searchKey: ""
+    },
 
-        selectedIso: []
+    computed: {
+      documents() {
+          return _.filter(this.pagination, (o) => o.name.toLowerCase().includes(this.searchKey.toLowerCase()));
+      }
     },
 
     filters: {

@@ -51,7 +51,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', "http://" . gethostbyname(gethostname()) . "/dcc_2016/public"),
+//    'url' => env('APP_URL', "http://" . gethostbyname(gethostname()) . "/dcc_2016/public"),
+    'url' => env('APP_URL', "http://QA-PROG2/dcc_2016/public"),
 
     /*
     |--------------------------------------------------------------------------

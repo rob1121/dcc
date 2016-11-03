@@ -20,7 +20,9 @@
         <div class="clearfix"></div>
 
         @include('errors.flash')
-        <div v-if="externalSpecs">
+
+        <div v-if="documents">
+            <input type="text" v-model="searchKey" placeholder="Look for...">
             <label>Show:</label>
 
                 <select name="status_filter" id="status_filter" v-model="status_filter">
@@ -31,8 +33,8 @@
 
         <div class="panel panel-default">
             <table class="table table-hover">
-                <tbody v-if="externalSpecs.length">
-                <tr v-for="spec in externalSpecs">
+                <tbody v-if="documents.length">
+                <tr v-for="spec in documents">
                     <td>
                         <a :href="spec.iso_show">
                             <strong>@{{spec.spec_name | toUpper}}</strong>
@@ -77,7 +79,7 @@
                 </tfoot>
             </table>
         </div>
-        <div v-if="! externalSpecs" class="container">
+        <div v-if="! documents" class="container">
             <h1 class="text-danger">No document specification found.</h1>
         </div>
     </div>

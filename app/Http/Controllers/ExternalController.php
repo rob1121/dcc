@@ -82,7 +82,9 @@ class ExternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(CustomerSpec $external) {
-        return view("external.edit", [ "spec" => $external, "category_lists" => $this->categories ]);
+        return view("external.edit", [
+            "spec" => $external, "category_lists" => $this->categories, "reviewers_list" => CustomerSpec::uniqueReviewer()
+        ]);
     }
 
     /**

@@ -61,14 +61,14 @@ class IntegrationTest extends TestCase
         $this->visit('/');
         $this->click('External Specification');
     }
-
-    /** @test */
-    public function it_search_and_display_result_on_the_screen() {
-        $this->visit('/internal');
-        $this->type('specification dummy text for search', 'search-field');
-        $this->press("Search");
-        $this->see('Search result found for'); //initial string of empty search result
-    }
+//
+//    /** @test */
+//    public function it_search_and_display_result_on_the_screen() {
+//        $this->visit('/internal');
+//        $this->type('specification dummy text for search', 'search-field');
+//        $this->press("Search");
+//        $this->see('Search result found for'); //initial string of empty search result
+//    }
 
     protected function loginUser()
     {

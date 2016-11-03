@@ -76,6 +76,17 @@
                     </div>
                     <div class="row">
 
+                        <dcc-input name="reviewer"
+                                   col="4"
+                                   list="reviewer_list"
+                                   error="{{$errors->has("reviewer") ? $errors->first("reviewer"):""}}"
+                                   value="{{$errors->has("reviewer") || old("reviewer") ? old("reviewer") :  $spec->reviewer}}"
+                        ></dcc-input>
+
+                        <datalist id="reviewer_list" v-if="{{$reviewers_list}}">
+                            <option v-for="reviewer in {{$reviewers_list}}" :value="reviewer">
+                        </datalist>
+
                         <dcc-input name="document"
                                    col="8"
                                    type="file"

@@ -19,18 +19,15 @@ const app = new Vue({
             indexOfSpecForUpdate: null
 		},
 
-        pagination: []
-	},
-
-    mixins: [abstract],
-
-    filters: {
-        toUpper,
-        capitalize,
-        telfordStandardDate
+        pagination: [],
+        searchKey: ""
     },
 
     computed: {
+        documents() {
+            return _.filter(this.externalSpecs, (o) => o.spec_name.toLowerCase().includes(this.searchKey.toLowerCase()));
+        },
+
         customerSpecForReview() {
             return this.getCustomerSpecsForReview(
                 this.modalConfirmation.category.customer_spec_revision
@@ -45,6 +42,14 @@ const app = new Vue({
 
             return this.status_filter == "all" ? this.pagination : filtered_result;
         }
+    },
+
+    mixins: [abstract],
+
+    filters: {
+        toUpper,
+        capitalize,
+        telfordStandardDate
     },
 
     methods: {

@@ -2,11 +2,9 @@
 
 @push('style')
     <style>
-    #app #sidebar { width: 0; }
+        #app #sidebar { display: none; }
 
-     #app .content {
-         width: 100vw;
-     }
+         #app .content { width: 100vw; }
     </style>
 @endpush
 
@@ -15,7 +13,7 @@
 @endpush
 
 @section('content')
-<div v-if="pagination" class="container" >
+<div v-if="users" class="container-fluid" >
 
     <ol class="breadcrumb">
         <li>
@@ -31,27 +29,19 @@
     </div>
     @include("errors.flash")
     <div class="table-responsive">
-        <div class="col-md-5">
-            <div class="input-group">
-                <input type="text" v-model="keyword" @keypress.enter="search('users', keyword)" class="form-control">
-                <span class="input-group-btn">
-                <button @click="search('users', keyword)" class="btn btn-default">search</button>
-                <button @click="clearSearch" class="btn btn-default">clear search</button>
-            </span>
-            </div>
-        </div>
+        <input type="text" v-model="searchKey" placeholder="Look for...">
 
         <table class="table">
             <thead>
-                <th class="text-right">#</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Department</th>
-                <th>Email</th>
+                <th @click="sortColumn('employee_id')" class="text-right">#</th>
+                <th @click="sortColumn('name')">Name</th>
+                <th @click="sortColumn('user_type')">Category</th>
+                <th @click="sortColumn('department')">Department</th>
+                <th @click="sortColumn('email')">Email</th>
                 <th class="text-right">Action</th>
             </thead>
             <tbody>
-            <tr v-for="user in pagination">
+            <tr v-for="user in users">
                 <td class="text-right">@{{ user.employee_id}}</td>
                 <td style="white-space: nowrap;">@{{ user.name | nameCase }}</td>
                 <td  style="white-space: nowrap;">@{{ user.user_type | toUpper }}</td>

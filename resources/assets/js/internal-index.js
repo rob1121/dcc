@@ -14,6 +14,13 @@ const app = new Vue({
         },
 
         pagination: {},
+        searchKey: ""
+    },
+
+    computed: {
+        documents() {
+            return _.filter(this.pagination, (o) => o.spec_name.toLowerCase().includes(this.searchKey.toLowerCase()));
+        }
     },
 
     mixins: [abstract],

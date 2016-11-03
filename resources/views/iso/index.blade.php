@@ -21,12 +21,18 @@
     <div class="clearfix"></div>
 
     @include('errors.flash')
-
-
+    <div class="row">
+        <div class="col-md-5">
+            <div class="input-group">
+                <input type="text" v-model="searchKey" placeholder="Look for...">
+            </div>
+        </div>
+        <br><br>
+    </div>
     <div class="panel panel-default">
         <table class="table table-hover">
-            <tbody v-if="pagination.length">
-            <tr v-for="spec in pagination">
+            <tbody v-if="documents.length">
+            <tr v-for="spec in documents">
                 <td>
                     <a :href="spec.iso_show">
                         <strong>@{{spec.name | toUpper}}</strong>
@@ -59,7 +65,7 @@
             </tfoot>
         </table>
     </div>
-    <div v-if="! pagination" class="container">
+    <div v-if="! documents" class="container">
         <h1 class="text-danger">No document specification found.</h1>
     </div>
 </div>
