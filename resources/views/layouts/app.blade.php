@@ -33,64 +33,63 @@
 
 <div id="app" v-cloak>
 
-    <div id="sidebar">
-        <h4 class="menu-title">Menu:</h4>
+    {{--<div id="sidebar">--}}
+        {{--<h4 class="menu-title">Menu:</h4>--}}
 
-        <a class="menu-link sidebar-link btn-link" href="{{ route("internal.index") }}">Internal Specification
-            @if($internal)
-                <span class="label label-danger">{{$internal}}</span>
-            @endif
-        </a>
+        {{--<a class="menu-link sidebar-link btn-link" href="{{ route("internal.index") }}">Internal Specification--}}
+            {{--@if($internal)--}}
+                {{--<span class="label label-danger">{{$internal}}</span>--}}
+            {{--@endif--}}
+        {{--</a>--}}
 
-        @if(Auth::user())
-            <a class="menu-link sidebar-link btn-link" href="{{ route("external.index") }}">External Specification
-                @if($external)
-                    <span class="label label-danger">{{$external}}</span>
-                @endif
-            </a>
-        @endif
+        {{--@if(Auth::user())--}}
+            {{--<a class="menu-link sidebar-link btn-link" href="{{ route("external.index") }}">External Specification--}}
+                {{--@if($external)--}}
+                    {{--<span class="label label-danger">{{$external}}</span>--}}
+                {{--@endif--}}
+            {{--</a>--}}
+        {{--@endif--}}
 
-        <a class="menu-link sidebar-link btn-link" href="{{ route("iso.index") }}">ISO
-        @if($iso)
-            <span class="label label-danger">{{$iso}}</span>
-        @endif
-        </a>
-        @if (Auth::guest())
+        {{--<a class="menu-link sidebar-link btn-link" href="{{ route("iso.index") }}">ISO--}}
+        {{--@if($iso)--}}
+            {{--<span class="label label-danger">{{$iso}}</span>--}}
+        {{--@endif--}}
+        {{--</a>--}}
+        {{--@if (Auth::guest())--}}
 
-            <a class="menu-link sidebar-link" href="{{ url('/login') }}">Login</a>
+            {{--<a class="menu-link sidebar-link" href="{{ url('/login') }}">Login</a>--}}
 
-        @else
-            @if(isAdmin())
-                <a class="menu-link sidebar-link" href="{{ url('/register') }}">Register new user</a>
-                <a class="menu-link sidebar-link" href="{{ url('/user-list') }}">User list</a>
-            @endif
+        {{--@else--}}
+            {{--@if(isAdmin())--}}
+                {{--<a class="menu-link sidebar-link" href="{{ url('/register') }}">Register new user</a>--}}
+                {{--<a class="menu-link sidebar-link" href="{{ url('/user-list') }}">User list</a>--}}
+            {{--@endif--}}
 
-            <a class="menu-link sidebar-link" href="{{ url('/logout') }}"
-               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-            > Logout</a>
+            {{--<a class="menu-link sidebar-link" href="{{ url('/logout') }}"--}}
+               {{--onclick="event.preventDefault(); document.getElementById('logout-form').submit();"--}}
+            {{--> Logout</a>--}}
 
-            <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                  style="display: none;">
-                {{ csrf_field() }}
-            </form>
-        @endif
+            {{--<form id="logout-form" action="{{ url('/logout') }}" method="POST"--}}
+                  {{--style="display: none;">--}}
+                {{--{{ csrf_field() }}--}}
+            {{--</form>--}}
+        {{--@endif--}}
 
-        <br><br>
-        @if(isset($categories))
-            <h4>Specification Category:</h4>
+        {{--<br><br>--}}
+        {{--@if(isset($categories))--}}
+            {{--<h4>Specification Category:</h4>--}}
 
-            <a v-for="category in {{$categories}}"
-               href="#"
-               class="sidebar-link"
-               @click.prevent="getSpecByCategory(category)"
-            >
-                @{{category.name}}
-            </a>
-        @endif
-    </div>
+            {{--<a v-for="category in {{$categories}}"--}}
+               {{--href="#"--}}
+               {{--class="sidebar-link"--}}
+               {{--@click.prevent="getSpecByCategory(category)"--}}
+            {{-->--}}
+                {{--@{{category.name}}--}}
+            {{--</a>--}}
+        {{--@endif--}}
+    {{--</div>--}}
 
-    <div class="white-cover"></div>
-    <div class="content">
+    <div class="content container">
         @yield('content')
     </div>
 </div>

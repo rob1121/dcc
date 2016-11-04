@@ -43,4 +43,5 @@ class CompanySpec extends Model
         $spec = self::instance($request);
         return self::where($spec)->first();
     }
+
 }

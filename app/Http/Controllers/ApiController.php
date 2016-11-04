@@ -10,8 +10,7 @@ class ApiController extends Controller
 {
     public function internalSearch(Request $request)
     {
-        $ids = CompanySpecCategory::whereCategoryNo($request->category)
-            ->get(['company_spec_id'])
+        $ids = CompanySpecCategory::get(['company_spec_id'])
             ->map(function ($data) {
                 return $data->company_spec_id;
             })->toArray();

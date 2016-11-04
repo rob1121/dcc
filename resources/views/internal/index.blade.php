@@ -23,6 +23,11 @@
             <div class="col-md-5">
                 <div class="input-group">
                     <input type="text" v-model="searchKey" placeholder="Look for...">
+                    <button class="btn btn-sm btn-default btn-search">search <i class="fa fa-search"></i></button>
+                    <button class="btn btn-sm btn-default btn-search">clear search <i class="fa fa-remove"></i></button>
+                    <select>
+                        <option v-for="category in {{$categories}}" :value="category.name" @change="getSpecByCategory(category)">@{{ category.name }}</option>
+                    </select>
                 </div>
             </div>
             <br><br>

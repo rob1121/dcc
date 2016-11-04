@@ -8355,6 +8355,9 @@ body {
 .pagination {
   margin: 0px; }
 
+.btn-search {
+  margin-left: 5px; }
+
 .navbar {
   border-radius: 0; }
   .navbar .navbar-brand {
