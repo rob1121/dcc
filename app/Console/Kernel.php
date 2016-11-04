@@ -11,7 +11,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\FollowUp::class
+        Commands\FollowUp::class,
+        Commands\seedDccConsole::class
     ];
 
     /**
