@@ -15,7 +15,7 @@ class ApiController extends Controller
                 return $data->company_spec_id;
             })->toArray();
 
-        $company_spec = CompanySpec::with(['companySpecRevision', 'companySpecCategory', 'originator'])
+        $company_spec = CompanySpec::with(['companySpecRevision', 'companySpecCategory'])
             ->whereIn('id', $ids)->orderBy("spec_no")->get();
 
         return response()->json($company_spec)

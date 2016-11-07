@@ -48535,6 +48535,8 @@ var _abstract = require("./mixins/abstract");
 
 var _abstract2 = _interopRequireDefault(_abstract);
 
+var _SidebarModules = require("./modules/SidebarModules");
+
 var _stringformatter = require("./modules/stringformatter");
 
 var _dateFormatter = require("./modules/dateFormatter");
@@ -48543,27 +48545,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 require('./app');
 
+
 var app = new Vue({
     el: "#app",
 
     data: {
-        category: category,
-
         modalConfirmation: {
             category: {},
             index: -1
         },
 
         pagination: {},
-        searchKey: ""
+        searchKey: _SidebarModules.searchKey,
+        searchCategoryKey: _SidebarModules.searchCategoryKey,
+        activeCategory: _SidebarModules.activeCategory
     },
 
     computed: {
-        documents: function documents() {
+        documentsByCategory: function documentsByCategory() {
             var _this = this;
 
-            return _.filter(this.pagination, function (o) {
-                return o.spec_name.toLowerCase().includes(_this.searchKey.toLowerCase());
+            var document = this.pagination;
+
+            if (this.searchCategoryKey === null && this.pagination.length > 0) this.searchCategoryKey = this.pagination[0].company_spec_category.category_no;
+
+            if (this.searchCategoryKey !== "") document = _.filter(this.pagination, function (o) {
+                return o.company_spec_category.category_no.toLowerCase() === _this.searchCategoryKey.toLowerCase();
+            });
+
+            return document;
+        },
+        documents: function documents() {
+            var _this2 = this;
+
+            return this.searchKey === "" ? this.documentsByCategory : _.filter(this.pagination, function (o) {
+                return o.spec_name.toLowerCase().includes(_this2.searchKey.toLowerCase());
             });
         }
     },
@@ -48577,9 +48593,13 @@ var app = new Vue({
     },
 
     methods: {
+        setActiveCategory: _SidebarModules.setActiveCategory,
+        setSearchCategoryKey: _SidebarModules.setSearchCategoryKey,
+        emptySearchKey: _SidebarModules.emptySearchKey,
+
         getPagination: function getPagination() {
             var pagination_url = laroute.route('api.search.internal');
-            this.fetchData(pagination_url, this.category.category_no);
+            this.fetchData(pagination_url);
         },
         setModalSpec: function setModalSpec(spec) {
             this.modalConfirmation.category = spec;
@@ -48591,7 +48611,7 @@ var app = new Vue({
     }
 });
 
-},{"./app":11,"./mixins/abstract":20,"./modules/dateFormatter":22,"./modules/stringformatter":23}],19:[function(require,module,exports){
+},{"./app":11,"./mixins/abstract":20,"./modules/SidebarModules":22,"./modules/dateFormatter":23,"./modules/stringformatter":24}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48803,12 +48823,10 @@ exports.default = {
 	mixins: [_search2.default],
 
 	methods: {
-		fetchData: function fetchData(pagination_url, category) {
+		fetchData: function fetchData(pagination_url) {
 			var _this2 = this;
 
-			this.$http.get(pagination_url, {
-				params: { category: category }
-			}).then(function (response) {
+			this.$http.get(pagination_url).then(function (response) {
 				_this2.setPagination(response.json());
 			}, function () {
 				return _this2.errorDialogMessage();
@@ -48822,13 +48840,6 @@ exports.default = {
 			}, function () {
 				return _this3.errorDialogMessage();
 			});
-		},
-		getSpecByCategory: function getSpecByCategory(category) {
-			this.setSpecCategory(category);
-			this.getPagination();
-		},
-		setSpecCategory: function setSpecCategory(category) {
-			this.category = category;
 		},
 		setPagination: function setPagination(obj) {
 			this.pagination = obj;
@@ -48905,13 +48916,45 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var searchKey = "";
+var searchCategoryKey = null;
+var activeCategory = "";
+
+var setActiveCategory = function setActiveCategory(category_no) {
+    this.activeCategory = category_no;
+    this.setSearchCategoryKey(category_no);
+    this.emptySearchKey();
+};
+
+var setSearchCategoryKey = function setSearchCategoryKey(category_no) {
+    this.searchCategoryKey = category_no;
+};
+
+var emptySearchKey = function emptySearchKey() {
+    this.searchKey = '';
+};
+
+exports.setActiveCategory = setActiveCategory;
+exports.setSearchCategoryKey = setSearchCategoryKey;
+exports.emptySearchKey = emptySearchKey;
+exports.searchKey = searchKey;
+exports.searchCategoryKey = searchCategoryKey;
+exports.activeCategory = activeCategory;
+
+},{}],23:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var telfordStandardDate = function telfordStandardDate(dt) {
     return moment(dt).format("MM/DD/Y");
 };
 
 exports.telfordStandardDate = telfordStandardDate;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

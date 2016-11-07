@@ -30,9 +30,6 @@ class InternalController extends Controller {
      */
     public function index()
     {
-//        dd(CompanySpec::first()->spec_name);
-        \JavaScript::put('category', $this->categories->first());
-
         return view('internal.index', [
             "categories" => $this->categories,
             "show" => true

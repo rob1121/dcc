@@ -4,7 +4,7 @@ const toUpper = function(string) {
 
 const capitalize = function(string) {
     return _.capitalize(string);
-}
+};
 
 export {
     toUpper, capitalize

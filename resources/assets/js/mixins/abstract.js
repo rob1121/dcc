@@ -9,10 +9,8 @@ export default {
 	mixins: [search],
 
 	methods: {
-		fetchData(pagination_url, category) {
-			this.$http.get(pagination_url, {
-				params: { category: category }
-			}).then(
+		fetchData(pagination_url) {
+			this.$http.get(pagination_url).then(
 				response => {
 					this.setPagination(response.json())
 				},
@@ -26,15 +24,6 @@ export default {
 					() => this.delete(this.pagination, this.modalConfirmation.category),
 					() => this.errorDialogMessage()
 				);
-		},
-
-		getSpecByCategory(category) {
-			this.setSpecCategory(category);
-			this.getPagination();
-		},
-
-		setSpecCategory(category) {
-			this.category = category;
 		},
 
 		setPagination(obj) {

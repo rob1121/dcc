@@ -181,7 +181,7 @@ return [
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
+//        Barryvdh\Debugbar\ServiceProvider::class,
         TomLingham\Searchy\SearchyServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
@@ -239,7 +239,7 @@ return [
         'JavaScript' => Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         'Carbon' => Carbon\Carbon::class,
         'Str' => Illuminate\Support\Str::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+//        'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Searchy' => TomLingham\Searchy\Facades\Searchy::class,
         'Markdown'  => AlfredoRamos\ParsedownExtra\Facades\ParsedownExtra::class
     ],

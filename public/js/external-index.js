@@ -48853,12 +48853,10 @@ exports.default = {
 	mixins: [_search2.default],
 
 	methods: {
-		fetchData: function fetchData(pagination_url, category) {
+		fetchData: function fetchData(pagination_url) {
 			var _this2 = this;
 
-			this.$http.get(pagination_url, {
-				params: { category: category }
-			}).then(function (response) {
+			this.$http.get(pagination_url).then(function (response) {
 				_this2.setPagination(response.json());
 			}, function () {
 				return _this2.errorDialogMessage();
@@ -48872,13 +48870,6 @@ exports.default = {
 			}, function () {
 				return _this3.errorDialogMessage();
 			});
-		},
-		getSpecByCategory: function getSpecByCategory(category) {
-			this.setSpecCategory(category);
-			this.getPagination();
-		},
-		setSpecCategory: function setSpecCategory(category) {
-			this.category = category;
 		},
 		setPagination: function setPagination(obj) {
 			this.pagination = obj;

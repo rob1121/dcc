@@ -1,5 +1,6 @@
 .navbar
     border-radius: 0
+    margin: 0
 
     .navbar-brand
       color: $dcc-text-header
@@ -13,48 +14,3 @@
       &:hover > a
           border-bottom: 3px solid $dcc-border-color
           background: $dcc-hover-color !important
-
-
-.close
-	font-size: 5em
-	margin-right: 25px
-
-.search-result
-  position: absolute
-  width: 100vw
-  height: 100vh
-  z-index: 1
-  background: #fff
-  animation: fade-enter .3s ease-in-out forwards
-  border-top: 1px solid $dcc-border-color
-  overflow: scroll
-
-  .search-result--list
-  	margin: 32px 32px 64px 32px
-
-.search--deck-collection
-  overflow: hidden
-
-.search--deck
-  margin-bottom: 5px
-  width: 100%
-  background: #fff
-  padding: 10px 5px
-  border: 1px solid $laravel-border-color
-  border-left: 3px solid $laravel-border-color
-  transition: .1s ease-in-out
-  display: inline-block
-
-  &:hover
-    border-left: 3px solid $dcc-border-color
-    background: $dcc-hover-color
-    +dcc-box-shadow()
-
-.search--spec-no
-	font-weight: bolder
-	color: darken($text-color, 30%)
-
-.search--revision-summary,
-.search--revision
-	color: $text-color
-

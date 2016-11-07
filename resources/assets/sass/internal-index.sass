@@ -1,26 +1,40 @@
-.deck
-    margin-bottom: 5px
-    width: 100%
-    background: #fff
-    padding: 10px 5px
-    border: 1px solid $laravel-border-color
-    border-left-width: 3px
-    transition: border .1s ease-in-out
-    display: inline-block
-    font-weight: bold !important
-
-    .show-action-link
-        cursor: pointer
-        text-decoration: none
-
-    &:hover
-        border-left: 3px solid darkred
-        background: $dcc-hover-color
-        +dcc-box-shadow()
-
 .spec-no
     font-weight: bold
 
+body
+    display: flex
+    flex-direction: column
+    height: 100vh
+    overflow-y: hidden
 
+#app
+    display: flex
+    align-items: stretch
+    flex: 1
 
+    .content
+        display: flex
+        align-items: stretch
+        flex: 1
 
+    .main-content,
+    .side
+        overflow-y: auto
+
+    .side
+        background-color: #fff !important
+
+    .form-control
+        border-radius: 0
+
+    .list-group li
+        border: 0
+        border-radius: 0
+        cursor: pointer
+
+        &:hover
+            background: #2579A9
+            color: #fff
+
+    .main-content
+        padding-top: 10px

@@ -3,37 +3,51 @@
 @push("script") <script src="{{URL::to("/js/internal-index.js")}}"></script> @endpush
 
 @section("content")
-    <div class="deck-collection">
+    <div class="hidden-xs col-md-3 side">
+        <div class="row">
+                <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
+        </div>
+
+        <div class="row">
+            <ul class="list-group">
+                <li :class="['list-group-item', searchCategoryKey === category.category_no ? 'active' : '']"
+                    v-for="category in {{$categories}}"
+                    @click="setActiveCategory(category.category_no)"
+                >
+                    @{{ category.name }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-md-9 main-content">
         <ol class="breadcrumb">
             <li>
                 <a href="{{route("home")}}">Home</a>
             </li>
             <li class="active">Internal Specification</li>
-            <li class="active">@{{category.category_title | toUpper}}</li>
         </ol>
-        @if(Auth::user() && isAdmin())
-            <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
-                Add new internal specification <i class="fa fa-plus"></i>
-            </a>
+
+        @if(!Auth::user() && !isAdmin())
+            <div class="clearfix">
+                <a href="{{route("internal.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 5px">
+                    Add new internal specification <i class="fa fa-plus"></i>
+                </a>
+            </div>
         @endif
-        <div class="clearfix"></div>
 
         @include('errors.flash')
-        <div class="row">
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input type="text" v-model="searchKey" placeholder="Look for...">
-                    <button class="btn btn-sm btn-default btn-search">search <i class="fa fa-search"></i></button>
-                    <button class="btn btn-sm btn-default btn-search">clear search <i class="fa fa-remove"></i></button>
-                    <select>
-                        <option v-for="category in {{$categories}}" :value="category.name" @change="getSpecByCategory(category)">@{{ category.name }}</option>
-                    </select>
-                </div>
-            </div>
-            <br><br>
-        </div>
+
+
+
         <div class="panel panel-default">
             <table class="table table-hover">
+                <th>Specification</th>
+                <th class="text-right">Revision</th>
+                <th class="text-right">Revision date</th>
+                @if(! Auth::user() &&  !isAdmin())
+                    <th>Actions</th>
+                @endif
                 <tbody v-if="documents.length">
                 <tr v-for="spec in documents">
                     <td>
@@ -44,19 +58,22 @@
                         <br>
                         <small>@{{spec.revision_summary | capitalize}}</small>
                     </td>
-                    <td>
-                        <strong>Revision: </strong>@{{spec.company_spec_revision.revision | toUpper}}
-                        <strong>Date: </strong>@{{spec.company_spec_revision.revision_date | telfordStandardDate}}
-                        <br>
-                        @if(Auth::user() && isAdmin())
+                    <td class="text-right">
+                        @{{spec.company_spec_revision.revision | toUpper}}
+                    </td>
+                    <td class="text-right">
+                        @{{spec.company_spec_revision.revision_date | telfordStandardDate}}
+                    </td>
+                    @if(! Auth::user() &&  !isAdmin())
+                        <td class="col-md-3">
                             <a id="update-btn" class="btn btn-xs btn-default" :href="spec.internal_edit">
                                 Update<i class="fa fa-edit"></i>
                             </a>
                             <button id="delete-btn" class="btn btn-xs btn-danger" data-toggle="modal" href="#spec-delete" @click="
-                        setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
+                            setModalSpec(spec)">Remove <i class="fa fa-remove"></i>
                             </button>
-                        @endif
-                    </td>
+                        </td>
+                    @endif
                 </tr>
                 </tbody>
                 <tfoot v-else>
