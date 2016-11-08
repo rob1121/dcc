@@ -16,19 +16,15 @@ class IntegrationTest extends TestCase
     /** @test */
     public function it_redirect_to_internal_spec() {
         $this->visit("/");
-        $this->seePageIs("/internal");
         $this->see("Internal Specification");
         $this->seeLink("Internal Specification");
-        $this->seeRouteIs("internal.index");
     }
 
     /** @test */
     public function it_hide_external_spec_link_when_not_log_in() {
         $this->visit("/");
-        $this->seePageIs("/internal");
         $this->see("Internal Specification");
-        $this->seeRouteIs("internal.index");
-        $this->seeLink("Internal Specification");
+        $this->seeLink("ISO");
         $this->dontSeeLink("External Specification");
         $this->dontSeeElement("update");
         $this->dontSeeElement("#update-btn");
@@ -59,7 +55,7 @@ class IntegrationTest extends TestCase
     public function it_can_see_external_specification_link() {
         $this->be($this->user);
         $this->visit('/');
-        $this->click('External Specification');
+        $this->see('home');
     }
 //
 //    /** @test */

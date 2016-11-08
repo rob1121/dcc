@@ -26,11 +26,8 @@ class ExternalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        \JavaScript::put('category', $first_category = $this->categories->first());
-
         return view('external.index', [
-            "categories" => $this->categories,
-            "show" => true
+            "categories" => $this->categories
         ]);
     }
 

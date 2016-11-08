@@ -5,8 +5,13 @@
 @endpush
 
 @section("content")
-<div class="form">
+    <div class="hidden-xs col-md-3 side">
+        <div class="row">
+            <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
+        </div>
+    </div>
 
+    <div class="col-xs-12 col-md-9 main-content">
     <ol class="breadcrumb">
         <li><a href="{{route("home")}}">Home</a></li>
         <li class="active">ISO Document</li>
@@ -20,26 +25,29 @@
 
     <div class="clearfix"></div>
 
-    @include('errors.flash')
-    <div class="row">
-        <div class="col-md-5">
-            <div class="input-group">
-                <input type="text" v-model="searchKey" placeholder="Look for...">
-            </div>
-        </div>
-        <br><br>
+
+    <div class="row-fluid hidden-lg" style="margin-bottom: 5px">
+        <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
     </div>
+
+    @include('errors.flash')
     <div class="panel panel-default">
         <table class="table table-hover">
+            <th>ISO document</th>
+            <th>Revision</th>
+            <th>Revision date</th>
             <tbody v-if="documents.length">
             <tr v-for="spec in documents">
                 <td>
                     <a :href="spec.iso_show">
                         <strong>@{{spec.name | toUpper}}</strong>
                     </a>
-                    <br>
-                    <strong>Revision: </strong>@{{spec.revision}}
-                    <strong>Date: </strong>@{{spec.revision_date}}
+                    </td>
+                <td>
+                    @{{spec.revision}}
+                </td>
+                <td>
+                    @{{spec.revision_date}}
                 </td>
                 <td>
                         @if(isAdmin())
@@ -64,9 +72,6 @@
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div v-if="! documents" class="container">
-        <h1 class="text-danger">No document specification found.</h1>
     </div>
 </div>
 {{--=======================================MODALS=================================--}}

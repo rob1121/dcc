@@ -10,9 +10,11 @@ class CompanySpecRevision extends Model
     use ModelInstance;
 
     protected $fillable = [
-        'revision',
-        'revision_summary',
-        'revision_date'
+        'revision', 'revision_summary', 'revision_date'
+    ];
+
+    protected $hidden = [
+        'updated_at', 'created_at'
     ];
 
     public static function countOfNewRevision() {

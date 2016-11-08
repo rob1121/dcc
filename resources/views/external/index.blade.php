@@ -5,11 +5,36 @@
 @endpush
 
 @section("content")
-    <div class="deck-collection">
+    <div class="hidden-xs col-md-3 side">
+        <div class="row">
+                <label>Show:</label>
+            <select name="status_filter" id="status_filter" class="form-control input-lg" v-model="status_filter">
+                <option value="all">All</option>
+                <option value="for review">Specification For Review</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
+            <hr>
+        </div>
+
+        <div class="row">
+            <ul class="list-group">
+                <li :class="['list-group-item', searchCategoryKey === category.customer_name ? 'active' : '']"
+                    v-for="category in {{$categories}}"
+                @click="setActiveCategory(category.customer_name)"
+                >
+                @{{ category.name }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-md-9 main-content">
         <ol class="breadcrumb">
             <li><a href="{{route("home")}}">Home</a></li>
-            <li class="active">Internal Specification</li>
-            <li class="active">@{{ category.customer_name | toUpper }}</li>
+            <li class="active">External Specification</li>
         </ol>
 
         @if(Auth::user() && isAdmin())
@@ -21,18 +46,18 @@
 
         @include('errors.flash')
 
-        <div v-if="documents">
-            <input type="text" v-model="searchKey" placeholder="Look for...">
-            <label>Show:</label>
-
-                <select name="status_filter" id="status_filter" v-model="status_filter">
-                    <option value="all">All</option>
-                    <option value="for review">Specification For Review</option>
-                </select>
+        <div class="row-fluid hidden-lg" style="margin-bottom: 5px">
+            <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
         </div>
 
         <div class="panel panel-default">
             <table class="table table-hover">
+                <th>Specification</th>
+                <th class="text-right">Revision</th>
+                <th class="text-right">Revision date</th>
+                @if( Auth::user() &&  isAdmin())
+                    <th>Actions</th>
+                @endif
                 <tbody v-if="documents.length">
                 <tr v-for="spec in documents">
                     <td>
@@ -40,11 +65,11 @@
                             <strong>@{{spec.spec_name | toUpper}}</strong>
                         </a>
                         <br>
-                        <strong>Revision: </strong>@{{spec.latest_revision}}
-                        <strong>Date: </strong>@{{spec.latest_revision_date}}
                     </td>
-                    <td>
-                        @if(Auth::user())
+                    <td class="text-right">@{{spec.latest_revision}}</td>
+                    <td class="text-right col-md-1">@{{spec.latest_revision_date}}</td>
+                    @if(Auth::user())
+                        <td class="col-md-4">
                             @if(isAdmin())
                                 <a id="update-btn" class="btn btn-xs btn-default" :href="spec.external_edit">
                                     Update <i class="fa fa-edit"></i>
@@ -68,19 +93,16 @@
                             <span class="badge">@{{getCustomerSpecsForReview( spec.customer_spec_revision ).length}}</span>
                             pending for review <i class="fa fa-file-o"></i>
                             </a>
-                        @endif
-                    </td>
+                        </td>
+                    @endif
                 </tr>
                 </tbody>
                 <tfoot v-else>
                 <tr>
-                    <td colspan="2" class="text-center text-danger">No document specification found.</td>
+                    <td colspan="4" class="text-center text-danger">No document specification found.</td>
                 </tr>
                 </tfoot>
             </table>
-        </div>
-        <div v-if="! documents" class="container">
-            <h1 class="text-danger">No document specification found.</h1>
         </div>
     </div>
 

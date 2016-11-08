@@ -4,20 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\User;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 
 class UserController extends Controller
 {
-	public function __construct()
+    private $categories;
+
+    public function __construct()
 	{
 		$this->middleware("auth.admin");
+        $this->categories = User::getCategoryList();
 	}
 
     public function index()
     {
-        return view("user.index");
+        return view("user.index", [
+            "categories" => $this->categories->map(function($user) {
+                return [
+                    "category_no" => $user,
+                    "name" => $user
+                ];
+            })
+        ]);
     }
 
     public function edit(User $user)

@@ -14,3 +14,24 @@
       &:hover > a
           border-bottom: 3px solid $dcc-border-color
           background: $dcc-hover-color !important
+
+.faded
+    position: fixed
+    height: 100vh
+    width: 100vw
+    background: #fff
+    z-index: 1
+    padding: 64px 10px
+    overflow-y: scroll
+
+    a.active
+        background: rgba(0,0,0,0.1)
+
+    .list-group
+        display: flex
+        flex-direction: column
+
+.toggle-faded
+    background: darkred
+    color: #FFF
+    z-index: 2

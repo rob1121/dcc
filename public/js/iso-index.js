@@ -48531,8 +48531,6 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 "use strict";
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 var _stringformatter = require("./modules/stringformatter");
 
 var _dateFormatter = require("./modules/dateFormatter");
@@ -48554,7 +48552,7 @@ var app = new Vue({
             var _this = this;
 
             return _.filter(this.pagination, function (o) {
-                return o.name.toLowerCase().includes(_this.searchKey.toLowerCase());
+                return o.name.toLowerCase().includes(_this.searchKey.toLowerCase()) || o.spec_no.toLowerCase().includes(_this.searchKey.toLowerCase());
             });
         }
     },
@@ -48566,9 +48564,6 @@ var app = new Vue({
     },
 
     methods: {
-        getLatestRevision: function getLatestRevision(revArray, column) {
-            return _typeof(revArray[revArray.length - 1][column]) !== undefined ? revArray[revArray.length - 1][column] : "N/A";
-        },
         setModalSpec: function setModalSpec(iso) {
             this.selectedIso = iso;
         },
@@ -48586,12 +48581,6 @@ var app = new Vue({
         delete: function _delete(iso) {
             var index = this.pagination.indexOf(iso);
             this.pagination.splice(index, 1);
-        },
-        showRouteFor: function showRouteFor(id) {
-            return laroute.route('iso.show', { iso: id });
-        },
-        editRouteFor: function editRouteFor(id) {
-            return laroute.route("iso.edit", { iso: id });
         }
     }
 });

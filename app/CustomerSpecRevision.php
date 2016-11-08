@@ -11,6 +11,10 @@ class CustomerSpecRevision extends Model
         'revision_date'
     ];
 
+    protected $hidden = [
+        'updated_at', 'created_at'
+    ];
+
     public function customerSpec()
     {
         return $this->belongsTo(CustomerSpec::class);

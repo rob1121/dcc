@@ -17,6 +17,10 @@ class CompanySpec extends Model
         'spec_name', 'originator_departments', 'spec_id', "internal_show", "internal_destroy", "internal_edit", "revision_summary", "highlight"
     ];
 
+    protected $hidden = [
+        'updated_at', 'created_at'
+    ];
+
     public function originator()
     {
         return $this->hasMany(\App\Originator::class);

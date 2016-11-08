@@ -6,6 +6,8 @@ use App\DCC\Traits\ModelInstance;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -37,6 +39,11 @@ class User extends Authenticatable
             ->orWhere("user_type","ADMIN")->get();
     }
 
+    public function scopeGetCategoryList()
+    {
+        return $this->get(['user_type'])->unique(['user_type'])->pluck(['user_type']);
+    }
+
     public function originator()
     {
         return $this->hasMany(\App\Originator::class);
@@ -50,16 +57,10 @@ class User extends Authenticatable
 
     public static function allUser()
     {
-        $users = self::all()->userTransformer();
+        self::initializeMacro();
+        $users = self::where('id','<>', Auth::user()->id)->get()->userTransformer();
 
-        $usersMap = $users->map(function($item) {
-            $route_links = collect($item)->put("delete_route", route("user.destroy", ["user" => $item->id ]) )
-                ->put("edit_route", route("user.edit", ["user" => $item->id ]) );
-
-            return $route_links;
-        })->toArray();
-
-        return $usersMap;
+        return self::putHTMLVerbLinks($users);
     }
 
     public static function employeeIdHighestCharCount()
@@ -74,4 +75,27 @@ class User extends Authenticatable
             return $department->department;
         })->toArray();
     }
+
+    private static function initializeMacro() {
+
+        Collection::macro('userTransformer', function() {
+
+            $charCount = User::employeeIdHighestCharCount();
+
+            return collect($this->items)->map(function($user) use($charCount) {
+                $user->employee_id = sprintf("%0{$charCount}d", $user->employee_id);
+                return $user;
+            });
+        });
+    }
+
+    private static function putHTMLVerbLinks($users)
+    {
+        return $users->map(function ($item) {
+            return collect($item)
+                ->put("delete_route", route("user.destroy", ["user" => $item->id]))
+                ->put("edit_route", route("user.edit", ["user" => $item->id]));
+        })->toArray();
+    }
+
 }

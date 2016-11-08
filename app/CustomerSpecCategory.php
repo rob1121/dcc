@@ -11,6 +11,10 @@ class CustomerSpecCategory extends Model
     use ModelInstance;
     protected $fillable = ["customer_name"];
 
+    protected $hidden = [
+        'updated_at', 'created_at'
+    ];
+
     public static function customerList() {
         return self::get(["customer_name"])->unique("customer_name")->flatten();
     }

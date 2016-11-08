@@ -8349,6 +8349,7 @@ body {
 .navbar-header {
   font-family: "Raleway", sans-serif; }
 
+.faded[v-cloak],
 #app[v-cloak] {
   display: none; }
 
@@ -8366,6 +8367,28 @@ body {
     border-bottom: 3px solid darkred;
     background: #f2f2f2 !important; }
 
+.faded {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background: #fff;
+  z-index: 1;
+  padding: 64px 10px;
+  overflow-y: scroll; }
+  .faded a.active {
+    background: rgba(0, 0, 0, 0.1); }
+  .faded .list-group {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column; }
+
+.toggle-faded {
+  background: darkred;
+  color: #FFF;
+  z-index: 2; }
+
 .table {
   font-size: 12px; }
   .table th {
@@ -8375,13 +8398,13 @@ body {
 
 .fade-enter {
   opacity: 0;
-  -webkit-animation: fade-enter .3s ease-in-out forwards;
-  animation: fade-enter .3s ease-in-out forwards; }
+  -webkit-animation: fade-enter 5s ease-in-out forwards;
+  animation: fade-enter 5s ease-in-out forwards; }
 
 .fade-leave {
   opacity: 1;
-  -webkit-animation: fade-leave .3s ease-in-out forwards;
-  animation: fade-leave .3s ease-in-out forwards; }
+  -webkit-animation: fade-leave 5s ease-in-out forwards;
+  animation: fade-leave 5s ease-in-out forwards; }
 
 @-webkit-keyframes fade-enter {
   0% {
@@ -8422,13 +8445,6 @@ body {
     opacity: 0;
     -webkit-transform: translateX(-10px);
     transform: translateX(-10px); } }
-
-.form {
-  width: 52vw; }
-
-@media screen and (max-width: 770px) {
-  .form {
-    width: 82vw; } }
 
 .spec-no {
   font-weight: bold; }

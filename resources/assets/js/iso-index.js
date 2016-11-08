@@ -13,9 +13,12 @@ const app = new Vue( {
     },
 
     computed: {
-      documents() {
-          return _.filter(this.pagination, (o) => o.name.toLowerCase().includes(this.searchKey.toLowerCase()));
-      }
+        documents() {
+          return _.filter(
+              this.pagination, (o) => o.name.toLowerCase().includes(this.searchKey.toLowerCase())
+                || o.spec_no.toLowerCase().includes(this.searchKey.toLowerCase())
+          );
+        }
     },
 
     filters: {
@@ -26,12 +29,6 @@ const app = new Vue( {
 
     methods:
     {
-        getLatestRevision(revArray, column) {
-            return typeof revArray[revArray.length-1][column] !== undefined
-                ? revArray[revArray.length-1][column]
-                : "N/A";
-        },
-
         setModalSpec(iso)
         {
             this.selectedIso = iso;
@@ -52,15 +49,5 @@ const app = new Vue( {
             var index = this.pagination.indexOf(iso);
             this.pagination.splice(index, 1);
         },
-
-        showRouteFor(id)
-        {
-            return laroute.route('iso.show', {iso:id});
-        },
-
-        editRouteFor(id)
-        {
-            return laroute.route("iso.edit", {iso:id});
-        }
     }
 } );

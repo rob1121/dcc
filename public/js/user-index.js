@@ -48720,6 +48720,56 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var searchKey = "";
+var searchCategoryKey = null;
+var activeCategory = "";
+
+var setActiveCategory = function setActiveCategory(category_no) {
+    this.activeCategory = category_no;
+    this.setSearchCategoryKey(category_no);
+    this.emptySearchKey();
+};
+
+var setSearchCategoryKey = function setSearchCategoryKey(category_no) {
+    this.searchCategoryKey = category_no;
+};
+
+var emptySearchKey = function emptySearchKey() {
+    this.searchKey = '';
+};
+
+exports.setActiveCategory = setActiveCategory;
+exports.setSearchCategoryKey = setSearchCategoryKey;
+exports.emptySearchKey = emptySearchKey;
+exports.searchKey = searchKey;
+exports.searchCategoryKey = searchCategoryKey;
+exports.activeCategory = activeCategory;
+
+},{}],20:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var modalConfirmation = {
+    category: {},
+    index: -1
+};
+
+var setModalSpec = function setModalSpec(spec) {
+    this.modalConfirmation.category = spec;
+};
+
+exports.modalConfirmation = modalConfirmation;
+exports.setModalSpec = setModalSpec;
+
+},{}],21:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var toUpper = function toUpper(string) {
     return _.toUpper(string);
 };
@@ -48731,8 +48781,12 @@ var capitalize = function capitalize(string) {
 exports.toUpper = toUpper;
 exports.capitalize = capitalize;
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
+
+var _SidebarModules = require("./modules/SidebarModules");
+
+var _modalConfirmationModule = require("./modules/modalConfirmationModule");
 
 var _stringformatter = require("./modules/stringformatter");
 
@@ -48740,83 +48794,104 @@ require('./app');
 
 
 var app = new Vue({
-	el: "#app",
+    el: "#app",
 
-	data: {
-		pagination: {},
-		keyword: "",
-		sort: {
-			key: "employee_id",
-			in: true
-		},
-		searchKey: ""
-	},
+    data: {
+        modalConfirmation: _modalConfirmationModule.modalConfirmation,
+        pagination: {},
+        keyword: "",
+        sort: {
+            key: "employee_id",
+            in: true
+        },
+        searchKey: _SidebarModules.searchKey,
+        searchCategoryKey: _SidebarModules.searchCategoryKey,
+        activeCategory: _SidebarModules.activeCategory,
+        navToggler: false
+    },
 
-	mounted: function mounted() {
-		this.getUsers();
-	},
+    mounted: function mounted() {
+        this.getUsers();
+    },
 
 
-	computed: {
-		users: function users() {
-			var filter = this.filterUser();
+    computed: {
+        documentsByCategory: function documentsByCategory() {
+            var _this = this;
 
-			return _.orderBy(filter, [this.sort.key], [this.sort.in ? "asc" : "desc"]);
-		}
-	},
+            var document = this.pagination;
 
-	filters: {
-		capitalize: _stringformatter.capitalize,
-		toUpper: _stringformatter.toUpper,
-		nameCase: function nameCase(name) {
-			return _.map(name.split(" "), function (word) {
-				return _.capitalize(word);
-			}).join(" ");
-		}
-	},
+            if (this.searchCategoryKey === null && this.pagination.length > 0) this.searchCategoryKey = this.pagination[0].user_type;
 
-	methods: {
-		filterUser: function filterUser() {
-			var _this = this;
+            if (this.searchCategoryKey !== "") document = _.filter(this.pagination, function (o) {
+                return o.user_type.toLowerCase() === _this.searchCategoryKey.toLowerCase();
+            });
 
-			return _.filter(this.pagination, function (o) {
-				return o.name.toLowerCase().includes(_this.searchKey.toLowerCase()) || o.employee_id.toLowerCase().includes(_this.searchKey.toLowerCase()) || o.department.toLowerCase().includes(_this.searchKey.toLowerCase()) || o.user_type.toLowerCase().includes(_this.searchKey.toLowerCase()) || o.email.toLowerCase().includes(_this.searchKey.toLowerCase());
-			});
-		},
-		sortColumn: function sortColumn(key) {
-			this.sort.in = this.sort.key === key ? !this.sort.in : this.sort.in;
-			this.sort.key = key;
-		},
-		clearSearch: function clearSearch() {
-			this.search('users', 'all');
-			this.keyword = "";
-		},
-		remove: function remove(user) {
-			var _this2 = this;
+            return document;
+        },
+        users: function users() {
+            var filter = this.filterUser();
 
-			var delete_route = laroute.route("user.destroy", { user: user.id });
-			this.$http.delete(delete_route).then(function () {
-				return _this2.deleteItem(_this2.pagination, user);
-			}, function (error) {
-				return console.log(error.text());
-			});
-		},
-		deleteItem: function deleteItem(collection, item) {
-			var index = collection.indexOf(item);
-			collection.splice(index, 1);
-		},
-		getUsers: function getUsers() {
-			var _this3 = this;
+            return _.orderBy(filter, [this.sort.key], [this.sort.in ? "asc" : "desc"]);
+        }
+    },
 
-			return this.$http.get(laroute.route("api.search.user")).then(function (response) {
-				return _this3.pagination = response.json();
-			}, function (error) {
-				return console.log(error);
-			});
-		}
-	}
+    filters: {
+        capitalize: _stringformatter.capitalize,
+        toUpper: _stringformatter.toUpper,
+        nameCase: function nameCase(name) {
+            return _.map(name.split(" "), function (word) {
+                return _.capitalize(word);
+            }).join(" ");
+        }
+    },
+
+    methods: {
+        setActiveCategory: _SidebarModules.setActiveCategory,
+        setSearchCategoryKey: _SidebarModules.setSearchCategoryKey,
+        emptySearchKey: _SidebarModules.emptySearchKey,
+        setModalSpec: _modalConfirmationModule.setModalSpec,
+        filterUser: function filterUser() {
+            var _this2 = this;
+
+            return this.searchKey === "" ? this.documentsByCategory : _.filter(this.pagination, function (o) {
+                return o.name.toLowerCase().includes(_this2.searchKey.toLowerCase()) || o.employee_id.toLowerCase().includes(_this2.searchKey.toLowerCase()) || o.department.toLowerCase().includes(_this2.searchKey.toLowerCase()) || o.user_type.toLowerCase().includes(_this2.searchKey.toLowerCase()) || o.email.toLowerCase().includes(_this2.searchKey.toLowerCase());
+            });
+        },
+        sortColumn: function sortColumn(key) {
+            this.sort.in = this.sort.key === key ? !this.sort.in : this.sort.in;
+            this.sort.key = key;
+        },
+        setModalUser: function setModalUser(user) {
+            this.modalConfirmation.category = user;
+        },
+        removeUser: function removeUser() {
+            var _this3 = this;
+
+            var user = this.modalConfirmation.category;
+            var delete_route = laroute.route("user.destroy", { user: user.id });
+            this.$http.delete(delete_route).then(function () {
+                return _this3.deleteItem(_this3.pagination, user);
+            }, function (error) {
+                return console.log(error.text());
+            });
+        },
+        deleteItem: function deleteItem(collection, item) {
+            var index = collection.indexOf(item);
+            collection.splice(index, 1);
+        },
+        getUsers: function getUsers() {
+            var _this4 = this;
+
+            return this.$http.get(laroute.route("api.search.user")).then(function (response) {
+                return _this4.pagination = response.json();
+            }, function (error) {
+                return console.log(error);
+            });
+        }
+    }
 });
 
-},{"./app":11,"./modules/stringformatter":19}]},{},[20]);
+},{"./app":11,"./modules/SidebarModules":19,"./modules/modalConfirmationModule":20,"./modules/stringformatter":21}]},{},[22]);
 
 //# sourceMappingURL=user-index.js.map

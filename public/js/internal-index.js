@@ -48535,6 +48535,8 @@ var _abstract = require("./mixins/abstract");
 
 var _abstract2 = _interopRequireDefault(_abstract);
 
+var _modalConfirmationModule = require("./modules/modalConfirmationModule");
+
 var _SidebarModules = require("./modules/SidebarModules");
 
 var _stringformatter = require("./modules/stringformatter");
@@ -48550,15 +48552,13 @@ var app = new Vue({
     el: "#app",
 
     data: {
-        modalConfirmation: {
-            category: {},
-            index: -1
-        },
+        modalConfirmation: _modalConfirmationModule.modalConfirmation,
 
         pagination: {},
         searchKey: _SidebarModules.searchKey,
         searchCategoryKey: _SidebarModules.searchCategoryKey,
-        activeCategory: _SidebarModules.activeCategory
+        activeCategory: _SidebarModules.activeCategory,
+        navToggler: false
     },
 
     computed: {
@@ -48579,7 +48579,7 @@ var app = new Vue({
             var _this2 = this;
 
             return this.searchKey === "" ? this.documentsByCategory : _.filter(this.pagination, function (o) {
-                return o.spec_name.toLowerCase().includes(_this2.searchKey.toLowerCase());
+                return o.spec_name.toLowerCase().includes(_this2.searchKey.toLowerCase()) || o.revision_summary.toLowerCase().includes(_this2.searchKey.toLowerCase());
             });
         }
     },
@@ -48596,13 +48596,11 @@ var app = new Vue({
         setActiveCategory: _SidebarModules.setActiveCategory,
         setSearchCategoryKey: _SidebarModules.setSearchCategoryKey,
         emptySearchKey: _SidebarModules.emptySearchKey,
+        setModalSpec: _modalConfirmationModule.setModalSpec,
 
         getPagination: function getPagination() {
             var pagination_url = laroute.route('api.search.internal');
             this.fetchData(pagination_url);
-        },
-        setModalSpec: function setModalSpec(spec) {
-            this.modalConfirmation.category = spec;
         },
         removeSpec: function removeSpec() {
             var delete_route = laroute.route("internal.destroy", { internal: this.modalConfirmation.category.id });
@@ -48611,7 +48609,7 @@ var app = new Vue({
     }
 });
 
-},{"./app":11,"./mixins/abstract":20,"./modules/SidebarModules":22,"./modules/dateFormatter":23,"./modules/stringformatter":24}],19:[function(require,module,exports){
+},{"./app":11,"./mixins/abstract":20,"./modules/SidebarModules":22,"./modules/dateFormatter":23,"./modules/modalConfirmationModule":24,"./modules/stringformatter":25}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48955,6 +48953,24 @@ var telfordStandardDate = function telfordStandardDate(dt) {
 exports.telfordStandardDate = telfordStandardDate;
 
 },{}],24:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var modalConfirmation = {
+    category: {},
+    index: -1
+};
+
+var setModalSpec = function setModalSpec(spec) {
+    this.modalConfirmation.category = spec;
+};
+
+exports.modalConfirmation = modalConfirmation;
+exports.setModalSpec = setModalSpec;
+
+},{}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

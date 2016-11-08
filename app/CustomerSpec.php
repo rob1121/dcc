@@ -19,6 +19,10 @@ class CustomerSpec extends Model {
         'spec_name', 'latest_revision', 'latest_revision_date', 'external_show', 'external_edit'
     ];
 
+    protected $hidden = [
+        'updated_at', 'created_at'
+    ];
+
     public function customerSpecRevision() {
         return $this->hasMany(CustomerSpecRevision::class);
     }

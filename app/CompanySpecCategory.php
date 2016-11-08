@@ -19,6 +19,10 @@ class CompanySpecCategory extends Model
         'category_title'
     ];
 
+    protected $hidden = [
+        'updated_at', 'created_at'
+    ];
+
     public static function generateSpecNo(Request $request)
     {
         return self::whereCategoryNo( $request->category_no )

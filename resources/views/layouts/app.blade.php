@@ -1,4 +1,3 @@
-
 @php
     $internal = \App\CompanySpecRevision::where("revision_date",">", \Carbon::now()->subDays(7))->count();
     $external = \App\CustomerSpecRevision::whereIsReviewed(0)->count();
@@ -27,11 +26,13 @@
     </script>
 </head>
 <body>
+
 <div class="nav">
     @include("layouts.nav")
 </div>
 
 <div id="app" v-cloak>
+    @include('layouts.responsive_mobile_sidebar')
     <div class="content">
         @yield('content')
     </div>
@@ -42,11 +43,12 @@
 @stack("script")
 
 <script>
-    $("button.navbar-toggle").click(function () {
-        $("body").addClass("active");
+    $('.toggle-faded').click(function() {
+        $(".faded").toggle();
     });
-    $(".white-cover").click(function () {
-        $("body").removeClass("active");
+
+    $('.faded-link').click(function() {
+        $(".faded").toggle();
     });
 </script>
 </body>

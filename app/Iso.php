@@ -19,6 +19,10 @@ class Iso extends Model
         'title', 'iso_show', 'iso_edit'
     ];
 
+    protected $hidden = [
+        'updated_at', 'created_at'
+    ];
+
     /**
      * @param Request $request
      * @return Iso

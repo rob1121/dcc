@@ -48535,6 +48535,8 @@ var _abstract = require("./mixins/abstract");
 
 var _abstract2 = _interopRequireDefault(_abstract);
 
+var _SidebarModules = require("./modules/SidebarModules");
+
 var _stringformatter = require("./modules/stringformatter");
 
 var _dateFormatter = require("./modules/dateFormatter");
@@ -48550,10 +48552,6 @@ var app = new Vue({
     data: {
         status_filter: "all",
 
-        category: {
-            customer_name: category.customer_name
-        },
-
         modalConfirmation: {
             action: "update",
             category: [],
@@ -48561,26 +48559,41 @@ var app = new Vue({
         },
 
         pagination: [],
-        searchKey: ""
+        searchKey: _SidebarModules.searchKey,
+        searchCategoryKey: _SidebarModules.searchCategoryKey,
+        activeCategory: _SidebarModules.activeCategory
     },
 
     computed: {
-        documents: function documents() {
+        documentsByCategory: function documentsByCategory() {
             var _this = this;
 
-            return _.filter(this.externalSpecs, function (o) {
-                return o.spec_name.toLowerCase().includes(_this.searchKey.toLowerCase());
+            var document = this.externalSpecs;
+
+            if (this.searchCategoryKey === null && this.externalSpecs.length > 0) this.searchCategoryKey = this.externalSpecs[0].customer_spec_category.customer_name;
+
+            if (this.searchCategoryKey !== "") document = _.filter(this.externalSpecs, function (o) {
+                return o.customer_spec_category.customer_name.toLowerCase() === _this.searchCategoryKey.toLowerCase();
+            });
+
+            return document;
+        },
+        documents: function documents() {
+            var _this2 = this;
+
+            return this.searchKey === "" ? this.documentsByCategory : _.filter(this.pagination, function (o) {
+                return o.spec_name.toLowerCase().includes(_this2.searchKey.toLowerCase()) || o.customer_spec_category.customer_name.toLowerCase().includes(_this2.searchKey.toLowerCase());
             });
         },
         customerSpecForReview: function customerSpecForReview() {
             return this.getCustomerSpecsForReview(this.modalConfirmation.category.customer_spec_revision);
         },
         externalSpecs: function externalSpecs() {
-            var filtered_result = _.filter(this.pagination, function (spec) {
+            if (this.status_filter === "all") return this.pagination;
+
+            return _.filter(this.pagination, function (spec) {
                 return _.find(spec.customer_spec_revision, { is_reviewed: 0 });
             });
-
-            return this.status_filter == "all" ? this.pagination : filtered_result;
         }
     },
 
@@ -48593,6 +48606,10 @@ var app = new Vue({
     },
 
     methods: {
+        setActiveCategory: _SidebarModules.setActiveCategory,
+        setSearchCategoryKey: _SidebarModules.setSearchCategoryKey,
+        emptySearchKey: _SidebarModules.emptySearchKey,
+
         externalRouteFor: function externalRouteFor(specRevision) {
             var spec = _.sortBy(specRevision, ['revision'])[specRevision.length - 1];
 
@@ -48611,7 +48628,7 @@ var app = new Vue({
         },
         getPagination: function getPagination() {
             var pagination_url = laroute.route('api.search.external');
-            this.fetchData(pagination_url, this.category.customer_name);
+            this.fetchData(pagination_url);
         },
         setModalSpec: function setModalSpec(spec, action) {
             this.modalConfirmation.category = spec;
@@ -48624,14 +48641,14 @@ var app = new Vue({
             this.indexOfSpecForUpdate = specRevision;
         },
         updateSpecStatus: function updateSpecStatus() {
-            var _this2 = this;
+            var _this3 = this;
 
             var update_status = laroute.route("external.revision.update", { external: this.modalConfirmation.category.id });
 
             this.$http.patch(update_status, { is_reviewed: 1, revision: this.indexOfSpecForUpdate.revision }).then(function () {
-                return _this2.delete(_this2.modalConfirmation.category.customer_spec_revision, _this2.indexOfSpecForUpdate);
+                return _this3.delete(_this3.modalConfirmation.category.customer_spec_revision, _this3.indexOfSpecForUpdate);
             }, function () {
-                return _this2.errorDialogMessage();
+                return _this3.errorDialogMessage();
             });
         },
         removeSpec: function removeSpec() {
@@ -48641,7 +48658,7 @@ var app = new Vue({
     }
 });
 
-},{"./app":11,"./mixins/abstract":20,"./modules/dateFormatter":22,"./modules/stringformatter":23}],19:[function(require,module,exports){
+},{"./app":11,"./mixins/abstract":20,"./modules/SidebarModules":22,"./modules/dateFormatter":23,"./modules/stringformatter":24}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48946,13 +48963,45 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var searchKey = "";
+var searchCategoryKey = null;
+var activeCategory = "";
+
+var setActiveCategory = function setActiveCategory(category_no) {
+    this.activeCategory = category_no;
+    this.setSearchCategoryKey(category_no);
+    this.emptySearchKey();
+};
+
+var setSearchCategoryKey = function setSearchCategoryKey(category_no) {
+    this.searchCategoryKey = category_no;
+};
+
+var emptySearchKey = function emptySearchKey() {
+    this.searchKey = '';
+};
+
+exports.setActiveCategory = setActiveCategory;
+exports.setSearchCategoryKey = setSearchCategoryKey;
+exports.emptySearchKey = emptySearchKey;
+exports.searchKey = searchKey;
+exports.searchCategoryKey = searchCategoryKey;
+exports.activeCategory = activeCategory;
+
+},{}],23:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var telfordStandardDate = function telfordStandardDate(dt) {
     return moment(dt).format("MM/DD/Y");
 };
 
 exports.telfordStandardDate = telfordStandardDate;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

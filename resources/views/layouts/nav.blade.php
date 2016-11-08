@@ -1,9 +1,10 @@
 <nav class="navbar navbar-default navbar">
     <div class="container">
         <div class="navbar-header">
-
             <!-- Collapsed Hamburger -->
-            <button type="button" class="navbar-toggle collapsed" style="background: darkred;color: #FFF"
+
+            <button type="button" class="toggle-faded navbar-toggle collapsed"
+                    @click="navToggler = ! navToggler"
                     {{--data-toggle="collapse"--}}
                     {{--data-target="#app-navbar-collapse" --}}
             >
@@ -12,7 +13,7 @@
             </button>
 
             <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ url('/') }}" style="z-index: 2;position:relative">
                 <strong>
                     <img src="{{URL::to("/favicon.ico")}}" alt="dcc" width="20px" style="position:relative;top:-2px">
                     {{ config('app.name', 'Laravel') }}

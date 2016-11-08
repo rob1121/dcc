@@ -1,5 +1,6 @@
 require("./app");
 import abstract from "./mixins/abstract";
+import { searchKey, searchCategoryKey, activeCategory, setActiveCategory, setSearchCategoryKey, emptySearchKey } from "./modules/SidebarModules";
 import { toUpper, capitalize } from "./modules/stringformatter";
 import { telfordStandardDate } from "./modules/dateFormatter";
 
@@ -9,10 +10,6 @@ const app = new Vue({
 	data: {
         status_filter: "all",
 
-		category: {
-			customer_name: category.customer_name
-		},
-
 		modalConfirmation: {
 		    action: "update",
 			category: [],
@@ -20,12 +17,33 @@ const app = new Vue({
 		},
 
         pagination: [],
-        searchKey: ""
+        searchKey,
+        searchCategoryKey,
+        activeCategory
     },
 
     computed: {
+        documentsByCategory() {
+            let document = this.externalSpecs;
+
+            if (this.searchCategoryKey === null && this.externalSpecs.length > 0)
+                this.searchCategoryKey = this.externalSpecs[0].customer_spec_category.customer_name;
+
+            if(this.searchCategoryKey !== "")
+                document = _.filter(this.externalSpecs, (o) => {
+                    return o.customer_spec_category.customer_name.toLowerCase() === this.searchCategoryKey.toLowerCase();
+                });
+
+            return document;
+        },
+
         documents() {
-            return _.filter(this.externalSpecs, (o) => o.spec_name.toLowerCase().includes(this.searchKey.toLowerCase()));
+            return this.searchKey === ""
+                ? this.documentsByCategory
+                : _.filter(
+                this.pagination, (o) => o.spec_name.toLowerCase().includes(this.searchKey.toLowerCase())
+                || o.customer_spec_category.customer_name.toLowerCase().includes(this.searchKey.toLowerCase())
+            );
         },
 
         customerSpecForReview() {
@@ -35,12 +53,9 @@ const app = new Vue({
         },
 
         externalSpecs() {
-            var filtered_result = _.filter(
-                this.pagination,
-                spec => _.find( spec.customer_spec_revision, {is_reviewed: 0} )
-            );
+            if(this.status_filter === "all" ) return this.pagination;
 
-            return this.status_filter == "all" ? this.pagination : filtered_result;
+            return _.filter(this.pagination, spec => _.find(spec.customer_spec_revision, {is_reviewed: 0}));
         }
     },
 
@@ -53,6 +68,9 @@ const app = new Vue({
     },
 
     methods: {
+        setActiveCategory,
+        setSearchCategoryKey,
+        emptySearchKey,
 
         externalRouteFor(specRevision) {
             const spec = _.sortBy(specRevision, ['revision'])[specRevision.length-1];
@@ -75,7 +93,7 @@ const app = new Vue({
 
         getPagination() {
             var pagination_url = laroute.route('api.search.external');
-            this.fetchData(pagination_url, this.category.customer_name);
+            this.fetchData(pagination_url);
         },
 
         setModalSpec(spec,action) {

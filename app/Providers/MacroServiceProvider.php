@@ -15,15 +15,6 @@ class MacroServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Collection::macro('userTransformer', function() {
-
-            $charCount = User::employeeIdHighestCharCount();
-
-            return collect($this->items)->map(function($user) use($charCount) {
-                $user->employee_id = sprintf("%0{$charCount}d", $user->employee_id);
-                return $user;
-            });
-        });
     }
 
     /**

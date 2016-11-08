@@ -1,14 +1,9 @@
 <?php
-
-use App\Mail\ExternalSpecFollowUpMailer;
-
 foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $route) {
     require $route->getPathname();
 }
 
-Route::get('/', function () {
-    return redirect(route("internal.index"));
-});
+Route::get('/', 'HomeController@index');
 
 Auth::routes();
 

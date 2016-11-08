@@ -1,5 +1,6 @@
 require('./app');
 import abstract from "./mixins/abstract";
+import { modalConfirmation, setModalSpec } from "./modules/modalConfirmationModule";
 import { searchKey, searchCategoryKey, activeCategory, setActiveCategory, setSearchCategoryKey, emptySearchKey } from "./modules/SidebarModules";
 import { toUpper, capitalize } from "./modules/stringformatter";
 import { telfordStandardDate } from "./modules/dateFormatter";
@@ -8,15 +9,13 @@ const app = new Vue({
     el: "#app",
 
     data: {
-        modalConfirmation: {
-            category: {},
-            index: -1
-        },
+        modalConfirmation,
 
         pagination: {},
         searchKey,
         searchCategoryKey,
-        activeCategory
+        activeCategory,
+        navToggler: false
     },
 
     computed: {
@@ -37,7 +36,10 @@ const app = new Vue({
         documents() {
             return this.searchKey === ""
                 ? this.documentsByCategory
-                : _.filter( this.pagination, (o) => o.spec_name.toLowerCase().includes(this.searchKey.toLowerCase()) );
+                : _.filter(
+                    this.pagination, (o) => o.spec_name.toLowerCase().includes(this.searchKey.toLowerCase())
+                        || o.revision_summary.toLowerCase().includes(this.searchKey.toLowerCase())
+                );
         }
     },
 
@@ -53,14 +55,11 @@ const app = new Vue({
         setActiveCategory,
         setSearchCategoryKey,
         emptySearchKey,
+        setModalSpec,
 
         getPagination() {
             var pagination_url = laroute.route('api.search.internal');
             this.fetchData(pagination_url);
-        },
-
-        setModalSpec(spec) {
-            this.modalConfirmation.category = spec;
         },
 
         removeSpec() {

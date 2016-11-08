@@ -7,7 +7,6 @@ use App\DCC\File\Document;
 use App\DCC\Internal\InternalSpecification;
 use App\DCC\SpecificationFactory;
 use App\Http\Requests\InternalSpecRequest;
-use App\Originator;
 use App\User;
 use ErrorException;
 
@@ -31,8 +30,7 @@ class InternalController extends Controller {
     public function index()
     {
         return view('internal.index', [
-            "categories" => $this->categories,
-            "show" => true
+            "categories" => $this->categories
         ]);
     }
 

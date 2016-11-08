@@ -12,7 +12,7 @@ class InternalControllerTest extends TestCase
     public function it_index()
     {
         $this->visit("/internal");
-        $this->assertViewHas(["categories","show"]);
+        $this->assertViewHas(["categories"]);
     }
 
     /** @test */
