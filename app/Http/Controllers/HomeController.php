@@ -21,4 +21,12 @@ class HomeController extends Controller
     {
         return view('welcome');
     }
+
+    /**
+     * Show the application documentation
+     */
+    public function documentation()
+    {
+        return view('documentation');
+    }
 }

@@ -4,6 +4,7 @@ foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $ro
 }
 
 Route::get('/', 'HomeController@index');
+Route::get('/documentation', 'HomeController@documentation');
 
 Auth::routes();
 
