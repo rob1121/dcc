@@ -26,7 +26,7 @@
     <div class="clearfix"></div>
 
 
-    <div class="row-fluid hidden-lg" style="margin-bottom: 5px">
+    <div class="row-fluid  hidden-md" style="margin-bottom: 5px">
         <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
     </div>
 

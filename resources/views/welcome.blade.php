@@ -103,7 +103,7 @@
         }
 
         .body {
-            padding: auto 30px;
+            padding: auto 100px;
         }
     </style>
 </head>
