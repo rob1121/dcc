@@ -67,9 +67,8 @@ class ExternalController extends Controller {
         try
         {
             $doc = $this->getSpec($external, $revision);
-
-            if($doc->is_reviewed) abort(407,"Spec you are trying to view is already reviewed");
-            return (new Document($doc))->showPDF();
+            if($doc->is_reviewed && $revision !== null) abort(407,"Spec you are trying to view is already reviewed");
+            return (new Document($doc->document))->showPDF();
 
         } catch (ErrorException $e) { abort(406,"External Specification not found in the database"); }
     }
@@ -118,6 +117,6 @@ class ExternalController extends Controller {
     protected function getSpec(CustomerSpec $external, $revision) {
         return $revision
             ? $external->customerSpecRevision()->whereRevision($revision)->first()->document
-            : $external->customerSpecRevision()->orderBy('revision', 'desc')->first()->document;
+            : $external->customerSpecRevision()->orderBy('revision', 'desc')->first();
     }
 }

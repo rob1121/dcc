@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@push("style")
+<style>
+    body {
+        overflow: scroll
+    }
+</style>
+@endpush
 
 @push("script")
     <script src="{{URL::to("/js/form.js")}}"></script>
@@ -47,7 +54,7 @@
 @endpush
 
 @section('content')
-    <div class="form">
+    <div class="col-md-6 col-md-offset-3" style="margin-top: 10px">
         <ol class="breadcrumb">
             <li>
                 <a href="{{route("home")}}">Home</a>
@@ -159,7 +166,7 @@
                         </div>
                     </div>
 
-                    <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
+                    <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}" v-show="{{ old("send_notification") !== "false" }}">
                         <label class="control-label"><strong>Department </strong></label>
                         <br>
                         <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>

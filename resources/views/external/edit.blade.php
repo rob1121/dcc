@@ -1,11 +1,18 @@
 @extends('layouts.app')
+@push("style")
+<style>
+    body {
+        overflow: scroll
+    }
+</style>
+@endpush
 
 @push('script')
 <script src="{{URL::to("/js/form.js")}}"></script>
 @endpush
 
 @section('content')
-    <div class="form">
+    <div class="col-md-6 col-md-offset-3" style="margin-top: 10px">
 
         <ol class="breadcrumb">
             <li>

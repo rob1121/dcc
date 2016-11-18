@@ -1,8 +1,13 @@
 @extends('layouts.app')
-
+@push("style")
+    <style>
+        body {
+            overflow: scroll
+        }
+    </style>
+@endpush
 @push('script')
     <script src="{{URL::to("/js/form.js")}}"></script>
-
     <script>
         var chosen = $(".chosen-select");
 
@@ -17,7 +22,6 @@
         chosen.val(
                 {!! old("department") ? collect(old("department"))->toJson() : collect($spec->originator_departments)->toJson()  !!}
         ).trigger("chosen:updated");
-
         $("input[name='send_notification']").on('change', function() {
             var department = $(".department");
 
@@ -28,7 +32,7 @@
 @endpush
 
 @section('content')
-    <div class="form">
+    <div class="col-md-6 col-md-offset-3" style="margin-top: 10px;">
 
         <ol class="breadcrumb">
             <li><a href="{{route("home")}}">Home</a></li>
@@ -104,7 +108,7 @@
                         </div>
                     </div>
 
-                    <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}">
+                    <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}" v-show="{{ old("send_notification") !== "false" }}">
                         <label class="control-label"><strong>Department </strong></label>
                         <br>
                         <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
@@ -140,6 +144,5 @@
             </div>
         </div>
     </div>
-
 @include('modal.confirmation');
 @endsection

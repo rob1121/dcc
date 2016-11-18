@@ -36,4 +36,15 @@ class CompanySpecRevision extends Model
     {
         return $this->attributes['revision_summary'] = trim($value);
     }
+
+    public function setRevisionAttribute($value)
+    {
+        return $this->attributes['revision'] = trim($value);
+    }
+
+    public function setRevisionDateAttribute($value)
+    {
+        return $this->attributes['revision_date'] = trim($value);
+    }
 }
+

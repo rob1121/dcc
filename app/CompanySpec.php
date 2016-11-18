@@ -48,4 +48,9 @@ class CompanySpec extends Model
         return self::where($spec)->first();
     }
 
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = trim($value);
+    }
+
 }

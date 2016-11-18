@@ -131,7 +131,8 @@
         <li>Automated followup through online notification</li>
         <li>Improved design</li>
         <li>Fixed bugs</li>
-        <p>...read the <a href="{{URL::to("/documentation")}}">system documentation</a> for more details.</p>
+        {{-- <p>...read the <a href="{{URL::to("/documentation")}}">system documentation</a> for more details.</p> --}}
+        <p>...read the <a href="#">system documentation</a> for more details.</p>
     </ul>
 </div>
 

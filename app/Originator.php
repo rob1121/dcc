@@ -18,4 +18,9 @@ class Originator extends Model
     {
         return $this->belongsTo(\App\CompanySpec::class);
     }
+
+    public function setDepartmentAttribute($value)
+    {
+        $this->attributes['department'] = trim($value);
+    }
 }

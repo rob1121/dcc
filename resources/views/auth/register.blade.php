@@ -20,7 +20,7 @@
 @endpush
 
 @section('content')
-    <div class="container" style="margin-top: 10px">
+    <div class="col-md-6 col-md-offset-3" style="margin-top: 10px">
 
         <ol class="breadcrumb">
             <li>
@@ -36,7 +36,7 @@
 
         @include('errors.flash')
 
-        <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}} col-md-6 col-md-offset-3">
+        <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}}">
             <div class="panel-heading">Register</div>
             <div class="panel-body">
                 <form class="form-horizontal" role="form" method="POST" action="{{ isset($user) ? route("user.update", ["user" => $user->id]) : url('/register') }}">

@@ -34,16 +34,16 @@ class InternalSpecFile implements SpecificationGateway {
 
     private function makePath()
     {
+        $name = $this->spec->companySpecCategory->category_no ."-".$this->spec->spec_no;
         $year = Carbon::now()->year;
-        $spec_name = $this->spec->spec_no;
-
-        $this->path =  "{$year}/{$spec_name}";
+        $this->path =  "{$year}/" . preg_replace("/[^a-z|^0-9|^A-Z]/", " ", "{$name}");
     }
 
     private function makeDocumentName() {
+        $name = $this->spec->companySpecCategory->category_no ."-".$this->spec->spec_no;
         $name =  [
-            'spec_no' => $this->spec->spec_no,
-            'spec_revision' => preg_replace("/[^a-z|^0-9|^A-Z]/", "-", $this->getRevision())
+            'spec_no' => preg_replace("/[^a-z|^0-9|^A-Z]/", " ", $name),
+            'spec_revision' => preg_replace("/[^a-z|^0-9|^A-Z]/", " ", $this->getRevision())
         ];
 
         $implode_name = Str::upper(implode("_", $name));

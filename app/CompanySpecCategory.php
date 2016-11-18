@@ -56,4 +56,14 @@ class CompanySpecCategory extends Model
     {
         return self::whereCategoryId($category_no)->count();
     }
+
+    public function setCategoryNameAttribute($value)
+    {
+        $this->attributes['category_name'] = trim($value);
+    }
+
+    public function setCategoryNoAttribute($value)
+    {
+        $this->attributes['category_no'] = trim($value);
+    }
 }

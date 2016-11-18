@@ -8,7 +8,8 @@ class CustomerSpecRevision extends Model
     use ModelInstance;
     protected $fillable = [
         'revision',
-        'revision_date'
+        'revision_date',
+        'document'
     ];
 
     protected $hidden = [

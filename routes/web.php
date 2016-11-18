@@ -17,3 +17,9 @@ Route::get('/search', [
     "as" => "search",
     "uses" => 'SearchController@search'
 ]);
+
+
+
+Route::get('/trim', function() {
+    return preg_replace("/[^a-z|^0-9|^A-Z]/", "-", '//');
+});

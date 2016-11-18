@@ -46,7 +46,7 @@
 
         @include('errors.flash')
 
-        <div class="row-fluid  hidden-md" style="margin-bottom: 5px">
+        <div class="row-fluid  hidden-md hidden-lg" style="margin-bottom: 5px">
             <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
         </div>
 
@@ -61,7 +61,7 @@
                 <tbody v-if="documents.length">
                 <tr v-for="spec in documents">
                     <td>
-                        <a :href="spec.iso_show">
+                        <a :href="spec.external_show" target="_blank">
                             <strong>@{{spec.spec_name | toUpper}}</strong>
                         </a>
                         <br>

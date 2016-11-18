@@ -15,9 +15,8 @@
                 <li :class="['list-group-item', searchCategoryKey === category.category_no ? 'active' : '']"
                     v-for="category in {{$categories}}"
                     @click="setActiveCategory(category.category_no)"
-                >
-                    @{{ category.name }}
-                </li>
+                    v-text="category.name"
+                ></li>
             </ul>
         </div>
     </div>
@@ -40,7 +39,7 @@
 
         @include('errors.flash')
 
-        <div class="row-fluid hidden-md" style="margin-bottom: 5px">
+        <div class="row-fluid hidden-md hidden-lg" style="margin-bottom: 5px">
             <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
         </div>
 
