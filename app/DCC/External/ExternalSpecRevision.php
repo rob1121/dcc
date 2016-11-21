@@ -12,7 +12,7 @@ class ExternalSpecRevision implements SpecificationGateway {
     private $factory;
     /**
      * @var Request
-     */
+     */external
     private $request;
 
     function __construct(Request $request, CustomerSpec $spec=null) {
@@ -31,8 +31,11 @@ class ExternalSpecRevision implements SpecificationGateway {
     function update() {
 
         if ($this->spec === null) throw new SpecNotFoundException();
-        $ids = $this->getIdsOfAllLatestRevision();
-        $this->spec->customerSpecRevision()->whereIn("id",$ids)->delete();
+//        $ids = $this->getIdsOfAllLatestRevision();
+//        $this->spec->customerSpecRevision()->whereIn("id",$ids)->delete();
+//
+//        $this->spec->customerSpecRevision()->whereRevision($this->request->revision)
+//            ->update(["is_reviewed" => $request->is_reviewed]);
 
         $this->isRevisionExist()
             ? $this->spec->customerSpecRevision()->whereRevision($this->request->revision)->update(CustomerSpecRevision::instance($this->request))
@@ -48,15 +51,13 @@ class ExternalSpecRevision implements SpecificationGateway {
         return $this->spec->customerSpecRevision()->whereRevision($this->request->revision)->count() > 0;
     }
 
-    /**
-     * @return static
-     */
-    protected function getIdsOfAllLatestRevision()
-    {
-        return collect($this->spec->customerSpecRevision)->filter(function ($item) {
-            return strcasecmp($item->revision, $this->request->revision);
-        })->map(function ($item) {
-            return $item->id;
-        })->flatten();
-    }
+
+//    protected function getIdsOfAllLatestRevision()
+//    {
+//        return collect($this->spec->customerSpecRevision)->filter(function ($item) {
+//            return strcasecmp($item->revision, $this->request->revision);
+//        })->map(function ($item) {
+//            return $item->id;
+//        })->flatten();
+//    }
 }

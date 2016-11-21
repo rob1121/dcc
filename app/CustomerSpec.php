@@ -60,7 +60,7 @@ class CustomerSpec extends Model {
      * @return mixed
      */
     public static function isExist($request) {
-        $spec = collect(new self($request->all()))->toArray();
+        $spec = (new self($request->all()))->getAttributes();
         return self::where($spec)->first();
     }
 }

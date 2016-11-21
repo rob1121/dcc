@@ -116,7 +116,7 @@ class ExternalController extends Controller {
      */
     protected function getSpec(CustomerSpec $external, $revision) {
         return $revision
-            ? $external->customerSpecRevision()->whereRevision($revision)->first()->document
+            ? $external->customerSpecRevision()->whereRevision($revision)->first()
             : $external->customerSpecRevision()->orderBy('revision', 'desc')->first();
     }
 }

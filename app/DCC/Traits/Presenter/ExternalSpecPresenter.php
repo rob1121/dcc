@@ -9,7 +9,7 @@ trait ExternalSpecPresenter
 
     public function getLatestRevisionAttribute()
     {
-        return \Str::upper($this->customerSpecRevision->sortBy("revision")->last()->revision);
+        return \Str::upper($this->customerSpecRevision->sortBy("revision")->last()->revision) ?: '**';
     }
 
     public function getLatestRevisionDateAttribute()
