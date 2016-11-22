@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->get(['user_type'])->unique(['user_type'])->pluck(['user_type']);
     }
 
+    public function scopeGetDepartmentList()
+    {
+        return $this->get(['department'])->unique('department')->pluck('department');
+    }
+
     public function originator()
     {
         return $this->hasMany(\App\Originator::class);

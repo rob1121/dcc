@@ -121,7 +121,7 @@
     @else
         <a class="login" href="{{route("internal.index")}}">home</a>
     @endif
-    <h1>DCC Online</h1>
+    <h1>DCC Online 3</h1>
     <p>DCC Online is the <strong class="text-danger">Telford Svc. Phils., Inc.</strong> online document center that aims to cost cut the use paper by making printed documents into an electronic documents.</p>
 
     <h3>What's new?</h3>

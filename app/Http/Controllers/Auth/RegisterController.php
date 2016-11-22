@@ -52,7 +52,7 @@ class RegisterController extends Controller
             'email'       => 'required|email|max:255|unique:users',
             'department'  => 'required',
             'user_type'   => "required",
-            'employee_id' => 'numeric|required|unique:users,employee_id',
+            'employee_id' => 'required|unique:users,employee_id',
             'password'    => isset($data["user_type"]) && $data["user_type"] === "EMAIL RECEIVER ONLY" ? '' : 'required|min:6|confirmed',
         ]);
     }

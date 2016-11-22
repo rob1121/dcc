@@ -69,11 +69,17 @@
                         <label for="department" class="col-xs-4 control-label">Department</label>
 
                         <div class="col-xs-6">
-                            <select name="department" id="department" class="form-control">
-                                <option value="" disabled selected> -- Select One -- </option>
-                                <option value="QA"  @if(old("department") === "QA" || ( isset($user) && $user->department === "QA" )) selected @endif>QA</option>
-                                <option value="PE"  @if(old("department") === "PE" || ( isset($user) && $user->department === "PE" )) selected @endif>PE</option>
-                            </select>
+                            <input type="text" name="department" id="department" class="form-control" list="department-list" autocomplete="off">
+                            <datalist id="department-list">
+                                @foreach(App\User::getDepartmentList() as $department)
+                                    <option value="{{$department}}">
+                                @endforeach
+                            </datalist>
+                            {{--<select name="department" id="department" class="form-control">--}}
+                                {{--<option value="" disabled selected> -- Select One -- </option>--}}
+                                {{--<option value="QA"  @if(old("department") === "QA" || ( isset($user) && $user->department === "QA" )) selected @endif>QA</option>--}}
+                                {{--<option value="PE"  @if(old("department") === "PE" || ( isset($user) && $user->department === "PE" )) selected @endif>PE</option>--}}
+                            {{--</select>--}}
 
                             @if ($errors->has('department'))
                                 <span class="help-block">
