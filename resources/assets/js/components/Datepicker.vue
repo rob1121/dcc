@@ -110,7 +110,7 @@
 
 <template>
     <div :class="['form-group',{'has-error' : error }, 'col-sm-'+col]">
-        <label class="control-label">{{capitalize(label ? label : name)}}</label>
+        <label class="control-label" v-text="capitalize(label ? label : name)"></label>
         <input type="text"
                class="form-control input-sm"
                autocomplete="off"
@@ -120,8 +120,7 @@
                :value="value"
                @click="show = !show"
         >
-        <h6 class="help-block" v-show="error">{{error}}</h6>
-        <div class="datetime-picker" :style="{ width: width }">
+        <div class="datetime-picker" :style="'width:' + width">
             <div class="picker-wrap" v-show="show">
                 <table class="date-picker">
                     <thead>
@@ -156,8 +155,8 @@
 </template>
 
 <script>
-
     export default {
+
         props: {
             name:{default:""},
             error:{default:""},
@@ -165,17 +164,17 @@
             col:{default:"12"},
             width: { type: String, default: '100%' },
             readonly: { type: Boolean, default: false },
-            value: { type: String, default: '' },
-            format: { type: String, default: 'YYYY-MM-DD' }
+            format: { type: String, default: 'YYYY-MM-DD' },
+            value:  { type: String, default: '' },
         },
 
         data () {
             return {
                 show: false,
-                days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
                 months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 date: [],
-                now: new Date()
+                now: new Date(),
             };
         },
         watch: {
@@ -188,17 +187,17 @@
         },
         methods: {
 
-        getStatus(i, j) {
-            return this.date[i * 7 + j] && this.date[i * 7 + j].status
-        },
+            getStatus(i, j) {
+                return this.date[i * 7 + j] && this.date[i * 7 + j].status
+            },
 
-        getDate(i, j) {
-            return this.date[i * 7 + j] && this.date[i * 7 + j].data
-        },
+            getDate(i, j) {
+                return this.date[i * 7 + j] && this.date[i * 7 + j].data
+            },
 
-          capitalize(string) {
-              return _.capitalize(string);
-          },
+            capitalize(string) {
+                return _.capitalize(string);
+            },
 
             close () {
                 this.show = false;
