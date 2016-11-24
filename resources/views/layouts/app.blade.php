@@ -1,7 +1,6 @@
 @php
     $internal = \App\CompanySpecRevision::where("revision_date",">", \Carbon::now()->subDays(7))->count();
     $external = \App\CustomerSpecRevision::whereIsReviewed(0)->count();
-    $iso = \App\Iso::where("revision_date",">", \Carbon::now()->subDays(7))->count();
 @endphp
 
 <!DOCTYPE html>

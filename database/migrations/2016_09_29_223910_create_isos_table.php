@@ -17,8 +17,6 @@ class CreateIsosTable extends Migration
             $table->increments('id');
             $table->string('spec_no')->unique();
             $table->string('name')->unique();
-            $table->string('revision');
-            $table->string('revision_date');
             $table->string('document');
             $table->timestamps();
         });

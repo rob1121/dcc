@@ -31,7 +31,7 @@ class IsoFile implements SpecificationGateway {
     private function makePath()
     {
         $year = \Carbon::now()->year;
-        $spec_name = $this->iso->spec_no;
+        $spec_name = $this->safeChar($this->iso->spec_no);
 
         $this->path =  "{$year}/{$spec_name}";
     }
@@ -39,13 +39,18 @@ class IsoFile implements SpecificationGateway {
     private function makeDocumentName()
     {
         $name =  [
-            'spec_no' => $this->iso->spec_no,
-            'spec_revision' => preg_replace("/[^a-z|^0-9|^A-Z]/", "-", $this->request->revision)
+            'spec_no' => $this->safeChar($this->iso->spec_no),
+            'spec_revision' => $this->safeChar($this->request->revision)
         ];
 
         $implode_name = \Str::upper(implode("_", $name));
         $extension =$this->request->document->getClientOriginalExtension();
 
         $this->documentName =  "{$implode_name}.{$extension}";
+    }
+
+    private function safeChar($string)
+    {
+        return preg_replace("/[^a-z|^0-9|^A-Z]/", "-", $string);
     }
 }

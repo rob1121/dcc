@@ -34,21 +34,13 @@
     <div class="panel panel-default">
         <table class="table table-hover">
             <th>ISO document</th>
-            <th>Revision</th>
-            <th>Revision date</th>
             <tbody v-if="documents.length">
             <tr v-for="spec in documents">
                 <td>
-                    <a :href="spec.iso_show">
+                    <a :href="spec.iso_show"  target="_blank">
                         <strong>@{{spec.name | toUpper}}</strong>
                     </a>
                     </td>
-                <td>
-                    @{{spec.revision}}
-                </td>
-                <td>
-                    @{{spec.revision_date}}
-                </td>
                 <td>
                         @if(isAdmin())
                             <a id="update-btn" class="btn btn-xs btn-default" :href="spec.iso_edit">
@@ -58,7 +50,7 @@
                             <a id="delete-btn" class="btn btn-xs btn-danger"
                                data-toggle="modal"
                                href="#spec-confirm"
-                            @click="setModalSpec(iso)"
+                            @click="setModalSpec(spec)"
                             >
                             Remove <i class="fa fa-remove"></i>
                             </a>

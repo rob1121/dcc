@@ -65,7 +65,9 @@ class IsoController extends Controller {
      * @param Iso $iso
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Iso $iso) { return view("iso.edit", [ "iso" => $iso ]); }
+    public function edit(Iso $iso) {
+        return view("iso.edit", [ "iso" => $iso ]);
+    }
 
     /**
      * @param IsoRequest $request

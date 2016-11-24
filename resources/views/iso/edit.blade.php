@@ -33,6 +33,7 @@
                 >
                     {{ csrf_field() }}
                     {{ method_field('PATCH') }}
+                    <input type="hidden" value="{{$iso->id}}" name="id">
                     <div class="row">
                         <dcc-input name="spec_no"
                                    col="4"
@@ -40,20 +41,6 @@
                                    error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
                                    value="{{$errors->has("spec_no") || old("spec_no") ? old("spec_no") :  $iso->spec_no}}"
                         ></dcc-input>
-
-                        <dcc-input name="revision"
-                                   col="4"
-                                   error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
-                                   value="{{$errors->has("revision") || old("revision") ? old("revision") :  $iso->revision}}"
-                        ></dcc-input>
-
-                        <dcc-datepicker name="revision_date"
-                                        col="4"
-                                        label="date"
-                                        error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                        value="{{$errors->has("revision_date") || old("revision_date")
-                                        ? old("revision_date") :  $iso->revision_date}}"
-                        ></dcc-datepicker>
                     </div>
 
                     <div class="row">

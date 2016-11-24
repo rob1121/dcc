@@ -48,20 +48,6 @@
                     </div>
 
                     <div class="row">
-
-                        <dcc-input name="revision"
-                                   col="3"
-                                   error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
-                                   value="{{old("revision")}}"
-                        ></dcc-input>
-
-                        <dcc-datepicker name="revision_date"
-                                        col="3"
-                                        label="date"
-                                        error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                        value="{{old("revision_date")}}"
-                        ></dcc-datepicker>
-
                         <dcc-input name="document"
                                    col="6"
                                    type="file"

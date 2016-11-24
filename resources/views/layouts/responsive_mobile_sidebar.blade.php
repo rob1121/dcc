@@ -12,11 +12,7 @@
                 @endif
             </a>
         @endif
-        <a class="{{route("iso.index") === Request::url() ? "active" : ""}} h1" href="{{ route("iso.index") }}">ISO
-            @if($iso)
-                <span class="label label-danger">{{$iso}}</span>
-            @endif
-        </a>
+        <a class="{{route("iso.index") === Request::url() ? "active" : ""}} h1" href="{{ route("iso.index") }}">ISO</a>
         @if(Auth::user() && isAdmin())
             <a class="{{route("user.index") === Request::url() ? "active" : ""}} h1" href="{{ route("user.index") }}">Users List</a>
         @endif

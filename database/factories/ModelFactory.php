@@ -108,9 +108,7 @@ $factory->define(App\Iso::class, function (Faker\Generator $faker) {
     return [
         'spec_no' =>  $faker->randomNumber() ,
         'name' =>  $faker->name ,
-        'document' =>  $faker->word ,
-        'revision' => $faker->word,
-        'revision_date' => $faker->date()
+        'document' =>  $faker->word
     ];
 });
 

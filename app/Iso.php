@@ -12,7 +12,7 @@ class Iso extends Model
     use ModelInstance, IsoPresenter;
 
     protected $fillable = [
-        'spec_no', 'name', 'document', 'revision', 'revision_date'
+        'spec_no', 'name', 'document'
     ];
 
     protected $appends = [
@@ -32,9 +32,19 @@ class Iso extends Model
         return (new self($request->all()));
     }
 
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = trim($value);
+    }
+
+    public function setSpecNoAttribute($value)
+    {
+        $this->attributes['spec_no'] = trim($value);
+    }
+
     public static function isExist(Request $request)
     {
-        $instance = self::instance($request)->toArray();
+        $instance = self::instance($request)->getAttributes();
         return self::where($instance)->first();
     }
 }

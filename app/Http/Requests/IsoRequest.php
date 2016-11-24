@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IsoRequest extends FormRequest
@@ -25,11 +26,9 @@ class IsoRequest extends FormRequest
     public function rules()
     {
         return [
-            "spec_no" => "required",
-            "name" =>  "required",
-            "document" =>  "required|mimes:pdf",
-            "revision" =>  "required|min:2|max:10",
-            "revision_date" =>  "required|date",
+            "spec_no" => "required|unique:isos,spec_no,". Request::input('id'),
+            "name" =>  "required|unique:isos,name,". Request::input('id'),
+            "document" =>  "required|mimes:pdf"
         ];
     }
 }
