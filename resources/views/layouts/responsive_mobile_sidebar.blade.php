@@ -13,8 +13,14 @@
             </a>
         @endif
         <a class="{{route("iso.index") === Request::url() ? "active" : ""}} h1" href="{{ route("iso.index") }}">ISO</a>
-        @if(Auth::user() && isAdmin())
-            <a class="{{route("user.index") === Request::url() ? "active" : ""}} h1" href="{{ route("user.index") }}">Users List</a>
+        @if(Auth::user())
+            @if(isAdmin())
+                <a class="{{route("user.index") === Request::url() ? "active" : ""}} h1" href="{{ route("user.index") }}">Users List</a>
+            @endif
+
+            <a class=" h1" href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                Logout
+            </a>
         @endif
     </div>
     @if(isset($categories))

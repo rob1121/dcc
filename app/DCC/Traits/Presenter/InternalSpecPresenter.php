@@ -16,7 +16,7 @@ trait InternalSpecPresenter
 
     public function getOriginatorDepartmentsAttribute()
     {
-        return $this->originator->pluck('department');
+        return $this->originator->pluck('department')->toArray();
     }
 
     public function getInternalShowAttribute()
