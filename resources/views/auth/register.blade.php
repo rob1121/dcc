@@ -69,7 +69,7 @@
                         <label for="department" class="col-xs-4 control-label">Department</label>
 
                         <div class="col-xs-6">
-                            <input type="text" name="department" id="department" class="form-control" list="department-list" autocomplete="off">
+                            <input type="text" name="department" id="department" class="form-control" list="department-list" autocomplete="off" value="{{$user->department}}">
                             <datalist id="department-list">
                                 @foreach(App\User::getDepartmentList() as $department)
                                     <option value="{{$department}}">
@@ -93,11 +93,12 @@
                         <label for="employee_id" class="col-xs-4 control-label">Employee ID</label>
 
                         <div class="col-xs-6">
+
                             <input id="employee_id"
                                    type="text"
                                    class="form-control"
                                    name="employee_id"
-                                   value="@if(old('employee_id')) {{old('employee_id')}} @elseif(isset($user)) {{$user->employee_id}} @endif"
+                                   value="{{$user->employee_id}}"
                             >
 
                             @if ($errors->has('employee_id'))

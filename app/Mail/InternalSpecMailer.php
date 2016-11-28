@@ -20,7 +20,7 @@ class InternalSpecMailer extends Mailable implements ShouldQueue
      */
     public function __construct(CompanySpec $spec, $caption)
     {
-        $this->mail_subject = \Str::upper("{$caption} {$spec->spec_no} {$spec->companySpecRevision->revision}");
+        $this->mail_subject = \Str::upper("{$caption} {$spec->spec_id} {$spec->companySpecRevision->revision}");
         $this->data = [
             "spec" => $spec,
             "sub_title" => config("dcc.sub_title", ""),

@@ -102,5 +102,15 @@ class User extends Authenticatable
                 ->put("edit_route", route("user.edit", ["user" => $item->id]));
         })->toArray();
     }
+    
+    public function setEmployeeIdAttribute($value)
+    {
+        $this->attributes['employee_id'] = trim($value);
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = trim($value);
+    }
 
 }

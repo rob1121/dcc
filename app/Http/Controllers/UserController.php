@@ -35,6 +35,10 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $user_details = User::instance( $request );
+
+        if($user_details['password']) $user_details['password'] = bcrypt($user_details['password']);
+        else array_pull($user_details, 'password');
+
         $user->update( $user_details );
         return redirect()->route("user.index");
     }
