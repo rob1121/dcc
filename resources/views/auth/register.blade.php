@@ -69,7 +69,7 @@
                         <label for="department" class="col-xs-4 control-label">Department</label>
 
                         <div class="col-xs-6">
-                            <input type="text" name="department" id="department" class="form-control" list="department-list" autocomplete="off" value="{{$user->department}}">
+                            <input type="text" name="department" id="department" class="form-control" list="department-list" autocomplete="off" value="{{isset($user)?$user->department: ''}}">
                             <datalist id="department-list">
                                 @foreach(App\User::getDepartmentList() as $department)
                                     <option value="{{$department}}">
@@ -98,7 +98,7 @@
                                    type="text"
                                    class="form-control"
                                    name="employee_id"
-                                   value="{{$user->employee_id}}"
+                                   value="{{isset($user)?$user->employee_id:''}}"
                             >
 
                             @if ($errors->has('employee_id'))

@@ -34,7 +34,7 @@ class InternalSpecFile implements SpecificationGateway {
 
     private function makePath()
     {
-        $name = $this->spec->companySpecCategory->category_no ."-".$this->spec->spec_no;
+        $name = $this->spec->companySpecCategory->category_no ."-". $this->spec->spec_no;
         $year = Carbon::now()->year;
         $this->path =  "{$year}/" . preg_replace("/[^a-z|^0-9|^A-Z]/", " ", "{$name}");
     }

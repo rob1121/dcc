@@ -87,7 +87,7 @@
             Are you sure you want to permanently <strong class="text-danger">delete</strong>
             <br>
             "<strong class="text-danger">
-                @{{modalConfirmation.category.spec_name | toUpper}}
+                @{{modalConfirmation.category.name | toUpper}}
             </strong>"?
         </h3>
 

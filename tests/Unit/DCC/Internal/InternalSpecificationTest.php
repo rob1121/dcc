@@ -17,6 +17,7 @@ class InternalSpecificationTest extends TestCase {
     protected function setUp() {
         parent::setUp();
         $this->spec = factory(App\CompanySpec::class)->create();
+        factory(App\CompanySpecCategory::class)->create(["company_spec_id" => $this->spec->id]);
         $this->request = $this->generateRequestInstance();
         factory(App\User::class, 10)->create();
         $this->expected = ["name" => "spec name"];

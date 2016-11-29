@@ -9,11 +9,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="SHORTCUT ICON" href="/ico/dcc.ico">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'DCC Online') }}</title>
     <!-- Styles -->
     <link rel="stylesheet" href="{{URL::to("/css/app.css")}}">
     @stack("style")

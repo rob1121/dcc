@@ -22,6 +22,7 @@ class InternalSpecRevisionTest extends TestCase
         $this->file = new Illuminate\Http\UploadedFile(base_path('tests/Unit/File/test_file.pdf'), 'test_file.pdf', 'application/pdf', 446, null, TRUE);
         $this->factory = factory(App\CompanySpecRevision::class);
         $this->spec = factory(App\CompanySpec::class)->create();
+        factory(App\CompanySpecCategory::class)->create(["company_spec_id" => $this->spec->id]);
     }
     
     /** @test */

@@ -22,9 +22,12 @@ class ExternalSpecRevisionTest extends TestCase {
     /** @test */
     public function it_should_add_data_to_customer_spec_revision() {
         $this->actual = new Request(factory(App\CustomerSpecRevision::class)->make($this->rev_instance)->toArray());
+
         $this->expected = (new App\CustomerSpecRevision($this->actual->all()))->toArray();
 
+        array_pull($this->expected, "document");
         (new ExternalSpecRevision($this->actual, $this->spec))->persist();
+
         $this->seeInDatabase("customer_spec_revisions", $this->expected);
     }
 

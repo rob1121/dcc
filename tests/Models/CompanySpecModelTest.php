@@ -49,8 +49,7 @@ class CompanySpecModelTest extends TestCase
     /** @test */
     public function it_return_presenter_originator_department()
     {
-        $originator_department = App\Originator::get(['department'])->pluck('department');
-
+        $originator_department = App\Originator::get(['department'])->pluck('department')->toArray();
         $this->assertEquals($this->spec->originator_departments, $originator_department);
     }
 

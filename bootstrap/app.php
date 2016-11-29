@@ -10,7 +10,6 @@
 | the IoC container for the system binding all of the various parts.
 |
 */
-//function pcntl_fork(){ }
 
 $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
