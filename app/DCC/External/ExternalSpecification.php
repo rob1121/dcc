@@ -5,6 +5,7 @@ use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationFactory;
 use App\DCC\SpecificationGateway;
 use App\Mail\ExternalSpecMailer;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -22,6 +23,7 @@ class ExternalSpecification implements SpecificationGateway {
 
     function persist() {
         $this->spec = CustomerSpec::create(CustomerSpec::instance($this->request));
+
         $this->factory->store(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new ExternalSpecRevision($this->request, $this->spec));
 
@@ -43,7 +45,14 @@ class ExternalSpecification implements SpecificationGateway {
     protected function notifyUser( $caption )
     {
         if ( $this->sendNotification() )
-            Mail::to( $this->reviewers() )->send( $this->mailTemplate( $caption ) );
+            Mail::to( $this->reviewers() )
+                ->cc($this->areaInvolved())
+                ->send( $this->mailTemplate( $caption ) );
+    }
+
+    protected function areaInvolved()
+    {
+        return User::departmentIsIn($this->request->department);
     }
 
     protected function sendNotification()
@@ -53,12 +62,13 @@ class ExternalSpecification implements SpecificationGateway {
 
     protected function reviewers()
     {
-        return \App\User::getReviewer($this->spec->reviewer);
+        return User::getReviewer($this->spec->reviewer);
     }
 
     protected function mailTemplate($message)
     {
         $spec = CustomerSpec::find($this->spec->id);
+
         return new ExternalSpecMailer($spec, $message);
     }
 }

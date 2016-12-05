@@ -122,18 +122,18 @@
                                    value="{{$errors->has("document") || old("document") ? old("document") :  $spec->document}}"
                         ></dcc-input>
                     </div>
-                    {{--<div class="row">--}}
-                        {{--<div class="col-md-12 form-group">--}}
+                    <div class="row">
+                        <div class="col-md-12 form-group">
 
-                            {{--<label>CC: </label>--}}
+                            <label>CC: </label>
 
-                            {{--<select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>--}}
-                                {{--@foreach($departments as $department)--}}
-                                    {{--<option>{{$department}}</option>--}}
-                                {{--@endforeach--}}
-                            {{--</select>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
+                            <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
+                                @foreach($departments as $department)
+                                    <option>{{$department}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="radio col-xs-12 row form-group">
                         <label class="control-label">

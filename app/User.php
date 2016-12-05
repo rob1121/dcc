@@ -15,7 +15,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'employee_id', 'department', 'user_type', 'password',
+        'name', 'email', 'employee_id', 'user_type', 'password',
     ];
 
     protected $hidden = [
@@ -33,25 +33,36 @@ class User extends Authenticatable
      * @param array $originator_departments
      * @return mixed
      */
-    public static function departmentIsIn(array $originator_departments)
+    public static function  departmentIsIn(array $originator_departments)
     {
-        return self::whereIn("department", $originator_departments)->get();
+        return self::with([
+            "department" => function($query) use($originator_departments) {
+                $query->whereIn('department', $originator_departments);
+            }
+        ])
+        ->get()
+        ->filter(function($user) {
+            return collect($user->department)->count();
+        });
     }
 
     public static function getReviewer($reviewer)
     {
-        return self::whereUserType("REVIEWER")->whereDepartment($reviewer)
-            ->orWhere("user_type","ADMIN")->get();
+        return self::with([
+        "department" => function($query) use ($reviewer) {
+            $query->whereDepartment($reviewer);
+        }])
+        ->whereUserType("REVIEWER")
+        ->orWhere("user_type","ADMIN")
+        ->get()
+        ->filter(function($user) {
+            return collect($user->department)->count();
+        });
     }
 
     public function scopeGetCategoryList()
     {
         return $this->get(['user_type'])->unique(['user_type'])->pluck(['user_type']);
-    }
-
-    public function scopeGetDepartmentList()
-    {
-        return $this->get(['department'])->unique('department')->pluck('department');
     }
 
     public function originator()

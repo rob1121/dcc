@@ -6,8 +6,8 @@ use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
+use App\Department;
 use App\Http\Requests\ExternalSpecRequest;
-use App\User;
 use ErrorException;
 
 class ExternalController extends Controller {
@@ -83,7 +83,7 @@ class ExternalController extends Controller {
             "spec" => $external,
             "category_lists" => $this->categories,
             "reviewers_list" => CustomerSpec::uniqueReviewer(),
-            "departments" => User::departmentsList()
+            "departments" => Department::list()
         ]);
     }
 

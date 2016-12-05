@@ -40,6 +40,9 @@ class UserController extends Controller
         else array_pull($user_details, 'password');
 
         $user->update( $user_details );
+        $user->department->update([
+            "department" => $user_details['department']
+        ]);
         return redirect()->route("user.index");
     }
 

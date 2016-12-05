@@ -42,7 +42,7 @@ class InternalController extends Controller {
     {
         return view('internal.create', [
             "category_lists"    => $this->categories,
-            "departments"   => User::departmentList()
+            "departments"   => Department::list()
         ]);
     }
 
@@ -84,7 +84,7 @@ class InternalController extends Controller {
     {
         return view('internal.edit', [
             'spec'          => $internal,
-            "departments"   => User::departmentList()
+            "departments"   => Department::list()
         ]);
     }
 

@@ -49,7 +49,7 @@ class InternalSpecification implements SpecificationGateway {
     protected function notifyUser($caption)
     {
         if ( $this->sendNotification() )
-            Mail::to( $this->originators() )->send( $this->mailTemplate($caption) );
+            Mail::to( $this->areaInvolved() )->send( $this->mailTemplate($caption) );
     }
 
     protected function sendNotification()
@@ -57,7 +57,7 @@ class InternalSpecification implements SpecificationGateway {
         return "true" === $this->request->send_notification;
     }
 
-    protected function originators()
+    protected function areaInvolved()
     {
         return User::departmentIsIn($this->spec->originator_departments);
     }

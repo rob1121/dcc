@@ -21,11 +21,19 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->safeEmail,
-        'department' => $faker->randomElement(["QA","PE"]),
         'employee_id' => $faker->numberBetween(),
         'user_type' => $faker->randomElement(["ADMIN","REVIEWER","EMAIL RECEIVER ONLY"]),
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->define(App\Department::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => function() {
+            return factory(\App\User::class)->create()->id;
+        },
+        'department' => $faker->randomElement(["QA","PE"])
     ];
 });
 
