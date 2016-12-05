@@ -22,6 +22,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function department()
+    {
+        return $this->hasMany(Department::class);
+    }
+
     /**
      * return user with department equals to originator department
      *

@@ -9,6 +9,27 @@
 
 @push('script')
 <script src="{{URL::to("/js/form.js")}}"></script>
+<script>
+    var chosen = $(".chosen-select");
+
+    chosen.chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Oops, nothing found!",
+        max_selected_options: 5,
+        display: "block",
+        width: "100%",
+    });
+
+    chosen.val(
+            {!! old("department") ? collect(old("department"))->toJson() : collect($spec->originator_departments)->toJson()  !!}
+    ).trigger("chosen:updated");
+    $("input[name='send_notification']").on('change', function() {
+        var department = $(".department");
+
+        if( $(this).val() === "true" ) department.show();
+        else department.hide();
+    });
+</script>
 @endpush
 
 @section('content')
@@ -101,6 +122,18 @@
                                    value="{{$errors->has("document") || old("document") ? old("document") :  $spec->document}}"
                         ></dcc-input>
                     </div>
+                    {{--<div class="row">--}}
+                        {{--<div class="col-md-12 form-group">--}}
+
+                            {{--<label>CC: </label>--}}
+
+                            {{--<select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>--}}
+                                {{--@foreach($departments as $department)--}}
+                                    {{--<option>{{$department}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
 
                     <div class="radio col-xs-12 row form-group">
                         <label class="control-label">

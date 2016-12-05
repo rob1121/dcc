@@ -7,6 +7,7 @@ use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
 use App\Http\Requests\ExternalSpecRequest;
+use App\User;
 use ErrorException;
 
 class ExternalController extends Controller {
@@ -79,7 +80,10 @@ class ExternalController extends Controller {
      */
     public function edit(CustomerSpec $external) {
         return view("external.edit", [
-            "spec" => $external, "category_lists" => $this->categories, "reviewers_list" => CustomerSpec::uniqueReviewer()
+            "spec" => $external,
+            "category_lists" => $this->categories,
+            "reviewers_list" => CustomerSpec::uniqueReviewer(),
+            "departments" => User::departmentsList()
         ]);
     }
 

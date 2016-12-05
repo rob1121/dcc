@@ -6,6 +6,7 @@ use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\File\Document;
 use App\DCC\Internal\InternalSpecification;
 use App\DCC\SpecificationFactory;
+use App\Department;
 use App\Http\Requests\InternalSpecRequest;
 use App\User;
 use ErrorException;
@@ -41,7 +42,7 @@ class InternalController extends Controller {
     {
         return view('internal.create', [
             "category_lists"    => $this->categories,
-            "departments"       => User::departmentList()
+            "departments"   => User::departmentList()
         ]);
     }
 
