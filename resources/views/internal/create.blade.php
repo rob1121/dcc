@@ -167,7 +167,7 @@
                     </div>
 
                     <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}" v-show="{{ old("send_notification") !== "false" }}">
-                        <label class="control-label"><strong>Department </strong></label>
+                        <label class="control-label"><strong>Scope Department</strong></label>
                         <br>
                         <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
                             @foreach($departments as $department)

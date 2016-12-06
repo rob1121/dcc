@@ -48370,8 +48370,8 @@ exports.default = {
             return isNaN(time.getTime()) ? null : time;
         },
         stringify: function stringify() {
-            var time = arguments.length <= 0 || arguments[0] === undefined ? this.now : arguments[0];
-            var format = arguments.length <= 1 || arguments[1] === undefined ? this.format : arguments[1];
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.now;
+            var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.format;
 
             var year = time.getFullYear();
             var month = time.getMonth() + 1;

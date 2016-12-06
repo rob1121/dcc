@@ -16,6 +16,31 @@
     userType.on("change", function() {
         togglePassword($(this).val());
     });
+
+
+    var chosen = $(".chosen-select");
+
+    chosen.chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Oops, nothing found!",
+        max_selected_options: 5,
+        display: "block",
+        width: "100%",
+    });
+
+    chosen.val(
+            @php
+                $department = isset($user)?$user->department:'';
+            @endphp
+
+            {!! old("department") ? collect(old("department"))->toJson() : $department  !!}
+    ).trigger("chosen:updated");
+    $("input[name='send_notification']").on('change', function() {
+        var department = $(".department");
+
+        if( $(this).val() === "true" ) department.show();
+        else department.hide();
+    });
 </script>
 @endpush
 
@@ -69,17 +94,13 @@
                         <label for="department" class="col-xs-4 control-label">Department</label>
 
                         <div class="col-xs-6">
-                            <input type="text" name="department" id="department" class="form-control" list="department-list" autocomplete="off" value="{{isset($user)?$user->department: ''}}">
-                            <datalist id="department-list">
-                                @foreach(App\User::getDepartmentList() as $department)
-                                    <option value="{{$department}}">
+                            <select name="department[]" id="department" class="form-control chosen-select" multiple>
+                                <option></option>
+                                @foreach(App\Department::list() as $department)
+                                    <option value="{{$department}}">{{$department}}</option>
                                 @endforeach
-                            </datalist>
-                            {{--<select name="department" id="department" class="form-control">--}}
-                                {{--<option value="" disabled selected> -- Select One -- </option>--}}
-                                {{--<option value="QA"  @if(old("department") === "QA" || ( isset($user) && $user->department === "QA" )) selected @endif>QA</option>--}}
-                                {{--<option value="PE"  @if(old("department") === "PE" || ( isset($user) && $user->department === "PE" )) selected @endif>PE</option>--}}
-                            {{--</select>--}}
+                            </select>
+                            <label for=""><input type="checkbox">NOT FROM THE LIST</label>
 
                             @if ($errors->has('department'))
                                 <span class="help-block">

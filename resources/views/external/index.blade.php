@@ -114,7 +114,8 @@
     >
         <div class="text-center">
             <div v-if="modalConfirmation.action === 'update'">
-                <h3>Mark <strong>@{{ modalConfirmation.category.name }}</strong> as <strong class="text-success">complete</strong></h3>
+                <h3>Mark <strong>@{{ modalConfirmation.category.name }}</strong> as <strong class="text-success">complete</strong>
+                </h3>
                 <h4>Click <strong>Yes</strong> to confirm action.</h4>
             </div>
             <div v-else>
