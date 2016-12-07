@@ -1,17 +1,19 @@
 require('./app');
-require('chosen-js');
-
-Vue.component('multi-select', require('./components/Multiselect.vue'));
+import Departments from './components/Departments.vue';
 
 const app = new Vue({
     el: "#app",
-    data:{
-        option: ["a","b","c"]
+
+    components: {
+        Departments
+    },
+
+    methods: {
+        try123:_.debounce(() =>console.log('ss'), 1000)
     }
 });
 
 $(".modal-btn").click(function() {
     $("#form-submit").submit();
 });
-
 

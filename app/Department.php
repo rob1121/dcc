@@ -17,6 +17,6 @@ class Department extends Model
     
     public static function list()
     {
-        return static::get(['department'])->unique('department')->pluck('department')->toArray();
+        return static::get(['department'])->unique('department')->pluck('department')->toJson();
     }
 }

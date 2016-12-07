@@ -2,6 +2,8 @@ const elixir = require('laravel-elixir');
 
 require('laravel-elixir-vueify');
 
+// require('laravel-elixir-vue-2');
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -14,13 +16,15 @@ require('laravel-elixir-vueify');
  */
 
 elixir(mix => {
-    mix.copy("node_modules/font-awesome/fonts", "public/fonts");
 
-        mix.browserify('form.js');
-        mix.browserify('internal-index.js');
-        mix.browserify('external-index.js');
-        mix.browserify('iso-index.js');
-        mix.browserify('user-index.js');
 
-        mix.sass('app.scss').browserSync({ proxy: "dcc.dev.me" });
+    // mix.copy("node_modules/font-awesome/fonts", "public/fonts");
+
+        mix.browserify('form.js')
+        // mix.webpack('internal-index.js');
+        // mix.webpack('external-index.js');
+        // mix.webpack('iso-index.js');
+        // mix.webpack('user-index.js');
+
+        .sass('app.scss').browserSync({ proxy: "dcc.dev.me" });
 });

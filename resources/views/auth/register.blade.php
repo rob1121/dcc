@@ -16,31 +16,6 @@
     userType.on("change", function() {
         togglePassword($(this).val());
     });
-
-
-    var chosen = $(".chosen-select");
-
-    chosen.chosen({
-        disable_search_threshold: 10,
-        no_results_text: "Oops, nothing found!",
-        max_selected_options: 5,
-        display: "block",
-        width: "100%",
-    });
-
-    chosen.val(
-            @php
-                $department = isset($user)?$user->department:'';
-            @endphp
-
-            {!! old("department") ? collect(old("department"))->toJson() : $department  !!}
-    ).trigger("chosen:updated");
-    $("input[name='send_notification']").on('change', function() {
-        var department = $(".department");
-
-        if( $(this).val() === "true" ) department.show();
-        else department.hide();
-    });
 </script>
 @endpush
 
@@ -92,21 +67,25 @@
 
                     <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
                         <label for="department" class="col-xs-4 control-label">Department</label>
-
                         <div class="col-xs-6">
-                            <select name="department[]" id="department" class="form-control chosen-select" multiple>
-                                <option></option>
-                                @foreach(App\Department::list() as $department)
-                                    <option value="{{$department}}">{{$department}}</option>
-                                @endforeach
-                            </select>
-                            <label for=""><input type="checkbox">NOT FROM THE LIST</label>
+                            <input type="hidden" id="tags" style="width: 300px"/>
 
+                            <departments :options="{{App\Department::list()}}"></departments>
+                            {{--<select name="department[]" id="department" class="form-control chosen-select" multiple>--}}
+                                {{--<option></option>--}}
+                                {{--@foreach(App\Department::list() as $department)--}}
+                                    {{--<option value="{{$department}}">{{$department}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
                             @if ($errors->has('department'))
                                 <span class="help-block">
                             <strong>{{ $errors->first('department') }}</strong>
                         </span>
                             @endif
+
+                            <button @click.prevent="try123()">
+                                click
+                            </button>
                         </div>
                     </div>
 
@@ -158,7 +137,12 @@
                                    type="email"
                                    class="form-control"
                                    name="email"
-                                   value="@If(old('email')) {{old('email')}} @elseif(isset($user)) {{$user->email}} @endif"
+                                   value="
+                                    @If(old('email'))
+                                   {{old('email')}}
+                                   @elseif(isset($user))
+                                   {{$user->email}}
+                                   @endif"
                             >
 
                             @if ($errors->has('email'))

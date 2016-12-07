@@ -8351,7 +8351,9 @@ body {
 
 .faded[v-cloak],
 #app[v-cloak] {
-  display: none; }
+  display: none;
+  -webkit-transition: 5s;
+  transition: 5s; }
 
 .navbar {
   border-radius: 0;
