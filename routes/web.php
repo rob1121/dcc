@@ -21,8 +21,8 @@ Route::get('/search', [
     "uses" => 'SearchController@search'
 ]);
 
+Route::get('/department-list', [
+    'as' => 'department.list',
+    'uses' => 'Api\departmentController@departments'
+]);
 
-
-Route::get('/trim', function() {
-    return preg_replace("/[^a-z|^0-9|^A-Z]/", "-", '//');
-});

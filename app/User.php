@@ -3,16 +3,15 @@
 namespace App;
 
 use App\DCC\Traits\ModelInstance;
+use App\Dcc\Traits\Presenter\UserPresenter;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use ModelInstance;
-    use Notifiable;
+    use ModelInstance, Notifiable, UserPresenter;
 
     protected $fillable = [
         'name', 'email', 'employee_id', 'user_type', 'password',
@@ -78,7 +77,6 @@ class User extends Authenticatable
 
     public static function allUser()
     {
-        self::initializeMacro();
         $users = self::where('id','<>', Auth::user()->id)->get()->userTransformer();
 
         return self::putHTMLVerbLinks($users);
@@ -97,19 +95,6 @@ class User extends Authenticatable
         })->toArray();
     }
 
-    private static function initializeMacro() {
-
-        Collection::macro('userTransformer', function() {
-
-            $charCount = User::employeeIdHighestCharCount();
-
-            return collect($this->items)->map(function($user) use($charCount) {
-                $user->employee_id = sprintf("%0{$charCount}d", $user->employee_id);
-                return $user;
-            });
-        });
-    }
-
     private static function putHTMLVerbLinks($users)
     {
         return $users->map(function ($item) {
@@ -118,15 +103,4 @@ class User extends Authenticatable
                 ->put("edit_route", route("user.edit", ["user" => $item->id]));
         })->toArray();
     }
-    
-    public function setEmployeeIdAttribute($value)
-    {
-        $this->attributes['employee_id'] = trim($value);
-    }
-
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = trim($value);
-    }
-
 }

@@ -39,7 +39,7 @@
         <div class="panel {{$errors->any() ? "panel-danger":"panel-default"}}">
             <div class="panel-heading">Register</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form" method="POST" action="{{ isset($user) ? route("user.update", ["user" => $user->id]) : url('/register') }}">
+                <form class="form-horizontal" role="form" method="POST" action="{{route("user.update", ["user" => $user->id])}}">
                     {{ csrf_field() }}
                     @if(isset($user))
                         <input type="hidden" name="_method" value="PATCH">
@@ -68,9 +68,7 @@
                     <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
                         <label for="department" class="col-xs-4 control-label">Department</label>
                         <div class="col-xs-6">
-                            <input type="hidden" id="tags" style="width: 300px"/>
-
-                            <departments :options="{{App\Department::list()}}"></departments>
+                            <departments :options="{{App\Department::list()}}"/>
                             {{--<select name="department[]" id="department" class="form-control chosen-select" multiple>--}}
                                 {{--<option></option>--}}
                                 {{--@foreach(App\Department::list() as $department)--}}
@@ -82,10 +80,6 @@
                             <strong>{{ $errors->first('department') }}</strong>
                         </span>
                             @endif
-
-                            <button @click.prevent="try123()">
-                                click
-                            </button>
                         </div>
                     </div>
 

@@ -2,8 +2,6 @@ const elixir = require('laravel-elixir');
 
 require('laravel-elixir-vueify');
 
-// require('laravel-elixir-vue-2');
-
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
