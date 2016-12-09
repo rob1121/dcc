@@ -1,12 +1,13 @@
 <template>
     <div id="department--container">
-        <input type="text" class="form-control" v-model="query">
+        <input type="text" class="form-control" v-model="query" @blur="hideSearchResults">
+        
         <div :style="'width:'+searchResultWidth" class="search-result" v-if="hasSearchResultOrQueryStatus">
 
             <em><small v-text="text"></small></em>
-            <li v-for="result in searchResults" @click="hideSearchResults">
-                {{result}}
-                <i class="fa fa-add"></i>
+
+            <li class="department--item" v-for="result in searchResults" @click="hideSearchResults">
+                {{result}}<i class='pull-right fa fa-plus'></i>
             </li>
         </div>
     </div>
@@ -22,7 +23,20 @@
         background: #fff;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
-        padding: 0 5px 10px 5px;
+        padding: 0;
+    }
+
+    .department--item {
+        padding: 5px;
+        list-style: none;
+        text-transform: uppercase;
+        transition: .1s ease-in-out;
+        cursor: pointer;
+    }
+
+    .department--item:hover {
+        background: #3097D1;
+        color: #f5f8fa;
     }
 </style>
 

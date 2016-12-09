@@ -48427,7 +48427,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],15:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.search-result {\n    position: absolute;\n    z-index: 2;\n    width: 100%;\n    border: 1px solid rgba(0,0,0,0.2);\n    box-shadow: 0 3px 2px rgba(0,0,0,0.2);\n    background: #fff;\n    border-bottom-left-radius: 2px;\n    border-bottom-right-radius: 2px;\n    padding: 0 5px 10px 5px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.search-result {\n    position: absolute;\n    z-index: 2;\n    width: 100%;\n    border: 1px solid rgba(0,0,0,0.2);\n    box-shadow: 0 3px 2px rgba(0,0,0,0.2);\n    background: #fff;\n    border-bottom-left-radius: 2px;\n    border-bottom-right-radius: 2px;\n    padding: 0;\n}\n\n.department--item {\n    padding: 5px;\n    list-style: none;\n    text-transform: uppercase;\n    -webkit-transition: .1s ease-in-out;\n    transition: .1s ease-in-out;\n    cursor: pointer;\n}\n\n.department--item:hover {\n    background: #3097D1;\n    color: #f5f8fa;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48515,13 +48515,13 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n    <input type=\"text\" class=\"form-control\" v-model=\"query\">\n    <div :style=\"'width:'+searchResultWidth\" class=\"search-result\" v-if=\"hasSearchResultOrQueryStatus\">\n\n        <em><small v-text=\"text\"></small></em>\n        <li v-for=\"result in searchResults\" @click=\"hideSearchResults\">\n            {{result}}\n            <i class=\"fa fa-add\"></i>\n        </li>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n    <input type=\"text\" class=\"form-control\" v-model=\"query\" @blur=\"hideSearchResults\">\n    \n    <div :style=\"'width:'+searchResultWidth\" class=\"search-result\" v-if=\"hasSearchResultOrQueryStatus\">\n\n        <em><small v-text=\"text\"></small></em>\n\n        <li class=\"department--item\" v-for=\"result in searchResults\" @click=\"hideSearchResults\">\n            {{result}}<i class=\"pull-right fa fa-plus\"></i>\n        </li>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.search-result {\n    position: absolute;\n    z-index: 2;\n    width: 100%;\n    border: 1px solid rgba(0,0,0,0.2);\n    box-shadow: 0 3px 2px rgba(0,0,0,0.2);\n    background: #fff;\n    border-bottom-left-radius: 2px;\n    border-bottom-right-radius: 2px;\n    padding: 0 5px 10px 5px;\n}\n"] = false
+    __vueify_insert__.cache["\n.search-result {\n    position: absolute;\n    z-index: 2;\n    width: 100%;\n    border: 1px solid rgba(0,0,0,0.2);\n    box-shadow: 0 3px 2px rgba(0,0,0,0.2);\n    background: #fff;\n    border-bottom-left-radius: 2px;\n    border-bottom-right-radius: 2px;\n    padding: 0;\n}\n\n.department--item {\n    padding: 5px;\n    list-style: none;\n    text-transform: uppercase;\n    -webkit-transition: .1s ease-in-out;\n    transition: .1s ease-in-out;\n    cursor: pointer;\n}\n\n.department--item:hover {\n    background: #3097D1;\n    color: #f5f8fa;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
