@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\CompanySpec;
 use App\CustomerSpec;
+use App\DCC\Transformer\DepartmentTransformer;
 use App\Iso;
 use App\Observers\CompanySpecObserver;
 use App\Observers\CustomerSpecObserver;
@@ -37,6 +38,11 @@ class AppServiceProvider extends ServiceProvider
         Iso::observe(IsoObserver::class);
         CompanySpec::observe(CompanySpecObserver::class);
         CustomerSpec::observe(CustomerSpecObserver::class);
+
+        app()->bind(
+            'DepartmentTransformer', function() {
+            return new DepartmentTransformer();
+        });
     }
 
     /**

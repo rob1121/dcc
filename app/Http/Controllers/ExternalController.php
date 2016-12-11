@@ -83,7 +83,7 @@ class ExternalController extends Controller {
             "spec" => $external,
             "category_lists" => $this->categories,
             "reviewers_list" => CustomerSpec::uniqueReviewer(),
-            "departments" => Department::list()
+            "departments" => Department::listDepartments()
         ]);
     }
 

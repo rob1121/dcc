@@ -1,0 +1,36 @@
+.fa
+  position: relative
+  top: -50%
+  transform: translateY(50%)
+
+  .search-result
+    position: absolute
+    z-index: 2
+    width: 100%
+    border: 1px solid rgba(0,0,0,0.2)
+    box-shadow: 0 3px 2px rgba(0,0,0,0.2)
+    background: #fff
+    border-bottom-left-radius: 2px
+    border-bottom-right-radius: 2px
+    padding: 0
+
+  .department--item,
+    .selected--department--item
+      padding: 5px
+      list-style: none
+      text-transform: uppercase
+      transition: .1s ease-in-out
+
+  .department--item,
+  .fa-remove
+    cursor: pointer
+
+  .department--item:hover
+    background: #3097D1
+    color: #f5f8fa
+
+    i.fa.fa-plus
+      display: block
+
+  i.fa.fa-plus
+    display: none

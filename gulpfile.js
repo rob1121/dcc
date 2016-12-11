@@ -24,5 +24,5 @@ elixir(mix => {
         // mix.webpack('iso-index.js');
         // mix.webpack('user-index.js');
 
-        .sass('app.scss').browserSync({ proxy: "dcc.dev.me" });
+        .sass('app.scss').browserSync({ proxy: "dcc.dev" });
 });

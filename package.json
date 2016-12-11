@@ -17,6 +17,7 @@
     "laravel-elixir-vue-2": "^0.2.0",
     "laravel-elixir-webpack-official": "^1.0.2",
     "lodash": "^4.14.0",
+    "stylus": "^0.54.5",
     "vue": "^2.0.0",
     "vue-multiselect": "^2.0.0-beta.10",
     "vue-resource": "^0.9.3"

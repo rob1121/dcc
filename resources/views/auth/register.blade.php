@@ -68,7 +68,7 @@
                     <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
                         <label for="department" class="col-xs-4 control-label">Department</label>
                         <div class="col-xs-6">
-                            <departments :options="{{App\Department::list()}}"/>
+                            <departments :options="{{App\Department::listDepartments()}}"/>
                             {{--<select name="department[]" id="department" class="form-control chosen-select" multiple>--}}
                                 {{--<option></option>--}}
                                 {{--@foreach(App\Department::list() as $department)--}}

@@ -1,44 +1,24 @@
 <template>
     <div id="department--container">
-        <input type="text" class="form-control" v-model="query" @blur="hideSearchResults">
-        
-        <div :style="'width:'+searchResultWidth" class="search-result" v-if="hasSearchResultOrQueryStatus">
+        <input type="text" class="form-control" v-model="query">
+        {{searchResults}}
+        <!---->
+        <!--<div :style="'width:'+searchResultWidth"-->
+             <!--class="search-result"-->
+             <!--v-if="hasSearchResultOrQueryStatus"-->
+        <!--&gt;-->
+            <!--<em><small v-text="text"></small></em>-->
 
-            <em><small v-text="text"></small></em>
+            <!--<li class="department&#45;&#45;item" v-for="options in options" @click="addToSelectedItem(options)">-->
+                <!--{{options.department}} <i class='pull-right fa fa-plus'></i>-->
+            <!--</li>-->
+        <!--</div>-->
 
-            <li class="department--item" v-for="result in searchResults" @click="hideSearchResults">
-                {{result}}<i class='pull-right fa fa-plus'></i>
-            </li>
-        </div>
+        <!--<li class="selected&#45;&#45;department&#45;&#45;item" v-for="item in selected">-->
+            <!--<em>{{item.department}} <i class='pull-right fa fa-remove'  @click="removeToSelectedItem(item)"></i></em>-->
+        <!--</li>-->
     </div>
 </template>
-
-<style>
-    .search-result {
-        position: absolute;
-        z-index: 2;
-        width: 100%;
-        border: 1px solid rgba(0,0,0,0.2);
-        box-shadow: 0 3px 2px rgba(0,0,0,0.2);
-        background: #fff;
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-        padding: 0;
-    }
-
-    .department--item {
-        padding: 5px;
-        list-style: none;
-        text-transform: uppercase;
-        transition: .1s ease-in-out;
-        cursor: pointer;
-    }
-
-    .department--item:hover {
-        background: #3097D1;
-        color: #f5f8fa;
-    }
-</style>
 
 <script>
 
@@ -48,7 +28,7 @@
                 searchResultWidth: 0,
                 query: null,
                 text: null,
-                searchResults: null,
+                searchResults: {},
                 selected: []
             }
         },
@@ -91,11 +71,13 @@
             fetchQuery() {
                 const self = this;
 
-                self.$http.get(laroute.route('department.list')).then(
-                        response => {
-                            self.setSearchResults( response.data );
-                            self.queryStatus('success')
-                        }, error => console.log(error)
+                self.$http.get(laroute.route('department.list'), { params: {
+                    query: this.query
+                } }).then(
+                    response => {
+                        self.setSearchResults( response.data );
+                        self.queryStatus('success')
+                    }, error => console.log(error)
                 )
             },
 
@@ -126,7 +108,21 @@
             },
 
             getContainerWidth() {
-                return document.getElementById('department--container').clientWidth
+                const width = document
+                    .getElementById( 'department--container' )
+                    .clientWidth;
+
+                return width;
+            },
+
+            addToSelectedItem(item) {
+                this.selected.push(item);
+                this.hideSearchResults();
+            },
+
+            removeToSelectedItem(item) {
+                const index = this.selected.indexOf(item)
+                this.selected.splice(index, 1)
             }
 
         }

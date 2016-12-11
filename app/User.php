@@ -18,7 +18,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'created_at', 'updated_at'
     ];
 
     public function department()
@@ -75,13 +75,6 @@ class User extends Authenticatable
         return self::where($instance)->first();
     }
 
-    public static function allUser()
-    {
-        $users = self::where('id','<>', Auth::user()->id)->get()->userTransformer();
-
-        return self::putHTMLVerbLinks($users);
-    }
-
     public static function employeeIdHighestCharCount()
     {
         $id = self::orderBy("employee_id", "desc")->first()->employee_id;
@@ -95,12 +88,9 @@ class User extends Authenticatable
         })->toArray();
     }
 
-    private static function putHTMLVerbLinks($users)
-    {
-        return $users->map(function ($item) {
-            return collect($item)
-                ->put("delete_route", route("user.destroy", ["user" => $item->id]))
-                ->put("edit_route", route("user.edit", ["user" => $item->id]));
-        })->toArray();
+    public function scopeFindQuery($query, $lookItem) {
+            return $query->where("name","like","%{$lookItem}%")
+                ->where("employee_id","like","%{$lookItem}%")
+                ->where("email","like","%{$lookItem}%");
     }
 }
