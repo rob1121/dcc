@@ -27,7 +27,7 @@ class ApiController extends Controller
 
     public function userSearch()
     {
-        $users = \App\User::allUser();
+        $users = \App\User::all();
 
         return response()->json($users)
             ->header('Access-Control-Allow-Origin', '*')

@@ -21,6 +21,10 @@ class User extends Authenticatable
         'password', 'remember_token', 'created_at', 'updated_at'
     ];
 
+    protected $appends = [
+        'edit_route', 'delete_route'
+    ];
+
     public function department()
     {
         return $this->hasMany(Department::class);
@@ -88,9 +92,23 @@ class User extends Authenticatable
         })->toArray();
     }
 
-    public function scopeFindQuery($query, $lookItem) {
-            return $query->where("name","like","%{$lookItem}%")
-                ->where("employee_id","like","%{$lookItem}%")
-                ->where("email","like","%{$lookItem}%");
+    public static function findQuery($lookItem=null, $count = 5)
+    {
+            return static::where("name","like","%{$lookItem}%")
+                ->orWhere("employee_id","like","%{$lookItem}%")
+                ->orWhere("email","like","%{$lookItem}%")
+                ->take($count)
+                ->get()
+                ->toArray();
+    }
+
+    public static function findQueryInDepartment($lookItem=null, $count = 5)
+    {
+        return static::with([ 'department' => function($query) use($lookItem) {
+            return $query->where('department','like',"%{$lookItem}%");
+        } ])->get()
+            ->groupBy('department.*.department')
+            ->take($count)
+            ->toArray();
     }
 }

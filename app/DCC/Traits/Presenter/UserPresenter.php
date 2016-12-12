@@ -24,4 +24,14 @@ trait UserPresenter
     {
         $this->attributes['user_type'] = trim($value);
     }
+
+    public function getEditRouteAttribute()
+    {
+        return route('user.edit',['user' => $this->id]);
+    }
+
+    public function getDeleteRouteAttribute()
+    {
+        return route('user.delete', ['user' => $this->id]);
+    }
 }

@@ -38,11 +38,6 @@ class AppServiceProvider extends ServiceProvider
         Iso::observe(IsoObserver::class);
         CompanySpec::observe(CompanySpecObserver::class);
         CustomerSpec::observe(CustomerSpecObserver::class);
-
-        app()->bind(
-            'DepartmentTransformer', function() {
-            return new DepartmentTransformer();
-        });
     }
 
     /**

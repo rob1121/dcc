@@ -1,22 +1,30 @@
 <template>
     <div id="department--container">
+        {{results[0]}}
         <input type="text" class="form-control" v-model="query">
-        {{searchResults}}
-        <!---->
-        <!--<div :style="'width:'+searchResultWidth"-->
-             <!--class="search-result"-->
-             <!--v-if="hasSearchResultOrQueryStatus"-->
-        <!--&gt;-->
-            <!--<em><small v-text="text"></small></em>-->
+        <div :style="'width:'+resultWidth"
+             class="search-result"
+             v-if="hasResultOrQueryStatus"
+        >
+            <em><small v-text="text"></small></em>
 
-            <!--<li class="department&#45;&#45;item" v-for="options in options" @click="addToSelectedItem(options)">-->
-                <!--{{options.department}} <i class='pull-right fa fa-plus'></i>-->
-            <!--</li>-->
-        <!--</div>-->
+            <li class="department--item"
+                v-for="(departmentEmployee, department) in results.departments"
+                @click="addToSelectedItem(results.departments[department])">
+                <h6>{{department}} <i class='pull-right fa fa-plus'></i></h6>
+            </li>
+
+            <li class="department--item"
+                v-for="user in results.users"
+                @click="addToSelectedItem(user)">
+                <h6>{{user.name}} <em>({{user.email}})</em> <i class='pull-right fa fa-plus'></i></h6>
+            </li>
+        </div>
 
         <!--<li class="selected&#45;&#45;department&#45;&#45;item" v-for="item in selected">-->
             <!--<em>{{item.department}} <i class='pull-right fa fa-remove'  @click="removeToSelectedItem(item)"></i></em>-->
         <!--</li>-->
+
     </div>
 </template>
 
@@ -25,10 +33,13 @@
     export default {
         data(){
             return {
-                searchResultWidth: 0,
+                resultWidth: 0,
                 query: null,
                 text: null,
-                searchResults: {},
+                results: {
+                    departments: {},
+                    users: {}
+                },
                 selected: []
             }
         },
@@ -40,8 +51,8 @@
         },
 
         computed:{
-            hasSearchResultOrQueryStatus(){
-                return ! _.isEmpty( this.text ) || ! _.isEmpty( this.searchResults )
+            hasResultOrQueryStatus(){
+                return ! _.isEmpty( this.text ) || ! _.isEmpty( this.results.departments ) || ! _.isEmpty( this.results.users )
             }
         },
 
@@ -49,9 +60,9 @@
             query() {
                 const self = this;
 
-                self.setSearchResultWidth( self.getContainerWidth() );
+                self.setResultWidth( self.containerWidth() );
                 self.$emit('input_query', self.query);
-                self.setSearchResults(null);
+                self.resetResults();
                 self.queryStatus('typing');
             }
         },
@@ -64,7 +75,7 @@
                     this.queryStatus('searching');
                     this.fetchQuery();
                 } else {
-                    this.hideSearchResults();
+                    this.hideResults();
                 }
             },
 
@@ -72,10 +83,10 @@
                 const self = this;
 
                 self.$http.get(laroute.route('department.list'), { params: {
-                    query: this.query
+                    q: this.query
                 } }).then(
                     response => {
-                        self.setSearchResults( response.data );
+                        self.setResults( response.data );
                         self.queryStatus('success')
                     }, error => console.log(error)
                 )
@@ -94,34 +105,35 @@
                 return status === 'success';
             },
 
-            hideSearchResults(){
+            hideResults(){
                 this.queryStatus(null);
-                this.setSearchResults(null);
+                this.resetResults();
             },
 
-            setSearchResults(results) {
-                this.searchResults = JSON.parse(results);
+            setResults(results) {
+                this.results = JSON.parse(results);
             },
 
-            setSearchResultWidth(width) {
-                this.searchResultWidth = width + 'px'
+            resetResults() {
+                this.setResults.departments = {};
+                this.setResults.users = {};
             },
 
-            getContainerWidth() {
-                const width = document
-                    .getElementById( 'department--container' )
-                    .clientWidth;
+            setResultWidth(width) {
+                this.resultWidth = width + 'px'
+            },
 
-                return width;
+            containerWidth() {
+                return document.getElementById( 'department--container' ).clientWidth;
             },
 
             addToSelectedItem(item) {
                 this.selected.push(item);
-                this.hideSearchResults();
+                this.hideResults();
             },
 
             removeToSelectedItem(item) {
-                const index = this.selected.indexOf(item)
+                const index = this.selected.indexOf(item);
                 this.selected.splice(index, 1)
             }
 

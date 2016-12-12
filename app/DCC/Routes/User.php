@@ -16,7 +16,7 @@ Route::group(["prefix" => "user"], function() {
     ]);
 
    Route::delete("/{user}", [
-       "uses" => "UserController@destroy",
-       "as" => "user.destroy"
+       "uses" => "UserController@delete",
+       "as" => "user.delete"
    ]);
 });

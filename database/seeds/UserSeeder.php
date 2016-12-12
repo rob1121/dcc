@@ -33,9 +33,7 @@ class UserSeeder extends Seeder
             "department" => "ADMIN"
         ]);
 
-        $departments = [];
-
-        foreach(range(1,5) as $count) {
+        foreach(range(1,10) as $count) {
 
 
             $user = $factory->create([
@@ -46,12 +44,12 @@ class UserSeeder extends Seeder
                 "email" => $faker->safeEmail(),
             ]);
 
-            factory(App\Department::class, rand(1,3))->create([
-                "user_id" => $user->id,
-                "department" => $faker->randomElement(['QA','PE','CSD','PL3','RTO'])
-            ]);
+            foreach($faker->randomElements(['QA','PE','CSD','PL3','RTO','NRTO','HR','PL2','EE','MIS'], rand(1,3)) as $department) {
+                factory(App\Department::class)->create([
+                    "user_id" => $user->id,
+                    "department" => $department
+                ]);
+            }
         }
-
-        $user->department()->createMany($departments);
     }
 }
