@@ -12,9 +12,29 @@ class departmentController extends Controller
      */
     public function departments(Request $request)
     {
+        $departments = User::findQueryInDepartment($request->q);
+        $users       = User::findQuery($request->q);
         return response([
-            "departments" => User::findQueryInDepartment($request->q),
-            "users" => User::findQuery($request->q)
+            "departments" => $this->departmentTransformer( $departments ),
+            "users"       => $this->userTransformer( $users )
         ]);
+    }
+
+    public function userTransformer($user)
+    {
+        return collect($user)->transform(function($user) {
+            return [
+                'name' => $user->name,
+                'email' => $user->email,
+                'department' => $user->department->pluck('department')
+            ];
+        });
+    }
+
+    public function departmentTransformer($departments)
+    {
+        return collect($departments)->transform(function($department) {
+                return $this->userTransformer($department);
+        });
     }
 }

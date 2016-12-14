@@ -1,5 +1,14 @@
 #department--container
 
+  .add-btn
+    position: absolute
+    top: 50%
+    bottom: 0
+    right: 3px
+    transform: translateY(-50%)
+    color: #1b6d85
+    cursor: pointer
+
   .search-result
     position: absolute
     z-index: 2
@@ -11,23 +20,23 @@
     border-bottom-right-radius: 2px
     padding: 0
 
-  .department--item,
-  .selected--department--item
-      padding: 1px 5px
-      margin: 0
-      list-style: none
-      transition: .1s ease-in-out
-
-  .department--item,
-  .fa-remove
-    cursor: pointer
-
-  .department--item:hover
-    background: #3097D1
-    color: #f5f8fa
-
     i.fa.fa-plus
-      display: block
+      display: none
 
-  i.fa.fa-plus
-    display: none
+    .department--item,
+    .selected--department--item
+        padding: 1px 5px
+        margin: 0
+        list-style: none
+        transition: .1s ease-in-out
+
+    .department--item,
+    .fa-remove
+      cursor: pointer
+
+    .department--item:hover
+      background: #3097D1
+      color: #f5f8fa
+
+      i.fa.fa-plus
+        display: block

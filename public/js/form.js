@@ -48437,23 +48437,36 @@ exports.default = {
             resultWidth: 0,
             query: null,
             text: null,
-            results: {
-                departments: {},
-                users: {}
-            },
-            selected: []
+            departments: {},
+            users: {},
+            selected: [],
+            showAddButton: false
         };
     },
     mounted: function mounted() {
-        this.$on('input_query', _.debounce(function (msg) {
-            this.searchQuery(msg);
-        }, 1000));
+        var _this = this;
+
+        this.$on('input_query', _.debounce(function () {
+            return _this.getResults();
+        }, 500));
     },
 
 
     computed: {
         hasResultOrQueryStatus: function hasResultOrQueryStatus() {
-            return !_.isEmpty(this.text) || !_.isEmpty(this.results.departments) || !_.isEmpty(this.results.users);
+            return this.hasQueryText || this.hasUsers || this.hasDepartment;
+        },
+        hasQuery: function hasQuery() {
+            return !_.isEmpty(this.query);
+        },
+        hasQueryText: function hasQueryText() {
+            return !_.isEmpty(this.text);
+        },
+        hasUsers: function hasUsers() {
+            return !_.isEmpty(this.users);
+        },
+        hasDepartment: function hasDepartment() {
+            return !_.isEmpty(this.departments);
         }
     },
 
@@ -48465,36 +48478,56 @@ exports.default = {
             self.$emit('input_query', self.query);
             self.resetResults();
             self.queryStatus('typing');
+            this.setShowAddButton(false);
         }
     },
 
-    props: ['options'],
-
     methods: {
-        searchQuery: function searchQuery() {
+        checkToShowAddButton: function checkToShowAddButton() {
+            var self = this;
+            var check_result = self.hasQuery && (!self.hasUsers || !self.hasDepartment);
+            self.setShowAddButton(check_result);
+        },
+        setShowAddButton: function setShowAddButton(bool) {
+            this.showAddButton = bool;
+        },
+        getResults: function getResults() {
             if (this.isQueryValid()) {
                 this.queryStatus('searching');
                 this.fetchQuery();
             } else {
-                this.hideResults();
+                this.hideResultsContainer();
+                this.checkToShowAddButton();
             }
         },
         fetchQuery: function fetchQuery() {
-            var self = this;
+            var _this2 = this;
 
-            self.$http.get(laroute.route('department.list'), { params: {
-                    q: this.query
-                } }).then(function (response) {
-                self.setResults(response.data);
-                self.queryStatus('success');
+            var departmentList = laroute.route('department.list');
+            var params = { q: this.query };
+
+            this.$http.get(departmentList, { params: params }).then(function (response) {
+                _this2.setResult(response);_this2.checkToShowAddButton();
             }, function (error) {
                 return console.log(error);
             });
+        },
+        setResult: function setResult(response) {
+            var result = JSON.parse(response.data);
+
+            this.setUsers(result.users);
+            this.setDepartments(result.departments);
+            this.queryStatus('success');
         },
         queryStatus: function queryStatus() {
             var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             this.text = this.isSuccess(status) || _.isEmpty(status) ? null : status + '...';
+        },
+        setQuery: function setQuery() {
+            var q = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            this.query = q;
         },
         isQueryValid: function isQueryValid() {
             return !_.isEmpty(this.query);
@@ -48502,16 +48535,21 @@ exports.default = {
         isSuccess: function isSuccess(status) {
             return status === 'success';
         },
-        hideResults: function hideResults() {
+        hideResultsContainer: function hideResultsContainer() {
+            this.setQuery(null);
             this.queryStatus(null);
             this.resetResults();
+            this.setShowAddButton(false);
         },
-        setResults: function setResults(results) {
-            this.results = JSON.parse(results);
+        setUsers: function setUsers(users) {
+            this.users = users;
+        },
+        setDepartments: function setDepartments(departments) {
+            this.departments = departments;
         },
         resetResults: function resetResults() {
-            this.setResults.departments = {};
-            this.setResults.users = {};
+            this.setDepartments(null);
+            this.setUsers(null);
         },
         setResultWidth: function setResultWidth(width) {
             this.resultWidth = width + 'px';
@@ -48520,17 +48558,51 @@ exports.default = {
             return document.getElementById('department--container').clientWidth;
         },
         addToSelectedItem: function addToSelectedItem(item) {
-            this.selected.push(item);
-            this.hideResults();
+            this.isCollection(item) ? this.insertManyToSelectedItem(item) : this.insertToSelectedItem(item);
+
+            this.hideResultsContainer();
+        },
+        isCollection: function isCollection(items) {
+            return _.isArray(items);
+        },
+        insertManyToSelectedItem: function insertManyToSelectedItem(users) {
+            var _this3 = this;
+
+            _.map(users, function (user) {
+                _this3.insertToSelectedItem(user);
+            });
+        },
+        insertNewEmail: function insertNewEmail(email) {
+            var status = this.insertToSelectedItem(email);
+            if (status) this.hideResultsContainer();
+        },
+        insertToSelectedItem: function insertToSelectedItem(email) {
+            //            && this.validateEmail(email)
+
+            email.department.join('|');
+            console.log(email.department.join('|'));
+
+            if (this.isNotExist(email)) {
+                this.selected.push(email.email);
+                return true;
+            }
+        },
+        isNotExist: function isNotExist() {
+            return _.indexOf(this.selected, email) < 0;
         },
         removeToSelectedItem: function removeToSelectedItem(item) {
             var index = this.selected.indexOf(item);
             this.selected.splice(index, 1);
+        },
+        validateEmail: function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            console.log(re.test(email) ? '' : "invalid email");
+            return re.test(email);
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n    {{results[0]}}\n    <input type=\"text\" class=\"form-control\" v-model=\"query\">\n    <div :style=\"'width:'+resultWidth\" class=\"search-result\" v-if=\"hasResultOrQueryStatus\">\n        <em><small v-text=\"text\"></small></em>\n\n        <li class=\"department--item\" v-for=\"(departmentEmployee, department) in results.departments\" @click=\"addToSelectedItem(results.departments[department])\">\n            <h6>{{department}} <i class=\"pull-right fa fa-plus\"></i></h6>\n        </li>\n\n        <li class=\"department--item\" v-for=\"user in results.users\" @click=\"addToSelectedItem(user)\">\n            <h6>{{user.name}} <em>({{user.email}})</em> <i class=\"pull-right fa fa-plus\"></i></h6>\n        </li>\n    </div>\n\n    <!--<li class=\"selected&#45;&#45;department&#45;&#45;item\" v-for=\"item in selected\">-->\n        <!--<em>{{item.department}} <i class='pull-right fa fa-remove'  @click=\"removeToSelectedItem(item)\"></i></em>-->\n    <!--</li>-->\n\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n    <div style=\"position:relative\">\n        <input type=\"text\" class=\"form-control\" v-model=\"query\">\n        <i class=\"add-btn fa fa-plus\" v-if=\"showAddButton\" @click=\"insertNewEmail(query)\"></i>\n    </div>\n\n    <div :style=\"'width:'+resultWidth\" class=\"search-result\" v-if=\"hasResultOrQueryStatus\">\n        <em><small v-text=\"text\"></small></em>\n        <p v-if=\"hasDepartment\"><strong>Departments List:</strong></p>\n        <li class=\"department--item\" v-for=\"(departmentEmployee, department) in departments\" @click=\"addToSelectedItem(departmentEmployee)\">\n            <h6>{{department}} <i class=\"pull-right fa fa-plus\"></i></h6>\n        </li>\n\n        <p v-if=\"hasUsers\"><strong>Users List:</strong></p>\n        <li class=\"department--item\" v-for=\"user in users\" @click=\"addToSelectedItem(user.email)\">\n            <h6>{{user.name}}<i class=\"pull-right fa fa-plus\"></i></h6>\n        </li>\n    </div>\n\n    <li class=\"selected--department--item\" v-for=\"item in selected\">\n        <em>{{item}} <i class=\"pull-right fa fa-remove\" @click=\"removeToSelectedItem(item)\"></i></em>\n    </li>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

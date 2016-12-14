@@ -1,5 +1,11 @@
 @extends('layouts.app')
-
+@push('style')
+<style>
+    body {
+        overflow-y: scroll;
+    }
+</style>
+@endpush
 @push('script')
 <script src="{{URL::to("js/form.js")}}"></script>
 <script>
@@ -68,7 +74,7 @@
                     <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
                         <label for="department" class="col-xs-4 control-label">Department</label>
                         <div class="col-xs-6">
-                            <departments :options="{{App\Department::listDepartments()}}"/>
+                            <departments/>
                             {{--<select name="department[]" id="department" class="form-control chosen-select" multiple>--}}
                                 {{--<option></option>--}}
                                 {{--@foreach(App\Department::list() as $department)--}}

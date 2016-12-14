@@ -4,6 +4,7 @@ use App\CompanySpec;
 use App\CompanySpecCategory;
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
+use App\User;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -27,10 +28,37 @@ class ApiController extends Controller
 
     public function userSearch()
     {
-        $users = \App\User::all();
+        $users = $this->userTransformer( User::get() );
 
         return response()->json($users)
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET');
+    }
+
+    public function userTransformer($user)
+    {
+        if ($user instanceof User) {
+            return [
+                "id" => $user->id,
+                "name" => $user->name,
+                "user_type" => $user->user_type,
+                "employee_id" => $user->employee_id,
+                "email" => $user->email,
+                "edit_route" => $user->edit_route,
+                "delete_route" => $user->delete_route,
+            ];
+        }
+
+        return $user->map(function($user) {
+            return [
+                "id" => $user->id,
+                "name" => $user->name,
+                "user_type" => $user->user_type,
+                "employee_id" => $user->employee_id,
+                "email" => $user->email,
+                "edit_route" => $user->edit_route,
+                "delete_route" => $user->delete_route,
+            ];
+        });
     }
 }
