@@ -1,8 +1,12 @@
 <template>
-    <div id="department--container">
-        <div style="position:relative">
+    <div id="department--container" @focusout="demo()">
+
+        <div style="position:relative" :class="{'has-error': invalidEmail}">
+            <i class="add-btn fa fa-plus"
+               v-if="showAddButton"
+               @click="insertNewEmail(query)">
+            </i>
             <input type="text" class="form-control" v-model="query">
-            <i class="add-btn fa fa-plus" v-if="showAddButton" @click="insertNewEmail(query)"></i>
         </div>
 
         <div :style="'width:'+resultWidth"
@@ -10,14 +14,17 @@
              v-if="hasResultOrQueryStatus"
         >
             <em><small v-text="text"></small></em>
+
             <p v-if="hasDepartment"><strong>Departments List:</strong></p>
+
             <li class="department--item"
                 v-for="(departmentEmployee, department) in departments"
                 @click="addToSelectedItem(departmentEmployee)">
-                <h6>{{department}} <i class='pull-right fa fa-plus'></i></h6>
+                <h6><i class='pull-right fa fa-plus'></i> {{department}}</h6>
             </li>
 
             <p v-if="hasUsers"><strong>Users List:</strong></p>
+
             <li class="department--item"
                 v-for="user in users"
                 @click="addToSelectedItem(user.email)">
@@ -25,8 +32,9 @@
             </li>
         </div>
 
-        <li class="selected--department--item" v-for="item in selected">
-            <em>{{item}} <i class='pull-right fa fa-remove'  @click="removeToSelectedItem(item)"></i></em>
+        <li class="selected--department--item h6" v-for="user in selected">
+                <i class='text-right fa fa-remove'  @click="removeToSelectedItem(item)"></i>
+                <em>{{user.email}}({{user.department}})</em>
         </li>
     </div>
 </template>
@@ -42,12 +50,14 @@
                 departments: {},
                 users: {},
                 selected: [],
-                showAddButton: false
+                showAddButton: false,
+                invalidEmail: false
+
             }
         },
 
         mounted() {
-            this.$on('input_query', _.debounce(() => this.getResults() ,500));
+            this.$on('input_query', _.debounce( () => this.getResults() ,500) );
         },
 
         computed: {
@@ -88,9 +98,8 @@
 
         methods: {
             checkToShowAddButton() {
-                const self = this;
-                const check_result = self.hasQuery && (! self.hasUsers || ! self.hasDepartment);
-                self.setShowAddButton( check_result );
+                const hasResult = this.hasQuery && (! this.hasUsers && ! this.hasDepartment);
+                this.setShowAddButton( hasResult );
             },
 
             setShowAddButton(bool) {
@@ -114,12 +123,14 @@
 
                 this.$http
                     .get( departmentList , { params } )
-                    .then( response => {this.setResult(response);this.checkToShowAddButton();
-                    }, error    => console.log(error) );
+                    .then( response => {
+                        this.setResult( response.data );
+                        this.checkToShowAddButton();
+                    }, error => console.log(error) );
             },
 
             setResult(response) {
-                const result = JSON.parse(response.data);
+                const result = JSON.parse( response );
 
                 this.setUsers( result.users );
                 this.setDepartments( result.departments );
@@ -131,8 +142,8 @@
                         ? null : `${status}...`
             },
 
-            setQuery(q=null) {
-                this.query = q;
+            setQuery(inputQuery=null) {
+                this.query = inputQuery;
             },
 
             isQueryValid() {
@@ -172,10 +183,10 @@
                                .clientWidth;
             },
 
-            addToSelectedItem(item) {
-                this.isCollection(item)
-                    ? this.insertManyToSelectedItem(item)
-                    : this.insertToSelectedItem(item);
+            addToSelectedItem(users) {
+                this.isCollection(users)
+                    ? this.insertManyToSelectedItem(users)
+                    : this.insertToSelectedItem(users);
 
                 this.hideResultsContainer();
             },
@@ -185,30 +196,42 @@
             },
 
             insertManyToSelectedItem(users) {
-                _.map(users, user => {
-                    this.insertToSelectedItem(user)
-                });
+                _.map(users, user => this.insertToSelectedItem(user));
             },
 
             insertNewEmail(email) {
-                const status = this.insertToSelectedItem(email);
+                const status = this.insertToSelectedItem({ email });
                 if(status) this.hideResultsContainer();
             },
 
-            insertToSelectedItem(email) {
-//            && this.validateEmail(email)
-
-                email.department.join('|');
-                console.log(email.department.join('|'));
-                
-                if( this.isNotExist(email)) {
-                    this.selected.push(email.email);
+            insertToSelectedItem(user) {
+                if( this.isNotExist(user) && this.validateEmail(user.email) ) {
+                    this.selected.push( this.sanitizeUser(user) );
                     return true;
                 }
             },
 
-            isNotExist() {
-                return _.indexOf(this.selected, email) < 0;
+            sanitizeUser(user) {
+            const departments = this.sanitizeDepartment(user.department);
+                return {
+                    email: user.email,
+                    department: departments
+                }
+            },
+
+            sanitizeDepartment(departments) {
+                if(_.isArray(departments)) return departments.length > 1 ? departments.split('|') : departments[0];
+                if(_.isEmpty(departments)) return "new";
+
+                return departments;
+            },
+
+            isNotExist(user) {
+                return this.findIndexOnSelectedItem( user ) < 0;
+            },
+
+            findIndexOnSelectedItem( user ) {
+                 return _.findIndex(this.selected, user);
             },
 
             removeToSelectedItem(item) {
@@ -217,9 +240,14 @@
             },
 
             validateEmail(email) {
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                console.log(re.test(email) ? '': "invalid email");
-                return re.test(email);
+                const rule = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                this.invalidEmail = ! rule.test(email);
+
+                return ! this.invalidEmail;
+            },
+
+            demo() {
+                alert('hi');
             }
         }
     }

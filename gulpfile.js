@@ -19,10 +19,10 @@ elixir(mix => {
     // mix.copy("node_modules/font-awesome/fonts", "public/fonts");
 
         mix.browserify('form.js')
-        // mix.webpack('internal-index.js');
-        // mix.webpack('external-index.js');
-        // mix.webpack('iso-index.js');
-        // mix.webpack('user-index.js');
+            // mix.webpack('internal-index.js');
+            // mix.webpack('external-index.js');
+            // mix.webpack('iso-index.js');
+            // mix.webpack('user-index.js');
 
-        .sass('app.scss').browserSync({ proxy: "dcc.dev.me" });
+            .sass('app.scss').browserSync({ proxy: "dcc.dev" });
 });

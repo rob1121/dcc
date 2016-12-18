@@ -23,8 +23,7 @@
     i.fa.fa-plus
       display: none
 
-    .department--item,
-    .selected--department--item
+    .department--item
         padding: 1px 5px
         margin: 0
         list-style: none
@@ -40,3 +39,25 @@
 
       i.fa.fa-plus
         display: block
+
+
+  .selected--department--item
+    padding: 1px 5px
+    margin: 0
+    list-style: none
+    white-space: nowrap
+    transition: .1s ease-in-out
+
+    .fa-remove
+      color: darkred
+      cursor: pointer
+      &:hover
+        transform: scale(1.1)
+
+  .has-error
+    .form-control
+      border-color: #a94442
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.0)
+
+    i.fa.fa-plus.add-btn
+      color: #a94442 !important
