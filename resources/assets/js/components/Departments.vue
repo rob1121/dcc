@@ -1,12 +1,13 @@
 <template>
-    <div id="department--container" @focusout="demo()">
-
+    <div id="department--container">
+        <div id="fade" @click="reset" v-if="hasResultOrQueryStatus"></div>
         <div style="position:relative" :class="{'has-error': invalidEmail}">
             <i class="add-btn fa fa-plus"
                v-if="showAddButton"
                @click="insertNewEmail(query)">
             </i>
             <input type="text" class="form-control" v-model="query">
+            <span class="help-block">Invalid input email</span>
         </div>
 
         <div :style="'width:'+resultWidth"
@@ -33,7 +34,7 @@
         </div>
 
         <li class="selected--department--item h6" v-for="user in selected">
-                <i class='text-right fa fa-remove'  @click="removeToSelectedItem(item)"></i>
+                <i class='text-right fa fa-remove'  @click="removeToSelectedItem(user)"></i>
                 <em>{{user.email}}({{user.department}})</em>
         </li>
     </div>
@@ -130,7 +131,9 @@
             },
 
             setResult(response) {
-                const result = JSON.parse( response );
+                const result = JSON.parse(
+                        JSON.stringify(response)
+                );
 
                 this.setUsers( result.users );
                 this.setDepartments( result.departments );
@@ -140,6 +143,15 @@
             queryStatus(status=null) {
                 this.text = this.isSuccess(status) || _.isEmpty(status)
                         ? null : `${status}...`
+            },
+
+            reset() {
+                this.setResult({
+                    users: {},
+                    departments: {}
+                });
+
+                this.setQuery(null);
             },
 
             setQuery(inputQuery=null) {
@@ -220,10 +232,19 @@
             },
 
             sanitizeDepartment(departments) {
-                if(_.isArray(departments)) return departments.length > 1 ? departments.split('|') : departments[0];
+                if(this.isCollectionOfEmployeeIn( departments )){
+                    return departments.length > 1
+                            ? departments.split('|')
+                            : departments[0];
+                }
+
                 if(_.isEmpty(departments)) return "new";
 
                 return departments;
+            },
+
+            isCollectionOfEmployeeIn( departments ) {
+                return _.isArray(departments);
             },
 
             isNotExist(user) {
@@ -244,10 +265,6 @@
                 this.invalidEmail = ! rule.test(email);
 
                 return ! this.invalidEmail;
-            },
-
-            demo() {
-                alert('hi');
             }
         }
     }
