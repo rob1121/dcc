@@ -8493,6 +8493,7 @@ body {
 
 #department--container .add-btn {
   position: absolute;
+  z-index: 2;
   top: 50%;
   bottom: 0;
   right: 3px;
@@ -8513,6 +8514,7 @@ body {
   padding: 0; }
   #department--container .search-result i.fa.fa-plus {
     display: none; }
+  #department--container .search-result .search--not--found,
   #department--container .search-result .department--item {
     padding: 1px 5px;
     margin: 0;
@@ -8551,12 +8553,15 @@ body {
 
 #department--container .has-error .help-block,
 #department--container .has-error i.fa.fa-plus.add-btn {
+  z-index: 2;
   color: #a94442; }
+
+#department--container .form-control {
+  position: relative;
+  z-index: 1; }
 
 #department--container #fade {
   position: fixed;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 0;
   top: 0;
   bottom: 0;
   left: 0;

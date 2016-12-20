@@ -2,6 +2,7 @@
 
   .add-btn
     position: absolute
+    z-index: 2
     top: 50%
     bottom: 0
     right: 3px
@@ -22,7 +23,7 @@
 
     i.fa.fa-plus
       display: none
-
+    .search--not--found,
     .department--item
         padding: 1px 5px
         margin: 0
@@ -64,12 +65,15 @@
 
     .help-block,
     i.fa.fa-plus.add-btn
+      z-index: 2
       color: #a94442
+
+  .form-control
+    position: relative
+    z-index: 1
 
   #fade
     position: fixed
-    background: rgba(0,0,0,0.9)
-    z-index: 0
     top: 0
     bottom: 0
     left: 0

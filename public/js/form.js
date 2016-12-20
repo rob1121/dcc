@@ -1,6 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":3}],2:[function(require,module,exports){
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -2379,16 +2377,7 @@ if (typeof jQuery === 'undefined') {
 
 }(jQuery);
 
-},{}],3:[function(require,module,exports){
-var core  = require('../../modules/_core')
-  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
-module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-},{"../../modules/_core":4}],4:[function(require,module,exports){
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-},{}],5:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 /*eslint-disable no-unused-vars*/
 /*!
  * jQuery JavaScript Library v3.1.0
@@ -12464,7 +12453,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],6:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -29201,7 +29190,7 @@ return jQuery;
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 //! moment.js
 //! version : 2.15.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -33436,7 +33425,7 @@ return jQuery;
     return _moment;
 
 }));
-},{}],8:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -33618,7 +33607,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],9:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -33919,7 +33908,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],10:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*!
  * vue-resource v0.9.3
  * https://github.com/vuejs/vue-resource
@@ -35232,7 +35221,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],11:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -40758,7 +40747,7 @@ setTimeout(function () {
 module.exports = Vue$2;
 
 }).call(this,require('_process'))
-},{"_process":8}],12:[function(require,module,exports){
+},{"_process":5}],9:[function(require,module,exports){
 /*!
  * Vue.js v2.0.1
  * (c) 2014-2016 Evan You
@@ -48162,7 +48151,7 @@ return Vue$3;
 
 })));
 
-},{}],13:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -48182,7 +48171,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],14:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 require('./bootstrap');
@@ -48193,7 +48182,7 @@ Vue.component('dcc-button', require('./components/Button.vue'));
 Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 Vue.component('dcc-modal', require('./components/Modal.vue'));
 
-},{"./bootstrap":15,"./components/Button.vue":16,"./components/Datepicker.vue":17,"./components/Input.vue":19,"./components/Modal.vue":20,"./components/Textarea.vue":21}],15:[function(require,module,exports){
+},{"./bootstrap":12,"./components/Button.vue":13,"./components/Datepicker.vue":14,"./components/Input.vue":18,"./components/Modal.vue":19,"./components/Textarea.vue":20}],12:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -48244,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":23,"bootstrap-sass":2,"jquery":5,"lodash":6,"moment":7,"vue-resource":10,"vue/dist/vue.js":12}],16:[function(require,module,exports){
+},{"./laroute":22,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48269,7 +48258,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-ab5c7140", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":9}],17:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],14:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.datetime-picker[_v-a8b5e42c] {\n    position: relative;\n    display: inline-block;\n    font-family: \"Segoe UI\",\"Lucida Grande\",Helvetica,Arial,\"Microsoft YaHei\";\n    -webkit-font-smoothing: antialiased;\n    color: #333;\n}\n\n.datetime-picker *[_v-a8b5e42c] {\n    box-sizing: border-box;\n}\n\n.datetime-picker input[_v-a8b5e42c] {\n    width: 100%;\n    padding: 5px 10px;\n    height: 30px;\n    outline: 0 none;\n    border: 1px solid #ccc;\n    font-size: 13px;\n}\n\n.datetime-picker .picker-wrap[_v-a8b5e42c] {\n    position: absolute;\n    z-index: 1000;\n    width: 238px;\n    height: 280px;\n    margin-top: 2px;\n    background-color: #fff;\n    box-shadow: 0 0 6px #ccc;\n}\n\n.datetime-picker table[_v-a8b5e42c] {\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n    text-align: center;\n    font-size: 13px;\n}\n\n.datetime-picker tr[_v-a8b5e42c] {\n    height: 34px;\n    border: 0 none;\n}\n\n.datetime-picker th[_v-a8b5e42c], .datetime-picker td[_v-a8b5e42c] {\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    width: 34px;\n    height: 34px;\n    padding: 0;\n    border: 0 none;\n    line-height: 34px;\n    text-align: center;\n}\n\n.datetime-picker td[_v-a8b5e42c] {\n    cursor: pointer;\n}\n\n.datetime-picker td[_v-a8b5e42c]:hover {\n    background-color: #f0f0f0;\n}\n\n.datetime-picker td.date-pass[_v-a8b5e42c], .datetime-picker td.date-future[_v-a8b5e42c] {\n    color: #aaa;\n}\n\n.datetime-picker td.date-active[_v-a8b5e42c] {\n    background-color: #ececec;\n    color: #3bb4f2;\n}\n\n.datetime-picker .date-head[_v-a8b5e42c] {\n    background-color: #3bb4f2;\n    text-align: center;\n    color: #fff;\n    font-size: 14px;\n}\n\n.datetime-picker .date-days[_v-a8b5e42c] {\n    color: #3bb4f2;\n    font-size: 14px;\n}\n\n.datetime-picker .show-year[_v-a8b5e42c] {\n    display: inline-block;\n    min-width: 62px;\n    vertical-align: middle;\n}\n\n.datetime-picker .show-month[_v-a8b5e42c] {\n    display: inline-block;\n    min-width: 28px;\n    vertical-align: middle;\n}\n\n.datetime-picker .btn-prev[_v-a8b5e42c],\n.datetime-picker .btn-next[_v-a8b5e42c] {\n    cursor: pointer;\n    display: inline-block;\n    padding: 0 10px;\n    vertical-align: middle;\n}\n\n.datetime-picker .btn-prev[_v-a8b5e42c]:hover,\n.datetime-picker .btn-next[_v-a8b5e42c]:hover {\n    background: rgba(16, 160, 234, 0.5);\n}\n")
 "use strict";
@@ -48436,16 +48425,18 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-a8b5e42c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":9,"vueify/lib/insert-css":13}],18:[function(require,module,exports){
-'use strict';
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],15:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
+var _departmentMixins = require("./departmentMixins");
 
-var _stringify2 = _interopRequireDefault(_stringify);
+var _departmentMixins2 = _interopRequireDefault(_departmentMixins);
+
+var _QueryMethods = require("./QueryMethods");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48453,169 +48444,275 @@ exports.default = {
     data: function data() {
         return {
             resultWidth: 0,
-            query: null,
-            text: null,
-            departments: {},
-            users: {},
+            query: "",
             selected: [],
-            showAddButton: false,
-            invalidEmail: false
-
+            showListBox: false,
+            showAddButton: false
         };
     },
     mounted: function mounted() {
-        var _this = this;
-
-        this.$on('input_query', _.debounce(function () {
-            return _this.getResults();
-        }, 500));
+        this.setDepartments(JSON.parse(this.departmentsList));
     },
 
 
+    props: {
+        name: { default: "" },
+        departmentsList: { default: [] }
+    },
+
+    mixins: [_departmentMixins2.default],
+
     computed: {
-        hasResultOrQueryStatus: function hasResultOrQueryStatus() {
+        hasFoundQueryInDepartmentsList: function hasFoundQueryInDepartmentsList() {
+            return !_.isEmpty(this.foundQueryInDepartmentsList);
+        },
+        foundQueryInDepartmentsList: function foundQueryInDepartmentsList() {
+            var self = this;
+
+            return _.orderBy(_.filter(self.departments, function (d) {
+                return d.includes(self.query);
+            }), null, 'asc');
+        },
+        showSearchResultBox: function showSearchResultBox() {
             return this.hasQueryText || this.hasUsers || this.hasDepartment;
         },
-        hasQuery: function hasQuery() {
-            return !_.isEmpty(this.query);
-        },
-        hasQueryText: function hasQueryText() {
-            return !_.isEmpty(this.text);
-        },
-        hasUsers: function hasUsers() {
-            return !_.isEmpty(this.users);
-        },
-        hasDepartment: function hasDepartment() {
-            return !_.isEmpty(this.departments);
-        }
+
+        hasQuery: _QueryMethods.hasQuery,
+        hasQueryText: _QueryMethods.hasQueryText
     },
 
     watch: {
         query: function query() {
             var self = this;
-
-            self.setResultWidth(self.containerWidth());
-            self.$emit('input_query', self.query);
-            self.resetResults();
-            self.queryStatus('typing');
-            this.setShowAddButton(false);
+            self.getResults();
+            self.setShowListBox(false);
+            self.displayAddButton();
         }
     },
 
     methods: {
-        checkToShowAddButton: function checkToShowAddButton() {
-            var hasResult = this.hasQuery && !this.hasUsers && !this.hasDepartment;
-            this.setShowAddButton(hasResult);
+        isSuccess: _QueryMethods.isSuccess,
+        setQuery: _QueryMethods.setQuery,
+        isQueryValid: _QueryMethods.isQueryValid,
+
+        displayAddButton: function displayAddButton() {
+            var displayAddButton = !this.hasFoundQueryInDepartmentsList && this.hasQuery;
+            this.setShowAddButton(displayAddButton);
         },
         setShowAddButton: function setShowAddButton(bool) {
             this.showAddButton = bool;
         },
         getResults: function getResults() {
-            if (this.isQueryValid()) {
-                this.queryStatus('searching');
-                this.fetchQuery();
-            } else {
-                this.hideResultsContainer();
-                this.checkToShowAddButton();
-            }
+            this.setResultWidth(this.containerWidth());
         },
-        fetchQuery: function fetchQuery() {
-            var _this2 = this;
+        displayListBox: function displayListBox() {
+            this.setShowListBox(true);
+            this.getResults();
+        },
 
-            var departmentList = laroute.route('department.list');
-            var params = { q: this.query };
 
-            this.$http.get(departmentList, { params: params }).then(function (response) {
-                _this2.setResult(response.data);
-                _this2.checkToShowAddButton();
-            }, function (error) {
-                return console.log(error);
-            });
-        },
-        setResult: function setResult(response) {
-            var result = JSON.parse((0, _stringify2.default)(response));
-
-            this.setUsers(result.users);
-            this.setDepartments(result.departments);
-            this.queryStatus('success');
-        },
-        queryStatus: function queryStatus() {
-            var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-            this.text = this.isSuccess(status) || _.isEmpty(status) ? null : status + '...';
-        },
-        reset: function reset() {
-            this.setResult({
-                users: {},
-                departments: {}
-            });
-
-            this.setQuery(null);
-        },
-        setQuery: function setQuery() {
-            var inputQuery = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-            this.query = inputQuery;
-        },
-        isQueryValid: function isQueryValid() {
-            return !_.isEmpty(this.query);
-        },
-        isSuccess: function isSuccess(status) {
-            return status === 'success';
-        },
+        /**
+         * hide search result container
+         */
         hideResultsContainer: function hideResultsContainer() {
-            this.setQuery(null);
-            this.queryStatus(null);
-            this.resetResults();
+            this.setQuery("");
             this.setShowAddButton(false);
+            this.setShowListBox(false);
         },
-        setUsers: function setUsers(users) {
-            this.users = users;
-        },
-        setDepartments: function setDepartments(departments) {
-            this.departments = departments;
-        },
-        resetResults: function resetResults() {
-            this.setDepartments(null);
-            this.setUsers(null);
-        },
+
+
+        /**
+         * adjust search result container width
+         * @param width
+         */
         setResultWidth: function setResultWidth(width) {
             this.resultWidth = width + 'px';
         },
+
+
+        /**
+         * get search result container width
+         * @returns {number}
+         */
         containerWidth: function containerWidth() {
             return document.getElementById('department--container').clientWidth;
         },
-        addToSelectedItem: function addToSelectedItem(users) {
-            this.isCollection(users) ? this.insertManyToSelectedItem(users) : this.insertToSelectedItem(users);
 
-            this.hideResultsContainer();
-        },
-        isCollection: function isCollection(items) {
-            return _.isArray(items);
-        },
-        insertManyToSelectedItem: function insertManyToSelectedItem(users) {
-            var _this3 = this;
 
-            _.map(users, function (user) {
-                return _this3.insertToSelectedItem(user);
-            });
-        },
-        insertNewEmail: function insertNewEmail(email) {
-            var status = this.insertToSelectedItem({ email: email });
-            if (status) this.hideResultsContainer();
-        },
-        insertToSelectedItem: function insertToSelectedItem(user) {
-            if (this.isNotExist(user) && this.validateEmail(user.email)) {
-                this.selected.push(this.sanitizeUser(user));
-                return true;
+        /**
+         * insert item to selected data
+         * @param department
+         * @returns {boolean}
+         */
+        insertToSelectedItem: function insertToSelectedItem(department) {
+
+            if (this.isNotExist(department)) {
+                this.removeToDepartments(department);
+                this.selected.push(department);
             }
+
+            this.setQuery("");
+            this.setShowListBox(false);
         },
-        sanitizeUser: function sanitizeUser(user) {
-            var departments = this.sanitizeDepartment(user.department);
-            return {
-                email: user.email,
-                department: departments
-            };
+        setShowListBox: function setShowListBox(bool) {
+            this.showListBox = bool;
+        },
+
+
+        /**
+         * validate department is unique
+         * @param department
+         * @returns {boolean}
+         */
+        isNotExist: function isNotExist(department) {
+            return _.indexOf(this.selected, department) < 0;
+        },
+
+
+        /**
+         * remove user from selected data
+         * @param department
+         */
+        removeToSelectedItem: function removeToSelectedItem(department) {
+            var selectedIndex = this.selected.indexOf(department);
+            this.selected.splice(selectedIndex, 1);
+
+            var departmentIndex = this.departmentsList.indexOf(department);
+            if (departmentIndex > -1) this.departments.push(department);
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n    <!--multi value holder holder-->\n    <!--<input v-for=\"email in emails\" :name=\"name+'[]'\" type=\"hidden\" :value=\"email\">-->\n\n    <!--query input field search container-->\n    <div style=\"position:relative\">\n        <i class=\"add-btn fa fa-plus\" @click=\"insertToSelectedItem(query)\" v-if=\"showAddButton\">\n        </i>\n\n        <input type=\"text\" class=\"form-control\" v-model=\"query\" @keyup.27=\"hideResultsContainer\" @focus=\"displayListBox\">\n    </div>\n\n    <!--search result container-->\n    <div :style=\"'width:'+resultWidth\" class=\"search-result\" v-if=\"showListBox\">\n\n        <!--department list-->\n        <li class=\"department--item\" v-for=\"department in foundQueryInDepartmentsList\" @click=\"insertToSelectedItem(department)\">\n            <h6><i class=\"pull-right fa fa-plus\"></i> {{department}}</h6>\n        </li>\n\n        <h6 class=\"search--not--found text-danger\" v-if=\"! hasFoundQueryInDepartmentsList\"><em>No department matched your input</em></h6>\n    </div>\n\n    <!--department list-->\n    <li class=\"selected--department--item h6\" v-for=\"department in selected\">\n        <i class=\"text-right fa fa-remove\" @click=\"removeToSelectedItem(department)\"></i>\n        <em>{{department}}</em>\n    </li>\n\n    <!--fade block-->\n    <div id=\"fade\" v-if=\"showListBox\" @click=\"hideResultsContainer\"></div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-ed3d4c8e", module.exports)
+  } else {
+    hotAPI.update("_v-ed3d4c8e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"./QueryMethods":16,"./departmentMixins":17,"vue":8,"vue-hot-reload-api":6}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * search query from database
+ * @success get result data
+ * @failed  console log the error
+ */
+
+var fetchQuery = function fetchQuery(q) {
+    var _this = this;
+
+    var departmentList = laroute.route('department.list');
+    var params = { q: q };
+
+    this.$http.get(departmentList, { params: params }).then(function (response) {
+        _this.setResult(response.data);
+        _this.checkToShowAddButton();
+    }, function (error) {
+        return console.log(error);
+    });
+};
+
+/**
+ * @set querying status
+ * @param status
+ */
+var queryStatus = function queryStatus() {
+    var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+    this.text = this.isSuccess(status) || _.isEmpty(status) ? null : status + '...';
+};
+
+/**
+ * check if fetchQuery() success
+ * @param status
+ * @returns {boolean}
+ */
+var isSuccess = function isSuccess(status) {
+    return status === 'success';
+};
+
+/**
+ * @set search query
+ * @param inputQuery
+ */
+var setQuery = function setQuery() {
+    var inputQuery = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+    console.log(inputQuery);
+
+    this.query = inputQuery;
+};
+
+/**
+ * validate input query
+ * @returns {boolean}
+ */
+var isQueryValid = function isQueryValid() {
+    return !_.isEmpty(this.query);
+};
+
+var hasQuery = function hasQuery() {
+    return !_.isEmpty(this.query);
+};
+
+var hasQueryText = function hasQueryText() {
+    return !_.isEmpty(this.text);
+};
+
+/**
+ * @true search query from database
+ * @else show add button
+ */
+var getResults = function getResults() {
+    if (this.isQueryValid()) {
+        this.queryStatus('searching');
+        this.fetchQuery(this.query);
+    } else {
+        this.hideResultsContainer();
+        this.checkToShowAddButton();
+    }
+};
+
+exports.setQuery = setQuery;
+exports.fetchQuery = fetchQuery;
+exports.queryStatus = queryStatus;
+exports.isSuccess = isSuccess;
+exports.isQueryValid = isQueryValid;
+exports.hasQuery = hasQuery;
+exports.hasQueryText = hasQueryText;
+exports.getResults = getResults;
+
+},{}],17:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            departments: []
+        };
+    },
+
+
+    computed: {
+        hasDepartment: function hasDepartment() {
+            return !_.isEmpty(this.departments);
+        }
+    },
+
+    methods: {
+        setDepartments: function setDepartments(departments) {
+            this.departments = departments;
         },
         sanitizeDepartment: function sanitizeDepartment(departments) {
             if (this.isCollectionOfEmployeeIn(departments)) {
@@ -48629,37 +48726,23 @@ exports.default = {
         isCollectionOfEmployeeIn: function isCollectionOfEmployeeIn(departments) {
             return _.isArray(departments);
         },
-        isNotExist: function isNotExist(user) {
-            return this.findIndexOnSelectedItem(user) < 0;
+        resetDepartments: function resetDepartments() {
+            this.departments = null;
         },
-        findIndexOnSelectedItem: function findIndexOnSelectedItem(user) {
-            return _.findIndex(this.selected, user);
-        },
-        removeToSelectedItem: function removeToSelectedItem(item) {
-            var index = this.selected.indexOf(item);
-            this.selected.splice(index, 1);
-        },
-        validateEmail: function validateEmail(email) {
-            var rule = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            this.invalidEmail = !rule.test(email);
 
-            return !this.invalidEmail;
+
+        /**
+         * remove user from selected data
+         * @param department
+         */
+        removeToDepartments: function removeToDepartments(department) {
+            var index = this.departments.indexOf(department);
+            if (index > -1) this.departments.splice(index, 1);
         }
     }
 };
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n    <div id=\"fade\" @click=\"reset\" v-if=\"hasResultOrQueryStatus\"></div>\n    <div style=\"position:relative\" :class=\"{'has-error': invalidEmail}\">\n        <i class=\"add-btn fa fa-plus\" v-if=\"showAddButton\" @click=\"insertNewEmail(query)\">\n        </i>\n        <input type=\"text\" class=\"form-control\" v-model=\"query\">\n        <span class=\"help-block\">Invalid input email</span>\n    </div>\n\n    <div :style=\"'width:'+resultWidth\" class=\"search-result\" v-if=\"hasResultOrQueryStatus\">\n        <em><small v-text=\"text\"></small></em>\n\n        <p v-if=\"hasDepartment\"><strong>Departments List:</strong></p>\n\n        <li class=\"department--item\" v-for=\"(departmentEmployee, department) in departments\" @click=\"addToSelectedItem(departmentEmployee)\">\n            <h6><i class=\"pull-right fa fa-plus\"></i> {{department}}</h6>\n        </li>\n\n        <p v-if=\"hasUsers\"><strong>Users List:</strong></p>\n\n        <li class=\"department--item\" v-for=\"user in users\" @click=\"addToSelectedItem(user.email)\">\n            <h6>{{user.name}}<i class=\"pull-right fa fa-plus\"></i></h6>\n        </li>\n    </div>\n\n    <li class=\"selected--department--item h6\" v-for=\"user in selected\">\n            <i class=\"text-right fa fa-remove\" @click=\"removeToSelectedItem(user)\"></i>\n            <em>{{user.email}}({{user.department}})</em>\n    </li>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-5f2518a3", module.exports)
-  } else {
-    hotAPI.update("_v-5f2518a3", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"babel-runtime/core-js/json/stringify":1,"vue":11,"vue-hot-reload-api":9}],19:[function(require,module,exports){
+
+},{}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48695,7 +48778,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2029140c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":9}],20:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],19:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.close {\n    font-size: 3em;\n}\n\n.modal {\n    overflow-y: auto;\n}\n\n.modal-scroll {\n    height: 80vh;\n    overflow-y: auto;\n}\n")
 "use strict";
@@ -48729,7 +48812,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3bbf8d6f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":9,"vueify/lib/insert-css":13}],21:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48763,12 +48846,12 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-279e7430", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":9}],22:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],21:[function(require,module,exports){
 'use strict';
 
-var _Departments = require('./components/Departments.vue');
+var _DepartmentList = require('./components/Departments/DepartmentList.vue');
 
-var _Departments2 = _interopRequireDefault(_Departments);
+var _DepartmentList2 = _interopRequireDefault(_DepartmentList);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48779,13 +48862,7 @@ var app = new Vue({
     el: "#app",
 
     components: {
-        Departments: _Departments2.default
-    },
-
-    methods: {
-        try123: _.debounce(function () {
-            return console.log('ss');
-        }, 1000)
+        Departments: _DepartmentList2.default
     }
 });
 
@@ -48793,7 +48870,7 @@ $(".modal-btn").click(function () {
     $("#form-submit").submit();
 });
 
-},{"./app":14,"./components/Departments.vue":18}],23:[function(require,module,exports){
+},{"./app":11,"./components/Departments/DepartmentList.vue":15}],22:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -48979,6 +49056,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}]},{},[22]);
+},{}]},{},[21]);
 
 //# sourceMappingURL=form.js.map

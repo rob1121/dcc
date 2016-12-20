@@ -74,13 +74,17 @@
                     <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
                         <label for="department" class="col-xs-4 control-label">Department</label>
                         <div class="col-xs-6">
-                            <departments/>
+
+                            <departments name="department" departments-list="{{App\Department::listDepartments()}}"/>
+
+                            {{--<departments name="department" showUser="true" show-department="true" />--}}
                             {{--<select name="department[]" id="department" class="form-control chosen-select" multiple>--}}
                                 {{--<option></option>--}}
                                 {{--@foreach(App\Department::list() as $department)--}}
                                     {{--<option value="{{$department}}">{{$department}}</option>--}}
                                 {{--@endforeach--}}
                             {{--</select>--}}
+
                             @if ($errors->has('department'))
                                 <span class="help-block">
                             <strong>{{ $errors->first('department') }}</strong>

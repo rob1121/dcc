@@ -1,5 +1,5 @@
 require('./app');
-import Departments from './components/Departments.vue';
+import Departments from './components/Departments/DepartmentList.vue';
 
 const app = new Vue({
     el: "#app",
@@ -7,10 +7,6 @@ const app = new Vue({
     components: {
         Departments
     },
-
-    methods: {
-        try123:_.debounce(() =>console.log('ss'), 1000)
-    }
 });
 
 $(".modal-btn").click(function() {

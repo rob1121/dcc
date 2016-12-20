@@ -73,7 +73,7 @@ class RegisterController extends Controller
             'password'    => bcrypt($data['password']),
         ]);
 
-        $user->department->create([
+        $user->department()->create([
             'department'  => $data['department']
         ]);
     }
