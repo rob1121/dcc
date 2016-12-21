@@ -34,4 +34,9 @@ trait UserPresenter
     {
         return route('user.delete', ['user' => $this->id]);
     }
+
+    public function getDepartmentsAttribute()
+    {
+        return $this->department->pluck('department');
+    }
 }

@@ -40,9 +40,14 @@ class UserController extends Controller
         else array_pull($user_details, 'password');
 
         $user->update( $user_details );
-        $user->department->update([
-            "department" => $user_details['department']
-        ]);
+
+        $new_departments = collect($request->departments)->map(function($department) {
+            return ['department' => $department];
+        })->toArray();
+
+        $user->department()->delete();
+        $user->department()->createMany( $new_departments );
+
         return redirect()->route("user.index");
     }
 

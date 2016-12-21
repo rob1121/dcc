@@ -11,7 +11,6 @@
     export default{
         props:{
             icon:{default:""},
-            name:{default:""},
             btnType:{default:"primary"}
         }
     }

@@ -52,7 +52,7 @@ const app = new Vue( {
     	nameCase(name)
     	{
     		return _.map( name.split(" ") , (word) => _.capitalize(word) ).join(" ");
-    	}
+    	},
     },
 
 	methods: {

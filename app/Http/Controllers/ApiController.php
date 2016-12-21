@@ -46,6 +46,7 @@ class ApiController extends Controller
                 "email" => $user->email,
                 "edit_route" => $user->edit_route,
                 "delete_route" => $user->delete_route,
+                "departments" => $user->departments
             ];
         }
 
@@ -58,6 +59,7 @@ class ApiController extends Controller
                 "email" => $user->email,
                 "edit_route" => $user->edit_route,
                 "delete_route" => $user->delete_route,
+                "departments" => $user->departments
             ];
         });
     }

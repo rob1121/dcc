@@ -8496,10 +8496,10 @@ body {
   z-index: 2;
   top: 50%;
   bottom: 0;
-  right: 3px;
+  right: 5px;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
-  color: #1b6d85;
+  color: darkgreen;
   cursor: pointer; }
 
 #department--container .search-result {
@@ -8513,6 +8513,11 @@ body {
   border-bottom-right-radius: 2px;
   padding: 0; }
   #department--container .search-result i.fa.fa-plus {
+    position: relative;
+    top: 50%;
+    right: 5px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
     display: none; }
   #department--container .search-result .search--not--found,
   #department--container .search-result .department--item {

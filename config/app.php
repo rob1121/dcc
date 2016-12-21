@@ -182,7 +182,7 @@ return [
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         // Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
-//        Barryvdh\Debugbar\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         // TomLingham\Searchy\SearchyServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,

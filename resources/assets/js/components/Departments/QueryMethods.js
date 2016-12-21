@@ -38,7 +38,7 @@ const isSuccess = function(status) {
  * @set search query
  * @param inputQuery
  */
-const setQuery = function(inputQuery=null) {
+const setQuery = function(inputQuery) {
     this.query = inputQuery;
 };
 

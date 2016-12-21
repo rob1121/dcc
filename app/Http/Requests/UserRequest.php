@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
     {
         return [
             "user_type" => "required",
-            "department" => "required",
+            "departments" => "required",
             "employee_id" => ["required", "max:20", Rule::unique("users")->ignore(Request::input("id"))],
             "email" => ["required", Rule::unique("users")->ignore(Request::input("id"))],
             'password'    => ! Request::input("password") ? '' : 'required|min:6|confirmed',

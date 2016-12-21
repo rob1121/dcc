@@ -48242,7 +48242,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     props: {
         icon: { default: "" },
-        name: { default: "" },
         btnType: { default: "primary" }
     }
 };
@@ -48452,12 +48451,14 @@ exports.default = {
     },
     mounted: function mounted() {
         this.setDepartments(JSON.parse(this.departmentsList));
+        this.setSelected(JSON.parse(this.value));
     },
 
 
     props: {
         name: { default: "" },
-        departmentsList: { default: [] }
+        departmentsList: { default: [] },
+        value: { default: [] }
     },
 
     mixins: [_departmentMixins2.default],
@@ -48468,10 +48469,10 @@ exports.default = {
         },
         foundQueryInDepartmentsList: function foundQueryInDepartmentsList() {
             var self = this;
-
-            return _.orderBy(_.filter(self.departments, function (d) {
-                return d.includes(self.query);
-            }), null, 'asc');
+            var departments = _.filter(self.departments, function (d) {
+                return d.toLowerCase().includes(self.query);
+            });
+            return _.orderBy(departments, null, 'asc');
         },
         showSearchResultBox: function showSearchResultBox() {
             return this.hasQueryText || this.hasUsers || this.hasDepartment;
@@ -48485,7 +48486,6 @@ exports.default = {
         query: function query() {
             var self = this;
             self.getResults();
-            self.setShowListBox(false);
             self.displayAddButton();
         }
     },
@@ -48537,6 +48537,9 @@ exports.default = {
         containerWidth: function containerWidth() {
             return document.getElementById('department--container').clientWidth;
         },
+        setSelected: function setSelected(departments) {
+            this.selected = departments;
+        },
 
 
         /**
@@ -48548,7 +48551,7 @@ exports.default = {
 
             if (this.isNotExist(department)) {
                 this.removeToDepartments(department);
-                this.selected.push(department);
+                this.selected.push(department.toUpperCase());
             }
 
             this.setQuery("");
@@ -48565,7 +48568,10 @@ exports.default = {
          * @returns {boolean}
          */
         isNotExist: function isNotExist(department) {
-            return _.indexOf(this.selected, department) < 0;
+            var haystack = _.map(this.selected, function (dept) {
+                return dept.toLowerCase();
+            });
+            return _.indexOf(haystack, department.toLowerCase()) < 0;
         },
 
 
@@ -48579,11 +48585,14 @@ exports.default = {
 
             var departmentIndex = this.departmentsList.indexOf(department);
             if (departmentIndex > -1) this.departments.push(department);
+        },
+        returnFalse: function returnFalse(e) {
+            e.preventDefault();
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n    <!--multi value holder holder-->\n    <!--<input v-for=\"email in emails\" :name=\"name+'[]'\" type=\"hidden\" :value=\"email\">-->\n\n    <!--query input field search container-->\n    <div style=\"position:relative\">\n        <i class=\"add-btn fa fa-plus\" @click=\"insertToSelectedItem(query)\" v-if=\"showAddButton\">\n        </i>\n\n        <input type=\"text\" class=\"form-control\" v-model=\"query\" @keyup.27=\"hideResultsContainer\" @focus=\"displayListBox\">\n    </div>\n\n    <!--search result container-->\n    <div :style=\"'width:'+resultWidth\" class=\"search-result\" v-if=\"showListBox\">\n\n        <!--department list-->\n        <li class=\"department--item\" v-for=\"department in foundQueryInDepartmentsList\" @click=\"insertToSelectedItem(department)\">\n            <h6><i class=\"pull-right fa fa-plus\"></i> {{department}}</h6>\n        </li>\n\n        <h6 class=\"search--not--found text-danger\" v-if=\"! hasFoundQueryInDepartmentsList\"><em>No department matched your input</em></h6>\n    </div>\n\n    <!--department list-->\n    <li class=\"selected--department--item h6\" v-for=\"department in selected\">\n        <i class=\"text-right fa fa-remove\" @click=\"removeToSelectedItem(department)\"></i>\n        <em>{{department}}</em>\n    </li>\n\n    <!--fade block-->\n    <div id=\"fade\" v-if=\"showListBox\" @click=\"hideResultsContainer\"></div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n\n    <input v-for=\"department in selected\" :name=\"name+'[]'\" type=\"hidden\" :value=\"department\">\n    <!--query input field search container-->\n    <div style=\"position:relative\">\n        <i class=\"add-btn fa fa-plus\" @click=\"insertToSelectedItem(query)\" v-if=\"showAddButton\">\n        </i>\n\n        <input type=\"text\" class=\"form-control input-sm\" v-model=\"query\" @keyup.27=\"hideResultsContainer\" @keypress.enter=\"returnFalse\" @focus=\"displayListBox\">\n    </div>\n\n    <!--search result container-->\n    <div :style=\"'width:'+resultWidth\" class=\"search-result\" v-if=\"showListBox\">\n\n        <!--department list-->\n        <li class=\"department--item\" v-for=\"department in foundQueryInDepartmentsList\" @click=\"insertToSelectedItem(department)\">\n                <span class=\"pull-right h6\">\n                    <i class=\"fa fa-plus\"></i></span>\n                    <span class=\"h6\" v-text=\"department\">\n                </span>\n        </li>\n\n        <em class=\"search--not--found text-danger h6\" v-if=\"! hasFoundQueryInDepartmentsList\">No department matched your input</em>\n    </div>\n\n    <!--department list-->\n    <li class=\"selected--department--item h6\" v-for=\"department in selected\">\n        <i class=\"text-right fa fa-remove\" @click=\"removeToSelectedItem(department)\"></i>\n        <em v-text=\"department\"></em>\n    </li>\n\n    <!--fade block-->\n    <div id=\"fade\" v-if=\"showListBox\" @click=\"hideResultsContainer\"></div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -48643,11 +48652,7 @@ var isSuccess = function isSuccess(status) {
  * @set search query
  * @param inputQuery
  */
-var setQuery = function setQuery() {
-    var inputQuery = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-    console.log(inputQuery);
-
+var setQuery = function setQuery(inputQuery) {
     this.query = inputQuery;
 };
 

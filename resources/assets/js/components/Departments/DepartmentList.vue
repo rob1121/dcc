@@ -1,8 +1,7 @@
 <template>
     <div id="department--container">
-        <!--multi value holder holder-->
-        <!--<input v-for="email in emails" :name="name+'[]'" type="hidden" :value="email">-->
 
+        <input v-for="department in selected" :name="name+'[]'" type="hidden" :value="department">
         <!--query input field search container-->
         <div style="position:relative">
             <i class="add-btn fa fa-plus"
@@ -11,9 +10,10 @@
             </i>
 
             <input type="text"
-                   class="form-control"
+                   class="form-control input-sm"
                    v-model="query"
                    @keyup.27="hideResultsContainer"
+                   @keypress.enter="returnFalse"
                    @focus="displayListBox">
         </div>
 
@@ -27,16 +27,19 @@
             <li class="department--item"
                 v-for="department in foundQueryInDepartmentsList"
                 @click="insertToSelectedItem(department)">
-                <h6><i class='pull-right fa fa-plus'></i> {{department}}</h6>
+                    <span class="pull-right h6">
+                        <i class='fa fa-plus'></i></span>
+                        <span class="h6" v-text="department">
+                    </span>
             </li>
 
-            <h6  class="search--not--found text-danger" v-if="! hasFoundQueryInDepartmentsList"><em>No department matched your input</em></h6>
+            <em class="search--not--found text-danger h6" v-if="! hasFoundQueryInDepartmentsList">No department matched your input</em>
         </div>
 
         <!--department list-->
         <li class="selected--department--item h6" v-for="department in selected">
             <i class='text-right fa fa-remove' @click="removeToSelectedItem(department)"></i>
-            <em>{{department}}</em>
+            <em v-text="department"></em>
         </li>
 
         <!--fade block-->
@@ -65,11 +68,13 @@
 
         mounted() {
             this.setDepartments( JSON.parse(this.departmentsList) );
+            this.setSelected( JSON.parse(this.value) );
         },
 
         props: {
             name: {default: ""},
             departmentsList: {default: []},
+            value: {default: []},
         },
 
         mixins: [department],
@@ -82,10 +87,8 @@
 
             foundQueryInDepartmentsList() {
                 const self = this;
-
-                return _.orderBy(
-                    _.filter( self.departments, d => d.includes(self.query)),null,'asc'
-                );
+                const departments = _.filter( self.departments, d => d.toLowerCase().includes(self.query));
+                return _.orderBy(departments,null,'asc');
             },
 
             showSearchResultBox() {
@@ -101,7 +104,6 @@
             query() {
                 const self = this;
                 self.getResults();
-                self.setShowListBox(false);
                 self.displayAddButton();
             }
         },
@@ -155,6 +157,10 @@
                         .clientWidth;
             },
 
+            setSelected(departments) {
+                this.selected = departments;
+            },
+
             /**
              * insert item to selected data
              * @param department
@@ -164,7 +170,7 @@
                 
                 if( this.isNotExist( department )) {
                     this.removeToDepartments(department);
-                    this.selected.push( department );
+                    this.selected.push( department.toUpperCase() );
                 }
                 
                 this.setQuery("");
@@ -182,7 +188,8 @@
              * @returns {boolean}
              */
             isNotExist(department) {
-                return _.indexOf(this.selected, department) < 0;
+                const haystack = _.map(this.selected, dept => dept.toLowerCase());
+                return _.indexOf(haystack, department.toLowerCase()) < 0;
             },
 
             /**
@@ -196,6 +203,10 @@
                 const departmentIndex = this.departmentsList.indexOf(department);
                 if(departmentIndex > -1) this.departments.push( department );
             },
+
+            returnFalse(e) {
+                e.preventDefault();
+            }
         }
     }
 </script>
