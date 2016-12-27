@@ -43,7 +43,7 @@ export default {
          */
         removeToDepartments(department) {
             const index = this.departments.indexOf(department);
-            if(index > -1) this.departments.splice(index, 1)
+            if(index > -1) this.departments.splice(index, 1);
         },
     }
 }

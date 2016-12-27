@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 @push('style')
 <style>
@@ -32,6 +33,7 @@
             <div class="panel-body">
                 <form role="form" method="POST" action="{{route("user.update", ["user" => $user->id])}}">
                     {{ csrf_field() }}
+
                     @if(isset($user))
                         {{ method_field("PATCH") }}
                         <input type="hidden" name="id" value="{{isset($user) ? $user->id : null }}">
@@ -83,6 +85,7 @@
                         </dcc-input>
 
                         <dcc-input name="password_confirmation"
+                                   label="password confirmation"
                                    error="{{$errors->has("password_confirmation") ? $errors->first("password_confirmation"):""}}"
                                    col="6">
                         </dcc-input>

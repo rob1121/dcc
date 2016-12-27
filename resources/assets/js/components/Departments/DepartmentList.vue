@@ -67,8 +67,10 @@
         },
 
         mounted() {
-            this.setDepartments( JSON.parse(this.departmentsList) );
             this.setSelected( JSON.parse(this.value) );
+            const departments = JSON.parse(this.departmentsList);
+
+            this.setDepartments( _.difference(departments, this.selected) );
         },
 
         props: {
@@ -154,7 +156,7 @@
              */
             containerWidth() {
                 return document.getElementById( 'department--container' )
-                        .clientWidth;
+                               .clientWidth;
             },
 
             setSelected(departments) {

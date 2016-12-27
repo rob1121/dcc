@@ -48450,8 +48450,10 @@ exports.default = {
         };
     },
     mounted: function mounted() {
-        this.setDepartments(JSON.parse(this.departmentsList));
         this.setSelected(JSON.parse(this.value));
+        var departments = JSON.parse(this.departmentsList);
+
+        this.setDepartments(_.difference(departments, this.selected));
     },
 
 

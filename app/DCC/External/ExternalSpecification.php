@@ -52,7 +52,8 @@ class ExternalSpecification implements SpecificationGateway {
 
     protected function areaInvolved()
     {
-        return User::departmentIsIn($this->request->department);
+        $involved =$this->request->department ? $this->request->department : [];
+        return User::departmentIsIn($involved);
     }
 
     protected function sendNotification()
