@@ -8,7 +8,7 @@
 </style>
 @endpush
 @push('script')
-    <script src="{{URL::to("js/form.js")}}"></script>
+    <script src="{{URL::to("js/user-registration.js")}}"></script>
 @endpush
 
 @section('content')
@@ -48,8 +48,8 @@
 
                         <div class="col-sm-4 form-group{{ $errors->has('user_type') ? ' has-error' : '' }}">
                             <label for="user_type" class="control-label">User Type</label>
-                            <select name="user_type" id="user_type" class="form-control input-sm">
-                                <option disabled selected> -- Select One -- </option>
+                            <select name="user_type" id="user_type" class="form-control input-sm" @change="togglePassword">
+                                <option disabled> -- Select One -- </option>
                                 <option {{setSelectedUserType($user, "user_type","ADMIN")}}>ADMIN</option>
                                 <option {{setSelectedUserType($user, "user_type","REVIEWER")}}>REVIEWER</option>
                                 <option {{setSelectedUserType($user, "user_type","EMAIL RECEIVER ONLY")}}>EMAIL RECEIVER ONLY</option>
@@ -78,7 +78,7 @@
                         </dcc-input>
                     </div>
 
-                    <div class="row">
+                    <div class="row" v-if="requirePassword">
                         <dcc-input name="password"
                                    error="{{$errors->has("password") ? $errors->first("password"):""}}"
                                    col="6">

@@ -48182,7 +48182,7 @@ Vue.component('dcc-button', require('./components/Button.vue'));
 Vue.component('dcc-datepicker', require('./components/Datepicker.vue'));
 Vue.component('dcc-modal', require('./components/Modal.vue'));
 
-},{"./bootstrap":12,"./components/Button.vue":13,"./components/Datepicker.vue":14,"./components/Input.vue":18,"./components/Modal.vue":19,"./components/Textarea.vue":20}],12:[function(require,module,exports){
+},{"./bootstrap":12,"./components/Button.vue":13,"./components/Datepicker.vue":14,"./components/Input.vue":15,"./components/Modal.vue":16,"./components/Textarea.vue":17}],12:[function(require,module,exports){
 'use strict';
 
 window._ = require('lodash');
@@ -48233,7 +48233,7 @@ Vue.http.interceptors.push(function (request, next) {
 window.laroute = require('./laroute');
 window.moment = require("moment");
 
-},{"./laroute":22,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
+},{"./laroute":19,"bootstrap-sass":1,"jquery":2,"lodash":3,"moment":4,"vue-resource":7,"vue/dist/vue.js":9}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48430,331 +48430,6 @@ if (module.hot) {(function () {  module.hot.accept()
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _departmentMixins = require("./departmentMixins");
-
-var _departmentMixins2 = _interopRequireDefault(_departmentMixins);
-
-var _QueryMethods = require("./QueryMethods");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    data: function data() {
-        return {
-            resultWidth: 0,
-            query: "",
-            selected: [],
-            showListBox: false,
-            showAddButton: false
-        };
-    },
-    mounted: function mounted() {
-        this.setSelected(JSON.parse(this.value));
-        var departments = JSON.parse(this.departmentsList);
-
-        this.setDepartments(_.difference(departments, this.selected));
-    },
-
-
-    props: {
-        name: { default: "" },
-        departmentsList: { default: [] },
-        value: { default: [] }
-    },
-
-    mixins: [_departmentMixins2.default],
-
-    computed: {
-        hasFoundQueryInDepartmentsList: function hasFoundQueryInDepartmentsList() {
-            return !_.isEmpty(this.foundQueryInDepartmentsList);
-        },
-        foundQueryInDepartmentsList: function foundQueryInDepartmentsList() {
-            var self = this;
-            var departments = _.filter(self.departments, function (d) {
-                return d.toLowerCase().includes(self.query);
-            });
-            return _.orderBy(departments, null, 'asc');
-        },
-        showSearchResultBox: function showSearchResultBox() {
-            return this.hasQueryText || this.hasUsers || this.hasDepartment;
-        },
-
-        hasQuery: _QueryMethods.hasQuery,
-        hasQueryText: _QueryMethods.hasQueryText
-    },
-
-    watch: {
-        query: function query() {
-            var self = this;
-            self.getResults();
-            self.displayAddButton();
-        }
-    },
-
-    methods: {
-        isSuccess: _QueryMethods.isSuccess,
-        setQuery: _QueryMethods.setQuery,
-        isQueryValid: _QueryMethods.isQueryValid,
-
-        displayAddButton: function displayAddButton() {
-            var displayAddButton = !this.hasFoundQueryInDepartmentsList && this.hasQuery;
-            this.setShowAddButton(displayAddButton);
-        },
-        setShowAddButton: function setShowAddButton(bool) {
-            this.showAddButton = bool;
-        },
-        getResults: function getResults() {
-            this.setResultWidth(this.containerWidth());
-        },
-        displayListBox: function displayListBox() {
-            this.setShowListBox(true);
-            this.getResults();
-        },
-
-
-        /**
-         * hide search result container
-         */
-        hideResultsContainer: function hideResultsContainer() {
-            this.setQuery("");
-            this.setShowAddButton(false);
-            this.setShowListBox(false);
-        },
-
-
-        /**
-         * adjust search result container width
-         * @param width
-         */
-        setResultWidth: function setResultWidth(width) {
-            this.resultWidth = width + 'px';
-        },
-
-
-        /**
-         * get search result container width
-         * @returns {number}
-         */
-        containerWidth: function containerWidth() {
-            return document.getElementById('department--container').clientWidth;
-        },
-        setSelected: function setSelected(departments) {
-            this.selected = departments;
-        },
-
-
-        /**
-         * insert item to selected data
-         * @param department
-         * @returns {boolean}
-         */
-        insertToSelectedItem: function insertToSelectedItem(department) {
-
-            if (this.isNotExist(department)) {
-                this.removeToDepartments(department);
-                this.selected.push(department.toUpperCase());
-            }
-
-            this.setQuery("");
-            this.setShowListBox(false);
-        },
-        setShowListBox: function setShowListBox(bool) {
-            this.showListBox = bool;
-        },
-
-
-        /**
-         * validate department is unique
-         * @param department
-         * @returns {boolean}
-         */
-        isNotExist: function isNotExist(department) {
-            var haystack = _.map(this.selected, function (dept) {
-                return dept.toLowerCase();
-            });
-            return _.indexOf(haystack, department.toLowerCase()) < 0;
-        },
-
-
-        /**
-         * remove user from selected data
-         * @param department
-         */
-        removeToSelectedItem: function removeToSelectedItem(department) {
-            var selectedIndex = this.selected.indexOf(department);
-            this.selected.splice(selectedIndex, 1);
-
-            var departmentIndex = this.departmentsList.indexOf(department);
-            if (departmentIndex > -1) this.departments.push(department);
-        },
-        returnFalse: function returnFalse(e) {
-            e.preventDefault();
-        }
-    }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"department--container\">\n\n    <input v-for=\"department in selected\" :name=\"name+'[]'\" type=\"hidden\" :value=\"department\">\n    <!--query input field search container-->\n    <div style=\"position:relative\">\n        <i class=\"add-btn fa fa-plus\" @click=\"insertToSelectedItem(query)\" v-if=\"showAddButton\">\n        </i>\n\n        <input type=\"text\" class=\"form-control input-sm\" v-model=\"query\" @keyup.27=\"hideResultsContainer\" @keypress.enter=\"returnFalse\" @focus=\"displayListBox\">\n    </div>\n\n    <!--search result container-->\n    <div :style=\"'width:'+resultWidth\" class=\"search-result\" v-if=\"showListBox\">\n\n        <!--department list-->\n        <li class=\"department--item\" v-for=\"department in foundQueryInDepartmentsList\" @click=\"insertToSelectedItem(department)\">\n                <span class=\"pull-right h6\">\n                    <i class=\"fa fa-plus\"></i></span>\n                    <span class=\"h6\" v-text=\"department\">\n                </span>\n        </li>\n\n        <em class=\"search--not--found text-danger h6\" v-if=\"! hasFoundQueryInDepartmentsList\">No department matched your input</em>\n    </div>\n\n    <!--department list-->\n    <li class=\"selected--department--item h6\" v-for=\"department in selected\">\n        <i class=\"text-right fa fa-remove\" @click=\"removeToSelectedItem(department)\"></i>\n        <em v-text=\"department\"></em>\n    </li>\n\n    <!--fade block-->\n    <div id=\"fade\" v-if=\"showListBox\" @click=\"hideResultsContainer\"></div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-ed3d4c8e", module.exports)
-  } else {
-    hotAPI.update("_v-ed3d4c8e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"./QueryMethods":16,"./departmentMixins":17,"vue":8,"vue-hot-reload-api":6}],16:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/**
- * search query from database
- * @success get result data
- * @failed  console log the error
- */
-
-var fetchQuery = function fetchQuery(q) {
-    var _this = this;
-
-    var departmentList = laroute.route('department.list');
-    var params = { q: q };
-
-    this.$http.get(departmentList, { params: params }).then(function (response) {
-        _this.setResult(response.data);
-        _this.checkToShowAddButton();
-    }, function (error) {
-        return console.log(error);
-    });
-};
-
-/**
- * @set querying status
- * @param status
- */
-var queryStatus = function queryStatus() {
-    var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-    this.text = this.isSuccess(status) || _.isEmpty(status) ? null : status + '...';
-};
-
-/**
- * check if fetchQuery() success
- * @param status
- * @returns {boolean}
- */
-var isSuccess = function isSuccess(status) {
-    return status === 'success';
-};
-
-/**
- * @set search query
- * @param inputQuery
- */
-var setQuery = function setQuery(inputQuery) {
-    this.query = inputQuery;
-};
-
-/**
- * validate input query
- * @returns {boolean}
- */
-var isQueryValid = function isQueryValid() {
-    return !_.isEmpty(this.query);
-};
-
-var hasQuery = function hasQuery() {
-    return !_.isEmpty(this.query);
-};
-
-var hasQueryText = function hasQueryText() {
-    return !_.isEmpty(this.text);
-};
-
-/**
- * @true search query from database
- * @else show add button
- */
-var getResults = function getResults() {
-    if (this.isQueryValid()) {
-        this.queryStatus('searching');
-        this.fetchQuery(this.query);
-    } else {
-        this.hideResultsContainer();
-        this.checkToShowAddButton();
-    }
-};
-
-exports.setQuery = setQuery;
-exports.fetchQuery = fetchQuery;
-exports.queryStatus = queryStatus;
-exports.isSuccess = isSuccess;
-exports.isQueryValid = isQueryValid;
-exports.hasQuery = hasQuery;
-exports.hasQueryText = hasQueryText;
-exports.getResults = getResults;
-
-},{}],17:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    data: function data() {
-        return {
-            departments: []
-        };
-    },
-
-
-    computed: {
-        hasDepartment: function hasDepartment() {
-            return !_.isEmpty(this.departments);
-        }
-    },
-
-    methods: {
-        setDepartments: function setDepartments(departments) {
-            this.departments = departments;
-        },
-        sanitizeDepartment: function sanitizeDepartment(departments) {
-            if (this.isCollectionOfEmployeeIn(departments)) {
-                return departments.length > 1 ? departments.split('|') : departments[0];
-            }
-
-            if (_.isEmpty(departments)) return "new";
-
-            return departments;
-        },
-        isCollectionOfEmployeeIn: function isCollectionOfEmployeeIn(departments) {
-            return _.isArray(departments);
-        },
-        resetDepartments: function resetDepartments() {
-            this.departments = null;
-        },
-
-
-        /**
-         * remove user from selected data
-         * @param department
-         */
-        removeToDepartments: function removeToDepartments(department) {
-            var index = this.departments.indexOf(department);
-            if (index > -1) this.departments.splice(index, 1);
-        }
-    }
-};
-
-},{}],18:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 exports.default = {
     props: {
         name: { default: "" },
@@ -48785,7 +48460,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2029140c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],19:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6}],16:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.close {\n    font-size: 3em;\n}\n\n.modal {\n    overflow-y: auto;\n}\n\n.modal-scroll {\n    height: 80vh;\n    overflow-y: auto;\n}\n")
 "use strict";
@@ -48819,7 +48494,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3bbf8d6f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],20:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":10}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48853,31 +48528,20 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-279e7430", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6}],21:[function(require,module,exports){
-'use strict';
-
-var _DepartmentList = require('./components/Departments/DepartmentList.vue');
-
-var _DepartmentList2 = _interopRequireDefault(_DepartmentList);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"vue":8,"vue-hot-reload-api":6}],18:[function(require,module,exports){
+"use strict";
 
 require('./app');
 
-
 var app = new Vue({
-    el: "#app",
-
-    components: {
-        Departments: _DepartmentList2.default
-    }
+    el: "#app"
 });
 
 $(".modal-btn").click(function () {
     $("#form-submit").submit();
 });
 
-},{"./app":11,"./components/Departments/DepartmentList.vue":15}],22:[function(require,module,exports){
+},{"./app":11}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -49063,6 +48727,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
 }).call(undefined);
 
-},{}]},{},[21]);
+},{}]},{},[18]);
 
 //# sourceMappingURL=form.js.map

@@ -47,6 +47,8 @@
     </div>
 </template>
 
+<style lang="stylus" src="../../../stylus/components/departments.styl" scoped></style>
+
 <script>
     import department from "./departmentMixins";
     import { isSuccess,

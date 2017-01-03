@@ -34,6 +34,7 @@ class ExternalSpecification implements SpecificationGateway {
 
     function update() {
         if ($this->spec === null) throw new SpecNotFoundException();
+
         $this->spec->update(CustomerSpec::instance($this->request));
         $this->factory->update(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->update(new ExternalSpecRevision($this->request, $this->spec));
@@ -42,34 +43,28 @@ class ExternalSpecification implements SpecificationGateway {
     }
 
 
-    protected function notifyUser( $caption )
-    {
+    protected function notifyUser( $caption ) {
         if ( $this->sendNotification() )
             Mail::to( $this->reviewers() )
                 ->cc($this->areaInvolved())
                 ->send( $this->mailTemplate( $caption ) );
     }
 
-    protected function areaInvolved()
-    {
+     protected function areaInvolved() {
         $involved =$this->request->department ? $this->request->department : [];
         return User::departmentIsIn($involved);
     }
 
-    protected function sendNotification()
-    {
+    protected function sendNotification() {
         return "true" === $this->request->send_notification;
     }
 
-    protected function reviewers()
-    {
+    protected function reviewers() {
         return User::getReviewer($this->spec->reviewer);
     }
 
-    protected function mailTemplate($message)
-    {
+    protected function mailTemplate($message) {
         $spec = CustomerSpec::find($this->spec->id);
-
         return new ExternalSpecMailer($spec, $message);
     }
 }
