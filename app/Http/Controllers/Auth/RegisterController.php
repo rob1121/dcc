@@ -50,7 +50,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'        => 'required|max:255',
             'email'       => 'required|email|max:255|unique:users',
-            'department'  => 'required',
+            'departments'  => 'required',
             'user_type'   => "required",
             'employee_id' => 'required|unique:users,employee_id',
             'password'    => isset($data["user_type"]) && $data["user_type"] === "EMAIL RECEIVER ONLY" ? '' : 'required|min:6|confirmed',
@@ -73,8 +73,17 @@ class RegisterController extends Controller
             'password'    => bcrypt($data['password']),
         ]);
 
-        $user->department()->create([
-            'department'  => $data['department']
-        ]);
+        $user->department()->createMany(
+            $this->extractDepartments($data)
+        );
+    }
+
+    private function extractDepartments(array $data) {
+        $new_departments = collect($data['departments'])->map(function($department) {
+            return ['department' => $department];
+        })->toArray();
+
+        return $new_departments;
+
     }
 }

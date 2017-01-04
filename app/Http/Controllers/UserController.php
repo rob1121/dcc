@@ -9,50 +9,52 @@ class UserController extends Controller
 {
     private $categories;
 
-    public function __construct()
-	{
+    public function __construct() {
 		$this->middleware("auth.admin");
         $this->categories = User::getCategoryList();
 	}
 
-    public function index()
-    {
+    public function index() {
+        $cetegories = $this->categories->map(function($user) {
+            return [
+                "category_no" => $user,
+                "name"        => $user
+            ];
+        });
+
         return view("user.index", [
-            "categories" => $this->categories->map(function($user) {
-                return [
-                    "category_no" => $user,
-                    "name" => $user
-                ];
-            })
+            "categories" => $cetegories
         ]);
     }
 
-    public function edit(User $user)
-    {
-        return view("auth.register", ["user" => $user]);
+    public function edit(User $user){
+        return view("auth.edit", ["user" => $user]);
     }
 
-    public function update(UserRequest $request, User $user)
-    {
-        $user_details = User::instance( $request );
-
-        if($user_details['password']) $user_details['password'] = bcrypt($user_details['password']);
-        else array_pull($user_details, 'password');
-
-        $user->update( $user_details );
-
-        $new_departments = collect($request->departments)->map(function($department) {
-            return ['department' => $department];
-        })->toArray();
-
+    public function update(UserRequest $request, User $user){
+        $user->update($this->extractUserData($request));
         $user->department()->delete();
-        $user->department()->createMany( $new_departments );
+        $user->department()->createMany($this->extractDepartments($request));
 
         return redirect()->route("user.index");
     }
 
-    public function delete(User $user)
-    {
+    public function delete(User $user) {
     	$user->delete();
+    }
+
+    private function extractUserData($request) {
+        $user_details = User::instance($request);
+
+        if ($user_details['password']) $user_details['password'] = bcrypt($user_details['password']);
+        else array_pull($user_details, 'password');
+
+        return $user_details;
+    }
+
+    private function extractDepartments(UserRequest $request) {
+        return collect($request->departments)->map(function($department) {
+            return ['department' => $department];
+        })->toArray();
     }
 }

@@ -69,10 +69,9 @@
         },
 
         mounted() {
-            this.setSelected( JSON.parse(this.value) );
-            const departments = JSON.parse(this.departmentsList);
+            this.setSelected(this.value);
+            this.setDepartments(this.departmentsList);
 
-            this.setDepartments( _.difference(departments, this.selected) );
         },
 
         props: {
@@ -162,7 +161,8 @@
             },
 
             setSelected(departments) {
-                this.selected = departments;
+                    const sanitizedDepartment = _.isEmpty(departments) ? [] : JSON.parse(departments);
+                this.selected = _.toArray(sanitizedDepartment);
             },
 
             /**
@@ -193,7 +193,8 @@
              */
             isNotExist(department) {
                 const haystack = _.map(this.selected, dept => dept.toLowerCase());
-                return _.indexOf(haystack, department.toLowerCase()) < 0;
+
+                return haystack.indexOf(department.toLowerCase()) < 0;
             },
 
             /**

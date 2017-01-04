@@ -87,7 +87,8 @@ const app = new Vue( {
 		removeUser()
 		{
 		    const user = this.modalConfirmation.category;
-		    const delete_route = laroute.route("user.destroy", { user: user.id });
+		    const delete_route = laroute.route("user.delete", { user: user.id });
+
 		    this.$http.delete(delete_route).then(
                 () 	  => this.deleteItem(this.pagination, user),
                 error => console.log(error.text())

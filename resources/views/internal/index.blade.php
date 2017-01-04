@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @push("script")
-    <script src="{{URL::to("/js/internal-index.js")}}"></script>
+    <script src="{{url("/js/internal-index.js")}}"></script>
 @endpush
 
 @section("content")

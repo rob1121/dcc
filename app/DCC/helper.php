@@ -12,5 +12,16 @@ function sanitizeValue($class=null,$object=null,$errors=null) {
 }
 
 function setSelectedUserType($user, $name, $value) {
-    return old($name) === $value || ( isset($user) && $user->$name === $value ) ? "selected" : "";
+    if(old($name)) {
+        if(old($name) === $value) return "selected";
+    } elseif(isset($user) && $user->$name === $value) return "selected";
+    return "";
+}
+
+function selectUserType($name, $value) {
+    return old($name) === $value ? "selected" : "";
+}
+
+function selectNotInUserType($name, array $list) {
+    return ! array_has($list, $name) ? "selected" : "";
 }

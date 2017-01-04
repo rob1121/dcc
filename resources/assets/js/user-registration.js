@@ -5,15 +5,18 @@ const app = new Vue({
     el: "#app",
 
     data: {
-        userType: ""
+        userType: "",
+        requirePassword: true
     },
     
     mounted() {
-      this.userType = document.querySelector('#user_type option[selected]').innerHTML;
-    },
+        const option = document.querySelector('#user_type option[selected]');
 
-    data: {
-        requirePassword: true
+        this.userType = option
+            ? option.innerHTML
+            : document.querySelector('#user_type').firstElementChild.innerHTML;
+
+        this.setPasswordRule();
     },
 
     components: {
@@ -23,6 +26,10 @@ const app = new Vue({
     methods: {
         togglePassword(e) {
             this.userType = e.target.value;
+            this.setPasswordRule();
+        },
+
+        setPasswordRule() {
             this.requirePassword = "EMAIL RECEIVER ONLY" !== this.userType;
         }
     }

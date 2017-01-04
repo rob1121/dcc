@@ -133,10 +133,13 @@
              * @param response
              */
             setResult(response) {
-                const result = JSON.parse( response );
+                const result = response;
 
                 this.setUsers( result.users );
+
                 this.setDepartments( result.departments );
+
+                
                 this.queryStatus('success');
                 
             },

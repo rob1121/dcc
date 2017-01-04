@@ -170,9 +170,7 @@
                         <label class="control-label"><strong>Scope Department</strong></label>
                         <br>
                         <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
-                            @foreach($departments as $department)
-                                <option>{{$department}}</option>
-                            @endforeach
+                                <option v-for="d in {{$departments}}">@{{ d }}</option>
                         </select>
                         <span class="help-block">{{$errors->has("department") ? $errors->first("department"):""}}</span>
                     </div>

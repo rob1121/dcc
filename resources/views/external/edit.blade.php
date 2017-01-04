@@ -8,7 +8,7 @@
 @endpush
 
 @push('script')
-<script src="{{URL::to("/js/form.js")}}"></script>
+<script src="{{URL::to("/js/external-edit.js")}}"></script>
 <script>
     var chosen = $(".chosen-select");
 
@@ -127,11 +127,14 @@
 
                             <label>CC: </label>
 
-                            <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
-                                @foreach($departments as $department)
-                                    <option>{{$department}}</option>
-                                @endforeach
-                            </select>
+                            <departments name="departments"
+                                         departments-list="{{App\Department::listDepartments()}}"
+                                         value="{{json_encode(old("departments"))}}">
+                            </departments>
+
+                            {{--<select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>--}}
+                                {{--<option v-for="d in {{$departments}}">@{{ d }}</option>--}}
+                            {{--</select>--}}
                         </div>
                     </div>
 

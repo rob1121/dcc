@@ -14,7 +14,8 @@ export default {
 
     methods: {
         setDepartments(departments) {
-            this.departments = departments;
+            const jsonDepartments = _.toArray(JSON.parse(departments));
+            this.departments = _.difference(_.toArray(jsonDepartments), this.selected);
         },
 
         sanitizeDepartment(departments) {

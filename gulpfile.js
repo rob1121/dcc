@@ -19,8 +19,9 @@ elixir(mix => {
     // mix.copy("node_modules/font-awesome/fonts", "public/fonts");
 
         mix.browserify('user-index.js');
-        mix.browserify('user-registration.js');
-        mix.browserify('form.js')
+        // mix.browserify('user-registration.js');
+        mix.browserify('external-edit.js')
+        // mix.browserify('form.js')
             // mix.webpack('internal-index.js');
             // mix.webpack('external-index.js');
             // mix.webpack('iso-index.js');

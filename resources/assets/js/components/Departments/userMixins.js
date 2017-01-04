@@ -11,9 +11,14 @@ export default {
         }
     },
 
+
+
+    
     methods: {
         setUsers(users) {
-            this.users = users;
+            console.log(users);
+            
+            // this.users = _.toArray(JSON.parse(users));
         },
 
         sanitizeUser(user) {
