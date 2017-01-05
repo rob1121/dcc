@@ -1,6 +1,8 @@
 <?php namespace App\Console\Commands;
 
+use App\CustomerSpec;
 use App\Mail\ExternalSpecFollowUpMailer;
+use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -37,6 +39,7 @@ class FollowUp extends Command
      */
     public function handle()
     {
-        Mail::to("robinsonlegaspi@astigp.com")->send(new ExternalSpecFollowUpMailer());
+        $emails = User::followUp(CustomerSpec::reviewer());
+        Mail::to($emails)->send(new ExternalSpecFollowUpMailer());
     }
 }

@@ -45,7 +45,8 @@
         <!--selected item list-->
         <li class="selected--department--item h6" v-for="user in selected">
                 <i class='text-right fa fa-remove' @click="removeToSelectedItem(user)"></i>
-                <em>{{user.email}}({{user.department}})</em>
+                <em v-text="user.email"></em>
+                <em v-if="user.department">({{user.department}})</em>
         </li>
 
         <!--fade block-->
@@ -76,6 +77,7 @@
                 query: null,
                 text: null,
                 selected: [],
+                emails: [],
                 invalidEmail: false
             }
         },
@@ -83,31 +85,42 @@
         props: {
             name: {default: ""},
             showUser: {default: true},
-            showDepartment: {default: true}
+            showDepartment: {default: true},
+            value: {default: []}
         },
 
         mixins: [department, user, addButton],
 
 
         mounted() {
+            const initialValue = JSON.parse(this.value);
+            if (initialValue)
+                for(let i=0;i<initialValue.length;i++)
+                    this.selected[i] = {email: initialValue[i]};
+
+            this.setEmails(initialValue);
             this.$on('input_query', _.debounce( () => this.getResults() ,500));
         },
 
         computed: {
-            emails() {
-                return _.map(this.selected, (user) => user.email);
-            },
 
             showSearchResultBox() {
                 return this.hasQueryText
                         || this.hasUsers
                         || this.hasDepartment;
             },
+
             hasQuery,
             hasQueryText
         },
 
         watch: {
+            selected() {
+                const self = this;
+                const emails = _.map(self.selected, (user) => user.email);
+                self.setEmails( emails );
+            },
+
             query() {
                 const self = this;
 
@@ -128,17 +141,23 @@
             getResults,
 
             /**
+             * set emails collection
+             * @param emails
+             */
+            setEmails(emails) {
+                this.emails = emails;
+            },
+
+            /**
              * @set users collection
              * @set departments collection
              * @param response
              */
             setResult(response) {
-                const result = response;
+                const result = JSON.parse(response);
 
                 this.setUsers( result.users );
-
                 this.setDepartments( result.departments );
-
                 
                 this.queryStatus('success');
                 

@@ -1,6 +1,7 @@
 <?php namespace App\Mail;
 
 use App\CustomerSpec;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -32,7 +33,7 @@ class ExternalSpecFollowUpMailer extends Mailable implements ShouldQueue
      * @return $this
      */
     public function build()
-    {
+    {   
         return $this->subject($this->mail_subject)->view('emails.mail_external_spec_for_followup');
     }
 }

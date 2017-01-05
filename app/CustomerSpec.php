@@ -54,6 +54,19 @@ class CustomerSpec extends Model {
             });
     }
 
+    public static function reviewer() {
+        return CustomerSpecRevision::select("is_reviewed","revision","revision_date","customer_spec_id")
+            ->whereIsReviewed(0)
+            ->where("revision_date", "<", Carbon::now()->subDays(5))
+            ->orderBy("revision_date")
+            ->with(["customerSpec" => function($query) {
+                $query->select(['reviewer','id']);
+            }])->get()
+            ->map(function($documents) {
+                return $documents->customerSpec->reviewer;
+            });
+    }
+
     /**
      * check if request instance already exist in the database
      * @param $request

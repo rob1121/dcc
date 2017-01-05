@@ -2,34 +2,13 @@
 @push("style")
 <style>
     body {
-        overflow: scroll
+        overflow-y: scroll
     }
 </style>
 @endpush
 
 @push('script')
 <script src="{{URL::to("/js/external-edit.js")}}"></script>
-<script>
-    var chosen = $(".chosen-select");
-
-    chosen.chosen({
-        disable_search_threshold: 10,
-        no_results_text: "Oops, nothing found!",
-        max_selected_options: 5,
-        display: "block",
-        width: "100%",
-    });
-
-    chosen.val(
-            {!! old("department") ? collect(old("department"))->toJson() : collect($spec->originator_departments)->toJson()  !!}
-    ).trigger("chosen:updated");
-    $("input[name='send_notification']").on('change', function() {
-        var department = $(".department");
-
-        if( $(this).val() === "true" ) department.show();
-        else department.hide();
-    });
-</script>
 @endpush
 
 @section('content')
@@ -122,19 +101,19 @@
                                    value="{{$errors->has("document") || old("document") ? old("document") :  $spec->document}}"
                         ></dcc-input>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
 
-                            <label>CC: </label>
+                    <div class="row" v-show="requireDepartment">
+                        <div class="col-md-12 form-group {{ $errors->has('cc') ? ' has-error' : '' }}">
+                            <label for="cc" class="control-label">CC</label>
 
-                            <departments name="departments"
+                            <departments name="cc"
                                          departments-list="{{App\Department::listDepartments()}}"
-                                         value="{{json_encode(old("departments"))}}">
+                                         value="{{json_encode(old("cc"))}}">
                             </departments>
 
-                            {{--<select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>--}}
-                                {{--<option v-for="d in {{$departments}}">@{{ d }}</option>--}}
-                            {{--</select>--}}
+                            <h6 class="help-block">
+                                <strong>{{ $errors->first('cc') }}</strong>
+                            </h6>
                         </div>
                     </div>
 
@@ -142,11 +121,11 @@
                         <label class="control-label">
                             <input type="radio"
                                    value="true"
-                                   id="send_notification"
                                    name="send_notification"
-                                   @if(old("send_notification") !== "false") checked @endif
-                            >
-                            Notify everyone for new internal specification
+                                   id="send_notification"
+                                   @change="getSendNotification"
+                                   @if(old("send_notification") !== "false") checked @endif>
+                                   Notify everyone for new internal specification
                         </label>
                     </div>
 
@@ -156,9 +135,9 @@
                                    name="send_notification"
                                    id="send_notification"
                                    value="false"
-                                   @if(old("send_notification") === "false") checked @endif
-                            >
-                            Skip email notification
+                                   @change="getSendNotification"
+                                   @if(old("send_notification") === "false") checked @endif>
+                                   Skip email notification
                         </label>
                     </div>
 

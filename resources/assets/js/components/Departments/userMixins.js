@@ -11,16 +11,20 @@ export default {
         }
     },
 
-
-
-    
     methods: {
+        /**
+         * set users data
+         * @param users
+         */
         setUsers(users) {
-            console.log(users);
-            
-            // this.users = _.toArray(JSON.parse(users));
+            this.users = users;
         },
 
+        /**
+         * sanitize user info
+         * @param user
+         * @returns {{email: *, department}}
+         */
         sanitizeUser(user) {
             const departments = this.sanitizeDepartment(user.department);
             return {
@@ -29,6 +33,9 @@ export default {
             }
         },
 
+        /**
+         * reset users list
+         */
         resetUsers() {
             this.users = null;
         }

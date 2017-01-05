@@ -49,6 +49,26 @@ class User extends Authenticatable
         });
     }
 
+    /**
+     * get collection of email to be followup for the external specs to be reviewed
+     * @param array $reviewer
+     * @return mixed
+     */
+    public static function followUp(array $reviewer)
+    {
+        return Department::whereIn('department', $reviewer)
+            ->with(['user' => function($query) {
+                $query->select(['id','email']);
+            }])->get()
+            ->unique('user.email')
+            ->pluck('user.email');
+    }
+
+    /**
+     * get reviewer of external specs
+     * @param $reviewer
+     * @return mixed
+     */
     public static function getReviewer($reviewer)
     {
         return self::with([

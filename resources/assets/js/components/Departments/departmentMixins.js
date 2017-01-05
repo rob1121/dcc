@@ -7,33 +7,59 @@ export default {
     },
 
     computed: {
+        /**
+         * check if departments is not empty
+         * @returns {boolean}
+         */
         hasDepartment() {
             return  ! _.isEmpty( this.departments );
         }
     },
 
     methods: {
+
+        /**
+         * set departments
+         * @param departments
+         */
         setDepartments(departments) {
-            const jsonDepartments = _.toArray(JSON.parse(departments));
-            this.departments = _.difference(_.toArray(jsonDepartments), this.selected);
+            this.departments = departments;
         },
 
-        sanitizeDepartment(departments) {
-            if(this.isCollectionOfEmployeeIn( departments )){
-                return departments.length > 1
-                    ? departments.split('|')
-                    : departments[0];
-            }
+        /**
+         * extract unselected departments from the list
+         */
+        extractUnselectedDepartment() {
+            this.departments = _.difference(this.departments, this.selected);
+        },
 
-            if(_.isEmpty(departments)) return "new";
+        /**
+         * department presenter: split departments by '|'
+         * @param departments
+         * @returns {*}
+         */
+        sanitizeDepartment(departments) {
+            if(this.isCollectionOfEmployeeIn( departments ))
+                return departments.length > 1 ? departments.join('|') : departments[0];
+
+            else if(_.isEmpty(departments))
+                return "new";
 
             return departments;
         },
 
+        /**
+         * check if collection of departments is array
+         * @param departments
+         * @returns {boolean|*}
+         */
         isCollectionOfEmployeeIn( departments ) {
             return _.isArray(departments);
         },
 
+        /**
+         * reset departments
+         */
         resetDepartments() {
             this.departments = null;
         },

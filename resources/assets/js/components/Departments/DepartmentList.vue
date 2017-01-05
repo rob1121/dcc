@@ -71,7 +71,7 @@
         mounted() {
             this.setSelected(this.value);
             this.setDepartments(this.departmentsList);
-
+            this.extractUnselectedDepartment();
         },
 
         props: {
