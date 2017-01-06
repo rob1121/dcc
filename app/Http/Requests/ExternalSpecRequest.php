@@ -34,7 +34,7 @@ class ExternalSpecRequest extends FormRequest
             'revision_date'     => "required|date",
             'reviewer'          => "required|max:100",
             'customer_name'     => 'required|max:100',
-            'cc'                => json_decode(Request::input("send_notification")) ? 'required' : ''
+            'cc_email'                => json_decode(Request::input("send_notification")) ? 'required' : ''
         ];
 
         $rules_for_spec_status_update = [

@@ -36,6 +36,11 @@ class CompanySpec extends Model
         return $this->hasOne(CompanySpecCategory::class);
     }
 
+    public function cc()
+    {
+        return $this->hasMany(CC::class);
+    }
+
     /**
      * check if request instance already exist in the database
      *

@@ -16,7 +16,7 @@ class CustomerSpec extends Model {
     ];
 
     protected $appends = [
-        'spec_name', 'latest_revision', 'latest_revision_date', 'external_show', 'external_edit'
+        'spec_name', 'latest_revision', 'latest_revision_date', 'external_show', 'external_edit', 'cc_email'
     ];
 
     protected $hidden = [
@@ -33,6 +33,10 @@ class CustomerSpec extends Model {
 
     public static function uniqueReviewer() {
         return self::get(["reviewer"])->unique("reviewer")->pluck("reviewer");
+    }
+
+    public function cc() {
+        return $this->hasMany(CC::class);
     }
 
     public static function forReview()

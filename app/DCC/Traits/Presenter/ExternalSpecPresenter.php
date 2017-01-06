@@ -2,28 +2,27 @@
 
 trait ExternalSpecPresenter
 {
-    public function getSpecNameAttribute()
-    {
+    public function getSpecNameAttribute() {
         return \Str::upper($this->spec_no . " - " . $this->name);
     }
 
-    public function getLatestRevisionAttribute()
-    {
+    public function getLatestRevisionAttribute() {
         return \Str::upper($this->customerSpecRevision->sortBy("revision")->last()->revision) ?: '**';
     }
 
-    public function getLatestRevisionDateAttribute()
-    {
+    public function getLatestRevisionDateAttribute() {
         return \Str::upper($this->customerSpecRevision->sortBy("revision")->last()->revision_date);
     }
 
-    public function getExternalShowAttribute()
-    {
+    public function getExternalShowAttribute() {
         return route("external.show", ["external" => $this->id]);
     }
 
-    public function getExternalEditAttribute()
-    {
+    public function getExternalEditAttribute() {
         return route("external.edit", ["external" => $this->id]);
+    }
+
+    public function getCcEmailAttribute() {
+        return $this->cc->pluck('email')->toArray();
     }
 }

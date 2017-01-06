@@ -10,8 +10,13 @@
                v-if="showAddButton">
             </i>
 
-            <input type="text" class="form-control" v-model="query" @keyup.27="hideResultsContainer">
-
+            <input id="multiselect"
+                   type="text"
+                   class="form-control"
+                   v-model="query"
+                   @keypress="invalidEmail=false"
+                   @keyup.27="hideResultsContainer"
+            >
             <span class="help-block" v-if="invalidEmail">Invalid input email</span>
         </div>
 
@@ -155,6 +160,7 @@
              */
             setResult(response) {
                 const result = JSON.parse(response);
+                
 
                 this.setUsers( result.users );
                 this.setDepartments( result.departments );
@@ -233,8 +239,15 @@
              * @param email
              */
             insertNewEmail(email) {
-                const status = this.insertToSelectedItem({ email });
-                if(status) this.hideResultsContainer();
+                const newUser = { email };
+
+                if (!this.policeUser(newUser)) {
+                    document.getElementById("multiselect").focus();
+                    return;
+                }
+
+                this.insertToSelectedItem(newUser);
+                this.hideResultsContainer();
             },
 
             /**
@@ -243,10 +256,11 @@
              * @returns {boolean}
              */
             insertToSelectedItem(user) {
-                if( this.isNotExist(user) && this.validateEmail(user.email) ) {
-                    this.selected.push( this.sanitizeUser(user) );
-                    return true;
-                }
+                this.selected.push( this.sanitizeUser(user) );
+            },
+
+            policeUser(newUser) {
+                return this.isNotExist( newUser ) && this.validateEmail(newUser.email);
             },
 
             /**

@@ -2,13 +2,13 @@
 @push("style")
 <style>
     body {
-        overflow: scroll
+        overflow-y: auto;
     }
 </style>
 @endpush
 
 @push('script')
-<script src="{{URL::to("/js/form.js")}}"></script>
+<script src="{{URL::to("/js/external-edit.js")}}"></script>
 @endpush
 
 @section('content')
@@ -101,14 +101,29 @@
                         ></dcc-input>
                     </div>
 
+                    <div class="row" v-show="requireDepartment">
+                        <div class="col-md-12 form-group {{ $errors->has('cc') ? ' has-error' : '' }}">
+                            <label for="cc" class="control-label">CC</label>
+
+                            <departments name="cc"
+                                         departments-list="{{App\Department::listDepartments()}}"
+                                         value="{{json_encode(old("cc"))}}">
+                            </departments>
+
+                            <h6 class="help-block">
+                                <strong>{{ $errors->first('cc') }}</strong>
+                            </h6>
+                        </div>
+                    </div>
+
                     <div class="radio col-xs-12 row form-group">
                         <label class="control-label">
                             <input type="radio"
                                    value="true"
-                                   id="send_notification"
                                    name="send_notification"
-                                   @if(old("send_notification") !== "false") checked @endif
-                            >
+                                   id="send_notification"
+                            @change="getSendNotification"
+                            @if(old("send_notification") !== "false") checked @endif>
                             Notify everyone for new internal specification
                         </label>
                     </div>
@@ -119,8 +134,8 @@
                                    name="send_notification"
                                    id="send_notification"
                                    value="false"
-                                   @if(old("send_notification") === "false") checked @endif
-                            >
+                            @change="getSendNotification"
+                            @if(old("send_notification") === "false") checked @endif>
                             Skip email notification
                         </label>
                     </div>

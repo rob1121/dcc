@@ -10,9 +10,6 @@ class ExternalSpecRevision implements SpecificationGateway {
 
     private $spec;
     private $factory;
-    /**
-     * @var Request
-     */
     private $request;
 
     function __construct(Request $request, CustomerSpec $spec=null) {

@@ -26,6 +26,7 @@ class ExternalSpecification implements SpecificationGateway {
 
         $this->factory->store(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new ExternalSpecRevision($this->request, $this->spec));
+        $this->factory->store(new ExternalSpecCC($this->request, $this->spec));
 
         $this->notifyUser("New External Spec");
 
@@ -38,6 +39,7 @@ class ExternalSpecification implements SpecificationGateway {
         $this->spec->update(CustomerSpec::instance($this->request));
         $this->factory->update(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->update(new ExternalSpecRevision($this->request, $this->spec));
+        $this->factory->update(new ExternalSpecCC($this->request, $this->spec));
 
         $this->notifyUser("External Spec Update");
     }
