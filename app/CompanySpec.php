@@ -14,7 +14,7 @@ class CompanySpec extends Model
     ];
 
     protected $appends = [
-        'spec_name', 'originator_departments', 'spec_id', "internal_show", "internal_destroy", "internal_edit", "revision_summary", "highlight"
+        'spec_name', 'originator_departments', 'spec_id', "internal_show", "internal_destroy", "internal_edit", "revision_summary", "highlight", "cc_email"
     ];
 
     protected $hidden = [

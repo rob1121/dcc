@@ -31,25 +31,6 @@ class User extends Authenticatable
     }
 
     /**
-     * return user with department equals to originator department
-     *
-     * @param array $originator_departments
-     * @return mixed
-     */
-    public static function  departmentIsIn(array $originator_departments)
-    {
-        return self::with([
-            "department" => function($query) use($originator_departments) {
-                $query->whereIn('department', $originator_departments);
-            }
-        ])
-        ->get()
-        ->filter(function($user) {
-            return collect($user->department)->count();
-        });
-    }
-
-    /**
      * get collection of email to be followup for the external specs to be reviewed
      * @param array $reviewer
      * @return mixed

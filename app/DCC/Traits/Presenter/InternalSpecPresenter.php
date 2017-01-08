@@ -45,4 +45,8 @@ trait InternalSpecPresenter
             ? "new revision"
             : "";
     }
+
+    public function getCcEmailAttribute() {
+        return $this->cc->pluck('email')->toArray();
+    }
 }

@@ -17,20 +17,20 @@ class InternalSpecification implements SpecificationGateway {
     private $request;
     private $company_spec_instance;
 
-    public function __construct(Request $request, CompanySpec $spec=null) {
+    function __construct(Request $request, CompanySpec $spec=null) {
         $this->spec                  = $spec;
         $this->factory               = new SpecificationFactory;
         $this->request               = $request;
         $this->company_spec_instance = CompanySpec::instance($this->request);
     }
 
-    function persist()
-    {
+    function persist(){
         $this->company_spec_instance["spec_no"] = CompanySpecCategory::generateSpecNo( $this->request );
         $this->spec = CompanySpec::create( $this->company_spec_instance );
         $this->factory->store(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->store(new InternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new InternalSpecRevision($this->request, $this->spec));
+        $this->factory->store(new InternalSpecCC($this->request, $this->spec));
         $this->notifyUser("New Internal Spec");
 
         return $this->spec;
@@ -42,28 +42,21 @@ class InternalSpecification implements SpecificationGateway {
         $this->factory->update(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->update(new InternalSpecRevision($this->request, $this->spec));
         $this->factory->update(new InternalSpecCategory($this->request, $this->spec));
+        $this->factory->update(new InternalSpecCC($this->request, $this->spec));
 
         $this->notifyUser("Internal Spec Update");
     }
 
-    protected function notifyUser($caption)
-    {
+    protected function notifyUser($caption) {
         if ( $this->sendNotification() )
-            Mail::to( $this->areaInvolved() )->send( $this->mailTemplate($caption) );
+            Mail::to( $this->request->cc_email )->send( $this->mailTemplate($caption) );
     }
 
-    protected function sendNotification()
-    {
+    protected function sendNotification() {
         return "true" === $this->request->send_notification;
     }
 
-    protected function areaInvolved()
-    {
-        return User::departmentIsIn($this->spec->originator_departments);
-    }
-
-    protected function mailTemplate($caption)
-    {
+    protected function mailTemplate($caption) {
         return new InternalSpecMailer(CompanySpec::find($this->spec->id), $caption);
     }
 }

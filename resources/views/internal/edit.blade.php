@@ -7,28 +7,7 @@
     </style>
 @endpush
 @push('script')
-    <script src="{{URL::to("/js/form.js")}}"></script>
-    <script>
-        var chosen = $(".chosen-select");
-
-        chosen.chosen({
-            disable_search_threshold: 10,
-            no_results_text: "Oops, nothing found!",
-            max_selected_options: 5,
-            display: "block",
-            width: "100%",
-        });
-
-        chosen.val(
-                {!! old("department") ? collect(old("department"))->toJson() : collect($spec->originator_departments)->toJson()  !!}
-        ).trigger("chosen:updated");
-        $("input[name='send_notification']").on('change', function() {
-            var department = $(".department");
-
-            if( $(this).val() === "true" ) department.show();
-            else department.hide();
-        });
-    </script>
+    <script src="{{URL::to("/js/external-edit.js")}}"></script>
 @endpush
 
 @section('content')
@@ -55,7 +34,7 @@
                                    col="12"
                                    label="title"
                                    error="{{$errors->has("name") ? $errors->first("name"):""}}"
-                                   value="{{$errors->has("name") || old("name") ? old("name") :  $spec->name}}"
+                                   value="{{old("name") ?:  $spec->name}}"
                         ></dcc-input>
                     </div>
 
@@ -63,68 +42,66 @@
                         <dcc-input name="revision"
                                    col="4"
                                    error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
-                                   value="{{$errors->has("revision") || old("revision") ? old("revision") :  $spec->companySpecRevision->revision}}"
+                                   value="{{old("revision") ?:  $spec->companySpecRevision->revision}}"
                         ></dcc-input>
 
                         <dcc-datepicker name="revision_date"
                                         col="4"
                                         label="date"
                                         error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                        value="{{$errors->has("revision_date") || old("revision_date")
-                                        ? old("revision_date") :  $spec->companySpecRevision->revision_date}}"
+                                        value="{{old("revision_date") ?:  $spec->companySpecRevision->revision_date}}"
                         ></dcc-datepicker>
 
                         <dcc-input name="document"
                                    col="4"
                                    type="file"
                                    error="{{$errors->has("document") ? $errors->first("document"):""}}"
-                                   value="{{$errors->has("document") || old("document") ? old("document") :  $spec->document}}"
+                                   value="{{old("document") ?:  $spec->document}}"
                         ></dcc-input>
                     </div>
 
-                    <div class="row">
-                        <div class="radio col-xs-12 form-group">
-                            <label class="control-label">
-                                <input type="radio"
-                                       value="true"
-                                       id="send_notification"
-                                       name="send_notification"
-                                       @if(old("send_notification") !== "false") checked @endif
-                                >
-                                Notify everyone for update of internal specification
-                            </label>
-                        </div>
+                    <div class="row" v-show="requireDepartment">
+                        <div class="col-md-12 form-group {{ $errors->has('cc_email') ? ' has-error' : '' }}">
+                            <label for="cc_email" class="control-label">CC</label>
+                            <departments name="cc_email"
+                                         value="{{json_encode(old("cc_email")?:$spec->cc_email)}}">
+                            </departments>
 
-                        <div class="radio col-xs-12 form-group">
-                            <label class="control-label">
-                                <input type="radio"
-                                       name="send_notification"
-                                       id="send_notification"
-                                       value="false"
-                                       @if(old("send_notification") === "false") checked @endif
-                                >
-                                Skip email notification
-                            </label>
+                            <h6 class="help-block">
+                                <strong>{{ $errors->first('cc_email') }}</strong>
+                            </h6>
                         </div>
                     </div>
 
-                    <div class="department row-fluid form-group {{$errors->has("department") ? "has-error" : ""}}" v-show="{{ old("send_notification") !== "false" }}">
-                        <label class="control-label"><strong>Scope Department </strong></label>
-                        <br>
-                        <select data-placeholder="Choose department" multiple class="chosen-select" name="department[]" hidden>
-                            @foreach($departments as $department)
-                                <option>{{$department}}</option>
-                            @endforeach
-                        </select>
-                        <span class="help-block">{{$errors->has("department") ? $errors->first("department"):""}}</span>
+                    <div class="radio col-xs-12 row form-group">
+                        <label class="control-label">
+                            <input type="radio"
+                                   value="true"
+                                   name="send_notification"
+                                   id="send_notification"
+                            @change="getSendNotification"
+                            @if(old("send_notification") !== "false") checked @endif>
+                            Notify everyone for new internal specification
+                        </label>
+                    </div>
+
+                    <div class="radio col-xs-12 row form-group">
+                        <label class="control-label">
+                            <input type="radio"
+                                   name="send_notification"
+                                   id="send_notification"
+                                   value="false"
+                            @change="getSendNotification"
+                            @if(old("send_notification") === "false") checked @endif>
+                            Skip email notification
+                        </label>
                     </div>
 
                     <div class="row">
                         <dcc-textarea name="revision_summary"
                                       label="Revision Summary"
                                       error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
-                                      value="{{$errors->has("revision_summary") || old("revision_summary")
-                                      ? old("revision_summary") :  $spec->companySpecRevision->revision_summary }}"
+                                      value="{{old("revision_summary") ?:  $spec->companySpecRevision->revision_summary }}"
                         ></dcc-textarea>
                     </div>
 

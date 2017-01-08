@@ -109,8 +109,7 @@
 </style>
 
 <template>
-    <div :class="['form-group',{'has-error' : error }, 'col-sm-'+col]">
-        <label class="control-label" v-text="capitalize(label ? label : name)"></label>
+    <div>
         <input type="text"
                class="form-control input-sm"
                autocomplete="off"
@@ -120,6 +119,7 @@
                :value="value"
                @click="show = !show"
         >
+        <h6 class="help-block">{{error}}</h6>
         <div class="datetime-picker" :style="'width:' + width">
             <div class="picker-wrap" v-show="show">
                 <table class="date-picker">
@@ -160,8 +160,6 @@
         props: {
             name:{default:""},
             error:{default:""},
-            label:{default:""},
-            col:{default:"12"},
             width: { type: String, default: '100%' },
             readonly: { type: Boolean, default: false },
             format: { type: String, default: 'YYYY-MM-DD' },

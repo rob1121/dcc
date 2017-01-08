@@ -48,13 +48,8 @@ class ExternalSpecification implements SpecificationGateway {
     protected function notifyUser( $caption ) {
         if ( $this->sendNotification() )
             Mail::to( $this->reviewers() )
-                ->cc($this->areaInvolved())
+                ->cc($this->request->cc_email)
                 ->send( $this->mailTemplate( $caption ) );
-    }
-
-     protected function areaInvolved() {
-        $involved =$this->request->department ? $this->request->department : [];
-        return User::departmentIsIn($involved);
     }
 
     protected function sendNotification() {
