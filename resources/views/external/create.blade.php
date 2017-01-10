@@ -37,7 +37,7 @@
                                    col="4"
                                    label="customer name"
                                    list="external_customer"
-                                   error="{{$errors->has("customer_name") ? $errors->first("customer_name"):""}}"
+                                   error="{{$errors->first("customer_name")}}"
                                    value="{{old("customer_name")}}"
                         ></dcc-input>
 
@@ -47,30 +47,31 @@
 
                         <dcc-input name="revision"
                                    col="4"
-                                   error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
+                                   error="{{$errors->first("revision")}}"
                                    value="{{old("revision")}}"
                         ></dcc-input>
 
-                        <dcc-datepicker name="revision_date"
-                                        col="4"
-                                        label="date"
-                                        error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                        value="{{old("revision_date")}}"
-                        ></dcc-datepicker>
+                        <div class="col-sm-4 form-group {{ $errors->has('revision_date') ? ' has-error' : '' }}">
+                            <label for="revision_date" class="control-label">Date</label>
+                            <dcc-datepicker name="revision_date"
+                                            error="{{$errors->first("revision_date")}}"
+                                            value="{{old("revision_date")}}"
+                            ></dcc-datepicker>
+                        </div>
                     </div>
 
                     <div class="row">
                         <dcc-input name="spec_no"
                                    col="4"
                                    label="spec no."
-                                   error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
+                                   error="{{$errors->first("spec_no")}}"
                                    value="{{old("spec_no")}}"
                         ></dcc-input>
 
                         <dcc-input name="name"
                                    col="8"
                                    label="title"
-                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                                   error="{{$errors->first("name")}}"
                                    value="{{old("name")}}"
                         ></dcc-input>
                     </div>
@@ -79,7 +80,7 @@
                         <dcc-input name="reviewer"
                                    col="4"
                                    list="reviewer_list"
-                                   error="{{$errors->has("reviewer") ? $errors->first("reviewer"):""}}"
+                                   error="{{$errors->first("reviewer")}}"
                                    value="{{old("reviewer")}}"
                         ></dcc-input>
 
@@ -96,7 +97,7 @@
                         <dcc-input name="document"
                                    col="8"
                                    type="file"
-                                   error="{{$errors->has("document") ? $errors->first("document"):""}}"
+                                   error="{{$errors->first("document")}}"
                                    value="{{old("document")}}"
                         ></dcc-input>
                     </div>

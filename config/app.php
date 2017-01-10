@@ -190,7 +190,7 @@ return [
         AlfredoRamos\ParsedownExtra\ParsedownExtraServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
         Spatie\FailedJobMonitor\FailedJobMonitorServiceProvider::class,
-        App\Providers\MacroServiceProvider::class
+        App\Providers\MacroServiceProvider::class,
     ],
 
     /*

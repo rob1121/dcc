@@ -20,6 +20,7 @@ elixir(mix => {
 
         // mix.browserify('user-index.js');
         // mix.browserify('user-registration.js');
+        mix.browserify('user-edit.js');
         mix.browserify('external-edit.js');
         mix.browserify('internal-edit.js')
         // mix.browserify('form.js')
@@ -27,5 +28,5 @@ elixir(mix => {
             // mix.webpack('external-index.js');
             // mix.webpack('iso-index.js');
 
-            .sass('app.scss').browserSync({ proxy: "dcc.dev" });
+            .sass('app.scss').browserSync({ proxy: "dcc.dev.me" });
 });

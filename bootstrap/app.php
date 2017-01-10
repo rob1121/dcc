@@ -1,5 +1,8 @@
 <?php
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -40,6 +43,7 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
+
 
 /*
 |--------------------------------------------------------------------------

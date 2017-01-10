@@ -11,6 +11,8 @@ use App\Observers\CustomerSpecObserver;
 use App\Observers\IsoObserver;
 use App\Observers\UserObserver;
 use App\User;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Collection;
 
@@ -38,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
         Iso::observe(IsoObserver::class);
         CompanySpec::observe(CompanySpecObserver::class);
         CustomerSpec::observe(CustomerSpecObserver::class);
+        Event::fire('auth.login');
+        Event::listen('auth.login', function($user) {
+            Log::info("hello world");
+        });
     }
 
     /**

@@ -37,7 +37,7 @@
                     <div class="row">
                         <dcc-input name="name"
                                    value="{{old("name")}}"
-                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                                   error="{{$errors->first("name")}}"
                                    col="8">
                         </dcc-input>
 
@@ -60,14 +60,14 @@
                     <div class="row">
                         <dcc-input name="employee_id"
                                    value="{{old("employee_id")}}"
-                                   error="{{$errors->has("employee_id") ? $errors->first("employee_id"):""}}"
+                                   error="{{$errors->first("employee_id")}}"
                                    label="Employee No"
                                    col="4">
                         </dcc-input>
 
                         <dcc-input name="email"
                                    value="{{old("email")}}"
-                                   error="{{$errors->has("email") ? $errors->first("email"):""}}"
+                                   error="{{$errors->first("email")}}"
                                    col="8">
                         </dcc-input>
                     </div>
@@ -75,14 +75,14 @@
                     <div class="row" v-if="requirePassword">
                         <dcc-input name="password"
                                    type="password"
-                                   error="{{$errors->has("password") ? $errors->first("password"):""}}"
+                                   error="{{$errors->first("password")}}"
                                    col="6">
                         </dcc-input>
 
                         <dcc-input name="password_confirmation"
                                    type="password"
                                    label="password confirmation"
-                                   error="{{$errors->has("password_confirmation") ? $errors->first("password_confirmation"):""}}"
+                                   error="{{$errors->first("password_confirmation")}}"
                                    col="6">
                         </dcc-input>
                     </div>

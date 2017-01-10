@@ -33,7 +33,7 @@
                         <dcc-input name="name"
                                    col="12"
                                    label="title"
-                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                                   error="{{$errors->first("name")}}"
                                    value="{{old("name") ?:  $spec->name}}"
                         ></dcc-input>
                     </div>
@@ -41,21 +41,22 @@
                     <div class="row">
                         <dcc-input name="revision"
                                    col="4"
-                                   error="{{$errors->has("revision") ? $errors->first("revision"):""}}"
+                                   error="{{$errors->first("revision")}}"
                                    value="{{old("revision") ?:  $spec->companySpecRevision->revision}}"
                         ></dcc-input>
 
-                        <dcc-datepicker name="revision_date"
-                                        col="4"
-                                        label="date"
-                                        error="{{$errors->has("revision_date") ? $errors->first("revision_date"):""}}"
-                                        value="{{old("revision_date") ?:  $spec->companySpecRevision->revision_date}}"
-                        ></dcc-datepicker>
+                        <div class="col-sm-3 form-group {{ $errors->has('revision_date') ? ' has-error' : '' }}">
+                            <label for="revision_date" class="control-label">Date</label>
+                            <dcc-datepicker name="revision_date"
+                                            error="{{$errors->first("revision_date")}}"
+                                            value="{{old("revision_date")}}"
+                            ></dcc-datepicker>
+                        </div>
 
                         <dcc-input name="document"
                                    col="4"
                                    type="file"
-                                   error="{{$errors->has("document") ? $errors->first("document"):""}}"
+                                   error="{{$errors->first("document")}}"
                                    value="{{old("document") ?:  $spec->document}}"
                         ></dcc-input>
                     </div>
@@ -100,7 +101,7 @@
                     <div class="row">
                         <dcc-textarea name="revision_summary"
                                       label="Revision Summary"
-                                      error="{{$errors->has("revision_summary") ? $errors->first("revision_summary"):""}}"
+                                      error="{{$errors->first("revision_summary")}}"
                                       value="{{old("revision_summary") ?:  $spec->companySpecRevision->revision_summary }}"
                         ></dcc-textarea>
                     </div>
