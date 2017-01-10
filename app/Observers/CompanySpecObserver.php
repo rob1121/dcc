@@ -17,7 +17,7 @@ class CompanySpecObserver
      * @param CompanySpec $spec
      */
     public function created(CompanySpec $spec) {
-        Log::info("{$this->user->name} added new specs {$spec->name}");
+        activity()->on($spec)->log("created");
         flash("Document save to the database!.","success");
     }
 

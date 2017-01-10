@@ -3,7 +3,6 @@
 
 trait InternalSpecPresenter
 {
-
     public function getSpecIdAttribute()
     {
         return $this->companySpecCategory->category_no . " - " . sprintf("%03d", $this->spec_no);

@@ -191,6 +191,7 @@ return [
         Spatie\Backup\BackupServiceProvider::class,
         Spatie\FailedJobMonitor\FailedJobMonitorServiceProvider::class,
         App\Providers\MacroServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
     ],
 
     /*

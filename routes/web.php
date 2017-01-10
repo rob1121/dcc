@@ -7,6 +7,7 @@ foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $ro
 }
 
 Route::get('/demo', function() {
+    return \Spatie\Activitylog\Models\Activity::all()->last();
     return view('demo');
 });
 

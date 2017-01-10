@@ -13,6 +13,10 @@ class CompanySpec extends Model
         'name','spec_no'
     ];
 
+    protected static $logAttributes = [
+        'name','spec_no'
+    ];
+
     protected $appends = [
         'spec_name', 'originator_departments', 'spec_id', "internal_show", "internal_destroy", "internal_edit", "revision_summary", "highlight", "cc_email"
     ];
