@@ -19,7 +19,7 @@ elixir(mix => {
     // mix.copy("node_modules/font-awesome/fonts", "public/fonts");
 
         // mix.browserify('user-index.js');
-        // mix.browserify('user-registration.js');
+        mix.browserify('user-registration.js');
         mix.browserify('user-edit.js');
         mix.browserify('external-edit.js');
         mix.browserify('internal-edit.js')

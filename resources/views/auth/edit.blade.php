@@ -8,7 +8,7 @@
 </style>
 @endpush
 @push('script')
-<script src="{{URL::to("js/user-edit.js")}}"></script>
+<script src="{{URL::to("js/user-registration.js")}}"></script>
 @endpush
 
 @section('content')
@@ -94,7 +94,7 @@
                             <label for="departments" class="col-sm-12 control-label">Department(s)
                                 <departments name="departments"
                                              departments-list="{{App\Department::listDepartments()}}"
-                                             value="{{sanitizeValue($user, "departments", $errors)}}">
+                                             value="{{json_encode(sanitizeValue($user, "departments", $errors))}}">
                                 </departments>
                             </label>
                             <h6 class="col-sm-12 help-block">

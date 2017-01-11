@@ -1,6 +1,8 @@
 require('./app');
 import Departments from './components/Departments/Departments.vue';
 
+
+
 const app = new Vue({
     el: "#app",
     data: {
