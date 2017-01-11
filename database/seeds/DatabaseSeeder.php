@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
 //        $this->call(dccSeeder::class);
         $this->call(UserSeeder::class);
-//        $this->call(InternalSpecSeeder::class);
+        $this->call(InternalSpecSeeder::class);
         $this->call(ExternalSpecSeeder::class);
         $this->call(IsoSeeder::class);
     }
