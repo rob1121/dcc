@@ -7,9 +7,11 @@ use App\DCC\File\Document;
 use App\DCC\Internal\InternalSpecification;
 use App\DCC\SpecificationFactory;
 use App\Department;
+use App\Events\Internal\Delete;
+use App\Events\Internal\Show;
 use App\Http\Requests\InternalSpecRequest;
-use App\User;
 use ErrorException;
+use Illuminate\Support\Facades\Event;
 
 class InternalController extends Controller {
     private $factory;
@@ -72,8 +74,12 @@ class InternalController extends Controller {
      */
     public function show(CompanySpec $internal)
     {
-        try { return (new Document($internal->companySpecRevision->document))->showPDF(); }
-        catch (ErrorException $e) { abort(406,"Specification not found in the database"); }
+        try {
+            Event::fire(new Show($internal));
+            return (new Document($internal->companySpecRevision->document))->showPDF();
+        } catch (ErrorException $e) {
+            abort(406,"Specification not found in the database");
+        }
     }
 
     /**
@@ -105,5 +111,6 @@ class InternalController extends Controller {
     public function destroy(CompanySpec $internal)
     {
         $internal->delete();
+        Event::fire(new Delete($internal));
     }
 }

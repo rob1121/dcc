@@ -1,14 +1,12 @@
-<?php
+<?php namespace App\Events\External;
 
-namespace App\Events\Internal;
-
-use App\CompanySpec;
+use App\CustomerSpec;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class Show
+class Review
 {
     use InteractsWithSockets, SerializesModels;
     public $spec;
@@ -18,7 +16,7 @@ class Show
      *
      * @param $spec
      */
-    public function __construct(CompanySpec $spec)
+    public function __construct(CustomerSpec $spec)
     {
         $this->spec = $spec;
     }

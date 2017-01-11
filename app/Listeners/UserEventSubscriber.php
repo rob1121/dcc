@@ -1,19 +1,25 @@
 <?php namespace App\Listeners;
 
+use Illuminate\Support\Facades\Request;
+
 class UserEventSubscriber
 {
     /**
      * Handle user login events.
      */
     public function onUserLogin() {
-        activity()->log("user is logged in");
+        activity()
+            ->withProperties(['ip' => Request::ip()])
+            ->log("user is logged in");
     }
 
     /**
      * Handle user logout events.
      */
     public function onUserLogout() {
-        activity()->log("user is logged out");
+        activity()
+            ->withProperties(['ip' => Request::ip()])
+            ->log("user is logged out");
     }
 
     /**

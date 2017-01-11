@@ -7,8 +7,12 @@ use App\DCC\External\ExternalSpecification;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
 use App\Department;
+use App\Events\External\Delete;
+use App\Events\External\Review;
+use App\Events\External\Show;
 use App\Http\Requests\ExternalSpecRequest;
 use ErrorException;
+use Illuminate\Support\Facades\Event;
 
 class ExternalController extends Controller {
     private $factory;
@@ -69,6 +73,8 @@ class ExternalController extends Controller {
         {
             $doc = $this->getSpec($external, $revision);
             if($doc->is_reviewed && $revision !== null) abort(407,"Spec you are trying to view is already reviewed");
+
+            Event::fire(new Show($external));
             return (new Document($doc->document))->showPDF();
 
         } catch (ErrorException $e) { abort(406,"External Specification not found in the database"); }
@@ -104,6 +110,8 @@ class ExternalController extends Controller {
     public function updateRevision(ExternalSpecRequest $request, CustomerSpec $external) {
         $external->customerSpecRevision()->whereRevision($request->revision)
             ->update(["is_reviewed" => $request->is_reviewed]);
+
+        Event::fire(new Review($external));
     }
 
     /**
@@ -111,6 +119,7 @@ class ExternalController extends Controller {
      */
     public function destroy(CustomerSpec $external) {
         $external->delete();
+        Event::fire(new Delete($external));
     }
 
     /**

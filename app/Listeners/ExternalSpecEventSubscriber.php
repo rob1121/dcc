@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\Request;
 
-class InternalSpecEventSubscriber
+class ExternalSpecEventSubscriber
 {
-
     public function onShow($event) {
         activity()->on($event->spec)
             ->withProperties(['ip' => Request::ip()])
@@ -29,6 +28,12 @@ class InternalSpecEventSubscriber
             ->log("update");
     }
 
+    public function onReview($event) {
+        activity()->on($event->spec)
+            ->withProperties(['ip' => Request::ip()])
+            ->log("mark as reviewed");
+    }
+
     /**
      * Register the listeners for the subscriber.
      *
@@ -36,23 +41,29 @@ class InternalSpecEventSubscriber
      */
     public function subscribe($events) {
         $events->listen(
-            'App\Events\Internal\Show',
-            'App\Listeners\InternalSpecEventSubscriber@onShow'
+            'App\Events\External\Show',
+            'App\Listeners\ExternalSpecEventSubscriber@onShow'
         );
 
         $events->listen(
-            'App\Events\Internal\Delete',
-            'App\Listeners\InternalSpecEventSubscriber@onDelete'
+            'App\Events\External\Delete',
+            'App\Listeners\ExternalSpecEventSubscriber@onDelete'
         );
 
         $events->listen(
-            'App\Events\Internal\Store',
-            'App\Listeners\InternalSpecEventSubscriber@onStore'
+            'App\Events\External\Store',
+            'App\Listeners\ExternalSpecEventSubscriber@onStore'
         );
 
         $events->listen(
-            'App\Events\Internal\Update',
-            'App\Listeners\InternalSpecEventSubscriber@onUpdate'
+            'App\Events\External\Update',
+            'App\Listeners\ExternalSpecEventSubscriber@onUpdate'
+        );
+
+        $events->listen(
+            'App\Events\External\Review',
+            'App\Listeners\ExternalSpecEventSubscriber@onReview'
         );
     }
+
 }
