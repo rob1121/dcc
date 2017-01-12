@@ -2,24 +2,23 @@
 
 use App\CompanySpec;
 use App\DCC\SpecificationGateway;
-use Illuminate\Http\Request;
 
 class InternalSpecCC implements SpecificationGateway {
     /**
      * CustomerSpec Class
      */
     private $spec;
-    private $request;
+    private $emails;
 
     /**
      * InternalSpecCC constructor.
-     * @param Request $request
+     * @param $emails
      * @param CompanySpec $spec
      */
-    function __construct(Request $request, CompanySpec $spec = null)
+    function __construct(array $emails, CompanySpec $spec = null)
     {
         $this->spec = $spec;
-        $this->request = $request;
+        $this->emails = $emails;
     }
 
     /**
@@ -27,7 +26,7 @@ class InternalSpecCC implements SpecificationGateway {
      */
     function persist()
     {
-        $new_email_collection = (array)$this->sanitizedCcEmail();
+        $new_email_collection = (array) $this->sanitizedCcEmail();
         $this->spec->cc()->createMany($new_email_collection);
     }
 
@@ -46,7 +45,7 @@ class InternalSpecCC implements SpecificationGateway {
      */
     private function sanitizedCcEmail()
     {
-        return collect($this->request->cc_email)
+        return collect($this->emails)
             ->map(function ($email) {
                 return ["email" => $email];
             })

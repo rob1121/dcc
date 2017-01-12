@@ -62,14 +62,14 @@
                     </div>
 
                     <div class="row" v-show="requireDepartment">
-                        <div class="col-md-12 form-group {{ $errors->has('cc_email') ? ' has-error' : '' }}">
-                            <label for="cc_email" class="control-label">CC</label>
-                            <departments name="cc_email"
-                                         value="{{json_encode(old("cc_email")?:$spec->cc_email)}}">
+                        <div class="col-md-12 form-group {{ $errors->has('cc') ? ' has-error' : '' }}">
+                            <label for="cc" class="control-label">CC</label>
+                            <departments name="cc"
+                                         value="{{json_encode(old("cc")?:$spec->cc)}}">
                             </departments>
 
                             <h6 class="help-block">
-                                <strong>{{ $errors->first('cc_email') }}</strong>
+                                <strong>{{ $errors->first('cc') }}</strong>
                             </h6>
                         </div>
                     </div>

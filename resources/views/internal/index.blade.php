@@ -22,7 +22,6 @@
     </div>
 
     <div class="col-xs-12 col-md-9 main-content">
-        {{config('dcc.server')}}
         <ol class="breadcrumb">
             <li>
                 <a href="{{route("home")}}">Home</a>

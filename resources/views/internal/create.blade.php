@@ -99,13 +99,13 @@
                     </div>
 
                     <div class="row" v-show="requireDepartment">
-                        <div class="col-md-12 form-group {{ $errors->has('cc_email') ? ' has-error' : '' }}">
-                            <label for="cc_email" class="control-label">CC</label>
-                            <departments name="cc_email"
-                                         value="{{json_encode(old("cc_email"))}}">
+                        <div class="col-md-12 form-group {{ $errors->has('cc') ? ' has-error' : '' }}">
+                            <label for="cc" class="control-label">CC</label>
+                            <departments name="cc"
+                                         value="{{json_encode(old("cc"))}}">
                             </departments>
 
-                            <h6 class="help-block">{{ $errors->first('cc_email') }}</h6>
+                            <h6 class="help-block">{{ $errors->first('cc') }}</h6>
                         </div>
                     </div>
 

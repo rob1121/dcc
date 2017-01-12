@@ -28,7 +28,9 @@
               <h3 class="panel-title">Add new External Specification</h3>
             </div>
             <div class="panel-body">
-
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
                 <form action="{{route('external.store')}}" method="post" enctype="multipart/form-data" id="form-submit">
                     {{ csrf_field() }}
                     <div class="row">

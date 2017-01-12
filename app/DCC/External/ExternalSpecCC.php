@@ -2,7 +2,6 @@
 
 use App\CustomerSpec;
 use App\DCC\SpecificationGateway;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class ExternalSpecCC implements SpecificationGateway {
@@ -10,16 +9,18 @@ class ExternalSpecCC implements SpecificationGateway {
      * CustomerSpec Class
      */
     private $spec;
-    private $request;
+    private $emails;
 
     /**
      * ExternalSpecCC constructor.
-     * @param Request $request
+     * @param array $emails
      * @param CustomerSpec $spec
+     * @internal param array $email
+     * @internal param Request $emails
      */
-    function __construct(Request $request, CustomerSpec $spec=null) {
+    function __construct(array $emails, CustomerSpec $spec=null) {
         $this->spec = $spec;
-        $this->request = $request;
+        $this->emails = $emails;
     }
 
     /**
@@ -43,7 +44,7 @@ class ExternalSpecCC implements SpecificationGateway {
      * @return Collection
      */
     private function sanitizedCcEmail() {
-        return collect($this->request->cc_email)
+        return collect($this->emails)
             ->map(function($email) {return ["email" => $email];})
             ->toArray();
     }

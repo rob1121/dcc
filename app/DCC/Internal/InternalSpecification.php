@@ -32,7 +32,7 @@ class InternalSpecification implements SpecificationGateway {
         $this->factory->store(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->store(new InternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new InternalSpecRevision($this->request, $this->spec));
-        $this->factory->store(new InternalSpecCC($this->request, $this->spec));
+        $this->factory->store(new InternalSpecCC($this->request->cc?:[], $this->spec));
         $this->notifyUser("New Internal Spec");
 
         Event::fire(new Store($this->spec));
@@ -45,7 +45,7 @@ class InternalSpecification implements SpecificationGateway {
         $this->factory->update(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->update(new InternalSpecRevision($this->request, $this->spec));
         $this->factory->update(new InternalSpecCategory($this->request, $this->spec));
-        $this->factory->update(new InternalSpecCC($this->request, $this->spec));
+        $this->factory->update(new InternalSpecCC($this->request->cc?:[], $this->spec));
 
         Event::fire(new Update($this->spec));
         $this->notifyUser("Internal Spec Update");
@@ -53,7 +53,7 @@ class InternalSpecification implements SpecificationGateway {
 
     protected function notifyUser($caption) {
         if ( $this->sendNotification() )
-            Mail::to( $this->request->cc_email )->send( $this->mailTemplate($caption) );
+            Mail::to( $this->request->cc?: [] )->send( $this->mailTemplate($caption) );
     }
 
     protected function sendNotification() {

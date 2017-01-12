@@ -32,7 +32,7 @@ class InternalSpecRequest extends FormRequest
             "revision_summary"  => "max:500",
             "document"          => "required|mimes:pdf",
             "revision_date"     => "required|date",
-            "cc_email"          => json_decode(Request::input("send_notification")) ? "required" : ""
+//            "cc"          => json_decode(Request::input("send_notification")) ? "required" : ""
         ];
     }
 }

@@ -65,10 +65,12 @@ class CustomerSpec extends Model {
             ->orderBy("revision_date")
             ->with(["customerSpec" => function($query) {
                 $query->select(['reviewer','id']);
-            }])->get()
+            }])
+            ->get()
             ->map(function($documents) {
                 return $documents->customerSpec->reviewer;
-            });
+            })
+            ->toArray();
     }
 
     /**

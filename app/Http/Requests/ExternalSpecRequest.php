@@ -27,14 +27,14 @@ class ExternalSpecRequest extends FormRequest
     {
         $id = Request::input("id");
         $rules_for_spec_revision_update = [
-            'name'              => "required|unique:customer_specs,name,{$id}|max:100",
+            'name'              => "required|unique:customer_specs,name,{$id}|max:200",
             'spec_no'           => "required|unique:customer_specs,spec_no,{$id}|max:100",
             'revision'          => "required|min:2|max:5",
             'document'          => 'required|mimes:pdf',
             'revision_date'     => "required|date",
             'reviewer'          => "required|max:100",
             'customer_name'     => 'required|max:100',
-            'cc_email'                => json_decode(Request::input("send_notification")) ? 'required' : ''
+//            'cc'                => json_decode(Request::input("send_notification")) ? 'required' : ''
         ];
 
         $rules_for_spec_status_update = [
