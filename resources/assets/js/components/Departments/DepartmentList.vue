@@ -121,6 +121,15 @@
                 this.setShowAddButton( displayAddButton );
             },
 
+
+            /**
+             * set departments
+             * @param departments
+             */
+            setDepartments(departments) {
+                this.departments = JSON.parse(departments);
+            },
+
             setShowAddButton(bool) {
                 this.showAddButton = bool;
             },

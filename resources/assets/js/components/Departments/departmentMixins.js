@@ -19,14 +19,6 @@ export default {
     methods: {
 
         /**
-         * set departments
-         * @param departments
-         */
-        setDepartments(departments) {
-            this.departments = departments;
-        },
-
-        /**
          * extract unselected departments from the list
          */
         extractUnselectedDepartment() {

@@ -22,11 +22,11 @@ elixir(mix => {
         mix.browserify('user-registration.js');
         mix.browserify('user-edit.js');
         mix.browserify('external-edit.js');
-        mix.browserify('internal-edit.js')
-        // mix.browserify('form.js')
-            // mix.webpack('internal-index.js');
-            // mix.webpack('external-index.js');
-            // mix.webpack('iso-index.js');
-
-            .sass('app.scss').browserSync({ proxy: "dcc.dev" });
+        mix.browserify('internal-edit.js');
+        mix.browserify('form.js');
+        mix.browserify('internal-index.js');
+        mix.browserify('external-index.js');
+        mix.browserify('iso-index.js');
+        mix.sass('app.scss');
+        mix.browserSync({ proxy: "dcc.dev.me" });
 });

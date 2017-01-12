@@ -2,7 +2,9 @@
 /storage/app
 /public
 /vendor
+/config/dcc.php
 /.idea
 Homestead.json
 Homestead.yaml
 .env
+/resources/assets/js/laroute.js

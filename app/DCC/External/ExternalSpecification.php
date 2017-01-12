@@ -4,6 +4,7 @@ use App\CustomerSpec;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationFactory;
 use App\DCC\SpecificationGateway;
+use App\Events\External\Store;
 use App\Events\External\Update;
 use App\Mail\ExternalSpecMailer;
 use App\User;
