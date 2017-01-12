@@ -120,3 +120,12 @@ $factory->define(App\Iso::class, function (Faker\Generator $faker) {
     ];
 });
 
+
+$factory->define(App\ESD::class, function (Faker\Generator $faker) {
+    return [
+        'spec_no' =>  $faker->randomNumber() ,
+        'name' =>  $faker->name ,
+        'document' =>  $faker->word
+    ];
+});
+
