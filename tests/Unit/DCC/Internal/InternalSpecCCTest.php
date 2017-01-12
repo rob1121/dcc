@@ -16,8 +16,8 @@ class InternalSpecCCTest extends TestCase {
     protected function setUp() {
         parent::setUp();
         $this->request = $this->generateRequestInstance();
-        $this->spec = factory(App\CompanySpec::class)->create();
-        $this->cc = new InternalSpecCC($this->request, $this->spec);
+        $this->spec    = factory(App\CompanySpec::class)->create();
+        $this->cc      = new InternalSpecCC($this->request->cc?:[], $this->spec);
     }
 
     /** @test */
@@ -36,7 +36,7 @@ class InternalSpecCCTest extends TestCase {
 
     private function generateRequestInstance() {
         return new Request([
-            "cc_email" => [
+            "cc" => [
                 "test1@example.com",
                 "test2@example.com",
             ]
@@ -44,7 +44,7 @@ class InternalSpecCCTest extends TestCase {
     }
 
     private function shouldBeIncludedIInDatabase() {
-        $this->seeInDatabase("ccs", ["email" => $this->request->cc_email[0], "company_spec_id" => $this->spec->id]);
-        $this->seeInDatabase("ccs", ["email" => $this->request->cc_email[1], "company_spec_id" => $this->spec->id]);
+        $this->seeInDatabase("ccs", ["email" => $this->request->cc[0], "company_spec_id" => $this->spec->id]);
+        $this->seeInDatabase("ccs", ["email" => $this->request->cc[1], "company_spec_id" => $this->spec->id]);
     }
 }
