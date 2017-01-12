@@ -7,10 +7,7 @@
 @section('content')
     <div class="hidden-xs col-md-3 side">
         <div class="row">
-            @{{ searchKey}}
-            @{{ searchCategoryKey }}
             <input type="text" class="form-control input-lg" v-model="searchKey" placeholder="Look for...">
-            <input type="text" class="form-control input-lg" v-model="searchCategoryKey" placeholder="Look for...">
             <hr>
         </div>
 

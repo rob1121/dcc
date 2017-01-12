@@ -13,7 +13,6 @@
 
 @section('content')
     <div class="col-md-6 col-md-offset-3" style="margin-top: 10px">
-
         <ol class="breadcrumb">
             <li>
                 <a href="{{route("home")}}">Home</a>

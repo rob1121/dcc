@@ -8,7 +8,7 @@
 </style>
 @endpush
 @push('script')
-<script src="{{URL::to("js/user-registration.js")}}"></script>
+<script src="{{URL::to("js/user-edit.js")}}"></script>
 @endpush
 
 @section('content')

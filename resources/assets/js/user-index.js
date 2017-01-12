@@ -67,7 +67,6 @@ const app = new Vue( {
 			    : _.filter(this.pagination, (o) => {
                     return o.name.toLowerCase().includes(this.searchKey.toLowerCase())
                         || o.employee_id.toLowerCase().includes(this.searchKey.toLowerCase())
-                        || o.department.toLowerCase().includes(this.searchKey.toLowerCase())
                         || o.user_type.toLowerCase().includes(this.searchKey.toLowerCase())
                         || o.email.toLowerCase().includes(this.searchKey.toLowerCase());
                 });

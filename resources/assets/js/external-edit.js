@@ -1,6 +1,13 @@
 require('./app');
 import Departments from './components/Departments/Departments.vue';
 
+import Datepicker from 'vuejs-datepicker';
+
+Vue.component('my-component', {
+    components: {
+        Datepicker
+    }
+});
 
 
 const app = new Vue({
@@ -15,7 +22,8 @@ const app = new Vue({
     },
 
     components: {
-        Departments
+        Departments,
+        Datepicker
     },
 
     methods: {
