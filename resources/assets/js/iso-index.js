@@ -7,7 +7,7 @@ const app = new Vue( {
 
     data:
     {
-        pagination: isos,
+        pagination: {},
         selectedIso: [],
         searchKey: ""
     },
@@ -19,6 +19,10 @@ const app = new Vue( {
                 || o.spec_no.toLowerCase().includes(this.searchKey.toLowerCase())
           );
         }
+    },
+    created() {
+        this.$http.get(laroute.route("iso.all"))
+            .then(({data})=> this.pagination = JSON.parse(data));
     },
 
     filters: {

@@ -12,9 +12,8 @@ class InternalSpecEventSubscriber
     }
 
     public function onDelete($event) {
-        activity()->on($event->spec)
-            ->withProperties(['ip' => Request::ip()])
-            ->log("delete");
+        activity()->withProperties(['ip' => Request::ip()])
+            ->log("delete {$event->spec_title}");
     }
 
     public function onStore($event) {

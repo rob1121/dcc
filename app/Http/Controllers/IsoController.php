@@ -4,15 +4,19 @@ use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\File\Document;
 use App\DCC\Iso\IsoDocument;
 use App\DCC\SpecificationFactory;
+use App\Events\ISO\Delete;
+use App\Events\ISO\Show;
+use App\Events\ISO\Update;
 use App\Http\Requests\IsoRequest;
 use App\Iso;
 use ErrorException;
+use Illuminate\Support\Facades\Event;
 
-class IsoController extends Controller {
+class IsoController extends Controller 
+{
     private $factory;
 
-    public function __construct()
-    {
+    function __construct() {
         $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
         $this->factory = new SpecificationFactory();
@@ -21,9 +25,7 @@ class IsoController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
-    {
-        \JavaScript::put("isos", Iso::all());
+    function index() {
         return view("iso.index", ["show" => true ]);
     }
 
@@ -31,14 +33,12 @@ class IsoController extends Controller {
      * @param Iso $iso
      * @return mixed
      */
-    public function show(Iso $iso)
-    {
-        try
-        {
-            return (new Document($iso->document))->showPDF();
-        }
-        catch (ErrorException $e)
-        {
+    function show(Iso $iso) {
+        try {
+            $pdf = (new Document($iso->document))->showPDF();
+            Event::fire(new Show($iso));
+            return $pdf;
+        } catch (ErrorException $e) {
             abort(406,"External Specification not found in the database");
         }
     }
@@ -46,8 +46,7 @@ class IsoController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
-    {
+    function create() {
         return view("iso.create");
     }
 
@@ -56,16 +55,17 @@ class IsoController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      * @throws DuplicateEntryException
      */
-    public function store(IsoRequest $request) {
+    function store(IsoRequest $request) {
         if(Iso::isExist($request)) throw new DuplicateEntryException("Already Exist in the database");
-        $this->factory->store(new IsoDocument($request));
+        $iso = $this->factory->store(new IsoDocument($request));
+        Event::fire(new Store($iso));
         return redirect()->route("iso.index"); }
 
     /**
      * @param Iso $iso
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Iso $iso) {
+    function edit(Iso $iso) {
         return view("iso.edit", [ "iso" => $iso ]);
     }
 
@@ -74,12 +74,21 @@ class IsoController extends Controller {
      * @param Iso $iso
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(IsoRequest $request, Iso $iso) {
+    function update(IsoRequest $request, Iso $iso) {
         $this->factory->update(new IsoDocument($request, $iso));
+
+        Event::fire(new Update($iso));
         return redirect()->route("iso.index"); }
 
     /**
      * @param Iso $iso
      */
-    public function destroy(Iso $iso) { $iso->delete(); }
+    function destroy(Iso $iso) {
+        $iso->delete();
+        Event::fire(new Delete($iso->name));
+    }
+    
+    function getAll() {
+        return Iso::all();
+    }
 }

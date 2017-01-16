@@ -8,8 +8,14 @@ const app = new Vue( {
     data:
     {
         selected: [],
-        pagination: esd,
+        pagination: {},
         searchKey: ""
+    },
+
+    created(){
+      this.$http.get(laroute.route('esd.all')).then(
+          ({data}) => this.pagination = JSON.parse(data)
+      );
     },
 
     computed: {
@@ -27,16 +33,13 @@ const app = new Vue( {
         telfordStandardDate
     },
 
-    methods:
-    {
-        setModalSpec(esd)
-        {
+    methods: {
+        setModalSpec(esd) {
             this.selected = esd;
         },
 
-        removeESD()
-        {
-            var route_delete = laroute.route("esd.destroy", {esd:this.selected.id});
+        removeESD() {
+            var route_delete = laroute.route("esd.delete", {esd:this.selected.id});
 
             this.$http.delete(route_delete).then(
                 () => this.delete(this.selected),
@@ -44,10 +47,9 @@ const app = new Vue( {
             );
         },
 
-        delete(esd)
-        {
+        delete(esd) {
             var index = this.pagination.indexOf(esd);
             this.pagination.splice(index, 1);
-        },
+        }
     }
 } );

@@ -5,11 +5,8 @@ use App\CompanySpecCategory;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationGateway;
 use App\DCC\SpecificationFactory;
-use App\Events\Internal\Store;
-use App\Events\Internal\Update;
 use App\Mail\InternalSpecMailer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Event;
 use Mail;
 
 class InternalSpecification implements SpecificationGateway {
@@ -35,7 +32,6 @@ class InternalSpecification implements SpecificationGateway {
         $this->factory->store(new InternalSpecCC($this->request->cc?:[], $this->spec));
         $this->notifyUser("New Internal Spec");
 
-        Event::fire(new Store($this->spec));
         return $this->spec;
     }
 
@@ -47,7 +43,6 @@ class InternalSpecification implements SpecificationGateway {
         $this->factory->update(new InternalSpecCategory($this->request, $this->spec));
         $this->factory->update(new InternalSpecCC($this->request->cc?:[], $this->spec));
 
-        Event::fire(new Update($this->spec));
         $this->notifyUser("Internal Spec Update");
     }
 
@@ -56,8 +51,11 @@ class InternalSpecification implements SpecificationGateway {
             Mail::to( $this->request->cc?: [] )->send( $this->mailTemplate($caption) );
     }
 
+    /**
+     * @return bool
+     */
     protected function sendNotification() {
-        return "true" === $this->request->send_notification;
+        return json_decode($this->request->send_notification);
     }
 
     protected function mailTemplate($caption) {

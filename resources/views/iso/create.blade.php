@@ -35,14 +35,14 @@
                         <dcc-input name="spec_no"
                                    col="3"
                                    label="spec no."
-                                   error="{{$errors->has("spec_no") ? $errors->first("spec_no"):""}}"
+                                   error="{{$errors->first("spec_no")}}"
                                    value="{{old("spec_no")}}"
                         ></dcc-input>
 
                         <dcc-input name="name"
                                    col="9"
                                    label="title"
-                                   error="{{$errors->has("name") ? $errors->first("name"):""}}"
+                                   error="{{$errors->first("name")}}"
                                    value="{{old("name")}}"
                         ></dcc-input>
                     </div>
@@ -51,7 +51,7 @@
                         <dcc-input name="document"
                                    col="6"
                                    type="file"
-                                   error="{{$errors->has("document") ? $errors->first("document"):""}}"
+                                   error="{{$errors->first("document")}}"
                                    value="{{old("document")}}"
                         ></dcc-input>
                     </div>

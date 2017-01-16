@@ -3,6 +3,7 @@
 use App\CompanySpec;
 use App\CompanySpecCategory;
 use App\CompanySpecRevision;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -224,6 +225,8 @@ class dccSeeder extends Seeder
 
         DB::statement("SET FOREIGN_KEY_CHECKS = 0");
         DB::table("company_specs")->truncate();
+        DB::table("company_spec_categories")->truncate();
+        DB::table("company_spec_revisions")->truncate();
         DB::statement("SET FOREIGN_KEY_CHECKS = 1");
 
         foreach($tfp as $spec) {
@@ -233,7 +236,7 @@ class dccSeeder extends Seeder
             ]);
             $document -> companySpecRevision() -> create([
                 'revision' => $spec['revision'],
-                'revision_date' => $spec['revision_date']
+                'revision_date' => Carbon::parse($spec['revision_date'])->format('Y-m-d')
             ]);
 
             $document -> companySpecCategory() -> create([
@@ -241,7 +244,5 @@ class dccSeeder extends Seeder
                 'category_name' => $spec['category_name']
             ]);
         }
-
-        dd("no error");
     }
 }

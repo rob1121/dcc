@@ -9,6 +9,8 @@ use App\DCC\SpecificationFactory;
 use App\Department;
 use App\Events\Internal\Delete;
 use App\Events\Internal\Show;
+use App\Events\Internal\Store;
+use App\Events\Internal\Update;
 use App\Http\Requests\InternalSpecRequest;
 use ErrorException;
 use Illuminate\Support\Facades\Event;
@@ -17,8 +19,7 @@ class InternalController extends Controller {
     private $factory;
     private $categories;
 
-    public function __construct()
-    {
+    function __construct() {
         $this->middleware("auth", ["except" => ["index","show"]]);
         $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
         $this->middleware("server_push",["only" => ["index","edit","show","create"]]);
@@ -30,8 +31,7 @@ class InternalController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
-    {
+    function index() {
         return view('internal.index', [
             "categories" => $this->categories
         ]);
@@ -40,8 +40,7 @@ class InternalController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
-    {
+    function create() {
         return view('internal.create', [
             "category_lists"    => $this->categories,
             "departments"   => Department::listDepartments()
@@ -52,17 +51,14 @@ class InternalController extends Controller {
      * @param InternalSpecRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(InternalSpecRequest $request)
-    {
-        try
-        {
+    function store(InternalSpecRequest $request) {
+        try {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException();
 
-            $this->factory->store(new InternalSpecification($request));
+            $internal = $this->factory->store(new InternalSpecification($request));
+            Event::fire(new Store($internal));
             return redirect(route("internal.index"));
-        }
-        catch(DuplicateEntryException $e)
-        {
+        } catch(DuplicateEntryException $e) {
             flash("{$request->spec_no} {$request->name} already exist!.","danger");
             return redirect()->back();
         }
@@ -72,11 +68,11 @@ class InternalController extends Controller {
      * @param CompanySpec $internal
      * @return mixed
      */
-    public function show(CompanySpec $internal)
-    {
+    function show(CompanySpec $internal) {
         try {
+            $pdf = (new Document($internal->companySpecRevision->document))->showPDF();
             Event::fire(new Show($internal));
-            return (new Document($internal->companySpecRevision->document))->showPDF();
+            return $pdf;
         } catch (ErrorException $e) {
             abort(406,"Specification not found in the database");
         }
@@ -86,8 +82,7 @@ class InternalController extends Controller {
      * @param CompanySpec $internal
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(CompanySpec $internal)
-    {
+    function edit(CompanySpec $internal) {
         return view('internal.edit', [
             'spec'          => $internal,
             "departments"   => Department::listDepartments()
@@ -99,18 +94,17 @@ class InternalController extends Controller {
      * @param CompanySpec $internal
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(InternalSpecRequest $request, CompanySpec $internal)
-    {
+    function update(InternalSpecRequest $request, CompanySpec $internal) {
         $this->factory->update(new InternalSpecification($request, $internal));
+        Event::fire(new Update($internal));
         return redirect()->route("internal.index");
     }
 
     /**
      * @param CompanySpec $internal
      */
-    public function destroy(CompanySpec $internal)
-    {
+    function destroy(CompanySpec $internal) {
         $internal->delete();
-        Event::fire(new Delete($internal));
+        Event::fire(new Delete($internal->name));
     }
 }

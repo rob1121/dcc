@@ -15,8 +15,6 @@ class ExternalSpecCC implements SpecificationGateway {
      * ExternalSpecCC constructor.
      * @param array $emails
      * @param CustomerSpec $spec
-     * @internal param array $email
-     * @internal param Request $emails
      */
     function __construct(array $emails, CustomerSpec $spec=null) {
         $this->spec = $spec;

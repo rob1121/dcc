@@ -9,16 +9,16 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 class Delete
 {
     use InteractsWithSockets, SerializesModels;
-    public $spec;
+    public $spec_title;
 
     /**
      * Create a new event instance.
      *
-     * @param $spec
+     * @param $spec_title
      */
-    public function __construct(CustomerSpec $spec)
+    public function __construct($spec_title)
     {
-        $this->spec = $spec;
+        $this->spec_title = $spec_title;
     }
 
     /**

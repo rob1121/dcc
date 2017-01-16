@@ -103,6 +103,14 @@
                         ></dcc-input>
                     </div>
 
+                    <div class="col-md-12 row form-group">
+                        <checkbox name="send_notification"
+                                  v-model="requireDepartment"
+                                  init="{{old("send_notification")}}"
+                                  label="Notify everyone for new internal specification"
+                        >
+                    </div>
+
                     <div class="row" v-show="requireDepartment">
                         <div class="col-md-12 form-group {{ $errors->has('cc') ? ' has-error' : '' }}">
                             <label for="cc" class="control-label">CC</label>
@@ -116,30 +124,6 @@
                                 <strong>{{ $errors->first('cc') }}</strong>
                             </h6>
                         </div>
-                    </div>
-
-                    <div class="radio col-xs-12 row form-group">
-                        <label class="control-label">
-                            <input type="radio"
-                                   value="true"
-                                   name="send_notification"
-                                   id="send_notification"
-                            @change="getSendNotification"
-                            @if(old("send_notification") !== "false") checked @endif>
-                            Notify everyone for new internal specification
-                        </label>
-                    </div>
-
-                    <div class="radio col-xs-12 row form-group">
-                        <label class="control-label">
-                            <input type="radio"
-                                   name="send_notification"
-                                   id="send_notification"
-                                   value="false"
-                            @change="getSendNotification"
-                            @if(old("send_notification") === "false") checked @endif>
-                            Skip email notification
-                        </label>
                     </div>
 
                     <div class="row">

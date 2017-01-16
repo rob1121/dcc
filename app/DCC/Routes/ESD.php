@@ -32,7 +32,12 @@ Route::group(["prefix" => "esd"], function() {
     ]);
 
     Route::delete("/{esd}", [
-        "uses" => "ESDController@destroy",
-        "as" => "esd.destroy"
+        "uses" => "ESDController@delete",
+        "as" => "esd.delete"
+    ]);
+
+    Route::get("/documents/all", [
+        "uses" => "ESDController@all",
+        "as" => "esd.all"
     ]);
 });

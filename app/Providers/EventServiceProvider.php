@@ -22,6 +22,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Listeners\UserEventSubscriber',
         'App\Listeners\InternalSpecEventSubscriber',
         'App\Listeners\ExternalSpecEventSubscriber',
+        'App\Listeners\ESDEventSubscriber',
+        'App\Listeners\ISOEventSubscriber',
     ];
 
     /**

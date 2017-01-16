@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\user\Create;
 use App\User;
+use Illuminate\Support\Facades\Event;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -76,6 +78,8 @@ class RegisterController extends Controller
         $user->department()->createMany(
             $this->extractDepartments($data)
         );
+
+        Event::fire(new Create($user));
     }
 
     private function extractDepartments(array $data) {

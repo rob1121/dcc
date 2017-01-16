@@ -4,12 +4,9 @@ use App\CustomerSpec;
 use App\DCC\Exceptions\SpecNotFoundException;
 use App\DCC\SpecificationFactory;
 use App\DCC\SpecificationGateway;
-use App\Events\External\Store;
-use App\Events\External\Update;
 use App\Mail\ExternalSpecMailer;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 
 class ExternalSpecification implements SpecificationGateway {
@@ -33,8 +30,6 @@ class ExternalSpecification implements SpecificationGateway {
 
         $this->notifyUser("New External Spec");
 
-        Event::fire(new Store($this->spec));
-
         return $this->spec;
     }
 
@@ -47,8 +42,6 @@ class ExternalSpecification implements SpecificationGateway {
         $this->factory->update(new ExternalSpecCC($this->request->cc?:[], $this->spec));
 
         $this->notifyUser("External Spec Update");
-
-        Event::fire(new Update($this->spec));
     }
 
 
@@ -59,8 +52,11 @@ class ExternalSpecification implements SpecificationGateway {
                 ->send( $this->mailTemplate( $caption ) );
     }
 
+    /**
+     * @return bool
+     */
     protected function sendNotification() {
-        return "true" === $this->request->send_notification;
+        return json_decode($this->request->send_notification);
     }
 
     protected function reviewers() {

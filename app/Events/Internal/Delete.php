@@ -1,8 +1,5 @@
-<?php
+<?php namespace App\Events\Internal;
 
-namespace App\Events\Internal;
-
-use App\CompanySpec;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,16 +8,16 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 class Delete
 {
     use InteractsWithSockets, SerializesModels;
-    public $spec;
+    public $spec_title;
 
     /**
      * Create a new event instance.
      *
-     * @param $spec
+     * @param $spec_title
      */
-    public function __construct(CompanySpec $spec)
+    public function __construct($spec_title)
     {
-        $this->spec = $spec;
+        $this->spec_title = $spec_title;
     }
 
     /**

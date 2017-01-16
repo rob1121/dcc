@@ -13,7 +13,7 @@ class ESDSeeder extends Seeder
     {
         \DB::table('esd')->truncate();
 
-        factory(App\Esd::class, 5)->create();
+        factory(App\ESD::class, 5)->create();
         $this->command->info("ESD spec table seeded");
     }
 }

@@ -1,14 +1,7 @@
 require('./app');
 import Departments from './components/Departments/Departments.vue';
-
 import Datepicker from 'vuejs-datepicker';
-
-Vue.component('my-component', {
-    components: {
-        Datepicker
-    }
-});
-
+import Checkbox from './components/Checkbox.vue';
 
 const app = new Vue({
     el: "#app",
@@ -17,20 +10,14 @@ const app = new Vue({
     },
     
     mounted() {
-        const isRequired = JSON.parse(document.querySelector("#send_notification[checked]").value);
         this.requireDepartment = isRequired;
     },
 
     components: {
         Departments,
-        Datepicker
+        Datepicker,
+        Checkbox
     },
-
-    methods: {
-        getSendNotification(e) {
-            this.requireDepartment = JSON.parse(e.target.value); // convert to boolean using JSON.parse;
-        }
-    }
 });
 
 $(".modal-btn").click(function() {

@@ -24,12 +24,11 @@ class ESD extends Model
     ];
 
     /**
-     * @param Request $request
+     * @param array $collection
      * @return ESD
      */
-    public static function instance(Request $request)
-    {
-        return (new self($request->all()));
+    public static function instance(array $collection){
+        return (new self($collection))->getAttributes();
     }
 
     public function setNameAttribute($value)
@@ -42,9 +41,9 @@ class ESD extends Model
         $this->attributes['spec_no'] = trim($value);
     }
 
-    public static function isExist(Request $request)
+    public static function isExist(array $collection)
     {
-        $instance = self::instance($request)->getAttributes();
+        $instance = self::instance($collection);
         return self::where($instance)->first();
     }
 }

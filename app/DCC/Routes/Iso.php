@@ -5,6 +5,11 @@ Route::group(["prefix" => "iso"], function() {
         "uses" => "IsoController@index",
         "as" => "iso.index"
     ]);
+    
+    Route::get("/iso/documents/all", [
+        "uses" => "IsoController@getAll",
+        "as" => "iso.all"
+    ]);
 
     Route::get("/create", [
         "uses" => "IsoController@create",

@@ -10,6 +10,8 @@ use App\Department;
 use App\Events\External\Delete;
 use App\Events\External\Review;
 use App\Events\External\Show;
+use App\Events\External\Store;
+use App\Events\External\Update;
 use App\Http\Requests\ExternalSpecRequest;
 use ErrorException;
 use Illuminate\Support\Facades\Event;
@@ -18,7 +20,7 @@ class ExternalController extends Controller {
     private $factory;
     private $categories;
 
-    public function __construct()
+    function __construct()
     {
         $this->middleware("auth");
         $this->middleware("auth.admin", ["only" => ["create","store","edit","update","destroy"]]);
@@ -30,7 +32,7 @@ class ExternalController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
+    function index() {
         return view('external.index', [
             "categories" => $this->categories
         ]);
@@ -39,7 +41,7 @@ class ExternalController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create() {
+    function create() {
         return view('external.create', [
             "category_lists" => $this->categories,
             "reviewers_list" => CustomerSpec::uniqueReviewer()
@@ -50,11 +52,12 @@ class ExternalController extends Controller {
      * @param ExternalSpecRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(ExternalSpecRequest $request) {
+    function store(ExternalSpecRequest $request) {
         try {
             if (CustomerSpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
-            $this->factory->store(new ExternalSpecification($request));
+            $external = $this->factory->store(new ExternalSpecification($request));
+            Event::fire(new Store($external));
             return redirect()->route("external.index");
         } catch(DuplicateEntryException $e) {
             flash("{$request->spec_no} {$request->name} document already exist!.","danger");
@@ -67,7 +70,7 @@ class ExternalController extends Controller {
      * @param null $revision
      * @return mixed
      */
-    public function show(CustomerSpec $external, $revision=null)
+    function show(CustomerSpec $external, $revision=null)
     {
         try
         {
@@ -84,7 +87,7 @@ class ExternalController extends Controller {
      * @param CustomerSpec $external
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(CustomerSpec $external) {
+    function edit(CustomerSpec $external) {
         return view("external.edit", [
             "spec" => $external,
             "category_lists" => $this->categories,
@@ -98,8 +101,9 @@ class ExternalController extends Controller {
      * @param CustomerSpec $external
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ExternalSpecRequest $request, CustomerSpec $external) {
+    function update(ExternalSpecRequest $request, CustomerSpec $external) {
         $this->factory->update(new ExternalSpecification($request, $external));
+        Event::fire(new Update($external));
         return redirect()->route("external.index");
     }
 
@@ -107,7 +111,7 @@ class ExternalController extends Controller {
      * @param ExternalSpecRequest $request
      * @param CustomerSpec $external
      */
-    public function updateRevision(ExternalSpecRequest $request, CustomerSpec $external) {
+    function updateRevision(ExternalSpecRequest $request, CustomerSpec $external) {
         $external->customerSpecRevision()->whereRevision($request->revision)
             ->update(["is_reviewed" => $request->is_reviewed]);
 
@@ -117,9 +121,9 @@ class ExternalController extends Controller {
     /**
      * @param CustomerSpec $external
      */
-    public function destroy(CustomerSpec $external) {
+    function destroy(CustomerSpec $external) {
         $external->delete();
-        Event::fire(new Delete($external));
+        Event::fire(new Delete($external->name));
     }
 
     /**

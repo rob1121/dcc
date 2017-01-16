@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\user\Delete;
+use App\Events\user\Update;
 use App\Http\Requests\UserRequest;
 use App\User;
+use Illuminate\Support\Facades\Event;
 
 class UserController extends Controller
 {
@@ -36,11 +39,13 @@ class UserController extends Controller
         $user->department()->delete();
         $user->department()->createMany($this->extractDepartments($request));
 
+        Event::fire(new Update($user));
         return redirect()->route("user.index");
     }
 
     public function delete(User $user) {
     	$user->delete();
+        Event::fire(new Delete($user->name));
     }
 
     private function extractUserData($request) {

@@ -44,6 +44,9 @@
                 <li class="{{route("iso.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("iso.index") }}">ISO</a>
                 </li>
+                <li class="{{route("esd.index") === Request::url() ? "active" : ""}} nav-link">
+                    <a href="{{ route("esd.index") }}">ESD</a>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->

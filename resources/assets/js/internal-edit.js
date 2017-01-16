@@ -1,25 +1,22 @@
 require('./app');
 import Departments from './components/Departments/Departments.vue';
+import Checkbox from './components/Checkbox.vue';
 
 const app = new Vue({
     el: "#app",
 
     data: {
         requireDepartment: true,
-        requireCategoryInputField: true
+        requireCategoryInputField: true,
     },
 
     mounted() {
-        this.requireDepartment = JSON.parse(document.querySelector("#send_notification[checked]").value);
         this.toggleCategoryInputField();
     },
 
-    components: { Departments },
+    components: { Departments, Checkbox },
 
     methods: {
-        getSendNotification(e) {
-            this.requireDepartment = JSON.parse(e.target.value); // convert to boolean using JSON.parse;
-        },
 
         toggleCategoryInputField() {
             this.requireCategoryInputField = document.querySelector("#category").value === "add_category";
