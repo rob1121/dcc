@@ -19,5 +19,5 @@ elixir(mix => {
         // mix.browserify('esd-index.js');
         mix.browserify('log-index.js');
         mix.sass('app.scss');
-        mix.browserSync({ proxy: "dcc.dev.me" });
+        mix.browserSync({ proxy: "dcc.dev" });
 });

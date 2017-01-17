@@ -1,12 +1,18 @@
 <?php namespace App\Http\Controllers;
 
+use App\DCC\Logs\DateFormatter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 
 class LogController extends Controller
 {
+    private $logDate;
+
+    public function __construct()
+    {
+        $this->logDate = new DateFormatter();
+    }
     function index() {
         return view('log.index');
     }
@@ -19,16 +25,22 @@ class LogController extends Controller
     }
 
     function getByDate(Request $request) {
-        $this->validate($request, [
-            "date_from"  => "required|date|before:" . Carbon::parse($request->date_to)->addDay(),
-            "date_to"    => "required|date|after:" . Carbon::parse($request->date_from)->subDay(),
-        ]);
 
-        return Activity::where("created_at", '>=',Carbon::parse($request->date_from)->subDay())
-            ->where("created_at", '<=',Carbon::parse($request->date_to)->addDay())
-            ->get()->map(function($log) {
-                return $this->getLog($log);
-            });
+        $this->validate($request, [
+            "date_from"  => "required",
+            "date_to"    => "required",
+        ]);
+        $this->validate($request, [
+            "date_from"  => "required|date|before:{$this->logDate->to($request->date_to)}",
+            "date_to"    => "required|date|after:{$this->logDate->from($request->date_from)}",
+        ]);
+        
+        return Activity::whereBetween("created_at", [
+            $this->logDate->from($request->date_from), 
+            $this->logDate->to($request->date_to)
+        ])->get()->map(function($log) {
+            return $this->getLog($log);
+        });
     }
 
     function getAll() {

@@ -10,7 +10,8 @@ const app = new Vue( {
         pagination: {},
         searchKey: "",
         date_from: "",
-        date_to: ""
+        date_to: "",
+        errors: {}
     },
 
     components: {
@@ -42,10 +43,14 @@ const app = new Vue( {
     methods: {
         fetchByDate() {
             const params = {
-                date_from: moment(this.date_from).format('L'),
-                date_to: moment(this.date_to).format('L')
+                date_from: this.date_from ? moment(this.date_from).format("gggg-MM-DD HH:mm:ss") : '',
+                date_to: this.date_to ? moment(this.date_to).format("gggg-MM-DD HH:mm:ss") : ''
             };
-            this.$http.get(laroute.route('log.getByDate', params)).then(({data}) =>console.log(data));
+
+            this.$http.post(laroute.route('log.getByDate'),params)
+                .then( ({data}) =>console.log(data),
+                       ({data}) => this.errors = JSON.parse(data) );
+            
         }
     }
 } );

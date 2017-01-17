@@ -16,7 +16,7 @@ Route::group(["prefix" => "log"], function() {
         "as" => "log.getByUser"
     ]);
 
-    Route::get("/date", [
+    Route::post("/date", [
         "uses" => "LogController@getByDate",
         "as" => "log.getByDate"
     ]);

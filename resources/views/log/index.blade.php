@@ -25,13 +25,13 @@
 
         @include('errors.flash')
         <div class="clearfix row">
-            @{{ date_from }}
             <div class="col-sm-3">
                 <datepicker input-class="form-control input-sm"
                             v-model="date_from"
                             format="yyyy-MM-dd"
                             placeholder="Date from">
                 </datepicker>
+                <h6 class="has-error help-block" v-if="errors.date_from" v-text="errors.date_from[0]"></h6>
             </div>
             <div class="col-sm-3">
                 <datepicker input-class="form-control input-sm"
@@ -39,6 +39,7 @@
                             format="yyyy-MM-dd"
                             placeholder="Date to">
                 </datepicker>
+                <h6 class="has-error help-block" v-if="errors.date_to" v-text="errors.date_to[0]"></h6>
             </div>
             <button class="btn btn-default btn-sm" @click="fetchByDate">
                 GO! <i class="fa fa-search"></i>
