@@ -17,12 +17,6 @@
             <li class="active">Log</li>
         </ol>
 
-        @if(Auth::user() && isAdmin())
-            <a href="{{route("log.create")}}" class="pull-right btn btn-primary" style="margin-bottom: 10px">
-                Add new Log<i class="fa fa-plus"></i>
-            </a>
-        @endif
-
         <div class="clearfix"></div>
 
         <div class="row-fluid  hidden-md hidden-lg" style="margin-bottom: 5px">
@@ -30,31 +24,38 @@
         </div>
 
         @include('errors.flash')
+        <div class="clearfix row">
+            @{{ date_from }}
+            <div class="col-sm-3">
+                <datepicker input-class="form-control input-sm"
+                            v-model="date_from"
+                            format="yyyy-MM-dd"
+                            placeholder="Date from">
+                </datepicker>
+            </div>
+            <div class="col-sm-3">
+                <datepicker input-class="form-control input-sm"
+                            v-model="date_to"
+                            format="yyyy-MM-dd"
+                            placeholder="Date to">
+                </datepicker>
+            </div>
+            <button class="btn btn-default btn-sm" @click="fetchByDate">
+                GO! <i class="fa fa-search"></i>
+            </button>
+        </div>
         <div class="panel panel-default">
             <table class="table table-hover">
-                <th>Log</th>
+                <th>IP</th>
+                <th>User</th>
+                <th>Details</th>
+                <th>date time</th>
                 <tbody v-if="documents.length">
                 <tr v-for="spec in documents">
-                    <td>
-                        <a :href="spec.log_show"  target="_blank">
-                            <strong>@{{spec.name | toUpper}}</strong>
-                        </a>
-                    </td>
-                    <td>
-                        @if(isAdmin())
-                            <a id="update-btn" class="btn btn-xs btn-default" :href="spec.log_edit">
-                                Update <i class="fa fa-edit"></i>
-                            </a>
-
-                            <a id="delete-btn" class="btn btn-xs btn-danger"
-                               data-toggle="modal"
-                               href="#spec-confirm"
-                            @click="setModalSpec(spec)"
-                            >
-                            Remove <i class="fa fa-remove"></i>
-                            </a>
-                        @endif
-                    </td>
+                    <td>@{{ spec.ip }}</td>
+                    <td><strong>@{{spec.name | toUpper}}</strong></td>
+                    <td>@{{ spec.description }}</td>
+                    <td>@{{ spec.created_at}}</td>
                 </tr>
                 </tbody>
                 <tfoot v-else>
@@ -65,30 +66,4 @@
             </table>
         </div>
     </div>
-    {{--=======================================MODALS=================================--}}
-    <dcc-modal title="Modal confirmation"
-               id="spec-confirm"
-               class-type="danger"
-               scroll="off"
-    >
-        <div class="text-center" v-if="selectedLog">
-            <h4>
-                Are you sure you want to permanently <strong class="text-danger">delete</strong>
-                "<strong class="text-danger">
-                    @{{selectedLog.title}}
-                </strong>"?
-            </h4>
-            <button type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-            @click="removeLog"
-            >Yes
-            </button>
-            <button type="button"
-                    class="btn btn-default"
-                    data-dismiss="modal"
-            >No
-            </button>
-        </div>
-    </dcc-modal>
 @endsection

@@ -17,9 +17,14 @@ const app = new Vue({
     components: { Departments, Checkbox },
 
     methods: {
+        toggleAddCategoryField: function () {
+            const categorySetup = document.querySelector("#category");
+            if(categorySetup) return categorySetup.value === "add_category";
 
+            return;
+        },
         toggleCategoryInputField() {
-            this.requireCategoryInputField = document.querySelector("#category").value === "add_category";
+            this.requireCategoryInputField = this.toggleAddCategoryField();
         }
     }
 });

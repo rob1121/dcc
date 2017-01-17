@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 
 class LogController extends Controller
@@ -19,19 +20,18 @@ class LogController extends Controller
 
     function getByDate(Request $request) {
         $this->validate($request, [
-            "date_from"  => "required|date|before:" . $request->date_to,
-            "date_to"    => "required|date|after:" . $request->date_from,
+            "date_from"  => "required|date|before:" . Carbon::parse($request->date_to)->addDay(),
+            "date_to"    => "required|date|after:" . Carbon::parse($request->date_from)->subDay(),
         ]);
 
-        return Activity::where("created_at", '>=',Carbon::parse($date_from))
-            ->where("created_at", '<=',Carbon::parse($date_to))
+        return Activity::where("created_at", '>=',Carbon::parse($request->date_from)->subDay())
+            ->where("created_at", '<=',Carbon::parse($request->date_to)->addDay())
             ->get()->map(function($log) {
                 return $this->getLog($log);
             });
     }
 
     function getAll() {
-
         return Activity::all()->map(function($log) {
             return $this->getLog($log);
         });
@@ -39,10 +39,12 @@ class LogController extends Controller
 
     private function getLog($log) {
         $spec= $log->subject? $log->subject->name : '';
+        $causer_name = $log->causer?$log->causer->name:"not defined";
         return [
             "ip"          => $log->getExtraProperty('ip'),
-            "name"        => $log->causer->name,
-            "description" => trim("{$log->description} {$spec}")
+            "name"        => $causer_name,
+            "description" => trim("{$log->description} {$spec}"),
+            "created_at"  => Carbon::parse($log->created_at)->toDateTimeString(),
         ];
     }
 }

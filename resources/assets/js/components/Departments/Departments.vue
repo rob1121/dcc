@@ -101,7 +101,7 @@
             const initialValue = JSON.parse(this.value);
             if (initialValue)
                 for(let i=0;i<initialValue.length;i++)
-                    this.selected[i] = {email: initialValue[i]};
+                    this.selected[i] = {email: initialValue[i].email};
 
             this.setEmails(initialValue);
             this.$on('input_query', _.debounce( () => this.getResults() ,500));
@@ -122,7 +122,7 @@
         watch: {
             selected() {
                 const self = this;
-                const emails = _.map(self.selected, (user) => user.email);
+                const emails = _.map(self.selected, ({email}) => email);
                 self.setEmails( emails );
             },
 

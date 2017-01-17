@@ -1,8 +1,6 @@
 <?php
 
 use App\CompanySpec;
-use App\CompanySpecCategory;
-use App\CompanySpecRevision;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

@@ -8,10 +8,6 @@ const app = new Vue({
     data: {
         requireDepartment: true
     },
-    
-    mounted() {
-        this.requireDepartment = isRequired;
-    },
 
     components: {
         Departments,
