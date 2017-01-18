@@ -19,8 +19,7 @@ const app = new Vue( {
     },
 
     created() {
-        this.$http.get(laroute.route('log.all')).then(
-            ({data}) => this.pagination = JSON.parse(data));
+        this.fetchInitialLogsDisplay();
     },
 
     computed: {
@@ -41,16 +40,40 @@ const app = new Vue( {
     },
 
     methods: {
+
+        fetchInitialLogsDisplay() {
+            const today = moment();
+
+            this.setDateFrom(today);
+            this.setDateTo(today.add(1, 'day'));
+            this.fetchByDate();
+        },
+
         fetchByDate() {
-            const params = {
-                date_from: this.date_from ? moment(this.date_from).format("gggg-MM-DD HH:mm:ss") : '',
-                date_to: this.date_to ? moment(this.date_to).format("gggg-MM-DD HH:mm:ss") : ''
-            };
+            this.emptyErrors();
+            const date_from = this.date_from ? this.toDateString(this.date_from) : '';
+            const date_to = this.date_to ? this.toDateString(this.date_to) : '';
+            const params = { date_from, date_to };
 
             this.$http.post(laroute.route('log.getByDate'),params)
-                .then( ({data}) =>console.log(data),
-                       ({data}) => this.errors = JSON.parse(data) );
-            
+                .then( ({data}) => this.pagination = data,
+                       ({data}) => this.errors = data );
+        },
+
+        setDateFrom: function (from) {
+            this.date_from = this.toDateString(from);
+        },
+
+        setDateTo: function (to) {
+            this.date_to = this.toDateString(to);
+        },
+
+        toDateString(date) {
+            return moment(date).format("gggg-MM-DD HH:mm:ss")
+        },
+
+        emptyErrors() {
+            this.errors = {};
         }
     }
 } );

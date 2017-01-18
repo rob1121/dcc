@@ -27,7 +27,9 @@ class CustomerSpecCategory extends Model
         return self::orderBy("customer_name")->get(["customer_name"])->unique("customer_name")
             ->map(function($category) {
                 $category_name = \Str::upper($category->customer_name);
-                return collect($category)->put("name", $category_name);
+                return collect($category)
+                        ->put("category_no", $category->customer_name)
+                        ->put("name", $category_name);
             });
     }
 }

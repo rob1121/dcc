@@ -22,7 +22,7 @@ const app = new Vue( {
     },
     created() {
         this.$http.get(laroute.route("iso.all"))
-            .then(({data})=> this.pagination = JSON.parse(data));
+            .then(({data})=> this.pagination = data);
     },
 
     filters: {

@@ -63,7 +63,7 @@
                         <td class="text-right">@{{ user.employee_id}}</td>
                         <td style="white-space: nowrap;">@{{ user.name | nameCase }}</td>
                         <td  style="white-space: nowrap;">@{{ user.user_type | toUpper }}</td>
-                        <td><li v-for="department in user.departments">@{{ department | toUpper}}</li></td>
+                        <td><li style="list-style:none" v-for="department in user.departments">@{{ department | toUpper}}</li></td>
                         <td>@{{ user.email }}</td>
                         <td class="text-right"  style="white-space: nowrap;">
                             <a :href="user.edit_route" class="btn btn-default btn-xs">edit <i class="fa fa-edit"></i></a>

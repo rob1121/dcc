@@ -21,9 +21,9 @@
 
         <div class="row">
             <ul class="list-group">
-                <li :class="['list-group-item', searchCategoryKey === category.customer_name ? 'active' : '']"
+                <li :class="['list-group-item', searchCategoryKey === category.category_no ? 'active' : '']"
                     v-for="category in {{$categories}}"
-                @click="setActiveCategory(category.customer_name)"
+                @click="setActiveCategory(category.category_no)"
                 >
                 @{{ category.name }}
                 </li>

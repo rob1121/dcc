@@ -104,7 +104,7 @@
 
                         <div class="form-group">
                             <dcc-button btn-type="{{ $errors->any() ? "danger" : "primary" }}"
-                                        icon="users"> Register User
+                                        icon="users"> Update
                             </dcc-button>
                         </div>
                     </div>

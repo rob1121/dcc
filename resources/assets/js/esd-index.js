@@ -12,10 +12,9 @@ const app = new Vue( {
         searchKey: ""
     },
 
-    created(){
-      this.$http.get(laroute.route('esd.all')).then(
-          ({data}) => this.pagination = JSON.parse(data)
-      );
+    created() {
+      this.$http.get(laroute.route('esd.all'))
+          .then( ({data}) => this.pagination = data );
     },
 
     computed: {

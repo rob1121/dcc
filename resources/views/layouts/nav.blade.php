@@ -44,6 +44,7 @@
                 <li class="{{route("iso.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("iso.index") }}">ISO</a>
                 </li>
+
                 <li class="{{route("esd.index") === Request::url() ? "active" : ""}} nav-link">
                     <a href="{{ route("esd.index") }}">ESD</a>
                 </li>
@@ -64,6 +65,7 @@
                         <ul class="dropdown-menu" role="menu">
                             @if(isAdmin())
                                 <li><a href="{{ route("user.index") }}">Users list</a></li>
+                                <li><a href="{{ route("log.index") }}">Activity Logs</a></li>
                                 <li role="separator" class="divider"></li>
                             @endif
                             <li>

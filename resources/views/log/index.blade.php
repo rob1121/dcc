@@ -41,27 +41,29 @@
                 </datepicker>
                 <h6 class="has-error help-block" v-if="errors.date_to" v-text="errors.date_to[0]"></h6>
             </div>
+
             <button class="btn btn-default btn-sm" @click="fetchByDate">
-                GO! <i class="fa fa-search"></i>
+            GO! <i class="fa fa-search"></i>
             </button>
         </div>
+        <br>
         <div class="panel panel-default">
             <table class="table table-hover">
-                <th>IP</th>
-                <th>User</th>
+                <th class="col-sm-1">IP</th>
+                <th class="col-sm-3">User</th>
                 <th>Details</th>
-                <th>date time</th>
+                <th class="col-sm-2">date time</th>
                 <tbody v-if="documents.length">
-                <tr v-for="spec in documents">
-                    <td>@{{ spec.ip }}</td>
-                    <td><strong>@{{spec.name | toUpper}}</strong></td>
-                    <td>@{{ spec.description }}</td>
-                    <td>@{{ spec.created_at}}</td>
+                <tr v-for="log in documents">
+                    <td>@{{ log.ip }}</td>
+                    <td><strong>@{{log.name | toUpper}}</strong></td>
+                    <td>@{{ log.description }}</td>
+                    <td>@{{ log.created_at}}</td>
                 </tr>
                 </tbody>
                 <tfoot v-else>
                 <tr>
-                    <td colspan="2" class="text-center text-danger">No document specification found.</td>
+                    <td colspan="4" class="text-center text-danger">No document specification found.</td>
                 </tr>
                 </tfoot>
             </table>

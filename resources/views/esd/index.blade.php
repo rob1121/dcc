@@ -38,10 +38,10 @@
                 <tr v-for="spec in documents">
                     <td>
                         <a :href="spec.esd_show"  target="_blank">
-                            <strong>@{{spec.name | toUpper}}</strong>
+                            <strong>@{{spec.spec_no + " " + spec.name | toUpper}}</strong>
                         </a>
                     </td>
-                    <td>
+                    <td class="col-sm-2">
                         @if(isAdmin())
                             <a id="update-btn" class="btn btn-xs btn-default" :href="spec.esd_edit">
                                 Update <i class="fa fa-edit"></i>
