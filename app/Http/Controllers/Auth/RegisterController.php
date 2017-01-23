@@ -79,6 +79,9 @@ class RegisterController extends Controller
             $this->extractDepartments($data)
         );
 
+        if(isset($data['copy_on_cc']))
+            $user->followUpCc()->create([]);
+
         Event::fire(new Create($user));
     }
 

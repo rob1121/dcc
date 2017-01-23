@@ -102,8 +102,7 @@
                         <checkbox name="send_notification"
                                   v-model="requireDepartment"
                                   init="{{old("send_notification")}}"
-                                  label="Notify everyone for new internal specification"
-                        >
+                                  label="Notify everyone for new internal specification">
                     </div>
 
                     <div class="row" v-show="requireDepartment">

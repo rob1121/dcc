@@ -40,7 +40,8 @@ class FollowUp extends Command
     public function handle()
     {
         $reviewer = CustomerSpec::reviewer();
-        $emails = User::followUp($reviewer);
-        Mail::to($emails)->send(new ExternalSpecFollowUpMailer());
+        $to = User::followUp($reviewer);
+        $cc = User::cc();
+        Mail::to($to)->cc($cc)->send(new ExternalSpecFollowUpMailer());
     }
 }

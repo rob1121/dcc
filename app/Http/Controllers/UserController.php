@@ -35,9 +35,14 @@ class UserController extends Controller
     }
 
     public function update(UserRequest $request, User $user){
+        dd($request->all());
         $user->update($this->extractUserData($request));
         $user->department()->delete();
         $user->department()->createMany($this->extractDepartments($request));
+
+
+        if(isset($request->copy_on_cc))
+            $user->followUpCc()->create([]);
 
         Event::fire(new Update($user));
         return redirect()->route("user.index");

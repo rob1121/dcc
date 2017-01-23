@@ -30,6 +30,11 @@ class User extends Authenticatable
         return $this->hasMany(Department::class);
     }
 
+    public function followUpCC()
+    {
+        return $this->hasMany(FollowUpCc::class);
+    }
+
     /**
      * get collection of email to be followup for the external specs to be reviewed
      * @param array $reviewer
@@ -43,6 +48,12 @@ class User extends Authenticatable
             }])->get()
             ->unique('user.email')
             ->pluck('user.email');
+    }
+
+
+    public static function cc()
+    {
+        return FollowUpCc::with('user')->get()->pluck('user');
     }
 
     /**

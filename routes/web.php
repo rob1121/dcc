@@ -1,5 +1,20 @@
 <?php
+use App\CustomerSpec;
 
+Route::get('/mail', function() {
+    return App\User::cc();
+    $mail_subject = \Str::upper("FOLLOW UP: list of customer specs for review");
+    $data = [
+        "specs" => CustomerSpec::forReview(),
+        "sub_title" => config("dcc.sub_title", ""),
+        "system" => config("dcc.title", ""),
+    ];
+
+    return view('emails.mail_external_spec_for_followup',[
+        "mail_subject" => $mail_subject,
+        "data" => $data
+    ]);
+});
 
 
 foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $route) {

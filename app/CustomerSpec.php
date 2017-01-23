@@ -53,7 +53,8 @@ class CustomerSpec extends Model {
                     "name"      => \Str::upper($item->customerSpec->spec_no . " " . $item->customerSpec->name),
                     "revision"  => \Str::upper($item->revision),
                     "date"      => Carbon::parse($item->revision_date)->diffForHumans(),
-                    "route"     => config("app.url") . "/external/{$item->customer_spec_id}/{$item->revision}"
+                    "route"     => config("app.url") . "/external/{$item->customer_spec_id}/{$item->revision}",
+                    "reviewer"  => $item->customerSpec->reviewer
                 ];
             });
     }

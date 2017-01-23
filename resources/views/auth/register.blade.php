@@ -100,6 +100,14 @@
                             </h6>
                         </div>
 
+
+                        <div class="col-md-12 form-group">
+                            <label>
+                                <input type="checkbox" name="copy_on_cc">
+                                Copy on cc
+                            </label>
+                        </div>
+
                         <div class="form-group">
                             <dcc-button btn-type="{{ $errors->any() ? "danger" : "primary" }}"
                                         icon="save"> Update User
