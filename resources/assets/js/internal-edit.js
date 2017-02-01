@@ -1,4 +1,5 @@
 require('./app');
+
 import Departments from './components/Departments/Departments.vue';
 import Checkbox from './components/Checkbox.vue';
 
@@ -18,12 +19,17 @@ const app = new Vue({
 
     methods: {
         toggleAddCategoryField: function () {
-            const categorySetup = document.querySelector("#category");
-            if(categorySetup) return categorySetup.value === "add_category";
+            let toggleCategoryField = false;
 
-            return;
+            const categorySetup = document.querySelector("#category");
+            if(categorySetup) toggleCategoryField = categorySetup.value === "add_category";
+
+            return toggleCategoryField;
         },
-        toggleCategoryInputField() {
+
+        toggleCategoryInputField(sel) {
+            alert(sel.options[sel.selectedIndex].text);
+
             this.requireCategoryInputField = this.toggleAddCategoryField();
         }
     }

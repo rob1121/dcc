@@ -47,7 +47,110 @@
     </div>
 </template>
 
-<style lang="stylus" src="../../../stylus/components/departments.styl" scoped></style>
+<style scoped>
+
+    .add-btn {
+
+        position: absolute;
+        z-index: 2;
+        top: 50%;
+        bottom: 0;
+        right: 5px;
+        transform: translateY(-50%);
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .search-result {
+
+        position: absolute;
+        z-index: 2;
+        width: 100%;
+        border: 1px solid rgba(0,0,0,0.2);
+        box-shadow: 0 3px 2px rgba(0,0,0,0.2);
+        background: #fff;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        padding: 0;
+    }
+
+    .search-result i.fa.fa-plus {
+        position: relative;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+        display: none;
+    }
+
+    .search-result .search--not--found,
+    .search-result .department--item {
+        padding: 1px 5px;
+        margin: 0;
+        list-style: none;
+        transition: .1s ease-in-out;
+    }
+
+    .search-result .department--item,
+    .search-result .fa-remove {
+        cursor: pointer;
+    }
+
+    .search-result .department--item:hover {
+
+        background: #3097D1;
+        color: #f5f8fa;
+    }
+
+    .search-result .department--item:hover i.fa.fa-plus {
+        display: block;
+    }
+
+
+    .selected--department--item {
+        padding: 1px 5px;
+        margin: 0;
+        list-style: none;
+        white-space: nowrap;
+        transition: .1s ease-in-out;
+    }
+
+    .fa-remove {
+        color: darkred;
+        cursor: pointer;
+    }
+
+    .fa-remove:hover{
+        transform: scale(1.1);
+    }
+
+    .has-error .form-control {
+        border-color: #a94442;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.0);
+    }
+
+    .has-error .help-block {
+        color: #a94442;
+    }
+
+    .has-error .help-block,
+    .has-error i.fa.fa-plus.add-btn {
+        z-index: 2;
+        color: #a94442;
+    }
+
+    .form-control {
+        position: relative;
+        z-index: 1;
+    }
+
+    #fade {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+</style>
 
 <script>
     import department from "./departmentMixins";

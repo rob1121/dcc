@@ -1,6 +1,6 @@
 require('./app');
 import Departments from './components/Departments/Departments.vue';
-import Datepicker from 'vuejs-datepicker';
+// import Datepicker from 'vuejs-datepicker';
 import Checkbox from './components/Checkbox.vue';
 
 const app = new Vue({
@@ -11,7 +11,7 @@ const app = new Vue({
 
     components: {
         Departments,
-        Datepicker,
+        // Datepicker,
         Checkbox
     },
 });

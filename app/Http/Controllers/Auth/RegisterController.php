@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Events\user\Create;
+use App\FollowUpCc;
 use App\User;
 use Illuminate\Support\Facades\Event;
 use Validator;
@@ -80,7 +81,7 @@ class RegisterController extends Controller
         );
 
         if(isset($data['copy_on_cc']))
-            $user->followUpCc()->create([]);
+            FollowUpCc::firstOrCreate(['user_id' => $user->id]);
 
         Event::fire(new Create($user));
     }

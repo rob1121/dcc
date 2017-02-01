@@ -1,20 +1,20 @@
 <template>
-    <div>
-        <label class="control-label">
-            <input type="hidden"
-                   :value="checked"
-                   :name="name"
-                   :id="name">
+<div>
+    <label class="control-label">
+        <input type="hidden"
+               :value="checked"
+               :name="name"
+               :id="name">
 
-            <input type="checkbox"
-                   v-model="checked"
-                   :true-value="true"
-                   :false-value="false"
-                   hidden>
-            <i :class="'fa fa-toggle-' + toggle + ' fa-2x'"></i>
-            {{label}}
-        </label>
-    </div>
+        <input type="checkbox"
+               v-model="checked"
+               :true-value="true"
+               :false-value="false"
+               hidden>
+        <i :class="'fa fa-toggle-' + toggle + ' fa-2x'"></i>
+        {{label}}
+    </label>
+</div>
 </template>
 
 <style>

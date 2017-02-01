@@ -35,7 +35,7 @@
             title:{default:"modal-title"},
             size:{default:"lg"},
             classType:{default:"default"},
-            scroll:{dafault:"off"}
+            scroll:{default:"off"}
         }
     }
 </script>

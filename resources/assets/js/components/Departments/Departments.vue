@@ -1,65 +1,170 @@
 <template>
-    <div id="department--container">
-        <!--multi value holder holder-->
-        <input v-for="email in emails" :name="name+'[]'" type="hidden" :value="email">
+    <div>
 
-        <!--query input field search container-->
-        <div style="position:relative" :class="{'has-error': invalidEmail}">
-            <i class="add-btn fa fa-plus"
-               @click="insertNewEmail(query)"
-               v-if="showAddButton">
-            </i>
+        <div id="department--container">
+            <!--multi value holder holder-->
+            <input v-for="email in emails" :name="name+'[]'" type="hidden" :value="email">
 
-            <input id="multiselect"
-                   type="text"
-                   class="form-control"
-                   v-model="query"
-                   @keypress="invalidEmail=false"
-                   @keyup.27="hideResultsContainer"
+            <!--query input field search container-->
+            <div style="position:relative" :class="{'has-error': invalidEmail}">
+                <i class="add-btn fa fa-plus"
+                   @click="insertNewEmail(query)"
+                   v-if="showAddButton">
+                </i>
+
+                <input id="multiselect"
+                       type="text"
+                       class="form-control"
+                       v-model="query"
+                       @keypress="invalidEmail=false"
+                       @keyup.27="hideResultsContainer"
+                >
+                <span class="help-block" v-if="invalidEmail">Invalid input email</span>
+            </div>
+
+            <!--search result container-->
+            <div :style="'width:'+resultWidth"
+                 class="search-result"
+                 v-if="showSearchResultBox"
             >
-            <span class="help-block" v-if="invalidEmail">Invalid input email</span>
-        </div>
+                <em><small v-text="text"></small></em>
 
-        <!--search result container-->
-        <div :style="'width:'+resultWidth"
-             class="search-result"
-             v-if="showSearchResultBox"
-        >
-            <em><small v-text="text"></small></em>
+                <p v-if="hasDepartment" v-show="showDepartment == 'true'"><strong>Departments List:</strong></p>
+                <!--department list-->
+                <li class="department--item"
+                    v-if="showDepartment"
+                    v-for="(departmentEmployee, department) in departments"
+                    @click="addToSelectedItem(departmentEmployee)">
+                    <h6><i class='pull-right fa fa-plus'></i> {{department}}</h6>
+                </li>
 
-            <p v-if="hasDepartment" v-show="showDepartment == 'true'"><strong>Departments List:</strong></p>
-            <!--department list-->
-            <li class="department--item"
-                v-if="showDepartment"
-                v-for="(departmentEmployee, department) in departments"
-                @click="addToSelectedItem(departmentEmployee)">
-                <h6><i class='pull-right fa fa-plus'></i> {{department}}</h6>
-            </li>
+                <p v-if="hasUsers" v-show="showUser == 'true'"><strong>Users List:</strong></p>
 
-            <p v-if="hasUsers" v-show="showUser == 'true'"><strong>Users List:</strong></p>
+                <!--users list-->
+                <li class="department--item"
+                    v-for="user in users"
+                    v-if="showUser"
+                    @click="addToSelectedItem(user)">
+                    <h6>{{user.name}}<i class='pull-right fa fa-plus'></i></h6>
+                </li>
+            </div>
 
-            <!--users list-->
-            <li class="department--item"
-                v-for="user in users"
-                v-if="showUser"
-                @click="addToSelectedItem(user)">
-                <h6>{{user.name}}<i class='pull-right fa fa-plus'></i></h6>
-            </li>
-        </div>
-
-        <!--selected item list-->
-        <li class="selected--department--item h6" v-for="user in selected">
+            <!--selected item list-->
+            <li class="selected--department--item h6" v-for="user in selected">
                 <i class='text-right fa fa-remove' @click="removeToSelectedItem(user)"></i>
                 <em v-text="user.email"></em>
                 <em v-if="user.department">({{user.department}})</em>
-        </li>
+            </li>
 
-        <!--fade block-->
-        <div id="fade" v-if="showSearchResultBox" @click="hideResultsContainer"></div>
+            <!--fade block-->
+            <div id="fade" v-if="showSearchResultBox" @click="hideResultsContainer"></div>
+        </div>
     </div>
 </template>
 
-<style lang="stylus" src="../../../stylus/components/departments.styl" scoped></style>
+<style scoped>
+    .add-btn {
+
+        position: absolute;
+        z-index: 2;
+        top: 50%;
+        bottom: 0;
+        right: 5px;
+        transform: translateY(-50%);
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .search-result {
+
+        position: absolute;
+        z-index: 2;
+        width: 100%;
+        border: 1px solid rgba(0,0,0,0.2);
+        box-shadow: 0 3px 2px rgba(0,0,0,0.2);
+        background: #fff;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        padding: 0;
+    }
+
+    .search-result i.fa.fa-plus {
+        position: relative;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+        display: none;
+    }
+
+    .search-result .search--not--found,
+    .search-result .department--item {
+        padding: 1px 5px;
+        margin: 0;
+        list-style: none;
+        transition: .1s ease-in-out;
+    }
+
+    .search-result .department--item,
+    .search-result .fa-remove {
+        cursor: pointer;
+    }
+
+    .search-result .department--item:hover {
+
+        background: #3097D1;
+        color: #f5f8fa;
+    }
+
+    .search-result .department--item:hover i.fa.fa-plus {
+        display: block;
+    }
+
+
+    .selected--department--item {
+        padding: 1px 5px;
+        margin: 0;
+        list-style: none;
+        white-space: nowrap;
+        transition: .1s ease-in-out;
+    }
+
+    .fa-remove {
+        color: darkred;
+        cursor: pointer;
+    }
+
+    .fa-remove:hover{
+         transform: scale(1.1);
+     }
+
+    .has-error .form-control {
+        border-color: #a94442;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.0);
+    }
+
+    .has-error .help-block {
+        color: #a94442;
+    }
+
+    .has-error .help-block,
+    .has-error i.fa.fa-plus.add-btn {
+        z-index: 2;
+        color: #a94442;
+    }
+
+    .form-control {
+        position: relative;
+        z-index: 1;
+    }
+
+    #fade {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+</style>
 
 <script>
     import department from "./departmentMixins";

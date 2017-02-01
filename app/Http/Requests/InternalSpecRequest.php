@@ -26,12 +26,15 @@ class InternalSpecRequest extends FormRequest
     public function rules()
     {
         $id = Request::input("id");
+        $requireCategory = Request::input("category") == "add_category";
         return [
             "name"              => "required|unique:company_specs,name,". $id ."|max:100",
             "revision"          => "required|min:2|max:5",
             "revision_summary"  => "max:500",
             "document"          => "required|mimes:pdf",
             "revision_date"     => "required|date",
+            "category_no"       => $requireCategory ? "required": "",
+            "category_name"       => $requireCategory ? "required": "",
 //            "cc"          => json_decode(Request::input("send_notification")) ? "required" : ""
         ];
     }

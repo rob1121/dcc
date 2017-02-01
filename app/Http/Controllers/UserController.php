@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\user\Delete;
 use App\Events\user\Update;
+use App\FollowUpCc;
 use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Support\Facades\Event;
@@ -34,15 +35,14 @@ class UserController extends Controller
         return view("auth.edit", ["user" => $user]);
     }
 
-    public function update(UserRequest $request, User $user){
-        dd($request->all());
+    public function update(UserRequest $request, User $user) {
         $user->update($this->extractUserData($request));
         $user->department()->delete();
         $user->department()->createMany($this->extractDepartments($request));
 
 
         if(isset($request->copy_on_cc))
-            $user->followUpCc()->create([]);
+            FollowUpCc::firstOrCreate(['user_id' => $user->id]);
 
         Event::fire(new Update($user));
         return redirect()->route("user.index");

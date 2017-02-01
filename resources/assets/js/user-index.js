@@ -1,4 +1,7 @@
-require('./app');
+require('./bootstrap');
+
+import DccModal from './components/Modal.vue';
+
 import { searchKey, searchCategoryKey, activeCategory, setActiveCategory, setSearchCategoryKey, emptySearchKey } from "./modules/SidebarModules";
 import { modalConfirmation, setModalSpec } from "./modules/modalConfirmationModule";
 import { toUpper, capitalize } from "./modules/stringformatter";
@@ -18,6 +21,10 @@ const app = new Vue( {
         searchCategoryKey,
         activeCategory,
         navToggler: false
+	},
+
+	components: {
+		DccModal
 	},
 
 	mounted() {

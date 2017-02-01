@@ -1,5 +1,5 @@
 <template>
-    <div :class="['form-group',{'has-error' : error }, 'col-sm-'+col]">
+    <div :class="['form-group', 'col-sm-'+col, {'has-error' : error }]">
         <label class="control-label">{{capitalize(label ? label : name)}}</label>
         <input :type="type"
                class="form-control input-sm"
@@ -10,7 +10,7 @@
                :list="list"
                :readonly="readOnly"
         >
-        <h6 class="help-block" v-show="error">{{error}}</h6>
+        <h6 class="help-block" v-if="error">{{error}}</h6>
     </div>
 </template>
 <script>
@@ -29,7 +29,7 @@
         methods: {
           capitalize(string) {
               return _.capitalize(string);
-          },
+          }
         }
   }
 </script>

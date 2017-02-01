@@ -16,7 +16,12 @@ class InternalSpecCategory implements SpecificationGateway {
     }
 
     function persist() {
-        return $this->spec->companySpecCategory()->firstOrcreate(CompanySpecCategory::instance($this->request));
+        $category = CompanySpecCategory::instance($this->request);
+
+        if($this->request->category == 'add_category')
+            $category = CompanySpecCategory::whereCategoryNo($this->request->categoty);
+
+        return $this->spec->companySpecCategory()->firstOrcreate($category);
     }
 
     function update() {

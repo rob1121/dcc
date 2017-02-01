@@ -34,10 +34,9 @@
 
                         <div class="form-group col-xs-12 @if($errors->has("category_no") || $errors->has("category_name")) has-error @endif">
                             <label class="control-label">Specification Category</label>
-                            <select name="category" id="category" class="form-control input-sm" @change="toggleCategoryInputField">
+                            <select name="category" id="category" class="form-control input-sm" @change="toggleCategoryInputField($event.target)">
                                 <option v-for="category in {{$category_lists}}"
                                         :value="category.category_no"
-                                        :data-name="category.category_name"
                                         :selected="'{{old("category")}}' == category.category_no"
                                 >
                                     @{{ category.category_title }}
