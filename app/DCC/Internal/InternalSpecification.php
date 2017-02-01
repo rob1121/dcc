@@ -40,7 +40,7 @@ class InternalSpecification implements SpecificationGateway {
         $this->spec->update($this->company_spec_instance);
         $this->factory->update(new InternalSpecOriginator($this->request, $this->spec));
         $this->factory->update(new InternalSpecRevision($this->request, $this->spec));
-        $this->factory->update(new InternalSpecCategory($this->request, $this->spec));
+//        $this->factory->update(new InternalSpecCategory($this->request, $this->spec));
         $this->factory->update(new InternalSpecCC($this->request->cc?:[], $this->spec));
 
         $this->notifyUser("Internal Spec Update");

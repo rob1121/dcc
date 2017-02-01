@@ -49,7 +49,7 @@
                         </div>
                     </div>
 
-                    <div class="category-group row" v-if="requireCategoryInputField">
+                    <div class="category-group row" id="categoryInput">
                             <dcc-input name="category_no"
                                        col="4"
                                        label="category no."

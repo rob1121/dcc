@@ -8,29 +8,19 @@ const app = new Vue({
 
     data: {
         requireDepartment: true,
-        requireCategoryInputField: true,
+        requireCategoryInputField: true
     },
 
     mounted() {
-        this.toggleCategoryInputField();
+        this.toggleCategoryInputField(document.getElementById('category'));
     },
 
     components: { Departments, Checkbox },
 
     methods: {
-        toggleAddCategoryField: function () {
-            let toggleCategoryField = false;
-
-            const categorySetup = document.querySelector("#category");
-            if(categorySetup) toggleCategoryField = categorySetup.value === "add_category";
-
-            return toggleCategoryField;
-        },
-
-        toggleCategoryInputField(sel) {
-            alert(sel.options[sel.selectedIndex].text);
-
-            this.requireCategoryInputField = this.toggleAddCategoryField();
+        toggleCategoryInputField(sel=null) {
+            if(sel)
+                document.getElementById('categoryInput').hidden = sel.options[sel.selectedIndex].value != 'add_category';
         }
     }
 });
