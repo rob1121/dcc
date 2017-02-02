@@ -29,7 +29,7 @@
             >
                 <em><small v-text="text"></small></em>
 
-                <p v-if="hasDepartment" v-show="showDepartment == 'true'"><strong>Departments List:</strong></p>
+                <p v-if="hasDepartment"><strong>Departments List:</strong></p>
                 <!--department list-->
                 <li class="department--item"
                     v-if="showDepartment"
@@ -38,7 +38,7 @@
                     <h6><i class='pull-right fa fa-plus'></i> {{department}}</h6>
                 </li>
 
-                <p v-if="hasUsers" v-show="showUser == 'true'"><strong>Users List:</strong></p>
+                <p v-if="hasUsers"><strong>Users List:</strong></p>
 
                 <!--users list-->
                 <li class="department--item"
@@ -46,6 +46,16 @@
                     v-if="showUser"
                     @click="addToSelectedItem(user)">
                     <h6>{{user.name}}<i class='pull-right fa fa-plus'></i></h6>
+                </li>
+
+                <p v-if="hasCC"><strong>Recent:</strong></p>
+
+                <!--cc list-->
+                <li class="department--item"
+                    v-for="cc in ccs"
+                    v-if="showCC"
+                    @click="addToSelectedItem(cc)">
+                    <h6>{{cc.email}}<i class='pull-right fa fa-plus'></i></h6>
                 </li>
             </div>
 
@@ -171,18 +181,21 @@
     import user from "./userMixins";
     import addButton from "./addButtonMixins";
 
-    import { fetchQuery,
-            queryStatus,
-            isSuccess,
-            setQuery,
-            isQueryValid,
-            hasQuery,
-            hasQueryText,
-            getResults } from "./QueryMethods";
+    import {
+        fetchQuery,
+        queryStatus,
+        isSuccess,
+        setQuery,
+        isQueryValid,
+        hasQuery,
+        hasQueryText,
+        getResults
+    } from "./QueryMethods";
 
     export default {
         data() {
             return {
+                ccs: {},
                 resultWidth: 0,
                 query: null,
                 text: null,
@@ -195,6 +208,7 @@
         props: {
             name: {default: ""},
             showUser: {default: true},
+            showCC: {default: true},
             showDepartment: {default: true},
             value: {default: []}
         },
@@ -217,7 +231,16 @@
             showSearchResultBox() {
                 return this.hasQueryText
                         || this.hasUsers
-                        || this.hasDepartment;
+                        || this.hasDepartment
+                        || this.hasCC;
+            },
+
+            /**
+             * check if ccs is not empty
+             * @returns {boolean}
+             */
+            hasCC() {
+                return  ! _.isEmpty( this.ccs );
             },
 
             hasQuery,
@@ -258,20 +281,28 @@
                 this.emails = emails;
             },
 
-            /**
-             * @set users collection
-             * @set departments collection
-             * @param response
-             */
-            setResult(response) {
-                const result = response;
-                
-
-                this.setUsers( result.users );
-                this.setDepartments( result.departments );
+            setResult({users, departments, cc}) {
+                this.setUsers( users );
+                this.setDepartments( departments );
+                this.setCC( cc );
                 
                 this.queryStatus('success');
                 
+            },
+
+            /**
+             * set cc
+             * @param cc
+             */
+            setCC(cc) {
+                this.ccs = cc;
+            },
+
+            /**
+             * reset cc list
+             */
+            resetCC() {
+                this.ccs = {};
             },
 
             /**
@@ -299,6 +330,7 @@
             resetResults() {
                 this.resetDepartments();
                 this.resetUsers();
+                this.resetCC();
             },
 
             /**

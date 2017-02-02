@@ -57,6 +57,7 @@ class InternalSpecificationTest extends TestCase {
             "revision" => "**",
             "revision_summary" => "this is spec",
             "revision_date" => "2016-01-01",
+            "category" => 'add_category',
             "category_no" => $category->category_no,
             "category_name" => $category->category_name,
             "department" => ["QA", "PE"],

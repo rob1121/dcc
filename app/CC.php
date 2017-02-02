@@ -14,6 +14,10 @@ class CC extends Model
         "created_at", "updated_at"
     ];
 
+    public static function findQuery($q) {
+        return self::where('email','LIKE',"%{$q}%")->select(['email'])->get()->unique('email')->values();
+    }
+
     public function customerSpec(){
         return $this->belongsTo(CustomerSpec::class);
     }

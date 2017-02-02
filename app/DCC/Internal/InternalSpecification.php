@@ -7,7 +7,7 @@ use App\DCC\SpecificationGateway;
 use App\DCC\SpecificationFactory;
 use App\Mail\InternalSpecMailer;
 use Illuminate\Http\Request;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class InternalSpecification implements SpecificationGateway {
 

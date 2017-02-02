@@ -12,15 +12,17 @@ const app = new Vue({
     },
 
     mounted() {
-        this.toggleCategoryInputField(document.getElementById('category'));
+        this.toggleCategoryInputField(
+            document.getElementById('category')
+        );
     },
 
     components: { Departments, Checkbox },
 
     methods: {
         toggleCategoryInputField(sel=null) {
-            if(sel)
-                document.getElementById('categoryInput').hidden = sel.options[sel.selectedIndex].value != 'add_category';
+            if(sel) document.getElementById('categoryInput')
+                            .hidden = sel.options[sel.selectedIndex].value != 'add_category';
         }
     }
 });

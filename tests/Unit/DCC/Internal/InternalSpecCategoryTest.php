@@ -25,7 +25,20 @@ class InternalSpecCategoryTest extends TestCase
     /** @test */
     public function it_can_add_instance_to_database()
     {
-        $this->actual = new Request($this->factory->make()->toArray());
+        $category = $this->factory->create()->toArray();
+
+        $this->actual = new Request(array_merge($category,['category' => $category['category_no']]));
+        $this->expected = ["category_no" => $this->actual->category_no];
+
+        (new InternalSpecCategory($this->actual, $this->spec))->persist();
+
+        $this->seeInDatabase("company_spec_categories", $this->expected);
+    }
+
+    /** @test */
+    public function it_can_add_create_instance_if_not_exist()
+    {
+        $this->actual = new Request(array_merge($this->factory->make()->toArray(),['category' => 'add_category']));
         $this->expected = ["category_no" => $this->actual->category_no];
 
         (new InternalSpecCategory($this->actual, $this->spec))->persist();
