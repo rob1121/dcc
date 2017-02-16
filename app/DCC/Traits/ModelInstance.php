@@ -4,8 +4,12 @@ use Illuminate\Http\Request;
 
 trait ModelInstance
 {
-    public static function instance(Request $request)
+    public static function instance($request)
     {
-        return (new self($request->all()))->getAttributes();
+        $sanitized_data = $request instanceof Request
+            ? $request->all()
+            : (new Request($request))->all();
+
+        return (new self($sanitized_data))->getAttributes();
     }
 }

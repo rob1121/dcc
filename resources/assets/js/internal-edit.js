@@ -21,6 +21,8 @@ const app = new Vue({
 
     methods: {
         toggleCategoryInputField(sel=null) {
+            alert(sel);
+
             if(sel) document.getElementById('categoryInput')
                             .hidden = sel.options[sel.selectedIndex].value != 'add_category';
         }

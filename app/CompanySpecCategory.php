@@ -25,11 +25,20 @@ class CompanySpecCategory extends Model
 
     public static function generateSpecNo(Request $request)
     {
-        return self::whereCategoryNo( $request->category_no )
-            ->with( 'companySpec' )->get()
-            ->reduce( function( $carry, $category ) {
-                return $carry > $category->companySpec->spec_no ? $carry : $category->companySpec->spec_no;
-            }, 0 ) + 1;
+        $category = is_a($request->category,'add_category')
+            ? CompanySpecCategory::whereCategoryNo($request->category_no)->get()
+            : CompanySpecCategory::whereCategoryNo($request->category)->get();
+
+        $spec_no = 0;
+        $hasCategory = $category->count();
+
+        if($hasCategory) {
+            $spec_no = $category->map(function($spec) {
+                return   $spec->companySpec;
+            })->sortByDesc('spec_no')->first()->spec_no;
+        }
+
+        return $spec_no + 1;
     }
 
     public function companySpec(){

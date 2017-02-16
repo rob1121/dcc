@@ -62,4 +62,9 @@ class CompanySpec extends Model
         $this->attributes['name'] = trim($value);
     }
 
+    public function setNSpecNoAttribute($value)
+    {
+        $this->attributes['spec_no'] = sprintf("%03d", $value);
+    }
+
 }

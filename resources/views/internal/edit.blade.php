@@ -49,7 +49,7 @@
                             <label for="revision_date" class="control-label">Date</label>
                             <dcc-datepicker name="revision_date"
                                             error="{{$errors->first("revision_date")}}"
-                                            value="{{old("revision_date")}}"
+                                            value="{{old("revision_date")?:  $spec->companySpecRevision->revision_date}}"
                             ></dcc-datepicker>
                         </div>
 

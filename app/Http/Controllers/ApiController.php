@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function internalSearch(Request $request)
+    public function internalSearch()
     {
         return response()->json(CompanySpec::orderBy("spec_no")->get())
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET');
     }
 
-    public function externalSearch(Request $request)
+    public function externalSearch()
     {
         $customer_spec = CustomerSpec::with(["customerSpecRevision" => function ($query) {
             $query->orderBy("revision", "asc");
