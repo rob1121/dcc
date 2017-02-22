@@ -21,10 +21,17 @@ const app = new Vue({
 
     methods: {
         toggleCategoryInputField(sel=null) {
-            alert(sel);
-
             if(sel) document.getElementById('categoryInput')
                             .hidden = sel.options[sel.selectedIndex].value != 'add_category';
+        },
+
+        /**
+         * remedy for the the confusing bug found in the select box when toggling checkbox.vue
+         */
+        echo() {
+            const sel = document.querySelector('#category');
+            const selected = sel.selectedIndex;
+            setTimeout(() => sel.selectedIndex=selected, 1);
         }
     }
 });

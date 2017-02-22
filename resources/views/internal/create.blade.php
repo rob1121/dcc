@@ -102,6 +102,7 @@
                                   v-model="requireDepartment"
                                   init="{{old("send_notification")}}"
                                   label="Notify everyone for new internal specification"
+                                  @input="echo"
                         >
                     </div>
 

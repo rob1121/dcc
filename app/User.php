@@ -42,12 +42,13 @@ class User extends Authenticatable
      */
     public static function followUp(array $reviewer)
     {
-        return Department::whereIn('department', $reviewer)
-            ->with(['user' => function($query) {
-                $query->select(['id','email']);
-            }])->get()
+        $ids =  Department::whereIn('department', $reviewer)
+            ->with('user')->get()
             ->unique('user.email')
-            ->pluck('user.email');
+            ->pluck('user.id');
+
+        return self::whereIn('id', $ids)->get();
+
     }
 
 

@@ -21,7 +21,13 @@ foreach(Illuminate\Support\Facades\File::allFiles(app_path('DCC\Routes')) as $ro
     require $route->getPathname();
 }
 
-//Route::get('/demo', function() {;
+//Route::get('/demo', function() {
+//
+//    $reviewer = CustomerSpec::reviewer();
+//    $to = App\User::followUp($reviewer);
+//    $cc = App\User::all();
+//
+//    return $to;
 //    return view('demo');
 //});
 

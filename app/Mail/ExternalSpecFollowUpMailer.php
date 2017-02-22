@@ -1,24 +1,22 @@
 <?php namespace App\Mail;
 
 use App\CustomerSpec;
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Str;
+use Illuminate\Support\Str;
 
 class ExternalSpecFollowUpMailer extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
+
     public $mail_subject;
     public $data = [];
-
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->mail_subject = Str::upper("FOLLOW UP: list of customer specs for review");
         $this->data = [
             "specs" => CustomerSpec::forReview(),
