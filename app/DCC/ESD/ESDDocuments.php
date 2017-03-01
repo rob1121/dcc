@@ -23,7 +23,7 @@ class ESDDocuments implements SpecificationGateway {
         $this->factory->store(new ESDFile($this->request, $this->esd));
         return $this->esd;
     }
-    
+
     public function edit(ESD $esd) {
         return view("esd.edit", [ "esd" => $esd ]);
     }
@@ -36,6 +36,6 @@ class ESDDocuments implements SpecificationGateway {
     }
 
     public function delete(ESD $esd) {
-        $esd->delete(); 
+        $esd->delete();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\DCC\Internal\InternalSpecification;
+use App\DCC\Internal\InternalSpecs;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -26,7 +26,7 @@ class InternalSpecificationTest extends TestCase {
     /** @test */
     public function it_can_add_company_spec()
     {
-        (new InternalSpecification($this->request))->persist();
+        (new InternalSpecs($this->request))->persist();
         $this->seeInDatabase("company_specs", $this->expected);
     }
 
@@ -34,7 +34,7 @@ class InternalSpecificationTest extends TestCase {
     public function it_can_update_company_spec()
     {
         $this->requestInstanceForUpdate();
-        (new InternalSpecification($this->actual, $this->spec))->update();
+        (new InternalSpecs($this->actual, $this->spec))->update();
         $this->seeInDatabase("company_specs", $this->expected);
     }
 
@@ -44,7 +44,7 @@ class InternalSpecificationTest extends TestCase {
     public function it_should_throw_exception_on_update_company_spec()
     {
         $this->requestInstanceForUpdate();
-        (new InternalSpecification($this->actual))->update();
+        (new InternalSpecs($this->actual))->update();
         $this->dontseeInDatabase("company_specs", $this->expected);
     }
 

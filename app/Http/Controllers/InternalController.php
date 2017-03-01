@@ -4,7 +4,7 @@ use App\CompanySpec;
 use App\CompanySpecCategory;
 use App\DCC\Exceptions\DuplicateEntryException;
 use App\DCC\File\Document;
-use App\DCC\Internal\InternalSpecification;
+use App\DCC\Internal\InternalSpecs;
 use App\DCC\SpecificationFactory;
 use App\Department;
 use App\Events\Internal\Delete;
@@ -55,7 +55,7 @@ class InternalController extends Controller {
         try {
             if (CompanySpec::isExist($request)) throw new DuplicateEntryException();
 
-            $internal = $this->factory->store(new InternalSpecification($request));
+            $internal = $this->factory->store(new InternalSpecs($request));
             Event::fire(new Store($internal));
             return redirect(route("internal.index"));
         } catch(DuplicateEntryException $e) {
@@ -95,7 +95,7 @@ class InternalController extends Controller {
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     function update(InternalSpecRequest $request, CompanySpec $internal) {
-        $this->factory->update(new InternalSpecification($request, $internal));
+        $this->factory->update(new InternalSpecs($request, $internal));
         Event::fire(new Update($internal));
         return redirect()->route("internal.index");
     }

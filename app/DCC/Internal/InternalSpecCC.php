@@ -15,7 +15,7 @@ class InternalSpecCC implements SpecificationGateway {
      * @param $emails
      * @param CompanySpec $spec
      */
-    function __construct(array $emails, CompanySpec $spec = null)
+    function __construct($emails, CompanySpec $spec = null)
     {
         $this->spec = $spec;
         $this->emails = $emails;
@@ -26,8 +26,11 @@ class InternalSpecCC implements SpecificationGateway {
      */
     function persist()
     {
-        $new_email_collection = (array) $this->sanitizedCcEmail();
-        $this->spec->cc()->createMany($new_email_collection);
+        if($this->emails) {
+            $this->spec->cc()->createMany(
+                $this->sanitize($this->emails)
+            );
+        }
     }
 
     /**
@@ -41,14 +44,16 @@ class InternalSpecCC implements SpecificationGateway {
 
     /**
      * remove email from request email if email is already exist
-     * @return Collection
+     * @param $emails
+     * @return array
      */
-    private function sanitizedCcEmail()
+    private function sanitize($emails)
     {
-        return collect($this->emails)
-            ->map(function ($email) {
-                return ["email" => $email];
-            })
-            ->toArray();
+        if ($emails) {
+            return collect($emails)
+                ->map(function ($email) {
+                    return ["email" => $email];
+                })->toArray();
+        }
     }
 }

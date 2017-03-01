@@ -34,8 +34,8 @@ class InternalSpecRequest extends FormRequest
             "document"          => "required|mimes:pdf",
             "revision_date"     => "required|date",
             "category_no"       => $requireCategory ? "required": "",
-            "category_name"       => $requireCategory ? "required": "",
-//            "cc"          => json_decode(Request::input("send_notification")) ? "required" : ""
+            "category_name"     => $requireCategory ? "required": "",
+            "cc.*"              => "email",
         ];
     }
 }

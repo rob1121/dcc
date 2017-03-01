@@ -1,7 +1,7 @@
 <?php
 
 use App\CustomerSpec;
-use App\DCC\External\ExternalSpecification;
+use App\DCC\External\ExternalSpecs;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -26,7 +26,7 @@ class ExternalSpecificationTest extends TestCase {
     {
         $this->expected = ["spec_no" => "number"];
 
-        (new ExternalSpecification($this->request))->persist();
+        (new ExternalSpecs($this->request))->persist();
         $this->seeInDatabase("customer_specs", $this->expected);
     }
 
@@ -34,7 +34,7 @@ class ExternalSpecificationTest extends TestCase {
     public function it_can_update_customer_spec()
     {
         $this->requestInstanceForUpdate();
-        (new ExternalSpecification($this->actual, $this->spec))->update();
+        (new ExternalSpecs($this->actual, $this->spec))->update();
         $this->seeInDatabase("customer_specs", $this->expected);
     }
 
@@ -44,7 +44,7 @@ class ExternalSpecificationTest extends TestCase {
     public function it_can_throw_exception_on_update_customer_spec()
     {
         $this->requestInstanceForUpdate();
-        (new ExternalSpecification($this->actual))->update();
+        (new ExternalSpecs($this->actual))->update();
         $this->dontSeeInDatabase("customer_specs", $this->expected);
     }
 

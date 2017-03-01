@@ -9,7 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class ExternalSpecification implements SpecificationGateway {
+class ExternalSpecs implements SpecificationGateway {
 
     private $spec;
     private $factory;
@@ -26,7 +26,7 @@ class ExternalSpecification implements SpecificationGateway {
 
         $this->factory->store(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->store(new ExternalSpecRevision($this->request, $this->spec));
-        $this->factory->store(new ExternalSpecCC($this->request->cc?:[], $this->spec));
+        $this->factory->store(new ExternalSpecCC($this->request->cc, $this->spec));
 
         $this->notifyUser("New External Spec");
 
@@ -39,7 +39,7 @@ class ExternalSpecification implements SpecificationGateway {
         $this->spec->update(CustomerSpec::instance($this->request));
         $this->factory->update(new ExternalSpecCategory($this->request, $this->spec));
         $this->factory->update(new ExternalSpecRevision($this->request, $this->spec));
-        $this->factory->update(new ExternalSpecCC($this->request->cc?:[], $this->spec));
+        $this->factory->update(new ExternalSpecCC($this->request->cc, $this->spec));
 
         $this->notifyUser("External Spec Update");
     }
@@ -64,7 +64,7 @@ class ExternalSpecification implements SpecificationGateway {
     }
 
     protected function mailTemplate($message) {
-        $spec = CustomerSpec::find($this->spec->id);
-        return new ExternalSpecMailer($spec, $message);
+        $customer_spec = CustomerSpec::find($this->spec->id);
+        return new ExternalSpecMailer($customer_spec, $message);
     }
 }

@@ -3,7 +3,7 @@
 use App\CustomerSpec;
 use App\CustomerSpecCategory;
 use App\DCC\Exceptions\DuplicateEntryException;
-use App\DCC\External\ExternalSpecification;
+use App\DCC\External\ExternalSpecs;
 use App\DCC\File\Document;
 use App\DCC\SpecificationFactory;
 use App\Department;
@@ -56,7 +56,7 @@ class ExternalController extends Controller {
         try {
             if (CustomerSpec::isExist($request)) throw new DuplicateEntryException("Company Specification already exist!");
 
-            $external = $this->factory->store(new ExternalSpecification($request));
+            $external = $this->factory->store(new ExternalSpecs($request));
             Event::fire(new Store($external));
             return redirect()->route("external.index");
         } catch(DuplicateEntryException $e) {
@@ -102,7 +102,7 @@ class ExternalController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     function update(ExternalSpecRequest $request, CustomerSpec $external) {
-        $this->factory->update(new ExternalSpecification($request, $external));
+        $this->factory->update(new ExternalSpecs($request, $external));
         Event::fire(new Update($external));
         return redirect()->route("external.index");
     }

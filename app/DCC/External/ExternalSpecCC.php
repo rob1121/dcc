@@ -13,10 +13,10 @@ class ExternalSpecCC implements SpecificationGateway {
 
     /**
      * ExternalSpecCC constructor.
-     * @param array $emails
+     * @param $emails
      * @param CustomerSpec $spec
      */
-    function __construct(array $emails, CustomerSpec $spec=null) {
+    function __construct($emails, CustomerSpec $spec=null) {
         $this->spec = $spec;
         $this->emails = $emails;
     }
@@ -25,8 +25,11 @@ class ExternalSpecCC implements SpecificationGateway {
      * insert collection of email to cc database
      */
     function persist() {
-        $new_email_collection = (array) $this->sanitizedCcEmail();
-        $this->spec->cc()->createMany( $new_email_collection );
+        if($this->emails) {
+            $this->spec->cc()->createMany(
+                $this->sanitize($this->emails)
+            );
+        }
     }
 
     /**
@@ -39,11 +42,14 @@ class ExternalSpecCC implements SpecificationGateway {
 
     /**
      * remove email from request email if email is already exist
-     * @return Collection
+     * @param $emails
+     * @return array
      */
-    private function sanitizedCcEmail() {
-        return collect($this->emails)
-            ->map(function($email) {return ["email" => $email];})
-            ->toArray();
+    private function sanitize($emails) {
+        if($emails) {
+            return collect($emails)
+                ->map(function($email) {return ["email" => $email];})
+                ->toArray();
+        }
     }
 }
