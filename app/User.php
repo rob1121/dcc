@@ -73,7 +73,7 @@ class User extends Authenticatable
         ->get()
         ->filter(function($user) {
             return collect($user->department)->count();
-        });
+        })->pluck('email');
     }
 
     public function scopeGetCategoryList()
