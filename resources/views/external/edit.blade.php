@@ -108,6 +108,7 @@
                     <div class="row" v-show="requireDepartment">
                         <div class="col-md-12 form-group {{ $errors->has('cc') ? ' has-error' : '' }}">
                             <label for="cc" class="control-label">CC</label>
+
                             <departments name="cc"
                                          value="{{json_encode(old("cc")?:$spec->cc)}}">
                             </departments>

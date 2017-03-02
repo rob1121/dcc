@@ -218,12 +218,20 @@
 
         mounted() {
             const initialValue = JSON.parse(this.value);
-            if (initialValue)
-                for(let i=0;i<initialValue.length;i++)
-                    this.selected[i] = {email: initialValue[i].email};
+            if (initialValue) {
+                for(let i=0;i<initialValue.length;i++){
+                    this.selected[i] = {
+                        email: initialValue[i].email || initialValue[i] // object users else plain email
+                    };
+                }
+            }
 
-            this.setEmails(initialValue);
-            this.$on('input_query', _.debounce( () => this.getResults() ,500));
+            const emails = _.map(this.selected, ({email}) => email);
+            this.setEmails(emails);
+
+            this.$on('input_query', _.debounce(() => {
+                    return this.getResults();
+                }, 500 ));
         },
 
         computed: {

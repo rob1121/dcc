@@ -31,7 +31,7 @@ const queryStatus = function(status=null) {
  * @returns {boolean}
  */
 const isSuccess = function(status) {
-    return status === 'success';
+    return status === "success";
 };
 
 /**
@@ -47,7 +47,7 @@ const setQuery = function(inputQuery) {
  * @returns {boolean}
  */
 const isQueryValid = function() {
-    return ! _.isEmpty( this.query )
+    return ! _.isEmpty( this.query );
 };
 
 
